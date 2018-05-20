@@ -1,0 +1,4 @@
+#Sun May 06 16:23:38 EEST 2018
+base.0=/Users/sikv/Desktop/Apps/Photos/app/build/intermediates/transforms/dexMerger/debug/0
+path.0=classes.dex
+renamed.0=classes.dex
