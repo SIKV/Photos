@@ -14,7 +14,16 @@
 
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:contentInsetStart="16dp"
+            app:contentInsetEnd="16dp">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_favorites_white_24dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="TODO"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -25,6 +34,14 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:text="@string/app_name"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_search_white_24dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="TODO"/>
 
         </android.support.v7.widget.Toolbar>
 
