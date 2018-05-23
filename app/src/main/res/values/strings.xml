@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Photos</string>
+
     <string name="slogan">Photos provided by [?]</string>
+
+    <string name="search_photos">Search photos</string>
+
+    <string name="cn_close_search">Close search</string>
+    <string name="cn_open_favorites">Open favorites</string>
+    <string name="cn_open_search">Open search</string>
 </resources>
