@@ -5,8 +5,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.github.sikv.photos.R
 import com.github.sikv.photos.adapter.viewholder.PhotoViewHolder
+import com.github.sikv.photos.model.Photo
 
 class PhotoAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
+
+    private var photos: List<Photo> = listOf()
+
+    fun setItems(photos: List<Photo>) {
+        this.photos = photos
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -16,10 +24,10 @@ class PhotoAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return 50
+        return photos.size
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind()
+        holder.bind(photos[position])
     }
 }

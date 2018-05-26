@@ -1,16 +1,17 @@
-package com.github.sikv.photos
+package com.github.sikv.photos.view
 
 import android.animation.Animator
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
+import com.github.sikv.photos.R
 import com.github.sikv.photos.adapter.PhotoAdapter
-import com.github.sikv.photos.data.DataHandler
 import com.github.sikv.photos.util.AnimUtils
+import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_toolbar.*
 
@@ -21,42 +22,24 @@ class MainActivity : AppCompatActivity() {
 
     private var searchVisible = false
 
+    private val photoAdapter = PhotoAdapter()
+
+    private val viewModel: PhotosViewModel by lazy {
+        ViewModelProviders.of(this).get(PhotosViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
-        mainRecycler.adapter = PhotoAdapter()
-
-        mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                recyclerView?.computeVerticalScrollOffset()?.let {
-                    if (it > 0) {
-                        ViewCompat.setElevation(mainAppBarLayout, 10.0f)
-                    } else {
-                        ViewCompat.setElevation(mainAppBarLayout, 0.0f)
-                    }
-                }
-            }
-        })
-
         init()
 
-        // Test API call
-
-        DataHandler.INSTANCE.photosHandler
-                .geLatestPhotos(1, 1)
-                .observe(this, Observer {
-
-                    it?.let {
-
-                    } ?: run {
-
-                    }
-
-                })
+        viewModel.photos.observe(this, Observer {
+            it?.let {
+                photoAdapter.setItems(it)
+            }
+        })
     }
 
     override fun onBackPressed() {
@@ -68,6 +51,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
+        mainRecycler.adapter = photoAdapter
+
+        mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                recyclerView?.computeVerticalScrollOffset()?.let {
+                    if (it > 0) {
+                        ViewCompat.setElevation(mainAppBarLayout, 12.0f)
+                    } else {
+                        ViewCompat.setElevation(mainAppBarLayout, 0.0f)
+                    }
+                }
+            }
+        })
+
         mainSearchLayout.y = mainSearchLayout.y - ANIMATION_OFFSET
 
         mainSearchButton.setOnClickListener {
@@ -89,9 +88,6 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onAnimationEnd(p0: Animator?) {
-//                        if (mainSearchEdit.requestFocus()) {
-//                            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-//                        }
                     }
 
                     override fun onAnimationCancel(p0: Animator?) {

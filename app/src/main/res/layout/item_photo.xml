@@ -8,6 +8,14 @@
     android:layout_marginEnd="12dp"
     android:layout_marginBottom="6dp"
     app:cardCornerRadius="12dp"
+    app:cardElevation="8dp"
     app:cardBackgroundColor="@color/colorPrimaryDark">
+
+    <ImageView
+        android:id="@+id/itemPhotoImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/cn_photo"/>
 
 </android.support.v7.widget.CardView>

@@ -21,4 +21,10 @@ class RetrofitLiveData<T>(private val call: Call<T>) : LiveData<T>(), Callback<T
     override fun onResponse(call: Call<T>?, response: Response<T>?) {
         value = response?.body()
     }
+
+    fun cancel() {
+        if (!call.isCanceled) {
+            call.cancel()
+        }
+    }
 }
