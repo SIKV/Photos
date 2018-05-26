@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        it.buildConfigField 'String', 'ACCESS_KEY', ACCESS_KEY
+    }
 }
 
 dependencies {
@@ -34,6 +38,11 @@ dependencies {
 
     // LiveData + ViewModel
     implementation "android.arch.lifecycle:extensions:1.1.1"
+
+    // Retrofit and Gson
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.1'
 }
 
 apply plugin: 'kotlin-android'

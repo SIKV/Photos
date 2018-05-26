@@ -1,13 +1,15 @@
 package com.github.sikv.photos
 
 import android.animation.Animator
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import com.github.sikv.photos.adapter.PhotoAdapter
+import com.github.sikv.photos.data.DataHandler
 import com.github.sikv.photos.util.AnimUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_toolbar.*
@@ -41,6 +43,20 @@ class MainActivity : AppCompatActivity() {
         })
 
         init()
+
+        // Test API call
+
+        DataHandler.INSTANCE.photosHandler
+                .geLatestPhotos(1, 1)
+                .observe(this, Observer {
+
+                    it?.let {
+
+                    } ?: run {
+
+                    }
+
+                })
     }
 
     override fun onBackPressed() {
