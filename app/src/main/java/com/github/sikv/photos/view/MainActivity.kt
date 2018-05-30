@@ -37,10 +37,16 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
+
+        mainShimmerLayout.startShimmerAnimation()
+
         viewModel.photos.observe(this, Observer {
             it?.let {
                 photoAdapter.setItems(it)
             }
+
+            mainShimmerLayout.stopShimmerAnimation()
+            mainShimmerLayout.visibility = View.GONE
         })
     }
 

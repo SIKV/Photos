@@ -3,4 +3,7 @@
     <color name="colorPrimary">#273245</color>
     <color name="colorPrimaryDark">#1D2533</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorShimmer">#273245</color>
+
 </resources>
