@@ -7,7 +7,8 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.adapter.viewholder.PhotoViewHolder
 import com.github.sikv.photos.model.Photo
 
-class PhotoAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
+class PhotoAdapter(private val clickListener: (Photo) -> Unit) :
+        RecyclerView.Adapter<PhotoViewHolder>() {
 
     private var photos: List<Photo> = listOf()
 
@@ -28,6 +29,6 @@ class PhotoAdapter : RecyclerView.Adapter<PhotoViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(photos[position])
+        holder.bind(photos[position], clickListener)
     }
 }

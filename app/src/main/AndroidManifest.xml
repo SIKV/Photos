@@ -21,6 +21,9 @@
 
         <activity android:name=".SplashActivity"></activity>
 
+        <activity android:name=".view.PhotoActivity"
+            android:theme="@style/AppTheme.TranslucentStatus"/>
+
     </application>
 
 </manifest>

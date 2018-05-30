@@ -4,9 +4,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:windowTranslucentNavigation">false</item>
+    <style name="AppTheme.TranslucentStatus" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="colorControlNormal">@android:color/white</item>
     </style>
 
 </resources>

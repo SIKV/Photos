@@ -22,7 +22,9 @@ class MainActivity : AppCompatActivity() {
 
     private var searchVisible = false
 
-    private val photoAdapter = PhotoAdapter()
+    private val photoAdapter = PhotoAdapter({
+        PhotoActivity.startActivity(this, it)
+    })
 
     private val viewModel: PhotosViewModel by lazy {
         ViewModelProviders.of(this).get(PhotosViewModel::class.java)
