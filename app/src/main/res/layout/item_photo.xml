@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="212dp"
     android:layout_marginTop="6dp"
@@ -9,7 +10,12 @@
     android:layout_marginBottom="6dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="8dp"
-    app:cardBackgroundColor="@color/colorPrimaryDark">
+    app:cardBackgroundColor="@color/colorPrimaryDark"
+    android:focusable="true"
+    android:clickable="true"
+    android:transitionName="@string/transition_photo"
+    android:foreground="?selectableItemBackgroundBorderless"
+    tools:targetApi="lollipop">
 
     <ImageView
         android:id="@+id/itemPhotoImage"

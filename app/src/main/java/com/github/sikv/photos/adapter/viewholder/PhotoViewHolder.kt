@@ -8,13 +8,13 @@ import kotlinx.android.synthetic.main.item_photo.view.*
 
 class PhotoViewHolder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(photo: Photo, clickListener: (Photo) -> Unit) {
+    fun bind(photo: Photo, clickListener: (Photo, View) -> Unit) {
         Glide.with(itemView.context)
                 .load(photo.urls.small)
                 .into(itemView.itemPhotoImage)
 
         itemView.setOnClickListener {
-            clickListener.invoke(photo)
+            clickListener.invoke(photo, it)
         }
     }
 }

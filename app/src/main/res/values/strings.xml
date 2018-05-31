@@ -9,4 +9,6 @@
     <string name="cn_open_favorites">Open favorites</string>
     <string name="cn_open_search">Open search</string>
     <string name="cn_photo">Photo</string>
+
+    <string name="transition_photo">Transition photo</string>
 </resources>

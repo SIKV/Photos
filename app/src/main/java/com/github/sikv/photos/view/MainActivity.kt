@@ -22,8 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     private var searchVisible = false
 
-    private val photoAdapter = PhotoAdapter({
-        PhotoActivity.startActivity(this, it)
+    private val photoAdapter = PhotoAdapter({ photo, view ->
+        PhotoActivity.startActivity(this, view, photo)
     })
 
     private val viewModel: PhotosViewModel by lazy {
@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         init()
-
 
         mainShimmerLayout.startShimmerAnimation()
 

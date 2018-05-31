@@ -2,12 +2,13 @@ package com.github.sikv.photos.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.github.sikv.photos.R
 import com.github.sikv.photos.adapter.viewholder.PhotoViewHolder
 import com.github.sikv.photos.model.Photo
 
-class PhotoAdapter(private val clickListener: (Photo) -> Unit) :
+class PhotoAdapter(private val clickListener: (Photo, View) -> Unit) :
         RecyclerView.Adapter<PhotoViewHolder>() {
 
     private var photos: List<Photo> = listOf()

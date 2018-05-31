@@ -1,13 +1,16 @@
 package com.github.sikv.photos.view
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
 import android.view.Menu
+import android.view.View
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
-import kotlinx.android.synthetic.main.photo_activity.*
+import kotlinx.android.synthetic.main.activity_photo.*
 
 class PhotoActivity : BaseActivity() {
 
@@ -15,18 +18,23 @@ class PhotoActivity : BaseActivity() {
 
         private const val EXTRA_PHOTO = "photo"
 
-        fun startActivity(context: Context, photo: Photo) {
-            val intent = Intent(context, PhotoActivity::class.java)
+        fun startActivity(activity: Activity, transitionView: View, photo: Photo) {
+            val intent = Intent(activity, PhotoActivity::class.java)
             intent.putExtra(EXTRA_PHOTO, photo)
 
-            context.startActivity(intent)
+            val transitionName = activity.getString(R.string.transition_photo)
+
+            val options = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(activity, transitionView, transitionName)
+
+            ActivityCompat.startActivity(activity, intent, options.toBundle())
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.photo_activity)
+        setContentView(R.layout.activity_photo)
 
         init()
 
