@@ -11,6 +11,7 @@ import android.view.View
 import com.github.sikv.photos.R
 import com.github.sikv.photos.adapter.PhotoAdapter
 import com.github.sikv.photos.util.AnimUtils
+import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_toolbar.*
@@ -95,6 +96,8 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onAnimationEnd(p0: Animator?) {
+                        mainSearchEdit.requestFocus()
+                        Utils.showSoftInput(this@MainActivity, mainSearchEdit)
                     }
 
                     override fun onAnimationCancel(p0: Animator?) {
@@ -125,6 +128,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onAnimationStart(p0: Animator?) {
+                        Utils.hideSoftInput(this@MainActivity, mainSearchEdit)
                     }
                 })
 
