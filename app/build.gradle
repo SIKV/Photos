@@ -35,6 +35,7 @@ dependencies {
 
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'android.arch.paging:runtime:1.0.0'
 
     // LiveData + ViewModel
     implementation "android.arch.lifecycle:extensions:1.1.1"

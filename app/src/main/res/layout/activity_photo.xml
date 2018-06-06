@@ -7,16 +7,25 @@
     android:transitionName="@string/transition_photo"
     tools:targetApi="lollipop">
 
-    <ImageView
-        android:id="@+id/photoImageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <HorizontalScrollView
+        android:id="@+id/photoHorizontalScroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:scaleType="centerCrop"
-        android:contentDescription="@string/cn_photo"/>
+        android:scrollbars="none">
+
+        <ImageView
+            android:id="@+id/photoImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="center"
+            android:contentDescription="@string/cn_photo"/>
+
+    </HorizontalScrollView>
 
     <View
         android:layout_width="0dp"
@@ -32,5 +41,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"/>
+
+    <TextView
+        android:id="@+id/photoAuthorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/photo_by_s_on_s"
+        android:textColor="@android:color/white"/>
+
+    <Button
+        android:id="@+id/photoShareButton"
+        android:layout_marginBottom="56dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/photoAuthorText"
+        android:text="@string/share"
+        style="@style/RoundButton"/>
+
+    <Button
+        android:id="@+id/photoDownloadButton"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/photoShareButton"
+        android:text="@string/download"
+        style="@style/RoundButton"/>
 
 </android.support.constraint.ConstraintLayout>
