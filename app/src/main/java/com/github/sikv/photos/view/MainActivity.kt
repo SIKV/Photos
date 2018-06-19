@@ -1,25 +1,36 @@
 package com.github.sikv.photos.view
 
 import android.animation.Animator
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.arch.paging.PagedList
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.github.sikv.photos.R
 import com.github.sikv.photos.adapter.PhotoAdapter
+import com.github.sikv.photos.data.DataHandler
+import com.github.sikv.photos.data.RecentPhotosDataSource
+import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.AnimUtils
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_toolbar.*
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val ANIMATION_OFFSET = 200
+    companion object {
+
+        private const val TOOLBAR_ELEVATION = 12f
+        private const val ANIMATION_OFFSET = 200
+    }
 
     private var searchVisible = false
 
@@ -27,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         PhotoActivity.startActivity(this, view, photo)
     })
 
-    private val viewModel: PhotosViewModel by lazy {
+    private val photosViewModel: PhotosViewModel by lazy {
         ViewModelProviders.of(this).get(PhotosViewModel::class.java)
     }
 
@@ -38,16 +49,33 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
-        mainShimmerLayout.startShimmerAnimation()
+//        mainShimmerLayout.startShimmerAnimation()
+        mainShimmerLayout.visibility = View.GONE
 
-        viewModel.photos.observe(this, Observer {
-            it?.let {
-                photoAdapter.setItems(it)
-            }
 
-            mainShimmerLayout.stopShimmerAnimation()
-            mainShimmerLayout.visibility = View.GONE
-        })
+        val recentPhotosDataSource = RecentPhotosDataSource(DataHandler.INSTANCE.photosHandler)
+
+        val pagedListConfig = PagedList.Config.Builder()
+                .setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(10)
+                .setPageSize(10)
+                .build()
+
+        val pagedList = PagedList.Builder<Int, Photo>(recentPhotosDataSource, pagedListConfig)
+                .setFetchExecutor(Executors.newSingleThreadExecutor())
+                .setNotifyExecutor(object : Executor {
+
+                    private val mHandler = Handler(Looper.getMainLooper())
+
+                    override fun execute(p0: Runnable?) {
+                        mHandler.post(p0)
+                    }
+
+                })
+                .build()
+
+
+        photoAdapter.submitList(pagedList)
     }
 
     override fun onBackPressed() {
@@ -67,7 +95,7 @@ class MainActivity : AppCompatActivity() {
 
                 recyclerView?.computeVerticalScrollOffset()?.let {
                     if (it > 0) {
-                        ViewCompat.setElevation(mainAppBarLayout, 12.0f)
+                        ViewCompat.setElevation(mainAppBarLayout, TOOLBAR_ELEVATION)
                     } else {
                         ViewCompat.setElevation(mainAppBarLayout, 0.0f)
                     }

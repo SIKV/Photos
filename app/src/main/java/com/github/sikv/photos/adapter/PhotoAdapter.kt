@@ -1,6 +1,7 @@
 package com.github.sikv.photos.adapter
 
-import android.support.v7.widget.RecyclerView
+import android.arch.paging.PagedListAdapter
+import android.support.v7.util.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +9,21 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.adapter.viewholder.PhotoViewHolder
 import com.github.sikv.photos.model.Photo
 
-class PhotoAdapter(private val clickListener: (Photo, View) -> Unit) :
-        RecyclerView.Adapter<PhotoViewHolder>() {
+class PhotoAdapter(
+        private val clickCallback: (Photo, View) -> Unit
 
-    private var photos: List<Photo> = listOf()
+) : PagedListAdapter<Photo, PhotoViewHolder>(PHOTO_COMPARATOR) {
 
-    fun setItems(photos: List<Photo>) {
-        this.photos = photos
-        notifyDataSetChanged()
+    companion object {
+
+        val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<Photo>() {
+
+            override fun areItemsTheSame(oldItem: Photo?, newItem: Photo?): Boolean =
+                    oldItem?.id == newItem?.id
+
+            override fun areContentsTheSame(oldItem: Photo?, newItem: Photo?): Boolean =
+                    oldItem == newItem
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
@@ -25,11 +33,7 @@ class PhotoAdapter(private val clickListener: (Photo, View) -> Unit) :
         return PhotoViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return photos.size
-    }
-
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(photos[position], clickListener)
+        holder.bind(getItem(position), clickCallback)
     }
 }
