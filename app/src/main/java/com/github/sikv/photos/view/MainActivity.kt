@@ -10,6 +10,7 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.adapter.PhotoAdapter
 import com.github.sikv.photos.data.DataHandler
@@ -34,9 +35,11 @@ class MainActivity : AppCompatActivity() {
 
     private var searchVisible = false
 
-    private val photoAdapter = PhotoAdapter({ photo, view ->
-        PhotoActivity.startActivity(this, view, photo)
-    })
+    private val photoAdapter: PhotoAdapter by lazy {
+        PhotoAdapter(Glide.with(this), { photo, view ->
+            PhotoActivity.startActivity(this, view, photo)
+        })
+    }
 
     private val photosViewModel: PhotosViewModel by lazy {
         ViewModelProviders.of(this).get(PhotosViewModel::class.java)
@@ -49,14 +52,10 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
-//        mainShimmerLayout.startShimmerAnimation()
-        mainShimmerLayout.visibility = View.GONE
-
-
         val recentPhotosDataSource = RecentPhotosDataSource(DataHandler.INSTANCE.photosHandler)
 
         val pagedListConfig = PagedList.Config.Builder()
-                .setEnablePlaceholders(false)
+                .setEnablePlaceholders(true)
                 .setInitialLoadSizeHint(10)
                 .setPageSize(10)
                 .build()
@@ -73,7 +72,6 @@ class MainActivity : AppCompatActivity() {
 
                 })
                 .build()
-
 
         photoAdapter.submitList(pagedList)
     }

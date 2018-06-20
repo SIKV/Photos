@@ -8,32 +8,6 @@
 
     <include layout="@layout/layout_main_toolbar"/>
 
-    <io.supercharge.shimmerlayout.ShimmerLayout
-        android:id="@+id/mainShimmerLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:shimmer_angle="15"
-        app:shimmer_gradient_center_color_width="0.3"
-        app:shimmer_mask_width="0.9"
-        app:shimmer_animation_duration="1000"
-        app:shimmer_color="@color/colorShimmer"
-        app:layout_constraintTop_toBottomOf="@id/mainAppBarLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include layout="@layout/item_placeholder_photo"/>
-            <include layout="@layout/item_placeholder_photo"/>
-            <include layout="@layout/item_placeholder_photo"/>
-
-        </LinearLayout>
-
-    </io.supercharge.shimmerlayout.ShimmerLayout>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mainRecycler"
         android:layout_width="match_parent"

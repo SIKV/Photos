@@ -5,11 +5,13 @@ import android.support.v7.util.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.adapter.viewholder.PhotoViewHolder
 import com.github.sikv.photos.model.Photo
 
 class PhotoAdapter(
+        private val glide: RequestManager,
         private val clickCallback: (Photo, View) -> Unit
 
 ) : PagedListAdapter<Photo, PhotoViewHolder>(PHOTO_COMPARATOR) {
@@ -30,7 +32,7 @@ class PhotoAdapter(
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_photo, parent, false)
 
-        return PhotoViewHolder(view)
+        return PhotoViewHolder(view, glide)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {

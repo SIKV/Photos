@@ -20,7 +20,12 @@ class RecentPhotosDataSource(
 
                     override fun onResponse(call: Call<List<Photo>>?, response: Response<List<Photo>>?) {
                         response?.let {
-                            callback.onResult(response.body()!!, 0)
+
+                            if (params.placeholdersEnabled) {
+                                callback.onResult(response.body()!!, 0, response.body()!!.size)
+                            } else {
+                                callback.onResult(response.body()!!, 0)
+                            }
                         }
                     }
                 })
