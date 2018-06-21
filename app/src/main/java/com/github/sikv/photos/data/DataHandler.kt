@@ -1,5 +1,6 @@
 package com.github.sikv.photos.data
 
+import com.github.sikv.photos.api.PhotosApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -29,6 +30,6 @@ class DataHandler private constructor() {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-        photosHandler = PhotosHandler(retrofit.create(PhotosService::class.java))
+        photosHandler = PhotosHandler(retrofit.create(PhotosApi::class.java))
     }
 }

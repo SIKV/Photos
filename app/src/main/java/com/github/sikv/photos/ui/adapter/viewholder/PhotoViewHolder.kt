@@ -1,4 +1,4 @@
-package com.github.sikv.photos.adapter.viewholder
+package com.github.sikv.photos.ui.adapter.viewholder
 
 import android.graphics.Bitmap
 import android.support.v7.widget.RecyclerView
@@ -17,16 +17,22 @@ class PhotoViewHolder(
 
     fun bind(photo: Photo?, clickCallback: (Photo, View) -> Unit) {
 
-        itemView.itemPhotoShimmerLayout.visibility = View.VISIBLE
+//        itemView.itemPhotoShimmerLayout.visibility = View.VISIBLE
+
+        itemView.itemPhotoImage.setImageDrawable(null)
         itemView.setOnClickListener(null)
+
+        itemView.itemPhotoShimmerLayout.visibility = View.GONE
 
         photo?.let {
             glide.asBitmap()
                     .load(photo.urls.small)
                     .into(object : SimpleTarget<Bitmap>() {
                         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+
                             itemView.itemPhotoImage.setImageBitmap(resource)
-                            itemView.itemPhotoShimmerLayout.visibility = View.GONE
+//                            itemView.itemPhotoShimmerLayout.visibility = View.GONE
+
                         }
                     })
 

@@ -1,28 +1,23 @@
-package com.github.sikv.photos.view
+package com.github.sikv.photos.ui.activity
 
 import android.animation.Animator
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
-import com.github.sikv.photos.adapter.PhotoAdapter
-import com.github.sikv.photos.data.DataHandler
-import com.github.sikv.photos.data.RecentPhotosDataSource
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.ui.adapter.PhotoAdapter
 import com.github.sikv.photos.util.AnimUtils
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_toolbar.*
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 
 
 class MainActivity : AppCompatActivity() {
@@ -52,28 +47,9 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
-        val recentPhotosDataSource = RecentPhotosDataSource(DataHandler.INSTANCE.photosHandler)
-
-        val pagedListConfig = PagedList.Config.Builder()
-                .setEnablePlaceholders(true)
-                .setInitialLoadSizeHint(10)
-                .setPageSize(10)
-                .build()
-
-        val pagedList = PagedList.Builder<Int, Photo>(recentPhotosDataSource, pagedListConfig)
-                .setFetchExecutor(Executors.newSingleThreadExecutor())
-                .setNotifyExecutor(object : Executor {
-
-                    private val mHandler = Handler(Looper.getMainLooper())
-
-                    override fun execute(p0: Runnable?) {
-                        mHandler.post(p0)
-                    }
-
-                })
-                .build()
-
-        photoAdapter.submitList(pagedList)
+        photosViewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
+            pagedList -> photoAdapter.submitList(pagedList)
+        })
     }
 
     override fun onBackPressed() {

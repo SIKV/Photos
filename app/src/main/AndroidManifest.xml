@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,7 +21,7 @@
 
         <activity android:name=".SplashActivity"></activity>
 
-        <activity android:name=".view.PhotoActivity"
+        <activity android:name=".ui.activity.PhotoActivity"
             android:theme="@style/AppTheme.TranslucentStatus"/>
 
     </application>

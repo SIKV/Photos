@@ -1,4 +1,4 @@
-package com.github.sikv.photos.data
+package com.github.sikv.photos.api
 
 import com.github.sikv.photos.BuildConfig
 import com.github.sikv.photos.model.Photo
@@ -8,7 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
 
-interface PhotosService {
+interface PhotosApi {
 
     @Headers("Authorization: Client-ID ${BuildConfig.ACCESS_KEY}")
     @GET("photos")

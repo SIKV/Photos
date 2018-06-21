@@ -1,4 +1,4 @@
-package com.github.sikv.photos.view
+package com.github.sikv.photos.ui.activity
 
 import android.animation.ObjectAnimator
 import android.app.Activity

@@ -1,4 +1,4 @@
-package com.github.sikv.photos.adapter
+package com.github.sikv.photos.ui.adapter
 
 import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
-import com.github.sikv.photos.adapter.viewholder.PhotoViewHolder
+import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import com.github.sikv.photos.model.Photo
 
 class PhotoAdapter(
