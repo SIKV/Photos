@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/colorRipple">
+
+    <item android:id="@android:id/mask"
+        android:top="@dimen/bgRoundButtonStrokeWidth"
+        android:bottom="@dimen/bgRoundButtonStrokeWidth"
+        android:left="@dimen/bgRoundButtonStrokeWidth"
+        android:right="@dimen/bgRoundButtonStrokeWidth">
+
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorRipple"/>
+            <corners android:radius="@dimen/bgRoundButtonRadius"/>
+        </shape>
+
+    </item>
+
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+
+            <solid android:color="@android:color/transparent"/>
+            <corners android:radius="@dimen/bgRoundButtonRadius"/>
+            <stroke android:color="@android:color/white" android:width="@dimen/bgRoundButtonStrokeWidth"/>
+
+        </shape>
+    </item>
+
+</ripple>

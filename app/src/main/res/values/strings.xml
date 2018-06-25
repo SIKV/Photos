@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Photos</string>
 
     <string name="slogan">Photos provided by [?]</string>
@@ -16,4 +17,5 @@
     <string name="photo_by_s_on_s">Photo by %s on %s</string>
     <string name="share">Share</string>
     <string name="download">Download</string>
+
 </resources>
