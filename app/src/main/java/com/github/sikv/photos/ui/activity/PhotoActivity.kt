@@ -15,6 +15,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.PhotoViewModel
+import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
 import kotlinx.android.synthetic.main.activity_photo.*
 
 
@@ -38,11 +39,7 @@ class PhotoActivity : AppCompatActivity() {
     }
 
 
-    private val viewModel: PhotoViewModel by lazy {
-        ViewModelProviders.of(this).get(PhotoViewModel::class.java)
-    }
-
-    private var photo: Photo? = null
+    private lateinit var viewModel: PhotoViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,17 +47,19 @@ class PhotoActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_photo)
 
-        photo = intent.getParcelableExtra(EXTRA_PHOTO)
+        val photo: Photo = intent.getParcelableExtra(EXTRA_PHOTO)
 
-        init()
+        viewModel = ViewModelProviders.of(this, PhotoViewModelFactory(photo))
+                .get(PhotoViewModel::class.java)
 
-        photo?.let { photo ->
-            viewModel.loadPhoto(Glide.with(this), photo).observe(this, Observer {
-                it?.getContentIfNotHandled()?.let {
-                    photoImageView.setImageBitmap(it)
-                }
-            })
-        }
+        init(photo)
+        initListeners()
+
+        viewModel.loadPhoto(Glide.with(this)).observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                photoImageView.setImageBitmap(it)
+            }
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -79,19 +78,29 @@ class PhotoActivity : AppCompatActivity() {
         return true
     }
 
-    private fun init() {
+    private fun init(photo: Photo) {
         setSupportActionBar(photoToolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val authorFullName = photo?.user?.name ?: "?"
+        val authorFullName = photo.user.name
         val source = getString(R.string.unsplash)
 
         photoAuthorText.text = String.format(getString(R.string.photo_by_s_on_s), authorFullName, source)
 
         Utils.makeUnderlineBold(photoAuthorText, arrayOf(authorFullName, source))
+    }
+
+    private fun initListeners() {
+        photoShareButton.setOnClickListener {
+
+        }
+
+        photoDownloadButton.setOnClickListener {
+
+        }
     }
 
     private fun hideViews() {

@@ -1,9 +1,8 @@
 package com.github.sikv.photos.viewmodel
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import com.bumptech.glide.RequestManager
@@ -12,9 +11,12 @@ import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.Event
 import com.github.sikv.photos.model.Photo
 
-class PhotoViewModel(application: Application) : AndroidViewModel(application) {
+class PhotoViewModel(
+        private val photo: Photo
 
-    fun loadPhoto(glide: RequestManager, photo: Photo): LiveData<Event<Bitmap>> {
+) : ViewModel() {
+
+    fun loadPhoto(glide: RequestManager): LiveData<Event<Bitmap>> {
         val photoLoadedEvent = MutableLiveData<Event<Bitmap>>()
         var photoLoaded = false
 
