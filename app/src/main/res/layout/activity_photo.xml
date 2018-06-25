@@ -7,25 +7,12 @@
     android:transitionName="@string/transition_photo"
     tools:targetApi="lollipop">
 
-    <HorizontalScrollView
-        android:id="@+id/photoHorizontalScroll"
+    <ImageView
+        android:id="@+id/photoImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:scrollbars="none">
-
-        <ImageView
-            android:id="@+id/photoImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="center"
-            android:contentDescription="@string/cn_photo"/>
-
-    </HorizontalScrollView>
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/cn_photo"/>
 
     <View
         android:layout_width="0dp"

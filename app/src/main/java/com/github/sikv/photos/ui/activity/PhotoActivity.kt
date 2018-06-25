@@ -1,9 +1,9 @@
 package com.github.sikv.photos.ui.activity
 
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
@@ -51,6 +51,17 @@ class PhotoActivity : AppCompatActivity() {
         loadPhoto()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        hideViews()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_favorite, menu)
         return true
@@ -72,26 +83,36 @@ class PhotoActivity : AppCompatActivity() {
     }
 
     private fun loadPhoto() {
+        var photoLoaded = false
+
         Glide.with(this)
                 .asBitmap()
                 .load(photo?.urls?.regular)
                 .into(object : SimpleTarget<Bitmap>() {
+                    override fun onLoadStarted(placeholder: Drawable?) {
+                        Glide.with(this@PhotoActivity)
+                                .asBitmap()
+                                .load(photo?.urls?.small)
+                                .into(object : SimpleTarget<Bitmap>() {
+                                    override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                                        if (!photoLoaded) {
+                                            photoImageView.setImageBitmap(resource)
+                                        }
+                                    }
+                                })
+                    }
+
                     override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-
                         photoImageView.setImageBitmap(resource)
-
-                        photoHorizontalScroll.post {
-                            val animator = ObjectAnimator.ofInt(photoHorizontalScroll,
-                                    "scrollX", photoHorizontalScroll.getChildAt(0).width)
-
-                            animator.duration = 25_000
-                            animator.repeatMode = ObjectAnimator.REVERSE
-                            animator.repeatCount = ObjectAnimator.INFINITE
-                            animator.startDelay = 0
-
-                            animator.start()
-                        }
+                        photoLoaded = true
                     }
                 })
+    }
+
+    private fun hideViews() {
+        photoToolbar.visibility = View.INVISIBLE
+        photoAuthorText.visibility = View.INVISIBLE
+        photoShareButton.visibility = View.INVISIBLE
+        photoDownloadButton.visibility = View.INVISIBLE
     }
 }
