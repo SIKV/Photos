@@ -15,7 +15,7 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.PhotoAdapter
 import com.github.sikv.photos.util.AnimUtils
 import com.github.sikv.photos.util.Utils
-import com.github.sikv.photos.viewmodel.PhotosViewModel
+import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_toolbar.*
 
@@ -28,6 +28,11 @@ class MainActivity : AppCompatActivity() {
         private const val ANIMATION_OFFSET = 200
     }
 
+
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
+    }
+
     private var searchVisible = false
 
     private val photoAdapter: PhotoAdapter by lazy {
@@ -36,9 +41,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private val photosViewModel: PhotosViewModel by lazy {
-        ViewModelProviders.of(this).get(PhotosViewModel::class.java)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         init()
 
-        photosViewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
+        viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
             pagedList -> photoAdapter.submitList(pagedList)
         })
     }

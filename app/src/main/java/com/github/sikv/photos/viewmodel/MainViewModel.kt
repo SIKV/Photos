@@ -9,7 +9,7 @@ import com.github.sikv.photos.data.RecentPhotosDataSourceFactory
 import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
 
-class PhotosViewModel : ViewModel() {
+class MainViewModel : ViewModel() {
 
     companion object {
 
@@ -17,7 +17,9 @@ class PhotosViewModel : ViewModel() {
         const val PAGE_SIZE = 10
     }
 
+
     var recentPhotos: LiveData<PagedList<Photo>>
+
 
     init {
         val recentPhotosDataSource = RecentPhotosDataSourceFactory(DataHandler.INSTANCE.photosHandler)
