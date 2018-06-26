@@ -8,7 +8,10 @@ import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.View
+import android.view.ViewGroup
+import android.widget.PopupWindow
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
@@ -18,6 +21,7 @@ import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_toolbar.*
+import kotlinx.android.synthetic.main.popup_photo_preview.view.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,9 +40,7 @@ class MainActivity : AppCompatActivity() {
     private var searchVisible = false
 
     private val photoAdapter: PhotoAdapter by lazy {
-        PhotoAdapter(Glide.with(this), { photo, view ->
-            PhotoActivity.startActivity(this, view, photo)
-        })
+        PhotoAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
     }
 
 
@@ -60,6 +62,28 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun onPhotoClick(photo: Photo, view: View) {
+        PhotoActivity.startActivity(this, view, photo)
+    }
+
+    private fun onPhotoLongClick(photo: Photo, view: View) {
+        var photoPopupPreview: PopupWindow? = null
+        val layout = layoutInflater.inflate(R.layout.popup_photo_preview, mainRootLayout, false)
+
+        Glide.with(this)
+                .load(photo.urls.small)
+                .into(layout.photoPreviewImage)
+
+        layout.setOnClickListener {
+            photoPopupPreview?.dismiss()
+        }
+
+        photoPopupPreview = PopupWindow(layout,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+
+        photoPopupPreview.showAtLocation(mainRootLayout, Gravity.CENTER, 0, 0)
     }
 
     private fun init() {

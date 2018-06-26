@@ -15,7 +15,9 @@ class PhotoViewHolder(
 
 ) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(photo: Photo?, clickCallback: (Photo, View) -> Unit) {
+    fun bind(photo: Photo?,
+             clickCallback: (Photo, View) -> Unit,
+             longClickCallback: ((Photo, View) -> Unit)? = null) {
 
 //        itemView.itemPhotoShimmerLayout.visibility = View.VISIBLE
 
@@ -38,6 +40,11 @@ class PhotoViewHolder(
 
             itemView.setOnClickListener {
                 clickCallback.invoke(photo, it)
+            }
+
+            itemView.setOnLongClickListener {
+                longClickCallback?.invoke(photo, it)
+                return@setOnLongClickListener true
             }
         }
     }

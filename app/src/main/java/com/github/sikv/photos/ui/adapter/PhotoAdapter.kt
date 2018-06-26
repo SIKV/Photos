@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
-import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
 class PhotoAdapter(
         private val glide: RequestManager,
-        private val clickCallback: (Photo, View) -> Unit
+        private val clickCallback: (Photo, View) -> Unit,
+        private val longClickCallback: ((Photo, View) -> Unit)? = null
 
 ) : PagedListAdapter<Photo, PhotoViewHolder>(PHOTO_COMPARATOR) {
 
@@ -36,6 +37,6 @@ class PhotoAdapter(
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(getItem(position), clickCallback)
+        holder.bind(getItem(position), clickCallback, longClickCallback)
     }
 }

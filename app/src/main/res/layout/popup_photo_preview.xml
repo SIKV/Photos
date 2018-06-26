@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorOverlay">
+
+    <ImageView
+        android:id="@+id/photoPreviewImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="32dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/cn_photo_preview"/>
+
+</android.support.constraint.ConstraintLayout>
