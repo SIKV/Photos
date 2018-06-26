@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
-import com.github.sikv.photos.data.ApiClient
+import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.RecentPhotosDataSourceFactory
 import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
@@ -33,5 +33,9 @@ class MainViewModel : ViewModel() {
         recentPhotos = LivePagedListBuilder<Int, Photo>(recentPhotosDataSource, pagedListConfig)
                 .setFetchExecutor(Executors.newSingleThreadExecutor())
                 .build()
+    }
+
+    fun searchPhotos(query: String) {
+
     }
 }

@@ -1,6 +1,5 @@
-package com.github.sikv.photos.data
+package com.github.sikv.photos.api
 
-import com.github.sikv.photos.api.PhotosApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
