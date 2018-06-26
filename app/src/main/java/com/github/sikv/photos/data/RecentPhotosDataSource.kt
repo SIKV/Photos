@@ -7,7 +7,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RecentPhotosDataSource(
-        private val photosStorage: PhotosHandler
+        private val photosStorage: PhotosClient
 
 ) : PositionalDataSource<Photo>() {
 

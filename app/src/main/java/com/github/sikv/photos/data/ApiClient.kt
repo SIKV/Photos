@@ -6,15 +6,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class DataHandler private constructor() {
+class ApiClient private constructor() {
 
     companion object {
         const val BASE_URL = "https://api.unsplash.com/"
 
-        val INSTANCE: DataHandler by lazy { DataHandler() }
+        val INSTANCE: ApiClient by lazy { ApiClient() }
     }
 
-    val photosHandler: PhotosHandler
+    val photosClient: PhotosClient
 
     init {
         val loggingInterceptor = HttpLoggingInterceptor()
@@ -30,6 +30,6 @@ class DataHandler private constructor() {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-        photosHandler = PhotosHandler(retrofit.create(PhotosApi::class.java))
+        photosClient = PhotosClient(retrofit.create(PhotosApi::class.java))
     }
 }

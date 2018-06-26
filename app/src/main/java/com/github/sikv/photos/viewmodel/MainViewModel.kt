@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
-import com.github.sikv.photos.data.DataHandler
+import com.github.sikv.photos.data.ApiClient
 import com.github.sikv.photos.data.RecentPhotosDataSourceFactory
 import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
@@ -22,7 +22,7 @@ class MainViewModel : ViewModel() {
 
 
     init {
-        val recentPhotosDataSource = RecentPhotosDataSourceFactory(DataHandler.INSTANCE.photosHandler)
+        val recentPhotosDataSource = RecentPhotosDataSourceFactory(ApiClient.INSTANCE.photosClient)
 
         val pagedListConfig = PagedList.Config.Builder()
                 .setEnablePlaceholders(false)

@@ -4,11 +4,11 @@ import android.arch.paging.DataSource
 import com.github.sikv.photos.model.Photo
 
 class RecentPhotosDataSourceFactory(
-        private val photosStorage: PhotosHandler
+        private val photosClient: PhotosClient
 
 ) : DataSource.Factory<Int, Photo>() {
 
     override fun create(): DataSource<Int, Photo> {
-        return RecentPhotosDataSource(photosStorage)
+        return RecentPhotosDataSource(photosClient)
     }
 }
