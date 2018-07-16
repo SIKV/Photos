@@ -3,6 +3,7 @@ package com.github.sikv.photos.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import com.bumptech.glide.RequestManager
@@ -42,5 +43,15 @@ class PhotoViewModel(
                 })
 
         return photoLoadedEvent
+    }
+
+    fun createShareIntent(): Intent {
+        val shareIntent = Intent()
+
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.putExtra(Intent.EXTRA_TEXT, photo.links.html)
+        shareIntent.type = "text/plain"
+
+        return shareIntent
     }
 }

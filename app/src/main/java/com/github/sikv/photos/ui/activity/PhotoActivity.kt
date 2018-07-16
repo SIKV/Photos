@@ -21,6 +21,9 @@ import kotlinx.android.synthetic.main.activity_photo.*
 
 class PhotoActivity : AppCompatActivity() {
 
+    private lateinit var viewModel: PhotoViewModel
+
+
     companion object {
 
         private const val EXTRA_PHOTO = "photo"
@@ -37,9 +40,6 @@ class PhotoActivity : AppCompatActivity() {
             ActivityCompat.startActivity(activity, intent, options.toBundle())
         }
     }
-
-
-    private lateinit var viewModel: PhotoViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +95,7 @@ class PhotoActivity : AppCompatActivity() {
 
     private fun initListeners() {
         photoShareButton.setOnClickListener {
-
+            startActivity(viewModel.createShareIntent())
         }
 
         photoDownloadButton.setOnClickListener {
