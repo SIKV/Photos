@@ -6,6 +6,7 @@ import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.RecentPhotosDataSourceFactory
+import com.github.sikv.photos.data.SearchPhotosDataSourceFactory
 import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
 
@@ -35,7 +36,19 @@ class MainViewModel : ViewModel() {
                 .build()
     }
 
-    fun searchPhotos(query: String) {
+    fun searchPhotos(query: String): LiveData<PagedList<Photo>>? {
+        val queryTrimmed = query.trim()
 
+        if (queryTrimmed.isEmpty()) {
+            return null
+        }
+
+        val dataSourceFactory = SearchPhotosDataSourceFactory(ApiClient.INSTANCE.photosClient, queryTrimmed)
+
+        val livePagedList = LivePagedListBuilder(dataSourceFactory, PAGE_SIZE)
+                .setFetchExecutor(Executors.newSingleThreadExecutor())
+                .build()
+
+        return livePagedList
     }
 }

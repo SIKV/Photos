@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.PopupWindow
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
@@ -39,9 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private var searchVisible = false
 
-    private val photoAdapter: PhotoAdapter by lazy {
-        PhotoAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
-    }
+    private var photoAdapter: PhotoAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,9 +49,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         init()
+        initPhotoAdapter()
 
         viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
-            pagedList -> photoAdapter.submitList(pagedList)
+            photoAdapter?.submitList(it)
         })
     }
 
@@ -62,6 +62,16 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun searchPhotos(query: String) {
+        // viewModel.recentPhotos.removeObservers(this)
+
+        initPhotoAdapter()
+
+        viewModel.searchPhotos(query)?.observe(this, Observer {
+            photoAdapter?.submitList(it)
+        })
     }
 
     private fun onPhotoClick(photo: Photo, view: View) {
@@ -87,8 +97,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        mainRecycler.adapter = photoAdapter
-
         mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -112,6 +120,20 @@ class MainActivity : AppCompatActivity() {
         mainCloseSearchButton.setOnClickListener {
             closeSearch()
         }
+
+        mainSearchEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                searchPhotos(textView.text.toString())
+                return@setOnEditorActionListener true
+            }
+
+            return@setOnEditorActionListener false
+        }
+    }
+
+    private fun initPhotoAdapter() {
+        photoAdapter = PhotoAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
+        mainRecycler.adapter = photoAdapter
     }
 
     private fun openSearch() {
