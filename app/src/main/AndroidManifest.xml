@@ -19,8 +19,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".SplashActivity"></activity>
-
         <activity android:name=".ui.activity.PhotoActivity"
             android:theme="@style/AppTheme.TranslucentStatus"/>
 

@@ -121,6 +121,9 @@ class MainActivity : AppCompatActivity() {
             closeSearch()
         }
 
+        mainFavoritesButton.setOnClickListener {
+        }
+
         mainSearchEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 searchPhotos(textView.text.toString())

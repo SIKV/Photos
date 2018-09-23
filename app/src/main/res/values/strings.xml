@@ -17,4 +17,6 @@
     <string name="share">Share</string>
     <string name="download">Download</string>
 
+    <string name="favorites">Favorites</string>
+
 </resources>
