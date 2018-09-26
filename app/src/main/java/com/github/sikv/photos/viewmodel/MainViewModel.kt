@@ -18,18 +18,16 @@ class MainViewModel : ViewModel() {
         const val PAGE_SIZE = 10
     }
 
+    private val pagedListConfig = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setInitialLoadSizeHint(INITIAL_LOAD_SIZE)
+            .setPageSize(PAGE_SIZE)
+            .build()
 
     var recentPhotos: LiveData<PagedList<Photo>>
 
-
     init {
         val recentPhotosDataSource = RecentPhotosDataSourceFactory(ApiClient.INSTANCE.photosClient)
-
-        val pagedListConfig = PagedList.Config.Builder()
-                .setEnablePlaceholders(false)
-                .setInitialLoadSizeHint(INITIAL_LOAD_SIZE)
-                .setPageSize(PAGE_SIZE)
-                .build()
 
         recentPhotos = LivePagedListBuilder<Int, Photo>(recentPhotosDataSource, pagedListConfig)
                 .setFetchExecutor(Executors.newSingleThreadExecutor())
@@ -45,7 +43,7 @@ class MainViewModel : ViewModel() {
 
         val dataSourceFactory = SearchPhotosDataSourceFactory(ApiClient.INSTANCE.photosClient, queryTrimmed)
 
-        val livePagedList = LivePagedListBuilder(dataSourceFactory, PAGE_SIZE)
+        val livePagedList = LivePagedListBuilder(dataSourceFactory, pagedListConfig)
                 .setFetchExecutor(Executors.newSingleThreadExecutor())
                 .build()
 

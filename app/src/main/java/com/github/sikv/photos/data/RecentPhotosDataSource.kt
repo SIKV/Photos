@@ -1,6 +1,7 @@
 package com.github.sikv.photos.data
 
 import android.arch.paging.PositionalDataSource
+import android.util.Log
 import com.github.sikv.photos.api.PhotosClient
 import com.github.sikv.photos.model.Photo
 import retrofit2.Call
@@ -19,8 +20,8 @@ class RecentPhotosDataSource(
                     }
 
                     override fun onResponse(call: Call<List<Photo>>?, response: Response<List<Photo>>?) {
-                        response?.let {
-                            callback.onResult(response.body()!!, 0)
+                        response?.body()?.let {
+                            callback.onResult(it, 0)
                         }
                     }
                 })
@@ -33,8 +34,8 @@ class RecentPhotosDataSource(
                     }
 
                     override fun onResponse(call: Call<List<Photo>>?, response: Response<List<Photo>>?) {
-                        response?.let {
-                            callback.onResult(response.body()!!)
+                        response?.body()?.let {
+                            callback.onResult(it)
                         }
                     }
                 })

@@ -33,7 +33,6 @@ class MainActivity : AppCompatActivity() {
         private const val ANIMATION_OFFSET = 200
     }
 
-
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
@@ -42,13 +41,13 @@ class MainActivity : AppCompatActivity() {
 
     private var photoAdapter: PhotoAdapter? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
         init()
+
         initPhotoAdapter()
 
         viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
@@ -65,8 +64,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun searchPhotos(query: String) {
-        // viewModel.recentPhotos.removeObservers(this)
-
         initPhotoAdapter()
 
         viewModel.searchPhotos(query)?.observe(this, Observer {

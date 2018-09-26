@@ -21,8 +21,8 @@ class SearchPhotosDataSource(
                     }
 
                     override fun onResponse(call: Call<SearchPhotosResponse>?, response: Response<SearchPhotosResponse>?) {
-                        response?.let {
-                            val res = response.body()!!.results
+                        response?.body()?.let {
+                            val res = it.results
                             callback.onResult(res,0, res.size)
                         }
                     }
@@ -30,5 +30,16 @@ class SearchPhotosDataSource(
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Photo>) {
+        photosClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
+                .enqueue(object : Callback<SearchPhotosResponse> {
+                    override fun onFailure(call: Call<SearchPhotosResponse>?, t: Throwable?) {
+                    }
+
+                    override fun onResponse(call: Call<SearchPhotosResponse>?, response: Response<SearchPhotosResponse>?) {
+                        response?.body()?.let {
+                            callback.onResult(it.results)
+                        }
+                    }
+                })
     }
 }
