@@ -123,6 +123,8 @@ class MainActivity : AppCompatActivity() {
 
         mainSearchEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                Utils.hideSoftInput(this@MainActivity, mainSearchEdit)
+
                 searchPhotos(textView.text.toString())
                 return@setOnEditorActionListener true
             }
