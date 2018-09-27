@@ -9,6 +9,7 @@
     <string name="cn_open_search">Open search</string>
     <string name="cn_photo">Photo</string>
     <string name="cn_photo_preview">Photo preview</string>
+    <string name="cn_search_icon">Search icon</string>
 
     <string name="transition_photo">Transition photo</string>
 
@@ -18,5 +19,8 @@
     <string name="download">Download</string>
 
     <string name="favorites">Favorites</string>
+
+    <string name="no_results_found">NO RESULTS FOUND</string>
+    <string name="can_not_find_any_photos_matching">WE CAN\'T FIND ANY PHOTOS MATCHING YOUR SEARCH</string>
 
 </resources>

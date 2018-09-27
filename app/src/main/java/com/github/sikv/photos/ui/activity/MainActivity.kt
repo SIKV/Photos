@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.PopupWindow
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
+import com.github.sikv.photos.data.State
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.PhotoAdapter
 import com.github.sikv.photos.util.AnimUtils
@@ -68,6 +70,16 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.searchPhotos(query)?.observe(this, Observer {
             photoAdapter?.submitList(it)
+        })
+
+        viewModel.getSearchState()?.observe(this, Observer { state ->
+
+            Log.i("KEK", "State = " + state)
+            Log.i("KEK", "isEmpty = " + viewModel.searchListIsEmpty())
+
+            state?.let {
+                mainNoResultsFoundLayout.visibility = if (it != State.LOADING && viewModel.searchListIsEmpty()) View.VISIBLE else View.GONE
+            }
         })
     }
 
