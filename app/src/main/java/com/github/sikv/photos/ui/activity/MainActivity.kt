@@ -23,6 +23,7 @@ import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_main_toolbar.*
+import kotlinx.android.synthetic.main.layout_no_results_found.*
 import kotlinx.android.synthetic.main.popup_photo_preview.view.*
 
 
