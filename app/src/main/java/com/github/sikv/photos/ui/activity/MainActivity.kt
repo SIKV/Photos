@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,6 @@ import kotlinx.android.synthetic.main.popup_photo_preview.view.*
 class MainActivity : AppCompatActivity() {
 
     companion object {
-
         private const val TOOLBAR_ELEVATION = 12f
         private const val ANIMATION_OFFSET = 200
     }
@@ -49,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         init()
-
         initPhotoAdapter()
 
         viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
@@ -73,13 +70,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.getSearchState()?.observe(this, Observer { state ->
-
-            Log.i("KEK", "State = " + state)
-            Log.i("KEK", "isEmpty = " + viewModel.searchListIsEmpty())
-
-            state?.let {
-                mainNoResultsFoundLayout.visibility = if (it != State.LOADING && viewModel.searchListIsEmpty()) View.VISIBLE else View.GONE
-            }
+            state?.let(::handleState)
         })
     }
 
@@ -197,5 +188,10 @@ class MainActivity : AppCompatActivity() {
                 })
 
         searchVisible = false
+    }
+
+    private fun handleState(state: State) {
+        mainNoResultsFoundLayout.visibility = if (state != State.LOADING && viewModel.searchListIsEmpty())
+            View.VISIBLE else View.GONE
     }
 }

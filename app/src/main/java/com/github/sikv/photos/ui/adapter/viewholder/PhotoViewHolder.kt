@@ -19,22 +19,15 @@ class PhotoViewHolder(
              clickCallback: (Photo, View) -> Unit,
              longClickCallback: ((Photo, View) -> Unit)? = null) {
 
-//        itemView.itemPhotoShimmerLayout.visibility = View.VISIBLE
-
         itemView.itemPhotoImage.setImageDrawable(null)
         itemView.setOnClickListener(null)
-
-        itemView.itemPhotoShimmerLayout.visibility = View.GONE
 
         photo?.let {
             glide.asBitmap()
                     .load(photo.urls.small)
                     .into(object : SimpleTarget<Bitmap>() {
                         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-
                             itemView.itemPhotoImage.setImageBitmap(resource)
-//                            itemView.itemPhotoShimmerLayout.visibility = View.GONE
-
                         }
                     })
 

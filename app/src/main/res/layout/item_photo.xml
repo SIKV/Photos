@@ -17,31 +17,11 @@
     android:foreground="?selectableItemBackgroundBorderless"
     tools:targetApi="lollipop">
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/itemPhotoImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/itemPhotoImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/cn_photo"/>
-
-        <io.supercharge.shimmerlayout.ShimmerLayout
-            android:id="@+id/itemPhotoShimmerLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:shimmer_angle="15"
-            app:shimmer_gradient_center_color_width="0.3"
-            app:shimmer_mask_width="0.9"
-            app:shimmer_animation_duration="1000"
-            app:shimmer_color="@color/colorShimmer"
-            app:shimmer_auto_start="true">
-
-            <include layout="@layout/item_placeholder_photo"/>
-
-        </io.supercharge.shimmerlayout.ShimmerLayout>
-    </RelativeLayout>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/cn_photo"/>
 
 </android.support.v7.widget.CardView>
