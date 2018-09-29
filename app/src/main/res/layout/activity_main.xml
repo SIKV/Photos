@@ -19,4 +19,6 @@
 
    <include layout="@layout/layout_no_results_found"/>
 
+   <include layout="@layout/layout_loading_error"/>
+
 </android.support.constraint.ConstraintLayout>

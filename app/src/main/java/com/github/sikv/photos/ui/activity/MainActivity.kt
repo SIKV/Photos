@@ -22,6 +22,7 @@ import com.github.sikv.photos.util.AnimUtils
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.layout_loading_error.*
 import kotlinx.android.synthetic.main.layout_main_toolbar.*
 import kotlinx.android.synthetic.main.layout_no_results_found.*
 import kotlinx.android.synthetic.main.popup_photo_preview.view.*
@@ -192,7 +193,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleState(state: State) {
-        mainNoResultsFoundLayout.visibility = if (state != State.LOADING && viewModel.searchListIsEmpty())
-            View.VISIBLE else View.GONE
+        if (state == State.ERROR) {
+            mainLoadingErrorLayout.visibility = View.VISIBLE
+        } else {
+            mainLoadingErrorLayout.visibility = View.GONE
+
+            mainNoResultsFoundLayout.visibility = if (state != State.LOADING && viewModel.searchListIsEmpty())
+                View.VISIBLE else View.GONE
+        }
     }
 }
