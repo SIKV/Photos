@@ -40,6 +40,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private var searchVisible = false
+        set(value) {
+            field = value
+
+            if (!field) {
+                recentPhotos()
+            }
+        }
 
     private var photoAdapter: PhotoAdapter? = null
 
@@ -49,11 +56,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         init()
-        initPhotoAdapter()
 
-        viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
-            photoAdapter?.submitList(it)
-        })
+        recentPhotos()
     }
 
     override fun onBackPressed() {
@@ -62,6 +66,14 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun recentPhotos() {
+        initPhotoAdapter()
+
+        viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
+            photoAdapter?.submitList(it)
+        })
     }
 
     private fun searchPhotos(query: String) {
@@ -141,6 +153,9 @@ class MainActivity : AppCompatActivity() {
     private fun initPhotoAdapter() {
         photoAdapter = PhotoAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
         mainRecycler.adapter = photoAdapter
+
+        mainLoadingErrorLayout.visibility = View.GONE
+        mainNoResultsFoundLayout.visibility = View.GONE
     }
 
     private fun openSearch() {
