@@ -13,15 +13,7 @@
     </style>
 
     <style name="Toolbar">
-        <item name="titleTextAppearance">@style/ToolbarTitle</item>
-    </style>
-
-    <style name="ToolbarTitle">
-        <item name="android:textAlignment">center</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">18sp</item>
+        <item name="colorControlNormal">@android:color/white</item>
     </style>
 
     <style name="RoundButton">

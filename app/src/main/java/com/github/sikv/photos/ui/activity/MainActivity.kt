@@ -136,6 +136,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         mainFavoritesButton.setOnClickListener {
+            FavoritesActivity.startActivity(this)
         }
 
         mainSearchEdit.setOnEditorActionListener { textView, actionId, keyEvent ->

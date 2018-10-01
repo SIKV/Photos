@@ -22,6 +22,8 @@
         <activity android:name=".ui.activity.PhotoActivity"
             android:theme="@style/AppTheme.TranslucentStatus"/>
 
+        <activity android:name=".ui.activity.FavoritesActivity"/>
+
     </application>
 
 </manifest>
