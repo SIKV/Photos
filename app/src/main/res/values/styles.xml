@@ -8,7 +8,6 @@
 
     <style name="AppTheme.TranslucentStatus" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
