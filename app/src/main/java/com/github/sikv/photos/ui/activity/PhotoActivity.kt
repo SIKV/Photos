@@ -1,13 +1,16 @@
 package com.github.sikv.photos.ui.activity
 
+import android.annotation.TargetApi
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
+import android.transition.ChangeBounds
 import android.view.Menu
 import android.view.View
 import com.bumptech.glide.Glide
@@ -22,7 +25,6 @@ import kotlinx.android.synthetic.main.activity_photo.*
 class PhotoActivity : AppCompatActivity() {
 
     private lateinit var viewModel: PhotoViewModel
-
 
     companion object {
 
@@ -41,11 +43,11 @@ class PhotoActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_photo)
+        setTransitionAnimationDuration()
 
         val photo: Photo = intent.getParcelableExtra(EXTRA_PHOTO)
 
@@ -108,5 +110,15 @@ class PhotoActivity : AppCompatActivity() {
         photoAuthorText.visibility = View.INVISIBLE
         photoShareButton.visibility = View.INVISIBLE
         photoDownloadButton.visibility = View.INVISIBLE
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun setTransitionAnimationDuration() {
+        val duration = 220L
+
+        val changeBounds = ChangeBounds()
+        changeBounds.duration = duration
+
+        window.sharedElementEnterTransition = changeBounds
     }
 }
