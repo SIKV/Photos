@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity
 import android.transition.ChangeBounds
 import android.view.Menu
 import android.view.View
+import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
@@ -93,6 +94,8 @@ class PhotoActivity : AppCompatActivity() {
         photoAuthorText.text = String.format(getString(R.string.photo_by_s_on_s), authorFullName, source)
 
         Utils.makeUnderlineBold(photoAuthorText, arrayOf(authorFullName, source))
+
+        adjustMargins()
     }
 
     private fun initListeners() {
@@ -120,5 +123,13 @@ class PhotoActivity : AppCompatActivity() {
         changeBounds.duration = duration
 
         window.sharedElementEnterTransition = changeBounds
+    }
+
+    private fun adjustMargins() {
+        val photoAuthorTextLayoutParams = photoAuthorText.layoutParams
+
+        if (photoAuthorTextLayoutParams is ViewGroup.MarginLayoutParams) {
+            photoAuthorTextLayoutParams.bottomMargin += Utils.navigationBarHeight(this)
+        }
     }
 }
