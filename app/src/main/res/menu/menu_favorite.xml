@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/itemFavorite"
-        android:title="Favorite"
+        android:title="@string/favorite"
         android:icon="@drawable/ic_favorites_white_24dp"
         app:showAsAction="always"/>
 

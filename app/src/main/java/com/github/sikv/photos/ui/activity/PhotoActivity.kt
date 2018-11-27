@@ -12,6 +12,7 @@ import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.transition.ChangeBounds
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
@@ -52,7 +53,7 @@ class PhotoActivity : AppCompatActivity() {
 
         val photo: Photo = intent.getParcelableExtra(EXTRA_PHOTO)
 
-        viewModel = ViewModelProviders.of(this, PhotoViewModelFactory(photo))
+        viewModel = ViewModelProviders.of(this, PhotoViewModelFactory(application, photo))
                 .get(PhotoViewModel::class.java)
 
         init(photo)
@@ -79,6 +80,18 @@ class PhotoActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_favorite, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.itemFavorite -> {
+                viewModel.favorite()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
 
     private fun init(photo: Photo) {

@@ -14,7 +14,7 @@ abstract class FavoritesDatabase : RoomDatabase() {
 
         private var instance: FavoritesDatabase? = null
 
-        fun getInstance(context: Context): FavoritesDatabase? {
+        fun getInstance(context: Context): FavoritesDatabase {
             if (instance == null) {
                 synchronized(FavoritesDatabase::class) {
                     instance = Room.databaseBuilder(context.applicationContext, FavoritesDatabase::class.java, DB_NAME)
@@ -22,7 +22,7 @@ abstract class FavoritesDatabase : RoomDatabase() {
                 }
             }
 
-            return instance
+            return instance!!
         }
 
         fun destroyInstance() {

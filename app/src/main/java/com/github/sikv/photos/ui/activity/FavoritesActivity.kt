@@ -1,13 +1,20 @@
 package com.github.sikv.photos.ui.activity
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.github.sikv.photos.R
+import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import kotlinx.android.synthetic.main.activity_favorites.*
 
 class FavoritesActivity : AppCompatActivity() {
+
+    private val viewModel: FavoritesViewModel by lazy {
+        ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
+    }
 
     companion object {
 
@@ -29,6 +36,10 @@ class FavoritesActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        viewModel.favoritesLiveData.observe(this, Observer {
+
+        })
     }
 
     override fun onSupportNavigateUp(): Boolean {

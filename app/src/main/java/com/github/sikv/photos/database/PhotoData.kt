@@ -6,9 +6,9 @@ import android.arch.persistence.room.PrimaryKey
 @Entity(tableName = "PhotoData")
 data class PhotoData(
         @PrimaryKey
-        val id: String,
+        var id: String,
 
-        val url: String
+        var url: String
 ) {
 
     constructor(): this("", "")
