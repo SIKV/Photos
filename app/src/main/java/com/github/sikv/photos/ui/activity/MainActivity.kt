@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.popup_photo_preview.view.*
 class MainActivity : AppCompatActivity() {
 
     companion object {
+
         private const val TOOLBAR_ELEVATION = 12f
         private const val ANIMATION_OFFSET = 200
     }
@@ -142,6 +143,7 @@ class MainActivity : AppCompatActivity() {
         mainSearchEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 Utils.hideSoftInput(this@MainActivity, mainSearchEdit)
+                mainSearchEdit.clearFocus()
 
                 searchPhotos(textView.text.toString())
                 return@setOnEditorActionListener true
