@@ -28,6 +28,8 @@ class PhotoActivity : AppCompatActivity() {
 
     private lateinit var viewModel: PhotoViewModel
 
+    private var favoriteMenuItemIcon: Int? = null
+
     companion object {
 
         private const val EXTRA_PHOTO = "photo"
@@ -58,12 +60,7 @@ class PhotoActivity : AppCompatActivity() {
 
         init(photo)
         initListeners()
-
-        viewModel.loadPhoto(Glide.with(this)).observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
-                photoImageView.setImageBitmap(it)
-            }
-        })
+        initObservers()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -80,6 +77,14 @@ class PhotoActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_favorite, menu)
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        favoriteMenuItemIcon?.let {
+            menu?.findItem(R.id.itemFavorite)?.setIcon(it)
+        }
+
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -119,6 +124,24 @@ class PhotoActivity : AppCompatActivity() {
         photoDownloadButton.setOnClickListener {
 
         }
+    }
+
+    private fun initObservers() {
+        viewModel.loadPhoto(Glide.with(this)).observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                photoImageView.setImageBitmap(it)
+            }
+        })
+
+        viewModel.favoriteChangedEvent.observe(this, Observer {
+            favoriteMenuItemIcon = if (it?.getContentIfNotHandled() == true) {
+                R.drawable.ic_favorite_white_24dp
+            } else {
+                R.drawable.ic_favorite_border_white_24dp
+            }
+
+            invalidateOptionsMenu()
+        })
     }
 
     private fun hideViews() {

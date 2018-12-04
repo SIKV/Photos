@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:src="@drawable/ic_favorites_white_24dp"
+                    android:src="@drawable/ic_favorite_border_white_24dp"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/cn_open_favorites"/>
 

@@ -1,5 +1,6 @@
 package com.github.sikv.photos.viewmodel
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
@@ -15,18 +16,44 @@ import com.github.sikv.photos.Event
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.Photo
+import kotlin.properties.Delegates
 
-
+@SuppressLint("StaticFieldLeak")
 class PhotoViewModel(
         application: Application,
         private val photo: Photo
 
 ) : AndroidViewModel(application) {
 
-    private val favoritesDatabase: FavoritesDatabase
+    private val favoritesDatabase: FavoritesDatabase = FavoritesDatabase.getInstance(getApplication())
+
+    private var favorited: Boolean by Delegates.observable(false) { property, oldValue, newValue ->
+        favoriteChangedEvent.value = Event(newValue)
+    }
+
+    var favoriteChangedEvent: MutableLiveData<Event<Boolean>>
+        private set
 
     init {
-        favoritesDatabase = FavoritesDatabase.getInstance(getApplication())
+        favoriteChangedEvent = MutableLiveData()
+
+        object : AsyncTask<String, Void, Boolean>() {
+            override fun doInBackground(vararg p0: String?): Boolean {
+                (favoritesDatabase.photoDao().get(photo.id))?.let {
+                    return true
+                } ?: run {
+                    return false
+                }
+            }
+
+            override fun onPostExecute(result: Boolean?) {
+                super.onPostExecute(result)
+
+                result?.let {
+                    favorited = it
+                }
+            }
+        }.execute(photo.id)
     }
 
     fun loadPhoto(glide: RequestManager): LiveData<Event<Bitmap>> {
@@ -58,7 +85,8 @@ class PhotoViewModel(
     }
 
     fun favorite() {
-        InsertAsyncTask(favoritesDatabase).execute(PhotoData(photo.id, photo.urls.small))
+        favorited = !favorited
+        FavoriteAsyncTask(favoritesDatabase, favorited).execute(PhotoData(photo.id, photo.urls.small))
     }
 
     fun createShareIntent(): Intent {
@@ -71,13 +99,18 @@ class PhotoViewModel(
         return shareIntent
     }
 
-    private class InsertAsyncTask internal constructor(
-            private val db: FavoritesDatabase
+    private class FavoriteAsyncTask internal constructor(
+            private val db: FavoritesDatabase,
+            private val favorite: Boolean
 
     ) : AsyncTask<PhotoData, Void, Void>() {
 
         override fun doInBackground(vararg params: PhotoData): Void? {
-            db.photoDao().insert(params[0])
+            if (favorite) {
+                db.photoDao().insert(params[0])
+            } else {
+                db.photoDao().delete(params[0])
+            }
             return null
         }
     }

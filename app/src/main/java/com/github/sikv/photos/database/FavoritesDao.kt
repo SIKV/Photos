@@ -19,6 +19,9 @@ interface FavoritesDao {
     @Query("SELECT * from PhotoData")
     fun getAll(): LiveData<List<PhotoData>>
 
+    @Query("SELECT * FROM PhotoData WHERE id=:id")
+    fun get(id: String): PhotoData?
+
     @Query("DELETE from PhotoData")
     fun deleteAll()
 }
