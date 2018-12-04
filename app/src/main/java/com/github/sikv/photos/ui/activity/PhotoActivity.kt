@@ -15,6 +15,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
@@ -31,6 +33,8 @@ class PhotoActivity : AppCompatActivity() {
     private var favoriteMenuItemIcon: Int? = null
 
     companion object {
+
+        private const val FAVORITE_ANIMATION_DURATION = 200L
 
         private const val EXTRA_PHOTO = "photo"
 
@@ -91,6 +95,16 @@ class PhotoActivity : AppCompatActivity() {
         return when (item?.itemId) {
             R.id.itemFavorite -> {
                 viewModel.favorite()
+
+                val itemView = findViewById<View>(R.id.itemFavorite)
+
+                val scaleAnimation = ScaleAnimation(0f, 1f, 0f, 1f,
+                        Animation.RELATIVE_TO_SELF, 0.5f,
+                        Animation.RELATIVE_TO_SELF, 0.5f)
+
+                scaleAnimation.duration = FAVORITE_ANIMATION_DURATION
+                itemView.startAnimation(scaleAnimation)
+
                 true
             }
             else -> {
