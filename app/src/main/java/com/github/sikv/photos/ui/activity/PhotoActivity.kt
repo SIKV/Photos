@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
+import android.text.style.ClickableSpan
 import android.transition.ChangeBounds
 import android.view.Menu
 import android.view.MenuItem
@@ -120,12 +121,26 @@ class PhotoActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val authorFullName = photo.user.name
+        val authorName = photo.user.name
         val source = getString(R.string.unsplash)
 
-        photoAuthorText.text = String.format(getString(R.string.photo_by_s_on_s), authorFullName, source)
+        photoAuthorText.text = String.format(getString(R.string.photo_by_s_on_s), authorName, source)
 
-        Utils.makeUnderlineBold(photoAuthorText, arrayOf(authorFullName, source))
+        Utils.makeUnderlineBold(photoAuthorText, arrayOf(authorName, source))
+
+        Utils.makeClickable(photoAuthorText, arrayOf(authorName, source),
+                arrayOf(
+                        object : ClickableSpan() {
+                            override fun onClick(p0: View?) {
+                                viewModel.openAuthorUrl()
+                            }
+                        },
+                        object : ClickableSpan() {
+                            override fun onClick(p0: View?) {
+                                viewModel.openPhotoSource()
+                            }
+                        }
+                ))
 
         adjustMargins()
     }
@@ -158,13 +173,6 @@ class PhotoActivity : AppCompatActivity() {
         })
     }
 
-    private fun hideViews() {
-        photoToolbar.visibility = View.INVISIBLE
-        photoAuthorText.visibility = View.INVISIBLE
-        photoShareButton.visibility = View.INVISIBLE
-        photoDownloadButton.visibility = View.INVISIBLE
-    }
-
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun setTransitionAnimationDuration() {
         val duration = 220L
@@ -181,5 +189,12 @@ class PhotoActivity : AppCompatActivity() {
         if (photoAuthorTextLayoutParams is ViewGroup.MarginLayoutParams) {
             photoAuthorTextLayoutParams.bottomMargin += Utils.navigationBarHeight(this)
         }
+    }
+
+    private fun hideViews() {
+        photoToolbar.visibility = View.INVISIBLE
+        photoAuthorText.visibility = View.INVISIBLE
+        photoShareButton.visibility = View.INVISIBLE
+        photoDownloadButton.visibility = View.INVISIBLE
     }
 }

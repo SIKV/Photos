@@ -1,26 +1,21 @@
 package com.github.sikv.photos.util
 
 import android.content.Context
+import android.net.Uri
+import android.support.customtabs.CustomTabsIntent
+import android.support.v4.content.ContextCompat
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import com.github.sikv.photos.R
 
 
 object Utils {
-
-    fun log(msg: String) {
-        Log.i("TAG", msg)
-    }
-
-    fun px2dp(context: Context, px: Int): Int {
-        return px / context.resources.displayMetrics.density.toInt()
-    }
 
     fun makeClickable(textView: TextView, clickable: Array<String>, clickableSpans: Array<ClickableSpan>) {
         val spannableString = SpannableString(textView.text)
@@ -76,5 +71,12 @@ object Utils {
         } else {
             0
         }
+    }
+
+    fun openUrl(context: Context, url: String) {
+        val builder = CustomTabsIntent.Builder()
+        builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
+
+        builder.build().launchUrl(context, Uri.parse(url))
     }
 }

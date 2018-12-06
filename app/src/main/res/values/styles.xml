@@ -12,6 +12,10 @@
         <item name="colorControlNormal">@android:color/white</item>
     </style>
 
+    <style name="AppTheme.Span" parent="AppTheme">
+        <item name="colorAccent">@android:color/white</item>
+    </style>
+
     <style name="Toolbar">
         <item name="colorControlNormal">@android:color/white</item>
     </style>

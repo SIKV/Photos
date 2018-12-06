@@ -16,6 +16,7 @@ import com.github.sikv.photos.Event
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.util.Utils
 import kotlin.properties.Delegates
 
 @SuppressLint("StaticFieldLeak")
@@ -97,6 +98,16 @@ class PhotoViewModel(
         shareIntent.type = "text/plain"
 
         return shareIntent
+    }
+
+    fun openAuthorUrl() {
+        photo.user.portfolioUrl?.let {
+            Utils.openUrl(getApplication(), it)
+        }
+    }
+
+    fun openPhotoSource() {
+        Utils.openUrl(getApplication(), photo.links.html)
     }
 
     private class FavoriteAsyncTask internal constructor(

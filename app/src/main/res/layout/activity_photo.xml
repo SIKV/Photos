@@ -37,7 +37,8 @@
         android:layout_marginBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:text="@string/photo_by_s_on_s"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:theme="@style/AppTheme.Span"/>
 
     <Button
         android:id="@+id/photoShareButton"
