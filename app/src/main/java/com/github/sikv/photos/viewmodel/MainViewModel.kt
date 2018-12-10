@@ -10,7 +10,7 @@ import com.github.sikv.photos.data.RecentPhotosDataSourceFactory
 import com.github.sikv.photos.data.SearchPhotosDataSource
 import com.github.sikv.photos.data.SearchPhotosDataSourceFactory
 import com.github.sikv.photos.data.State
-import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.UnsplashPhoto
 import java.util.concurrent.Executors
 
 class MainViewModel : ViewModel() {
@@ -27,15 +27,15 @@ class MainViewModel : ViewModel() {
             .setPageSize(PAGE_SIZE)
             .build()
 
-    var recentPhotos: LiveData<PagedList<Photo>>
+    var recentPhotos: LiveData<PagedList<UnsplashPhoto>>
 
     private var searchDataSourceFactory: SearchPhotosDataSourceFactory? = null
-    private var searchLivePagedList: LiveData<PagedList<Photo>>? = null
+    private var searchLivePagedList: LiveData<PagedList<UnsplashPhoto>>? = null
 
     init {
         val recentPhotosDataSource = RecentPhotosDataSourceFactory(ApiClient.INSTANCE.unsplashClient)
 
-        recentPhotos = LivePagedListBuilder<Int, Photo>(recentPhotosDataSource, pagedListConfig)
+        recentPhotos = LivePagedListBuilder<Int, UnsplashPhoto>(recentPhotosDataSource, pagedListConfig)
                 .setFetchExecutor(Executors.newSingleThreadExecutor())
                 .build()
     }
@@ -50,7 +50,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun searchPhotos(query: String): LiveData<PagedList<Photo>>? {
+    fun searchPhotos(query: String): LiveData<PagedList<UnsplashPhoto>>? {
         val queryTrimmed = query.trim()
 
         if (queryTrimmed.isEmpty()) {

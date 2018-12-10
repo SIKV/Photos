@@ -20,7 +20,7 @@ import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
-import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
@@ -39,9 +39,9 @@ class PhotoActivity : AppCompatActivity() {
 
         private const val EXTRA_PHOTO = "photo"
 
-        fun startActivity(activity: Activity, transitionView: View, photo: Photo) {
+        fun startActivity(activity: Activity, transitionView: View, unsplashPhoto: UnsplashPhoto) {
             val intent = Intent(activity, PhotoActivity::class.java)
-            intent.putExtra(EXTRA_PHOTO, photo)
+            intent.putExtra(EXTRA_PHOTO, unsplashPhoto)
 
             val transitionName = activity.getString(R.string.transition_photo)
 
@@ -58,12 +58,12 @@ class PhotoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_photo)
         setTransitionAnimationDuration()
 
-        val photo: Photo = intent.getParcelableExtra(EXTRA_PHOTO)
+        val unsplashPhoto: UnsplashPhoto = intent.getParcelableExtra(EXTRA_PHOTO)
 
-        viewModel = ViewModelProviders.of(this, PhotoViewModelFactory(application, photo))
+        viewModel = ViewModelProviders.of(this, PhotoViewModelFactory(application, unsplashPhoto))
                 .get(PhotoViewModel::class.java)
 
-        init(photo)
+        init(unsplashPhoto)
         initListeners()
         initObservers()
     }
@@ -114,14 +114,14 @@ class PhotoActivity : AppCompatActivity() {
         }
     }
 
-    private fun init(photo: Photo) {
+    private fun init(unsplashPhoto: UnsplashPhoto) {
         setSupportActionBar(photoToolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val authorName = photo.user.name
+        val authorName = unsplashPhoto.user.name
         val source = getString(R.string.unsplash)
 
         photoAuthorText.text = String.format(getString(R.string.photo_by_s_on_s), authorName, source)

@@ -7,24 +7,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
-import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
 class PhotoAdapter(
         private val glide: RequestManager,
-        private val clickCallback: (Photo, View) -> Unit,
-        private val longClickCallback: ((Photo, View) -> Unit)? = null
+        private val clickCallback: (UnsplashPhoto, View) -> Unit,
+        private val longClickCallback: ((UnsplashPhoto, View) -> Unit)? = null
 
-) : PagedListAdapter<Photo, PhotoViewHolder>(PHOTO_COMPARATOR) {
+) : PagedListAdapter<UnsplashPhoto, PhotoViewHolder>(PHOTO_COMPARATOR) {
 
     companion object {
 
-        val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<Photo>() {
+        val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<UnsplashPhoto>() {
 
-            override fun areItemsTheSame(oldItem: Photo?, newItem: Photo?): Boolean =
+            override fun areItemsTheSame(oldItem: UnsplashPhoto?, newItem: UnsplashPhoto?): Boolean =
                     oldItem?.id == newItem?.id
 
-            override fun areContentsTheSame(oldItem: Photo?, newItem: Photo?): Boolean =
+            override fun areContentsTheSame(oldItem: UnsplashPhoto?, newItem: UnsplashPhoto?): Boolean =
                     oldItem == newItem
         }
     }

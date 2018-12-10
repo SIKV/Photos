@@ -24,6 +24,7 @@ android {
 
     buildTypes.each {
         it.buildConfigField 'String', 'UNSPLASH_ACCESS_KEY', UNSPLASH_ACCESS_KEY
+        it.buildConfigField 'String', 'PEXELS_API_KEY', PEXELS_API_KEY
     }
 }
 

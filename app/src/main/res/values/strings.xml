@@ -2,6 +2,9 @@
 
     <string name="app_name">Photos</string>
 
+    <string name="unsplash">Unsplash</string>
+    <string name="pexels">Pexels</string>
+
     <string name="search_photos">Search photos</string>
 
     <string name="cn_close_search">Close search</string>
@@ -13,9 +16,8 @@
     <string name="cn_favorite_icon">Favorite icon</string>
     <string name="cn_loading_error_icon">Loading error icon</string>
 
-    <string name="transition_photo">Transition photo</string>
+    <string name="transition_photo">Transition Photo</string>
 
-    <string name="unsplash">Unsplash</string>
     <string name="photo_by_s_on_s">Photo by %s on %s</string>
     <string name="share">Share</string>
     <string name="download">Download</string>

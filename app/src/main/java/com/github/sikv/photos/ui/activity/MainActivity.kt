@@ -16,7 +16,7 @@ import android.widget.PopupWindow
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.State
-import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.ui.adapter.PhotoAdapter
 import com.github.sikv.photos.util.AnimUtils
 import com.github.sikv.photos.util.Utils
@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() {
     private fun recentPhotos() {
         initPhotoAdapter()
 
-        viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
+        viewModel.recentPhotos.observe(this, Observer<PagedList<UnsplashPhoto>> {
             photoAdapter?.submitList(it)
         })
     }
@@ -89,16 +89,16 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun onPhotoClick(photo: Photo, view: View) {
-        PhotoActivity.startActivity(this, view, photo)
+    private fun onPhotoClick(unsplashPhoto: UnsplashPhoto, view: View) {
+        PhotoActivity.startActivity(this, view, unsplashPhoto)
     }
 
-    private fun onPhotoLongClick(photo: Photo, view: View) {
+    private fun onPhotoLongClick(unsplashPhoto: UnsplashPhoto, view: View) {
         var photoPopupPreview: PopupWindow? = null
         val layout = layoutInflater.inflate(R.layout.popup_photo_preview, mainRootLayout, false)
 
         Glide.with(this)
-                .load(photo.urls.small)
+                .load(unsplashPhoto.urls.small)
                 .into(layout.photoPreviewImage)
 
         layout.setOnClickListener {
