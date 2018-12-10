@@ -4,11 +4,11 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.SearchPhotosResponse
 import retrofit2.Call
 
-class PhotosClient(private val photosApi: PhotosApi) {
+class UnsplashClient(private val unsplashApi: UnsplashApi) {
 
     fun getLatestPhotos(page: Int, perPage: Int): Call<List<Photo>> =
-            photosApi.getPhotos(page, perPage, "latest")
+            unsplashApi.getPhotos(page, perPage, "latest")
 
     fun searchPhotos(query: String, page: Int, perPage: Int): Call<SearchPhotosResponse> =
-            photosApi.searchPhotos(query, page, perPage)
+            unsplashApi.searchPhotos(query, page, perPage)
 }

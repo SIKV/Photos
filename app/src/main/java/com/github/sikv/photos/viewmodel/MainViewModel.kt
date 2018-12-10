@@ -33,7 +33,7 @@ class MainViewModel : ViewModel() {
     private var searchLivePagedList: LiveData<PagedList<Photo>>? = null
 
     init {
-        val recentPhotosDataSource = RecentPhotosDataSourceFactory(ApiClient.INSTANCE.photosClient)
+        val recentPhotosDataSource = RecentPhotosDataSourceFactory(ApiClient.INSTANCE.unsplashClient)
 
         recentPhotos = LivePagedListBuilder<Int, Photo>(recentPhotosDataSource, pagedListConfig)
                 .setFetchExecutor(Executors.newSingleThreadExecutor())
@@ -57,7 +57,7 @@ class MainViewModel : ViewModel() {
             return null
         }
 
-        searchDataSourceFactory = SearchPhotosDataSourceFactory(ApiClient.INSTANCE.photosClient, queryTrimmed)
+        searchDataSourceFactory = SearchPhotosDataSourceFactory(ApiClient.INSTANCE.unsplashClient, queryTrimmed)
 
         searchLivePagedList = LivePagedListBuilder(searchDataSourceFactory!!, pagedListConfig)
                 .setFetchExecutor(Executors.newSingleThreadExecutor())

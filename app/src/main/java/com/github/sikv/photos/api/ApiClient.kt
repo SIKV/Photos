@@ -8,12 +8,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiClient private constructor() {
 
     companion object {
-        const val BASE_URL = "https://api.unsplash.com/"
+        private const val UNSPLASH_BASE_URL = "https://api.unsplash.com/"
 
         val INSTANCE: ApiClient by lazy { ApiClient() }
     }
 
-    val photosClient: PhotosClient
+    val unsplashClient: UnsplashClient
 
     init {
         val loggingInterceptor = HttpLoggingInterceptor()
@@ -24,11 +24,11 @@ class ApiClient private constructor() {
                 .build()
 
         val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(UNSPLASH_BASE_URL)
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
 
-        photosClient = PhotosClient(retrofit.create(PhotosApi::class.java))
+        unsplashClient = UnsplashClient(retrofit.create(UnsplashApi::class.java))
     }
 }

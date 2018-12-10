@@ -23,7 +23,7 @@ android {
     }
 
     buildTypes.each {
-        it.buildConfigField 'String', 'ACCESS_KEY', ACCESS_KEY
+        it.buildConfigField 'String', 'UNSPLASH_ACCESS_KEY', UNSPLASH_ACCESS_KEY
     }
 }
 

@@ -2,7 +2,7 @@ package com.github.sikv.photos.data
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.PositionalDataSource
-import com.github.sikv.photos.api.PhotosClient
+import com.github.sikv.photos.api.UnsplashClient
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.SearchPhotosResponse
 import retrofit2.Call
@@ -10,7 +10,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SearchPhotosDataSource(
-        private val photosClient: PhotosClient,
+        private val unsplashClient: UnsplashClient,
         private val searchQuery: String
 
 ) : PositionalDataSource<Photo>() {
@@ -20,7 +20,7 @@ class SearchPhotosDataSource(
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Photo>) {
         updateState(State.LOADING)
 
-        photosClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
+        unsplashClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
                 .enqueue(object : Callback<SearchPhotosResponse> {
                     override fun onFailure(call: Call<SearchPhotosResponse>?, t: Throwable?) {
                         updateState(State.ERROR)
@@ -43,7 +43,7 @@ class SearchPhotosDataSource(
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Photo>) {
         updateState(State.LOADING)
 
-        photosClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
+        unsplashClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
                 .enqueue(object : Callback<SearchPhotosResponse> {
                     override fun onFailure(call: Call<SearchPhotosResponse>?, t: Throwable?) {
                         updateState(State.ERROR)
