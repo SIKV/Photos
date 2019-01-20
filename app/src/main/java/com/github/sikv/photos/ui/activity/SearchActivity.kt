@@ -3,10 +3,14 @@ package com.github.sikv.photos.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import com.github.sikv.photos.R
 import kotlinx.android.synthetic.main.activity_search.*
+
 
 class SearchActivity : AppCompatActivity() {
 
@@ -29,6 +33,14 @@ class SearchActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        var viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+
+        viewPagerAdapter.addFragment(Fragment(), getString(R.string.unsplash))
+        viewPagerAdapter.addFragment(Fragment(), getString(R.string.pexels))
+
+        searchViewPager.adapter = viewPagerAdapter
+        searchTabLayout.setupWithViewPager(searchViewPager)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -45,5 +57,27 @@ class SearchActivity : AppCompatActivity() {
         super.finish()
 
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    }
+
+    internal inner class ViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
+        private var fragments: MutableList<Fragment> = mutableListOf()
+        private var titles: MutableList<String> = mutableListOf()
+
+        override fun getItem(position: Int): Fragment {
+            return fragments[position]
+        }
+
+        override fun getCount(): Int {
+            return fragments.size
+        }
+
+        fun addFragment(fragment: Fragment, title: String) {
+            fragments.add(fragment)
+            titles.add(title)
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return titles[position]
+        }
     }
 }

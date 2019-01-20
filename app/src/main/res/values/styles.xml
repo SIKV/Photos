@@ -19,6 +19,10 @@
     <style name="Toolbar">
         <item name="colorControlNormal">@android:color/white</item>
     </style>
+    
+    <style name="TabBarTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:fontFamily">sans-serif-black</item>
+    </style>
 
     <style name="RoundButton">
         <item name="android:layout_width">192dp</item>

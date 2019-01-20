@@ -6,8 +6,9 @@
     android:background="@color/colorPrimary">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/searchAppBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="?android:actionBarSize">
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/searchToolbar"
@@ -18,21 +19,39 @@
             app:theme="@style/Toolbar">
 
             <EditText
-                android:id="@+id/mainSearchEdit"
+                android:id="@+id/searchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="sans-serif-black"
-                android:hint="@string/search"
+                android:hint="@string/search_uc"
                 android:inputType="textCapSentences"
                 android:imeOptions="actionSearch"
                 android:singleLine="true"
                 android:maxLength="64"
                 android:textColorHint="@color/colorPrimaryDark"
                 android:textColor="@android:color/white"
+                android:textSize="20sp"
                 android:background="@null"/>
 
         </android.support.v7.widget.Toolbar>
 
+        <android.support.design.widget.TabLayout
+            android:id="@+id/searchTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabTextColor="@color/colorPrimaryDark"
+            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextAppearance="@style/TabBarTextAppearance"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
+
     </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/searchViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/searchAppBarLayout"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
