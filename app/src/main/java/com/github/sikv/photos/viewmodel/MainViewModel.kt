@@ -16,7 +16,6 @@ import java.util.concurrent.Executors
 class MainViewModel : ViewModel() {
 
     companion object {
-
         const val INITIAL_LOAD_SIZE = 10
         const val PAGE_SIZE = 10
     }

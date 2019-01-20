@@ -1,6 +1,5 @@
 package com.github.sikv.photos.ui.activity
 
-import android.animation.Animator
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
@@ -11,19 +10,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.PopupWindow
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.State
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.ui.adapter.PhotoAdapter
-import com.github.sikv.photos.util.AnimUtils
-import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
-import kotlinx.android.synthetic.main.layout_main_toolbar.*
 import kotlinx.android.synthetic.main.layout_no_results_found.*
 import kotlinx.android.synthetic.main.popup_photo_preview.view.*
 
@@ -31,23 +26,12 @@ import kotlinx.android.synthetic.main.popup_photo_preview.view.*
 class MainActivity : AppCompatActivity() {
 
     companion object {
-
         private const val TOOLBAR_ELEVATION = 12f
-        private const val ANIMATION_OFFSET = 200
     }
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
-
-    private var searchVisible = false
-        set(value) {
-            field = value
-
-            if (!field) {
-                recentPhotos()
-            }
-        }
 
     private var photoAdapter: PhotoAdapter? = null
 
@@ -57,16 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         init()
-
         recentPhotos()
-    }
-
-    override fun onBackPressed() {
-        if (searchVisible) {
-            closeSearch()
-        } else {
-            super.onBackPressed()
-        }
     }
 
     private fun recentPhotos() {
@@ -126,30 +101,12 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        mainSearchLayout.y = mainSearchLayout.y - ANIMATION_OFFSET
-
         mainSearchButton.setOnClickListener {
-           openSearch()
-        }
-
-        mainCloseSearchButton.setOnClickListener {
-            closeSearch()
+            SearchActivity.startActivity(this)
         }
 
         mainFavoritesButton.setOnClickListener {
             FavoritesActivity.startActivity(this)
-        }
-
-        mainSearchEdit.setOnEditorActionListener { textView, actionId, keyEvent ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                Utils.hideSoftInput(this@MainActivity, mainSearchEdit)
-                mainSearchEdit.clearFocus()
-
-                searchPhotos(textView.text.toString())
-                return@setOnEditorActionListener true
-            }
-
-            return@setOnEditorActionListener false
         }
     }
 
@@ -159,55 +116,6 @@ class MainActivity : AppCompatActivity() {
 
         mainLoadingErrorLayout.visibility = View.GONE
         mainNoResultsFoundLayout.visibility = View.GONE
-    }
-
-    private fun openSearch() {
-        AnimUtils.animateX(mainFavoritesButton, mainFavoritesButton.x - ANIMATION_OFFSET)
-        AnimUtils.animateX(mainSearchButton, mainSearchButton.x + ANIMATION_OFFSET)
-
-        AnimUtils.animateY(mainSearchLayout, mainSearchLayout.y + ANIMATION_OFFSET, AnimUtils.DURATION_NORMAL,
-                object : Animator.AnimatorListener {
-                    override fun onAnimationRepeat(p0: Animator?) {
-                    }
-
-                    override fun onAnimationEnd(p0: Animator?) {
-                        mainSearchEdit.requestFocus()
-                        Utils.showSoftInput(this@MainActivity, mainSearchEdit)
-                    }
-
-                    override fun onAnimationCancel(p0: Animator?) {
-                    }
-
-                    override fun onAnimationStart(p0: Animator?) {
-                        mainTitleText.visibility = View.INVISIBLE
-                    }
-                })
-
-        searchVisible = true
-    }
-
-    private fun closeSearch() {
-        AnimUtils.animateX(mainFavoritesButton, mainFavoritesButton.x + ANIMATION_OFFSET)
-        AnimUtils.animateX(mainSearchButton, mainSearchButton.x - ANIMATION_OFFSET)
-
-        AnimUtils.animateY(mainSearchLayout, mainSearchLayout.y - ANIMATION_OFFSET, AnimUtils.DURATION_NORMAL,
-                object : Animator.AnimatorListener {
-                    override fun onAnimationRepeat(p0: Animator?) {
-                    }
-
-                    override fun onAnimationEnd(p0: Animator?) {
-                        mainTitleText.visibility = View.VISIBLE
-                    }
-
-                    override fun onAnimationCancel(p0: Animator?) {
-                    }
-
-                    override fun onAnimationStart(p0: Animator?) {
-                        Utils.hideSoftInput(this@MainActivity, mainSearchEdit)
-                    }
-                })
-
-        searchVisible = false
     }
 
     private fun handleState(state: State) {
