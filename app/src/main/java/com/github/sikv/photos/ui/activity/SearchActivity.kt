@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import com.github.sikv.photos.R
+import com.github.sikv.photos.data.SearchSource
+import com.github.sikv.photos.ui.fragment.SearchFragment
 import kotlinx.android.synthetic.main.activity_search.*
 
 
@@ -34,10 +36,10 @@ class SearchActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        var viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
+        val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
 
-        viewPagerAdapter.addFragment(Fragment(), getString(R.string.unsplash))
-        viewPagerAdapter.addFragment(Fragment(), getString(R.string.pexels))
+        viewPagerAdapter.addFragment(SearchFragment.newInstance(SearchSource.UNSPLASH), getString(R.string.unsplash))
+        viewPagerAdapter.addFragment(SearchFragment.newInstance(SearchSource.PEXELS), getString(R.string.pexels))
 
         searchViewPager.adapter = viewPagerAdapter
         searchTabLayout.setupWithViewPager(searchViewPager)

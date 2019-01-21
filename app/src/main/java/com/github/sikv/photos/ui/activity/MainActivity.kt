@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
-import com.github.sikv.photos.data.State
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.ui.adapter.PhotoAdapter
 import com.github.sikv.photos.viewmodel.MainViewModel
@@ -52,17 +51,17 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun searchPhotos(query: String) {
-        initPhotoAdapter()
-
-        viewModel.searchPhotos(query)?.observe(this, Observer {
-            photoAdapter?.submitList(it)
-        })
-
-        viewModel.getSearchState()?.observe(this, Observer { state ->
-            state?.let(::handleState)
-        })
-    }
+//    private fun searchPhotos(query: String) {
+//        initPhotoAdapter()
+//
+//        viewModel.searchPhotos(query)?.observe(this, Observer {
+//            photoAdapter?.submitList(it)
+//        })
+//
+//        viewModel.getSearchState()?.observe(this, Observer { state ->
+//            state?.let(::handleState)
+//        })
+//    }
 
     private fun onPhotoClick(unsplashPhoto: UnsplashPhoto, view: View) {
         PhotoActivity.startActivity(this, view, unsplashPhoto)
@@ -118,14 +117,14 @@ class MainActivity : AppCompatActivity() {
         mainNoResultsFoundLayout.visibility = View.GONE
     }
 
-    private fun handleState(state: State) {
-        if (state == State.ERROR) {
-            mainLoadingErrorLayout.visibility = View.VISIBLE
-        } else {
-            mainLoadingErrorLayout.visibility = View.GONE
-
-            mainNoResultsFoundLayout.visibility = if (state != State.LOADING && viewModel.searchListIsEmpty())
-                View.VISIBLE else View.GONE
-        }
-    }
+//    private fun handleState(state: State) {
+//        if (state == State.ERROR) {
+//            mainLoadingErrorLayout.visibility = View.VISIBLE
+//        } else {
+//            mainLoadingErrorLayout.visibility = View.GONE
+//
+//            mainNoResultsFoundLayout.visibility = if (state != State.LOADING && viewModel.searchListIsEmpty())
+//                View.VISIBLE else View.GONE
+//        }
+//    }
 }
