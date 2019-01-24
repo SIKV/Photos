@@ -6,7 +6,7 @@ import android.view.View
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.github.sikv.photos.model.UnsplashPhoto
+import com.github.sikv.photos.model.Photo
 import kotlinx.android.synthetic.main.item_photo.view.*
 
 class PhotoViewHolder(
@@ -15,16 +15,16 @@ class PhotoViewHolder(
 
 ) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(unsplashPhoto: UnsplashPhoto?,
-             clickCallback: (UnsplashPhoto, View) -> Unit,
-             longClickCallback: ((UnsplashPhoto, View) -> Unit)? = null) {
+    fun bind(photo: Photo?,
+             clickCallback: (Photo, View) -> Unit,
+             longClickCallback: ((Photo, View) -> Unit)? = null) {
 
         itemView.itemPhotoImage.setImageDrawable(null)
         itemView.setOnClickListener(null)
 
-        unsplashPhoto?.let {
+        photo?.let {
             glide.asBitmap()
-                    .load(unsplashPhoto.urls.small)
+                    .load(photo.getSmallUrl())
                     .into(object : SimpleTarget<Bitmap>() {
                         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                             itemView.itemPhotoImage.setImageBitmap(resource)
@@ -32,11 +32,11 @@ class PhotoViewHolder(
                     })
 
             itemView.setOnClickListener {
-                clickCallback.invoke(unsplashPhoto, it)
+                clickCallback.invoke(photo, it)
             }
 
             itemView.setOnLongClickListener {
-                longClickCallback?.invoke(unsplashPhoto, it)
+                longClickCallback?.invoke(photo, it)
                 return@setOnLongClickListener true
             }
         }

@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import android.widget.PopupWindow
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
-import com.github.sikv.photos.model.UnsplashPhoto
+import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.PhotoAdapter
 import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     private fun recentPhotos() {
         initPhotoAdapter()
 
-        viewModel.recentPhotos.observe(this, Observer<PagedList<UnsplashPhoto>> {
+        viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
             photoAdapter?.submitList(it)
         })
     }
@@ -63,16 +63,16 @@ class MainActivity : AppCompatActivity() {
 //        })
 //    }
 
-    private fun onPhotoClick(unsplashPhoto: UnsplashPhoto, view: View) {
-        PhotoActivity.startActivity(this, view, unsplashPhoto)
+    private fun onPhotoClick(photo: Photo, view: View) {
+//        PhotoActivity.startActivity(this, view, unsplashPhoto)
     }
 
-    private fun onPhotoLongClick(unsplashPhoto: UnsplashPhoto, view: View) {
+    private fun onPhotoLongClick(photo: Photo, view: View) {
         var photoPopupPreview: PopupWindow? = null
         val layout = layoutInflater.inflate(R.layout.popup_photo_preview, mainRootLayout, false)
 
         Glide.with(this)
-                .load(unsplashPhoto.urls.small)
+                .load(photo.getSmallUrl())
                 .into(layout.photoPreviewImage)
 
         layout.setOnClickListener {

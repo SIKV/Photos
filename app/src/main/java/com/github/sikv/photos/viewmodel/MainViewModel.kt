@@ -6,7 +6,7 @@ import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.RecentPhotosDataSourceFactory
-import com.github.sikv.photos.model.UnsplashPhoto
+import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
 
 class MainViewModel : ViewModel() {
@@ -22,12 +22,12 @@ class MainViewModel : ViewModel() {
             .setPageSize(PAGE_SIZE)
             .build()
 
-    var recentPhotos: LiveData<PagedList<UnsplashPhoto>>
+    var recentPhotos: LiveData<PagedList<Photo>>
 
     init {
         val recentPhotosDataSource = RecentPhotosDataSourceFactory(ApiClient.INSTANCE.unsplashClient)
 
-        recentPhotos = LivePagedListBuilder<Int, UnsplashPhoto>(recentPhotosDataSource, pagedListConfig)
+        recentPhotos = LivePagedListBuilder<Int, Photo>(recentPhotosDataSource, pagedListConfig)
                 .setFetchExecutor(Executors.newSingleThreadExecutor())
                 .build()
     }

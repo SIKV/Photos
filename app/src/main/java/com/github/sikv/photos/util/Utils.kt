@@ -9,6 +9,8 @@ import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.github.sikv.photos.R
 
@@ -66,5 +68,10 @@ object Utils {
         builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
 
         builder.build().launchUrl(context, Uri.parse(url))
+    }
+
+    fun hideSoftInput(context: Context, view: View) {
+        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
