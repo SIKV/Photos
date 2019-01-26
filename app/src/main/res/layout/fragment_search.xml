@@ -11,7 +11,6 @@
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
     <include layout="@layout/layout_no_results_found"/>
-
     <include layout="@layout/layout_loading_error"/>
 
 </FrameLayout>

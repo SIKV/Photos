@@ -17,10 +17,10 @@ class SearchPhotosDataSource(
 
 ) : PositionalDataSource<Photo>() {
 
-    var state: MutableLiveData<State> = MutableLiveData()
+    var state: MutableLiveData<DataSourceState> = MutableLiveData()
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Photo>) {
-        updateState(State.LOADING)
+        updateState(DataSourceState.LOADING)
 
         // TODO Refactor
         when (searchSource) {
@@ -28,7 +28,7 @@ class SearchPhotosDataSource(
                 apiClient.unsplashClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
                         .enqueue(object : Callback<UnsplashSearchResponse> {
                             override fun onFailure(call: Call<UnsplashSearchResponse>?, t: Throwable?) {
-                                updateState(State.ERROR)
+                                updateState(DataSourceState.ERROR)
                             }
 
                             override fun onResponse(call: Call<UnsplashSearchResponse>?, response: Response<UnsplashSearchResponse>?) {
@@ -36,10 +36,10 @@ class SearchPhotosDataSource(
                                     val res = it.results
                                     callback.onResult(res,0, res.size)
 
-                                    updateState(State.DONE)
+                                    updateState(DataSourceState.DONE)
 
                                 } ?: run {
-                                    updateState(State.ERROR)
+                                    updateState(DataSourceState.ERROR)
                                 }
                             }
                         })
@@ -49,7 +49,7 @@ class SearchPhotosDataSource(
                 apiClient.pexelsClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
                         .enqueue(object : Callback<PexelsSearchResponse> {
                             override fun onFailure(call: Call<PexelsSearchResponse>?, t: Throwable?) {
-                                updateState(State.ERROR)
+                                updateState(DataSourceState.ERROR)
                             }
 
                             override fun onResponse(call: Call<PexelsSearchResponse>?, response: Response<PexelsSearchResponse>?) {
@@ -57,10 +57,10 @@ class SearchPhotosDataSource(
                                     val res = it.photos
                                     callback.onResult(res,0, res.size)
 
-                                    updateState(State.DONE)
+                                    updateState(DataSourceState.DONE)
 
                                 } ?: run {
-                                    updateState(State.ERROR)
+                                    updateState(DataSourceState.ERROR)
                                 }
                             }
                         })
@@ -69,7 +69,7 @@ class SearchPhotosDataSource(
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Photo>) {
-        updateState(State.LOADING)
+        updateState(DataSourceState.LOADING)
 
         // TODO Refactor
         when (searchSource) {
@@ -77,17 +77,17 @@ class SearchPhotosDataSource(
                 apiClient.unsplashClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
                         .enqueue(object : Callback<UnsplashSearchResponse> {
                             override fun onFailure(call: Call<UnsplashSearchResponse>?, t: Throwable?) {
-                                updateState(State.ERROR)
+                                updateState(DataSourceState.ERROR)
                             }
 
                             override fun onResponse(call: Call<UnsplashSearchResponse>?, response: Response<UnsplashSearchResponse>?) {
                                 response?.body()?.let {
                                     callback.onResult(it.results)
 
-                                    updateState(State.DONE)
+                                    updateState(DataSourceState.DONE)
 
                                 } ?: run {
-                                    updateState(State.ERROR)
+                                    updateState(DataSourceState.ERROR)
                                 }
                             }
                         })
@@ -97,17 +97,17 @@ class SearchPhotosDataSource(
                 apiClient.pexelsClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
                         .enqueue(object : Callback<PexelsSearchResponse> {
                             override fun onFailure(call: Call<PexelsSearchResponse>?, t: Throwable?) {
-                                updateState(State.ERROR)
+                                updateState(DataSourceState.ERROR)
                             }
 
                             override fun onResponse(call: Call<PexelsSearchResponse>?, response: Response<PexelsSearchResponse>?) {
                                 response?.body()?.let {
                                     callback.onResult(it.photos)
 
-                                    updateState(State.DONE)
+                                    updateState(DataSourceState.DONE)
 
                                 } ?: run {
-                                    updateState(State.ERROR)
+                                    updateState(DataSourceState.ERROR)
                                 }
                             }
                         })
@@ -115,7 +115,7 @@ class SearchPhotosDataSource(
         }
     }
 
-    private fun updateState(state: State) {
+    private fun updateState(state: DataSourceState) {
         this.state.postValue(state)
     }
 }

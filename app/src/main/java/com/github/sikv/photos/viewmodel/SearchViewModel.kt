@@ -9,7 +9,7 @@ import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.SearchPhotosDataSource
 import com.github.sikv.photos.data.SearchPhotosDataSourceFactory
 import com.github.sikv.photos.data.SearchSource
-import com.github.sikv.photos.data.State
+import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
 
@@ -32,11 +32,11 @@ class SearchViewModel : ViewModel() {
     private var unsplashSearchLivePagedList: LiveData<PagedList<Photo>>? = null
     private var pexelsSearchLivePagedList: LiveData<PagedList<Photo>>? = null
 
-    fun getSearchState(searchSource: SearchSource): LiveData<State>? {
+    fun getSearchState(searchSource: SearchSource): LiveData<DataSourceState>? {
         when (searchSource) {
             SearchSource.UNSPLASH -> {
                 unsplashSearchDataSourceFactory?.let {
-                    return Transformations.switchMap<SearchPhotosDataSource, State>(
+                    return Transformations.switchMap<SearchPhotosDataSource, DataSourceState>(
                             it.searchDataSourceLiveData, SearchPhotosDataSource::state)
                 } ?: run {
                     return null
@@ -45,7 +45,7 @@ class SearchViewModel : ViewModel() {
 
             SearchSource.PEXELS -> {
                 pexelsSearchDataSourceFactory?.let {
-                    return Transformations.switchMap<SearchPhotosDataSource, State>(
+                    return Transformations.switchMap<SearchPhotosDataSource, DataSourceState>(
                             it.searchDataSourceLiveData, SearchPhotosDataSource::state)
                 } ?: run {
                     return null

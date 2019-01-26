@@ -51,18 +51,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-//    private fun searchPhotos(query: String) {
-//        initPhotoAdapter()
-//
-//        viewModel.searchPhotos(query)?.observe(this, Observer {
-//            photoAdapter?.submitList(it)
-//        })
-//
-//        viewModel.getSearchState()?.observe(this, Observer { state ->
-//            state?.let(::handleState)
-//        })
-//    }
-
     private fun onPhotoClick(photo: Photo, view: View) {
 //        PhotoActivity.startActivity(this, view, unsplashPhoto)
     }
@@ -113,18 +101,7 @@ class MainActivity : AppCompatActivity() {
         photoAdapter = PhotoAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
         mainRecycler.adapter = photoAdapter
 
-        mainLoadingErrorLayout.visibility = View.GONE
-        mainNoResultsFoundLayout.visibility = View.GONE
+        loadingErrorLayout.visibility = View.GONE
+        noResultsFoundLayout.visibility = View.GONE
     }
-
-//    private fun handleState(state: State) {
-//        if (state == State.ERROR) {
-//            mainLoadingErrorLayout.visibility = View.VISIBLE
-//        } else {
-//            mainLoadingErrorLayout.visibility = View.GONE
-//
-//            mainNoResultsFoundLayout.visibility = if (state != State.LOADING && viewModel.searchListIsEmpty())
-//                View.VISIBLE else View.GONE
-//        }
-//    }
 }

@@ -9,11 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
+import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.data.SearchSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.PhotoAdapter
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.layout_loading_error.*
+import kotlinx.android.synthetic.main.layout_no_results_found.*
 
 class SearchFragment : Fragment() {
 
@@ -60,6 +63,24 @@ class SearchFragment : Fragment() {
             viewModel.searchPhotos(searchSource, text)?.observe(this, Observer {
                 photoAdapter?.submitList(it)
             })
+
+            viewModel.getSearchState(searchSource)?.observe(this, Observer { state ->
+                state?.let(::handleState)
+            })
+        }
+    }
+
+    private fun handleState(state: DataSourceState) {
+        if (state == DataSourceState.ERROR) {
+            loadingErrorLayout.visibility = View.VISIBLE
+        } else {
+            loadingErrorLayout.visibility = View.GONE
+
+            searchSource?.let { searchSource ->
+                noResultsFoundLayout.visibility =
+                        if (state != DataSourceState.LOADING && viewModel.searchListIsEmpty(searchSource)) View.VISIBLE
+                        else View.GONE
+            }
         }
     }
 
