@@ -48,7 +48,7 @@ data class PexelsPhoto(
     }
 
     override fun getSourceUrl(): String {
-        return src.original
+        return url
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
