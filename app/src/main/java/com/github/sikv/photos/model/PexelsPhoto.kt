@@ -1,9 +1,7 @@
 package com.github.sikv.photos.model
 
-import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import com.github.sikv.photos.R
 
 data class PexelsPhoto(
         val width: Int,
@@ -12,7 +10,7 @@ data class PexelsPhoto(
         val photographer: String,
         val src: Src
 
-) : Photo, Parcelable {
+) : Photo {
 
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
@@ -30,7 +28,7 @@ data class PexelsPhoto(
     }
 
     override fun getSmallUrl(): String {
-        return src.small
+        return src.medium
     }
 
     override fun getShareUrl(): String {
@@ -41,8 +39,16 @@ data class PexelsPhoto(
         return photographer
     }
 
-    override fun getSource(context: Context): String {
-        return context.getString(R.string.pexels)
+    override fun getPhotographerUrl(): String? {
+        return null
+    }
+
+    override fun getSource(): String {
+        return "Pexels"
+    }
+
+    override fun getSourceUrl(): String {
+        return src.original
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

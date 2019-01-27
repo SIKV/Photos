@@ -1,9 +1,7 @@
 package com.github.sikv.photos.model
 
-import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
-import com.github.sikv.photos.R
 
 data class UnsplashPhoto(
         val id: String,
@@ -16,7 +14,7 @@ data class UnsplashPhoto(
         val urls: Urls,
         val links: Links
 
-) : Photo, Parcelable {
+) : Photo {
 
     constructor(parcel: Parcel) : this(
             parcel.readString(),
@@ -49,8 +47,16 @@ data class UnsplashPhoto(
         return user.name
     }
 
-    override fun getSource(context: Context): String {
-        return context.getString(R.string.unsplash)
+    override fun getPhotographerUrl(): String? {
+        return user.portfolioUrl
+    }
+
+    override fun getSource(): String {
+        return "Unsplash"
+    }
+
+    override fun getSourceUrl(): String {
+        return links.html
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

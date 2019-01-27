@@ -15,14 +15,14 @@ import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.Event
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
-import com.github.sikv.photos.model.UnsplashPhoto
+import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.Utils
 import kotlin.properties.Delegates
 
 @SuppressLint("StaticFieldLeak")
 class PhotoViewModel(
         application: Application,
-        private val unsplashPhoto: UnsplashPhoto
+        private val photo: Photo
 
 ) : AndroidViewModel(application) {
 
@@ -40,7 +40,7 @@ class PhotoViewModel(
 
         object : AsyncTask<String, Void, Boolean>() {
             override fun doInBackground(vararg p0: String?): Boolean {
-                (favoritesDatabase.photoDao().get(unsplashPhoto.id))?.let {
+                (favoritesDatabase.photoDao().get(photo.getPhotoId()))?.let {
                     return true
                 } ?: run {
                     return false
@@ -54,7 +54,7 @@ class PhotoViewModel(
                     favorited = it
                 }
             }
-        }.execute(unsplashPhoto.id)
+        }.execute(photo.getPhotoId())
     }
 
     fun loadPhoto(glide: RequestManager): LiveData<Event<Bitmap>> {
@@ -62,11 +62,11 @@ class PhotoViewModel(
         var photoLoaded = false
 
         glide.asBitmap()
-                .load(unsplashPhoto.urls.regular)
+                .load(photo.getNormalUrl())
                 .into(object : SimpleTarget<Bitmap>() {
                     override fun onLoadStarted(placeholder: Drawable?) {
                         glide.asBitmap()
-                                .load(unsplashPhoto.urls.small)
+                                .load(photo.getSmallUrl())
                                 .into(object : SimpleTarget<Bitmap>() {
                                     override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
                                         if (!photoLoaded) {
@@ -87,27 +87,27 @@ class PhotoViewModel(
 
     fun favorite() {
         favorited = !favorited
-        FavoriteAsyncTask(favoritesDatabase, favorited).execute(PhotoData(unsplashPhoto.id, unsplashPhoto.urls.small))
+        FavoriteAsyncTask(favoritesDatabase, favorited).execute(PhotoData(photo.getPhotoId(), photo.getSmallUrl()))
     }
 
     fun createShareIntent(): Intent {
         val shareIntent = Intent()
 
         shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_TEXT, unsplashPhoto.links.html)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, photo.getShareUrl())
         shareIntent.type = "text/plain"
 
         return shareIntent
     }
 
     fun openAuthorUrl() {
-        unsplashPhoto.user.portfolioUrl?.let {
+        photo.getPhotographerUrl()?.let {
             Utils.openUrl(getApplication(), it)
         }
     }
 
     fun openPhotoSource() {
-        Utils.openUrl(getApplication(), unsplashPhoto.links.html)
+        Utils.openUrl(getApplication(), photo.getSourceUrl())
     }
 
     private class FavoriteAsyncTask internal constructor(

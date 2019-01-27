@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onPhotoClick(photo: Photo, view: View) {
-//        PhotoActivity.startActivity(this, view, unsplashPhoto)
+        PhotoActivity.startActivity(this, view, photo)
     }
 
     private fun onPhotoLongClick(photo: Photo, view: View) {

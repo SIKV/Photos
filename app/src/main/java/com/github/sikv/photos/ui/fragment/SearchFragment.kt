@@ -12,6 +12,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.data.SearchSource
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoAdapter
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -85,6 +86,9 @@ class SearchFragment : Fragment() {
     }
 
     private fun onPhotoClick(photo: Photo, view: View) {
+        activity?.let { activity ->
+            PhotoActivity.startActivity(activity, view, photo)
+        }
     }
 
     private fun onPhotoLongClick(photo: Photo, view: View) {

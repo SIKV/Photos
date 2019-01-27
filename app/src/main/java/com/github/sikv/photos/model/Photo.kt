@@ -1,13 +1,15 @@
 package com.github.sikv.photos.model
 
-import android.content.Context
+import android.os.Parcelable
 
-interface Photo {
+interface Photo : Parcelable {
 
     fun getPhotoId(): String
     fun getNormalUrl(): String
     fun getSmallUrl(): String
     fun getShareUrl(): String
     fun getPhotographerName(): String
-    fun getSource(context: Context): String
+    fun getPhotographerUrl(): String?
+    fun getSource(): String
+    fun getSourceUrl(): String
 }

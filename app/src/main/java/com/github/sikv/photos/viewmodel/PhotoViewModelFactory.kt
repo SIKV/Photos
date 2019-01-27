@@ -3,18 +3,18 @@ package com.github.sikv.photos.viewmodel
 import android.app.Application
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.github.sikv.photos.model.UnsplashPhoto
+import com.github.sikv.photos.model.Photo
 
 class PhotoViewModelFactory(
         private val application: Application,
-        private val unsplashPhoto: UnsplashPhoto
+        private val photo: Photo
 
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(modelClass)) {
-            return PhotoViewModel(application, unsplashPhoto) as T
+            return PhotoViewModel(application, photo) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")
