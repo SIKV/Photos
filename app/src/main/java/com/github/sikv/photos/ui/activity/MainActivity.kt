@@ -14,7 +14,7 @@ import android.widget.PopupWindow
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.ui.adapter.PhotoAdapter
+import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
-    private var photoAdapter: PhotoAdapter? = null
+    private var photoAdapter: PhotoPagedListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initPhotoAdapter() {
-        photoAdapter = PhotoAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
+        photoAdapter = PhotoPagedListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
         mainRecycler.adapter = photoAdapter
 
         loadingErrorLayout.visibility = View.GONE

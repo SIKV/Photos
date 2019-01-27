@@ -8,7 +8,8 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/favoritesAppBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize">
+        android:layout_height="?actionBarSize"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/favoritesToolbar"
@@ -39,6 +40,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
-    <include layout="@layout/layout_list_empty"/>
+    <LinearLayout
+        android:id="@+id/favoritesEmptyLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_favorite_primary_dark_96dp"
+            android:contentDescription="@string/cn_favorite_icon"/>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

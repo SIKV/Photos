@@ -9,7 +9,6 @@ import android.content.Context
 abstract class FavoritesDatabase : RoomDatabase() {
 
     companion object {
-
         private const val DB_NAME = "favorites.db"
 
         private var instance: FavoritesDatabase? = null

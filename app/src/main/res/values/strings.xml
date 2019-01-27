@@ -26,7 +26,6 @@
 
     <string name="favorites">Favorites</string>
 
-    <string name="empty">EMPTY</string>
     <string name="no_results_found">NO RESULTS FOUND</string>
     <string name="can_not_find_any_photos_matching">WE CAN\'T FIND ANY PHOTOS MATCHING YOUR SEARCH</string>
     <string name="loading_error">LOADING ERROR</string>

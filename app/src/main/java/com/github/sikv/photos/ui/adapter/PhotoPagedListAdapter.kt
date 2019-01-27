@@ -10,7 +10,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
-class PhotoAdapter(
+class PhotoPagedListAdapter(
         private val glide: RequestManager,
         private val clickCallback: (Photo, View) -> Unit,
         private val longClickCallback: ((Photo, View) -> Unit)? = null

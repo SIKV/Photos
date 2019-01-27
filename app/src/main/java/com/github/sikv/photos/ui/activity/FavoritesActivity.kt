@@ -6,18 +6,17 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
+import com.github.sikv.photos.database.PhotoData
+import com.github.sikv.photos.ui.adapter.PhotoDataListAdapter
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import kotlinx.android.synthetic.main.activity_favorites.*
 
 class FavoritesActivity : AppCompatActivity() {
 
-    private val viewModel: FavoritesViewModel by lazy {
-        ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
-    }
-
     companion object {
-
         fun startActivity(activity: Activity) {
             val intent = Intent(activity, FavoritesActivity::class.java)
 
@@ -25,6 +24,12 @@ class FavoritesActivity : AppCompatActivity() {
             activity.overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
         }
     }
+
+    private val viewModel: FavoritesViewModel by lazy {
+        ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
+    }
+
+    private var photoAdapter: PhotoDataListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,8 +42,15 @@ class FavoritesActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        viewModel.favoritesLiveData.observe(this, Observer {
+        init()
 
+        viewModel.favoritesLiveData.observe(this, Observer {
+            it?.let { photos ->
+                if (photos.isNotEmpty()) {
+                    favoritesEmptyLayout.visibility = View.GONE
+                    photoAdapter?.submitList(photos)
+                }
+            }
         })
     }
 
@@ -51,5 +63,16 @@ class FavoritesActivity : AppCompatActivity() {
         super.finish()
 
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+    }
+
+    private fun onPhotoClick(photo: PhotoData, view: View) {
+    }
+
+    private fun onPhotoLongClick(photo: PhotoData, view: View) {
+    }
+
+    private fun init() {
+        photoAdapter = PhotoDataListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
+        favoritesRecycler.adapter = photoAdapter
     }
 }

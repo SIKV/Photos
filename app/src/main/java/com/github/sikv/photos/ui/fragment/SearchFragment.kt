@@ -13,7 +13,7 @@ import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.data.SearchSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
-import com.github.sikv.photos.ui.adapter.PhotoAdapter
+import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
@@ -41,7 +41,7 @@ class SearchFragment : Fragment() {
     }
 
     private var searchSource: SearchSource? = null
-    private var photoAdapter: PhotoAdapter? = null
+    private var photoAdapter: PhotoPagedListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +95,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun init() {
-        photoAdapter = PhotoAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
+        photoAdapter = PhotoPagedListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
         searchRecycler.adapter = photoAdapter
     }
 }
