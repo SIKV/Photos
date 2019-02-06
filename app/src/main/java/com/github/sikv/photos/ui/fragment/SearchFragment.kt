@@ -1,5 +1,6 @@
 package com.github.sikv.photos.ui.fragment
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -14,6 +15,7 @@ import com.github.sikv.photos.data.SearchSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
+import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
@@ -92,6 +94,7 @@ class SearchFragment : Fragment() {
     }
 
     private fun onPhotoLongClick(photo: Photo, view: View) {
+        PhotoPreviewPopup.show(activity as Activity, searchRootLayout, photo)
     }
 
     private fun init() {

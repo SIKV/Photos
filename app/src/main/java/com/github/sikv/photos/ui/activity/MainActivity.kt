@@ -7,19 +7,16 @@ import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
-import android.widget.PopupWindow
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
+import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
 import kotlinx.android.synthetic.main.layout_no_results_found.*
-import kotlinx.android.synthetic.main.popup_photo_preview.view.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -56,21 +53,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onPhotoLongClick(photo: Photo, view: View) {
-        var photoPopupPreview: PopupWindow? = null
-        val layout = layoutInflater.inflate(R.layout.popup_photo_preview, mainRootLayout, false)
-
-        Glide.with(this)
-                .load(photo.getSmallUrl())
-                .into(layout.photoPreviewImage)
-
-        layout.setOnClickListener {
-            photoPopupPreview?.dismiss()
-        }
-
-        photoPopupPreview = PopupWindow(layout,
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-
-        photoPopupPreview.showAtLocation(mainRootLayout, Gravity.CENTER, 0, 0)
+        PhotoPreviewPopup.show(this, mainRootLayout, photo)
     }
 
     private fun init() {
