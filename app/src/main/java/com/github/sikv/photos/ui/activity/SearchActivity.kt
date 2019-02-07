@@ -94,7 +94,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchRequestFocus() {
         searchEdit.requestFocus()
-        Utils.showSoftInput(this)
+        Utils.showSoftInput(this, searchEdit)
     }
 
     private fun initViewPager() {

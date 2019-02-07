@@ -70,9 +70,9 @@ object Utils {
         builder.build().launchUrl(context, Uri.parse(url))
     }
 
-    fun showSoftInput(context: Context) {
+    fun showSoftInput(context: Context, view: View) {
         val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+        inputMethodManager.showSoftInput(view, 0)
     }
 
     fun hideSoftInput(context: Context, view: View) {
