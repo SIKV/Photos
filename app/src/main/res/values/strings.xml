@@ -5,9 +5,6 @@
     <string name="unsplash">Unsplash</string>
     <string name="pexels">Pexels</string>
 
-    <string name="search_uc">SEARCH</string>
-    <string name="remove">Remove</string>
-
     <string name="cn_close_search">Close search</string>
     <string name="cn_open_favorites">Open favorites</string>
     <string name="cn_open_search">Open search</string>
@@ -18,7 +15,6 @@
     <string name="cn_loading_error_icon">Loading error icon</string>
 
     <string name="transition_photo">Transition Photo</string>
-
     <string name="photo_by_s_on_s">Photo by %s on %s</string>
     <string name="share">Share</string>
     <string name="download">Download</string>
@@ -28,5 +24,7 @@
     <string name="can_not_find_any_photos_matching">WE CAN\'T FIND ANY PHOTOS MATCHING YOUR SEARCH</string>
     <string name="loading_error">LOADING ERROR</string>
     <string name="delete">Delete</string>
+    <string name="search_uc">SEARCH</string>
+    <string name="clear">Clear</string>
 
 </resources>

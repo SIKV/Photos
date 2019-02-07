@@ -7,7 +7,10 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.SearchSource
@@ -21,13 +24,19 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         fun startActivity(activity: Activity) {
             val intent = Intent(activity, SearchActivity::class.java)
-            activity.startActivity(intent)
 
+            activity.startActivity(intent)
             activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
+
+    private var clearButtonVisible: Boolean = false
+        set(value) {
+            field = value
+            invalidateOptionsMenu()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +51,8 @@ class SearchActivity : AppCompatActivity() {
 
         initViewPager()
         init()
+
+        searchRequestFocus()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -50,13 +61,28 @@ class SearchActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_remove, menu)
+        menuInflater.inflate(R.menu.menu_clear, menu)
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.itemClear)?.isVisible = clearButtonVisible
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.itemClear -> {
+                searchEdit.text.clear()
+                searchRequestFocus()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun finish() {
         super.finish()
-
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
@@ -64,6 +90,11 @@ class SearchActivity : AppCompatActivity() {
         viewPagerAdapter.fragments.forEach {
             it.searchPhotos(text)
         }
+    }
+
+    private fun searchRequestFocus() {
+        searchEdit.requestFocus()
+        Utils.showSoftInput(this)
     }
 
     private fun initViewPager() {
@@ -88,6 +119,18 @@ class SearchActivity : AppCompatActivity() {
 
             return@setOnEditorActionListener false
         }
+
+        searchEdit.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(editable: Editable?) {
+                clearButtonVisible = editable?.isNotEmpty() ?: false
+            }
+
+            override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
     }
 
     internal inner class ViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
