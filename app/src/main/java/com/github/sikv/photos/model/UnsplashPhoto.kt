@@ -16,6 +16,18 @@ data class UnsplashPhoto(
 
 ) : Photo {
 
+    companion object CREATOR : Parcelable.Creator<UnsplashPhoto> {
+        const val SOURCE = "Unsplash"
+
+        override fun createFromParcel(parcel: Parcel): UnsplashPhoto {
+            return UnsplashPhoto(parcel)
+        }
+
+        override fun newArray(size: Int): Array<UnsplashPhoto?> {
+            return arrayOfNulls(size)
+        }
+    }
+
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readInt(),
@@ -52,7 +64,7 @@ data class UnsplashPhoto(
     }
 
     override fun getSource(): String {
-        return "Unsplash"
+        return SOURCE
     }
 
     override fun getSourceUrl(): String {
@@ -73,15 +85,5 @@ data class UnsplashPhoto(
 
     override fun describeContents(): Int {
         return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<UnsplashPhoto> {
-        override fun createFromParcel(parcel: Parcel): UnsplashPhoto {
-            return UnsplashPhoto(parcel)
-        }
-
-        override fun newArray(size: Int): Array<UnsplashPhoto?> {
-            return arrayOfNulls(size)
-        }
     }
 }

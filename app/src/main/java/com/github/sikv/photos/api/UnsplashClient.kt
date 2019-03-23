@@ -9,6 +9,9 @@ class UnsplashClient(private val unsplashApi: UnsplashApi) {
     fun getLatestPhotos(page: Int, perPage: Int): Call<List<UnsplashPhoto>> =
             unsplashApi.getPhotos(page, perPage, "latest")
 
+    fun getPhoto(id: String): Call<UnsplashPhoto> =
+            unsplashApi.getPhoto(id)
+
     fun searchPhotos(query: String, page: Int, perPage: Int): Call<UnsplashSearchResponse> =
             unsplashApi.searchPhotos(query, page, perPage)
 }

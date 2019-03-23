@@ -13,11 +13,18 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.Event
+import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
+import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.util.Utils
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import kotlin.properties.Delegates
+
 
 @SuppressLint("StaticFieldLeak")
 class PhotoViewModel(
@@ -28,7 +35,10 @@ class PhotoViewModel(
 
     private val favoritesDatabase: FavoritesDatabase = FavoritesDatabase.getInstance(getApplication())
 
-    private var favorited: Boolean by Delegates.observable(false) { property, oldValue, newValue ->
+    var photoReadyEvent: MutableLiveData<Event<Photo?>>
+        private set
+
+    private var favorited: Boolean by Delegates.observable(false) { _, _, newValue ->
         favoriteChangedEvent.value = Event(newValue)
     }
 
@@ -36,6 +46,7 @@ class PhotoViewModel(
         private set
 
     init {
+        photoReadyEvent = MutableLiveData()
         favoriteChangedEvent = MutableLiveData()
 
         object : AsyncTask<String, Void, Boolean>() {
@@ -61,33 +72,71 @@ class PhotoViewModel(
         val photoLoadedEvent = MutableLiveData<Event<Bitmap>>()
         var photoLoaded = false
 
-        glide.asBitmap()
-                .load(photo.getNormalUrl())
-                .into(object : SimpleTarget<Bitmap>() {
-                    override fun onLoadStarted(placeholder: Drawable?) {
-                        glide.asBitmap()
-                                .load(photo.getSmallUrl())
-                                .into(object : SimpleTarget<Bitmap>() {
-                                    override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                                        if (!photoLoaded) {
-                                            photoLoadedEvent.value = Event(bitmap)
-                                        }
-                                    }
-                                })
-                    }
+        if (photo.isLocalPhoto()) {
+            glide.asBitmap()
+                    .load(photo.getSmallUrl())
+                    .into(object : SimpleTarget<Bitmap>() {
+                        override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                            photoLoadedEvent.value = Event(bitmap)
+                        }
+                    })
 
-                    override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                        photoLoadedEvent.value = Event(bitmap)
-                        photoLoaded = true
-                    }
-                })
+            when (photo.getSource()) {
+                UnsplashPhoto.SOURCE -> {
+                    ApiClient.INSTANCE.unsplashClient.getPhoto(photo.getPhotoId())
+                            .enqueue(object : Callback<UnsplashPhoto> {
+                                override fun onFailure(call: Call<UnsplashPhoto>, t: Throwable) {
+                                }
+
+                                override fun onResponse(call: Call<UnsplashPhoto>, response: Response<UnsplashPhoto>) {
+                                    response.body()?.let { unsplashPhoto ->
+                                        // TODO photo = unsplashPhoto
+                                        photoReadyEvent.value = Event(unsplashPhoto)
+                                    }
+                                }
+                            })
+                }
+
+                PexelsPhoto.SOURCE -> {
+                    // TODO Implement
+                }
+            }
+
+            // TODO Get full size photo
+
+        } else {
+            glide.asBitmap()
+                    .load(photo.getNormalUrl())
+                    .into(object : SimpleTarget<Bitmap>() {
+                        override fun onLoadStarted(placeholder: Drawable?) {
+                            glide.asBitmap()
+                                    .load(photo.getSmallUrl())
+                                    .into(object : SimpleTarget<Bitmap>() {
+                                        override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                                            if (!photoLoaded) {
+                                                photoLoadedEvent.value = Event(bitmap)
+                                            }
+                                        }
+                                    })
+                        }
+
+                        override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                            photoLoadedEvent.value = Event(bitmap)
+                            photoLoaded = true
+                        }
+                    })
+
+            photoReadyEvent.value = Event(photo)
+        }
 
         return photoLoadedEvent
     }
 
     fun favorite() {
         favorited = !favorited
-        FavoriteAsyncTask(favoritesDatabase, favorited).execute(PhotoData(photo.getPhotoId(), photo.getSmallUrl()))
+
+        FavoriteAsyncTask(favoritesDatabase, favorited).execute(
+                PhotoData(photo.getPhotoId(), photo.getSmallUrl(), photo.getSource()))
     }
 
     fun createShareIntent(): Intent {

@@ -16,6 +16,7 @@ import com.github.sikv.photos.ui.adapter.PhotoDataListAdapter
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import kotlinx.android.synthetic.main.activity_favorites.*
 
+
 class FavoritesActivity : AppCompatActivity() {
 
     companion object {
@@ -80,6 +81,7 @@ class FavoritesActivity : AppCompatActivity() {
     }
 
     private fun onPhotoClick(photo: PhotoData, view: View) {
+        PhotoActivity.startActivity(this, view, photo)
     }
 
     private fun onPhotoLongClick(photo: PhotoData, view: View) {

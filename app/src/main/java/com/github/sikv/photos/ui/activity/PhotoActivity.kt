@@ -29,12 +29,7 @@ import kotlinx.android.synthetic.main.activity_photo.*
 
 class PhotoActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: PhotoViewModel
-
-    private var favoriteMenuItemIcon: Int? = null
-
     companion object {
-
         private const val FAVORITE_ANIMATION_DURATION = 200L
 
         private const val EXTRA_PHOTO = "photo"
@@ -52,6 +47,10 @@ class PhotoActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var viewModel: PhotoViewModel
+
+    private var favoriteMenuItemIcon: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,7 +62,7 @@ class PhotoActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, PhotoViewModelFactory(application, photo))
                 .get(PhotoViewModel::class.java)
 
-        init(photo)
+        init()
         initListeners()
         initObservers()
     }
@@ -114,13 +113,17 @@ class PhotoActivity : AppCompatActivity() {
         }
     }
 
-    private fun init(photo: Photo) {
+    private fun init() {
         setSupportActionBar(photoToolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        adjustMargins()
+    }
+
+    private fun showPhoto(photo: Photo) {
         val authorName = photo.getPhotographerName()
         val source = photo.getSource()
 
@@ -141,8 +144,6 @@ class PhotoActivity : AppCompatActivity() {
                             }
                         }
                 ))
-
-        adjustMargins()
     }
 
     private fun initListeners() {
@@ -159,6 +160,12 @@ class PhotoActivity : AppCompatActivity() {
         viewModel.loadPhoto(Glide.with(this)).observe(this, Observer {
             it?.getContentIfNotHandled()?.let {
                 photoImageView.setImageBitmap(it)
+            }
+        })
+
+        viewModel.photoReadyEvent.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let { photo ->
+                showPhoto(photo)
             }
         })
 

@@ -12,6 +12,18 @@ data class PexelsPhoto(
 
 ) : Photo {
 
+    companion object CREATOR : Parcelable.Creator<PexelsPhoto> {
+        const val SOURCE = "Pexels"
+
+        override fun createFromParcel(parcel: Parcel): PexelsPhoto {
+            return PexelsPhoto(parcel)
+        }
+
+        override fun newArray(size: Int): Array<PexelsPhoto?> {
+            return arrayOfNulls(size)
+        }
+    }
+
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
             parcel.readInt(),
@@ -44,7 +56,7 @@ data class PexelsPhoto(
     }
 
     override fun getSource(): String {
-        return "Pexels"
+        return SOURCE
     }
 
     override fun getSourceUrl(): String {
@@ -61,15 +73,5 @@ data class PexelsPhoto(
 
     override fun describeContents(): Int {
         return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<PexelsPhoto> {
-        override fun createFromParcel(parcel: Parcel): PexelsPhoto {
-            return PexelsPhoto(parcel)
-        }
-
-        override fun newArray(size: Int): Array<PexelsPhoto?> {
-            return arrayOfNulls(size)
-        }
     }
 }
