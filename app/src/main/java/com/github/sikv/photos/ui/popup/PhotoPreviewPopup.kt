@@ -26,6 +26,7 @@ object PhotoPreviewPopup {
         photoPopupPreview = PopupWindow(layout,
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
 
+        photoPopupPreview.animationStyle = R.style.PhotoPreviewPopupAnimation
         photoPopupPreview.showAtLocation(rootLayout, Gravity.CENTER, 0, 0)
     }
 }
