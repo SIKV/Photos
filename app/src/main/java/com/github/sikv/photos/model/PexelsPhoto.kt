@@ -32,11 +32,11 @@ data class PexelsPhoto(
             parcel.readParcelable(Src::class.java.classLoader))
 
     override fun getPhotoId(): String {
-        return url
+        return url.substring(url.substring(0, url.length - 1).lastIndexOf("-") + 1, url.lastIndexOf("/"))
     }
 
     override fun getNormalUrl(): String {
-        return src.medium
+        return src.large
     }
 
     override fun getSmallUrl(): String {

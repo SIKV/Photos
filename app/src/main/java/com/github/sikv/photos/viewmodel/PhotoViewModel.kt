@@ -29,7 +29,7 @@ import kotlin.properties.Delegates
 @SuppressLint("StaticFieldLeak")
 class PhotoViewModel(
         application: Application,
-        private val photo: Photo
+        private var photo: Photo
 
 ) : AndroidViewModel(application) {
 
@@ -72,6 +72,17 @@ class PhotoViewModel(
         val photoLoadedEvent = MutableLiveData<Event<Bitmap>>()
         var photoLoaded = false
 
+        fun loadFullSizePhoto() {
+            glide.asBitmap()
+                    .load(photo.getNormalUrl())
+                    .into(object : SimpleTarget<Bitmap>() {
+                        override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                            photoLoadedEvent.value = Event(bitmap)
+                            photoLoaded = true
+                        }
+                    })
+        }
+
         if (photo.isLocalPhoto()) {
             glide.asBitmap()
                     .load(photo.getSmallUrl())
@@ -90,7 +101,9 @@ class PhotoViewModel(
 
                                 override fun onResponse(call: Call<UnsplashPhoto>, response: Response<UnsplashPhoto>) {
                                     response.body()?.let { unsplashPhoto ->
-                                        // TODO photo = unsplashPhoto
+                                        this@PhotoViewModel.photo = unsplashPhoto
+                                        loadFullSizePhoto()
+
                                         photoReadyEvent.value = Event(unsplashPhoto)
                                     }
                                 }
@@ -98,11 +111,23 @@ class PhotoViewModel(
                 }
 
                 PexelsPhoto.SOURCE -> {
-                    // TODO Implement
+                    ApiClient.INSTANCE.pexelsClient.getPhoto(photo.getPhotoId())
+                            .enqueue(object : Callback<PexelsPhoto> {
+                                override fun onFailure(call: Call<PexelsPhoto>, t: Throwable) {
+                                }
+
+                                override fun onResponse(call: Call<PexelsPhoto>, response: Response<PexelsPhoto>) {
+                                    response.body()?.let { pexelsPhoto ->
+                                        this@PhotoViewModel.photo = pexelsPhoto
+                                        loadFullSizePhoto()
+
+                                        photoReadyEvent.value = Event(pexelsPhoto)
+
+                                    }
+                                }
+                            })
                 }
             }
-
-            // TODO Get full size photo
 
         } else {
             glide.asBitmap()
