@@ -43,6 +43,10 @@ data class UnsplashPhoto(
         return id
     }
 
+    override fun getLargeUrl(): String {
+        return urls.full
+    }
+
     override fun getNormalUrl(): String {
         return urls.regular
     }

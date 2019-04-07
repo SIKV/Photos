@@ -21,11 +21,11 @@ import android.view.animation.ScaleAnimation
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.ui.fragment.SetWallpaperBottomSheetDialogFragment
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
 import kotlinx.android.synthetic.main.activity_photo.*
-
 
 class PhotoActivity : AppCompatActivity() {
 
@@ -50,6 +50,8 @@ class PhotoActivity : AppCompatActivity() {
     private lateinit var viewModel: PhotoViewModel
 
     private var favoriteMenuItemIcon: Int? = null
+
+    private val setWallpaperBottomSheet = SetWallpaperBottomSheetDialogFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -147,12 +149,33 @@ class PhotoActivity : AppCompatActivity() {
     }
 
     private fun initListeners() {
+        photoSetWallpaperButton.setOnClickListener {
+            setWallpaperBottomSheet.show(supportFragmentManager, setWallpaperBottomSheet.tag)
+        }
+
         photoShareButton.setOnClickListener {
             startActivity(viewModel.createShareIntent())
         }
 
         photoDownloadButton.setOnClickListener {
 
+        }
+
+        setWallpaperBottomSheet.callback = object : SetWallpaperBottomSheetDialogFragment.Callback {
+            override fun setHomeScreen() {
+                setWallpaperBottomSheet.dismiss()
+                viewModel.setWallpaperHomeScreen(Glide.with(this@PhotoActivity))
+            }
+
+            override fun setLockScreen() {
+                setWallpaperBottomSheet.dismiss()
+                viewModel.setWallpaperLockScreen(Glide.with(this@PhotoActivity))
+            }
+
+            override fun setHomeAndLockScreen() {
+                setWallpaperBottomSheet.dismiss()
+                viewModel.setWallpaperHomeAndLockScreen(Glide.with(this@PhotoActivity))
+            }
         }
     }
 
@@ -201,6 +224,7 @@ class PhotoActivity : AppCompatActivity() {
     private fun hideViews() {
         photoToolbar.visibility = View.INVISIBLE
         photoAuthorText.visibility = View.INVISIBLE
+        photoSetWallpaperButton.visibility = View.INVISIBLE
         photoShareButton.visibility = View.INVISIBLE
         photoDownloadButton.visibility = View.INVISIBLE
     }

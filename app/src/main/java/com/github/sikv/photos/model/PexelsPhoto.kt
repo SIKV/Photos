@@ -35,6 +35,10 @@ data class PexelsPhoto(
         return url.substring(url.substring(0, url.length - 1).lastIndexOf("-") + 1, url.lastIndexOf("/"))
     }
 
+    override fun getLargeUrl(): String {
+        return src.large2x
+    }
+
     override fun getNormalUrl(): String {
         return src.large
     }

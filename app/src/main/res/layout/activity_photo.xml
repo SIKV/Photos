@@ -59,4 +59,13 @@
         android:text="@string/download"
         style="@style/RoundButton"/>
 
+    <Button
+        android:id="@+id/photoSetWallpaperButton"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/photoDownloadButton"
+        android:text="@string/set_wallpaper"
+        style="@style/RoundButton"/>
+
 </android.support.constraint.ConstraintLayout>

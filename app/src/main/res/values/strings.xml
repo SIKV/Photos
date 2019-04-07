@@ -17,6 +17,7 @@
     <string name="transition_photo">Transition Photo</string>
     <string name="photo_by_s_on_s">Photo by %s on %s</string>
     <string name="share">Share</string>
+    <string name="set_wallpaper">Set Wallpaper</string>
     <string name="download">Download</string>
     <string name="favorite">Favorite</string>
     <string name="favorites">Favorites</string>
@@ -26,5 +27,9 @@
     <string name="delete">Delete</string>
     <string name="search_uc">SEARCH</string>
     <string name="clear">Clear</string>
+
+    <string name="home_screen">Home screen</string>
+    <string name="lock_screen">Lock screen</string>
+    <string name="home_and_lock_screen">Home screen and lock screen</string>
 
 </resources>

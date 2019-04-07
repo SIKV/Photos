@@ -5,6 +5,7 @@ import android.os.Parcelable
 interface Photo : Parcelable {
 
     fun getPhotoId(): String = ""
+    fun getLargeUrl(): String = ""
     fun getNormalUrl(): String = ""
     fun getSmallUrl(): String = ""
     fun getShareUrl(): String = ""

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottom_sheet_set_wallpaper"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+    android:background="@color/colorPrimary">
+
+    <Button
+        android:id="@+id/setWallpaperHomeScreenButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/home_screen"
+        style="@style/BottomSheetButton"/>
+
+    <Button
+        android:id="@+id/setWallpaperLockScreenButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lock_screen"
+        style="@style/BottomSheetButton"/>
+
+    <Button
+        android:id="@+id/setWallpaperBothButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/home_and_lock_screen"
+        style="@style/BottomSheetButton"/>
+
+</LinearLayout>

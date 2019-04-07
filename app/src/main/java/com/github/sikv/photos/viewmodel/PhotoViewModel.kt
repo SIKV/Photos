@@ -1,7 +1,9 @@
 package com.github.sikv.photos.viewmodel
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.Application
+import android.app.WallpaperManager
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -9,6 +11,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.AsyncTask
+import android.os.Build
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -182,6 +185,36 @@ class PhotoViewModel(
 
     fun openPhotoSource() {
         Utils.openUrl(getApplication(), photo.getSourceUrl())
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    fun setWallpaperHomeScreen(glide: RequestManager) {
+        setWallpaper(glide, WallpaperManager.FLAG_SYSTEM)
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    fun setWallpaperLockScreen(glide: RequestManager) {
+        setWallpaper(glide, WallpaperManager.FLAG_LOCK)
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    fun setWallpaperHomeAndLockScreen(glide: RequestManager) {
+        setWallpaper(glide, WallpaperManager.FLAG_SYSTEM or WallpaperManager.FLAG_LOCK)
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    private fun setWallpaper(glide: RequestManager, which: Int) {
+        glide.asBitmap()
+                .load(photo.getLargeUrl())
+                .into(object : SimpleTarget<Bitmap>() {
+                    override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                        val wallpaperManager = WallpaperManager.getInstance(getApplication())
+
+                        if (wallpaperManager.isSetWallpaperAllowed) {
+                            wallpaperManager.setBitmap(bitmap, null, true, which)
+                        }
+                    }
+                })
     }
 
     private class FavoriteAsyncTask internal constructor(
