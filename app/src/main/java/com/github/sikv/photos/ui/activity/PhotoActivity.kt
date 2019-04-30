@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
-import android.support.v7.app.AppCompatActivity
 import android.text.style.ClickableSpan
 import android.transition.ChangeBounds
 import android.view.Menu
@@ -22,12 +21,13 @@ import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.fragment.SetWallpaperBottomSheetDialogFragment
+import com.github.sikv.photos.util.CustomWallpaperManager
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
 import kotlinx.android.synthetic.main.activity_photo.*
 
-class PhotoActivity : AppCompatActivity() {
+class PhotoActivity : BaseActivity() {
 
     companion object {
         private const val FAVORITE_ANIMATION_DURATION = 200L
@@ -164,17 +164,18 @@ class PhotoActivity : AppCompatActivity() {
         setWallpaperBottomSheet.callback = object : SetWallpaperBottomSheetDialogFragment.Callback {
             override fun setHomeScreen() {
                 setWallpaperBottomSheet.dismiss()
-                viewModel.setWallpaperHomeScreen(Glide.with(this@PhotoActivity))
+                viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.HOME)
             }
 
             override fun setLockScreen() {
                 setWallpaperBottomSheet.dismiss()
-                viewModel.setWallpaperLockScreen(Glide.with(this@PhotoActivity))
+                viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.LOCK)
+
             }
 
             override fun setHomeAndLockScreen() {
                 setWallpaperBottomSheet.dismiss()
-                viewModel.setWallpaperHomeAndLockScreen(Glide.with(this@PhotoActivity))
+                viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.BOTH)
             }
         }
     }

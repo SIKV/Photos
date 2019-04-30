@@ -2,8 +2,8 @@ package com.github.sikv.photos.viewmodel
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.app.Activity
 import android.app.Application
-import android.app.WallpaperManager
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
@@ -22,6 +22,7 @@ import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
+import com.github.sikv.photos.util.CustomWallpaperManager
 import com.github.sikv.photos.util.Utils
 import retrofit2.Call
 import retrofit2.Callback
@@ -188,33 +189,8 @@ class PhotoViewModel(
     }
 
     @TargetApi(Build.VERSION_CODES.N)
-    fun setWallpaperHomeScreen(glide: RequestManager) {
-        setWallpaper(glide, WallpaperManager.FLAG_SYSTEM)
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
-    fun setWallpaperLockScreen(glide: RequestManager) {
-        setWallpaper(glide, WallpaperManager.FLAG_LOCK)
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
-    fun setWallpaperHomeAndLockScreen(glide: RequestManager) {
-        setWallpaper(glide, WallpaperManager.FLAG_SYSTEM or WallpaperManager.FLAG_LOCK)
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
-    private fun setWallpaper(glide: RequestManager, which: Int) {
-        glide.asBitmap()
-                .load(photo.getLargeUrl())
-                .into(object : SimpleTarget<Bitmap>() {
-                    override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                        val wallpaperManager = WallpaperManager.getInstance(getApplication())
-
-                        if (wallpaperManager.isSetWallpaperAllowed) {
-                            wallpaperManager.setBitmap(bitmap, null, true, which)
-                        }
-                    }
-                })
+    fun setWallpaper(activity: Activity, which: CustomWallpaperManager.Which) {
+        CustomWallpaperManager.setWallpaper(activity, photo.getLargeUrl(), which)
     }
 
     private class FavoriteAsyncTask internal constructor(
