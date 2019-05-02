@@ -18,6 +18,7 @@ class SearchPhotosDataSource(
 ) : PositionalDataSource<Photo>() {
 
     var state: MutableLiveData<DataSourceState> = MutableLiveData()
+        private set
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Photo>) {
         updateState(DataSourceState.LOADING)

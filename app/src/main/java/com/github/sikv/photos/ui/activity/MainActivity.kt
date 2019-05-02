@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
+import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
@@ -36,14 +37,35 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         init()
-        recentPhotos()
-    }
-
-    private fun recentPhotos() {
         initPhotoAdapter()
 
-        viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> {
-            photoAdapter?.submitList(it)
+        observeRecentPhotos()
+        observeState()
+    }
+
+    private fun observeRecentPhotos() {
+        viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> { pagedList ->
+            photoAdapter?.submitList(pagedList)
+        })
+    }
+
+    private fun observeState() {
+        viewModel.state.observe(this, Observer { state ->
+            mainLoadingLayout.visibility = View.GONE
+            loadingErrorLayout.visibility = View.GONE
+
+            when (state) {
+                DataSourceState.LOADING_INITIAL -> {
+                    mainLoadingLayout.visibility = View.VISIBLE
+                }
+
+                DataSourceState.ERROR -> {
+                    loadingErrorLayout.visibility = View.VISIBLE
+                }
+
+                else -> {
+                }
+            }
         })
     }
 
