@@ -27,8 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:src="@drawable/ic_favorite_border_white_24dp"
-                android:background="?android:selectableItemBackground"
-                android:contentDescription="@string/cn_open_favorites"/>
+                android:contentDescription="@string/cn_open_favorites"
+                style="@style/BorderlessTransparentButton"/>
 
             <TextView
                 android:id="@+id/mainTitleText"
@@ -50,20 +50,27 @@
                 android:layout_marginEnd="16dp"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_search_white_24dp"
-                android:background="?android:selectableItemBackground"
-                android:contentDescription="@string/cn_open_search"/>
+                android:contentDescription="@string/cn_open_search"
+                style="@style/BorderlessTransparentButton"/>
 
         </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/mainRecycler"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/mainSwipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/mainAppBarLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/mainRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/mainLoadingLayout"

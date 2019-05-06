@@ -28,6 +28,10 @@
     <style name="TabBarTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:fontFamily">sans-serif-black</item>
     </style>
+    
+    <style name="BorderlessTransparentButton">
+        <item name="android:background">?android:selectableItemBackgroundBorderless</item>
+    </style>
 
     <style name="RoundButton">
         <item name="android:layout_width">192dp</item>

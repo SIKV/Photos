@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -78,6 +79,14 @@ class MainActivity : BaseActivity() {
     }
 
     private fun init() {
+        mainSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent))
+
+        mainSwipeRefreshLayout.setOnRefreshListener {
+            mainSwipeRefreshLayout.isRefreshing = false
+
+            // TODO Implement
+        }
+
         mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
