@@ -27,6 +27,8 @@
     <string name="delete">Delete</string>
     <string name="search_uc">SEARCH</string>
     <string name="clear">Clear</string>
+    <string name="deleted">Deleted</string>
+    <string name="undo">UNDO</string>
 
     <string name="home_screen">Home screen</string>
     <string name="lock_screen">Lock screen</string>

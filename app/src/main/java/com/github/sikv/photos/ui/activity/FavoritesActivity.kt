@@ -5,6 +5,8 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.BaseTransientBottomBar
+import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.ui.adapter.PhotoDataListAdapter
+import com.github.sikv.photos.util.setBackgroundColor
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import kotlinx.android.synthetic.main.activity_favorites.*
 
@@ -46,10 +49,33 @@ class FavoritesActivity : BaseActivity() {
 
         init()
 
+        observeFavorites()
+        observeEvents()
+    }
+
+    private fun observeFavorites() {
         viewModel.favoritesLiveData.observe(this, Observer {
             it?.let { photos ->
                 photoAdapter?.submitList(photos)
                 favoritesEmptyLayout.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
+            }
+        })
+    }
+
+    private fun observeEvents() {
+        viewModel.favoritesDeleteEvent.observe(this, Observer { deleted ->
+            if (deleted == true) {
+                Snackbar.make(favoritesRootLayout, R.string.deleted, Snackbar.LENGTH_LONG)
+                        .setBackgroundColor(R.color.colorPrimaryDark)
+                        .setAction(R.string.undo) {
+                            viewModel.undoDeleteAll()
+                        }
+                        .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                                viewModel.deleteAllForever()
+                            }
+                        })
+                        .show()
             }
         })
     }

@@ -3,9 +3,11 @@ package com.github.sikv.photos.viewmodel
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.LiveData
-import android.os.AsyncTask
+import android.arch.lifecycle.MutableLiveData
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -13,24 +15,46 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     val favoritesLiveData: LiveData<List<PhotoData>>
 
+    var favoritesDeleteEvent: MutableLiveData<Boolean>
+        private set
+
+    private var deletedFavorites: List<PhotoData> = emptyList()
+
     init {
         favoritesDatabase = FavoritesDatabase.getInstance(getApplication())
 
         favoritesLiveData = favoritesDatabase.photoDao().getAll()
+
+        favoritesDeleteEvent = MutableLiveData()
     }
 
     fun deleteAll() {
-        DeleteAllAsyncTask(favoritesDatabase).execute()
+        GlobalScope.launch {
+           val count = favoritesDatabase.photoDao().getCount()
+
+           if (count > 0) {
+               deletedFavorites = favoritesDatabase.photoDao().getAllList()
+               favoritesDatabase.photoDao().deleteAll()
+
+               favoritesDeleteEvent.postValue(true)
+
+           } else {
+               favoritesDeleteEvent.postValue(false)
+           }
+       }
     }
 
-    private class DeleteAllAsyncTask internal constructor(
-            private val db: FavoritesDatabase
+    fun undoDeleteAll() {
+        GlobalScope.launch {
+            deletedFavorites.forEach { photo ->
+                favoritesDatabase.photoDao().insert(photo)
+            }
 
-    ) : AsyncTask<Void, Void, Void>() {
-
-        override fun doInBackground(vararg params: Void?): Void? {
-            db.photoDao().deleteAll()
-            return null
+            deletedFavorites = emptyList()
         }
+    }
+
+    fun deleteAllForever() {
+        deletedFavorites = emptyList()
     }
 }
