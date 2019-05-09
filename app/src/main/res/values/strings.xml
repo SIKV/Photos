@@ -25,6 +25,8 @@
     <string name="can_not_find_any_photos_matching">WE CAN\'T FIND ANY PHOTOS MATCHING YOUR SEARCH</string>
     <string name="loading_error">LOADING ERROR</string>
     <string name="delete">Delete</string>
+    <string name="list">List</string>
+    <string name="grid">Grid</string>
     <string name="search_uc">SEARCH</string>
     <string name="clear">Clear</string>
     <string name="deleted">Deleted</string>

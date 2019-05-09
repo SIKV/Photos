@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.github.sikv.photos.ui.SquareCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="212dp"
+    android:layout_height="wrap_content"
     android:layout_marginTop="6dp"
-    android:layout_marginStart="12dp"
-    android:layout_marginEnd="12dp"
+    android:layout_marginStart="6dp"
+    android:layout_marginEnd="6dp"
     android:layout_marginBottom="6dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="8dp"
@@ -24,4 +24,4 @@
         android:scaleType="centerCrop"
         android:contentDescription="@string/cn_photo"/>
 
-</android.support.v7.widget.CardView>
+</com.github.sikv.photos.ui.SquareCardView>

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BaseTransientBottomBar
 import android.support.design.widget.Snackbar
+import android.support.v7.widget.GridLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -35,6 +36,15 @@ class FavoritesActivity : BaseActivity() {
     }
 
     private var photoAdapter: PhotoDataListAdapter? = null
+
+    private var currentSpanCount: Int = 2
+        set(value) {
+            field = value
+            setFavoritesRecyclerLayoutManager(value)
+        }
+
+    private var viewListOptionVisible = true
+    private var viewGridOptionVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,12 +91,37 @@ class FavoritesActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_delete, menu)
+        menuInflater.inflate(R.menu.menu_favorites, menu)
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menu?.findItem(R.id.itemViewList)?.isVisible = viewListOptionVisible
+        menu?.findItem(R.id.itemViewGrid)?.isVisible = viewGridOptionVisible
+
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            R.id.itemViewList -> {
+                currentSpanCount = 1
+
+                viewListOptionVisible = false
+                viewGridOptionVisible = true
+
+                invalidateOptionsMenu()
+            }
+
+            R.id.itemViewGrid -> {
+                currentSpanCount = 2
+
+                viewListOptionVisible = true
+                viewGridOptionVisible = false
+
+                invalidateOptionsMenu()
+            }
+
             R.id.itemDelete -> {
                 viewModel.deleteAll()
                 return true
@@ -115,5 +150,11 @@ class FavoritesActivity : BaseActivity() {
     private fun init() {
         photoAdapter = PhotoDataListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
         favoritesRecycler.adapter = photoAdapter
+
+        setFavoritesRecyclerLayoutManager(currentSpanCount)
+    }
+
+    private fun setFavoritesRecyclerLayoutManager(spanCount: Int) {
+        favoritesRecycler.layoutManager = GridLayoutManager(this, spanCount)
     }
 }
