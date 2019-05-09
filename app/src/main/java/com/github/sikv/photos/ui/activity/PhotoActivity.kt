@@ -4,7 +4,12 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
@@ -27,7 +32,7 @@ import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
 import kotlinx.android.synthetic.main.activity_photo.*
 
-class PhotoActivity : BaseActivity() {
+class PhotoActivity : BaseActivity(), SensorEventListener {
 
     companion object {
         private const val FAVORITE_ANIMATION_DURATION = 200L
@@ -49,6 +54,12 @@ class PhotoActivity : BaseActivity() {
 
     private lateinit var viewModel: PhotoViewModel
 
+    private lateinit var sensorManager: SensorManager
+    private lateinit var gravitySensor: Sensor
+
+    private var lastGravity0 = 0.0
+    private var lastGravity1 = 0.0
+
     private var favoriteMenuItemIcon: Int? = null
 
     private val setWallpaperBottomSheet = SetWallpaperBottomSheetDialogFragment()
@@ -64,9 +75,25 @@ class PhotoActivity : BaseActivity() {
         viewModel = ViewModelProviders.of(this, PhotoViewModelFactory(application, photo))
                 .get(PhotoViewModel::class.java)
 
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+
         init()
-        initListeners()
-        initObservers()
+
+        observePhotoLoading()
+        observeEvents()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        sensorManager.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_FASTEST)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        sensorManager.unregisterListener(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -115,12 +142,42 @@ class PhotoActivity : BaseActivity() {
         }
     }
 
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (event?.sensor?.type == Sensor.TYPE_GRAVITY) {
+            Utils.calculateP(
+                    event.values[0].toDouble(), event.values[1].toDouble(), event.values[2].toDouble(),
+                    photoImageView.x, photoImageView.y, photoImageView.z,
+
+                    lastGravity0, lastGravity1)?.let { r ->
+
+                photoImageView.x = r.first
+                photoImageView.y = r.second
+
+                lastGravity0 = r.third.first
+                lastGravity1 = r.third.second
+            }
+        }
+    }
+
     private fun init() {
         setSupportActionBar(photoToolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        photoImageView.post {
+            val extraOutOfScreen = 250
+
+            photoImageView.layoutParams.width = photoImageView.measuredWidth + extraOutOfScreen
+            photoImageView.layoutParams.height = photoImageView.measuredHeight + extraOutOfScreen
+        }
+
+        initListeners()
 
         adjustMargins()
     }
@@ -158,7 +215,6 @@ class PhotoActivity : BaseActivity() {
         }
 
         photoDownloadButton.setOnClickListener {
-
         }
 
         setWallpaperBottomSheet.callback = object : SetWallpaperBottomSheetDialogFragment.Callback {
@@ -180,13 +236,15 @@ class PhotoActivity : BaseActivity() {
         }
     }
 
-    private fun initObservers() {
+    private fun observePhotoLoading() {
         viewModel.loadPhoto(Glide.with(this)).observe(this, Observer {
             it?.getContentIfNotHandled()?.let {
                 photoImageView.setImageBitmap(it)
             }
         })
+    }
 
+    private fun observeEvents() {
         viewModel.photoReadyEvent.observe(this, Observer {
             it?.getContentIfNotHandled()?.let { photo ->
                 showPhoto(photo)
