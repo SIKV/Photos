@@ -8,13 +8,13 @@ import android.arch.paging.PagedList
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.data.PhotoSource
-import com.github.sikv.photos.data.SearchPhotosDataSource
-import com.github.sikv.photos.data.SearchPhotosDataSourceFactory
+import com.github.sikv.photos.data.PhotosDataSource
+import com.github.sikv.photos.data.PhotosDataSourceFactory
 import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
 
 
-class SearchViewModel : ViewModel() {
+class PhotosViewModel : ViewModel() {
 
     companion object {
         const val INITIAL_LOAD_SIZE = 10
@@ -27,27 +27,27 @@ class SearchViewModel : ViewModel() {
             .setPageSize(PAGE_SIZE)
             .build()
 
-    private var unsplashSearchDataSourceFactory: SearchPhotosDataSourceFactory? = null
-    private var pexelsSearchDataSourceFactory: SearchPhotosDataSourceFactory? = null
+    private var unsplashDataSourceFactory: PhotosDataSourceFactory? = null
+    private var pexelsDataSourceFactory: PhotosDataSourceFactory? = null
 
     private var unsplashSearchLivePagedList: LiveData<PagedList<Photo>>? = null
     private var pexelsSearchLivePagedList: LiveData<PagedList<Photo>>? = null
 
-    fun getSearchState(photoSource: PhotoSource): LiveData<DataSourceState>? {
+    fun getState(photoSource: PhotoSource): LiveData<DataSourceState>? {
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
-                unsplashSearchDataSourceFactory?.let {
-                    return Transformations.switchMap<SearchPhotosDataSource, DataSourceState>(
-                            it.searchDataSourceLiveData, SearchPhotosDataSource::state)
+                unsplashDataSourceFactory?.let {
+                    return Transformations.switchMap<PhotosDataSource, DataSourceState>(
+                            it.recentPhotosDataSourceLiveData, PhotosDataSource::state)
                 } ?: run {
                     return null
                 }
             }
 
             PhotoSource.PEXELS -> {
-                pexelsSearchDataSourceFactory?.let {
-                    return Transformations.switchMap<SearchPhotosDataSource, DataSourceState>(
-                            it.searchDataSourceLiveData, SearchPhotosDataSource::state)
+                pexelsDataSourceFactory?.let {
+                    return Transformations.switchMap<PhotosDataSource, DataSourceState>(
+                            it.recentPhotosDataSourceLiveData, PhotosDataSource::state)
                 } ?: run {
                     return null
                 }
@@ -55,19 +55,12 @@ class SearchViewModel : ViewModel() {
         }
     }
 
-    fun searchPhotos(photoSource: PhotoSource, query: String): LiveData<PagedList<Photo>>? {
-        val queryTrimmed = query.trim()
-
-        if (queryTrimmed.isEmpty()) {
-            return null
-        }
-
+    fun getPhotos(photoSource: PhotoSource): LiveData<PagedList<Photo>>? {
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
-                unsplashSearchDataSourceFactory = SearchPhotosDataSourceFactory(
-                        ApiClient.INSTANCE, PhotoSource.UNSPLASH, queryTrimmed)
+                unsplashDataSourceFactory = PhotosDataSourceFactory(ApiClient.INSTANCE, PhotoSource.UNSPLASH)
 
-                unsplashSearchLivePagedList = LivePagedListBuilder(unsplashSearchDataSourceFactory!!, pagedListConfig)
+                unsplashSearchLivePagedList = LivePagedListBuilder(unsplashDataSourceFactory!!, pagedListConfig)
                         .setFetchExecutor(Executors.newSingleThreadExecutor())
                         .build()
 
@@ -75,10 +68,9 @@ class SearchViewModel : ViewModel() {
             }
 
             PhotoSource.PEXELS -> {
-                pexelsSearchDataSourceFactory = SearchPhotosDataSourceFactory(
-                        ApiClient.INSTANCE, PhotoSource.PEXELS, queryTrimmed)
+                pexelsDataSourceFactory = PhotosDataSourceFactory(ApiClient.INSTANCE, PhotoSource.PEXELS)
 
-                pexelsSearchLivePagedList = LivePagedListBuilder(pexelsSearchDataSourceFactory!!, pagedListConfig)
+                pexelsSearchLivePagedList = LivePagedListBuilder(pexelsDataSourceFactory!!, pagedListConfig)
                         .setFetchExecutor(Executors.newSingleThreadExecutor())
                         .build()
 
@@ -87,7 +79,7 @@ class SearchViewModel : ViewModel() {
         }
     }
 
-    fun isSearchListEmpty(photoSource: PhotoSource): Boolean {
+    fun isListEmpty(photoSource: PhotoSource): Boolean {
         return when (photoSource) {
             PhotoSource.UNSPLASH -> {
                 unsplashSearchLivePagedList?.value?.isEmpty() ?: true

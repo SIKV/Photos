@@ -11,10 +11,11 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.DataSourceState
+import com.github.sikv.photos.data.PhotoSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
-import com.github.sikv.photos.viewmodel.MainViewModel
+import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
 import kotlinx.android.synthetic.main.layout_no_results_found.*
@@ -26,8 +27,8 @@ class MainActivity : BaseActivity() {
         private const val TOOLBAR_ELEVATION = 12f
     }
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
+    private val viewModel: PhotosViewModel by lazy {
+        ViewModelProviders.of(this).get(PhotosViewModel::class.java)
     }
 
     private var photoAdapter: PhotoPagedListAdapter? = null
@@ -45,13 +46,13 @@ class MainActivity : BaseActivity() {
     }
 
     private fun observeRecentPhotos() {
-        viewModel.recentPhotos.observe(this, Observer<PagedList<Photo>> { pagedList ->
+        viewModel.getPhotos(PhotoSource.PEXELS)?.observe(this, Observer<PagedList<Photo>> { pagedList ->
             photoAdapter?.submitList(pagedList)
         })
     }
 
     private fun observeState() {
-        viewModel.state.observe(this, Observer { state ->
+        viewModel.getState(PhotoSource.PEXELS)?.observe(this, Observer { state ->
             mainLoadingLayout.visibility = View.GONE
             loadingErrorLayout.visibility = View.GONE
 

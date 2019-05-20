@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
+
 data class User(
         val username: String,
         val name: String,

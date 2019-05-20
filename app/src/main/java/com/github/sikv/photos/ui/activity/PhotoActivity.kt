@@ -32,6 +32,7 @@ import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
 import kotlinx.android.synthetic.main.activity_photo.*
 
+
 class PhotoActivity : BaseActivity(), SensorEventListener {
 
     companion object {

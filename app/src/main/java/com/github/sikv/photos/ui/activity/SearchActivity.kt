@@ -12,7 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import com.github.sikv.photos.R
-import com.github.sikv.photos.data.SearchSource
+import com.github.sikv.photos.data.PhotoSource
 import com.github.sikv.photos.ui.fragment.SearchFragment
 import com.github.sikv.photos.util.Utils
 import kotlinx.android.synthetic.main.activity_search.*
@@ -99,8 +99,8 @@ class SearchActivity : BaseActivity() {
     private fun initViewPager() {
         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
 
-        viewPagerAdapter.addFragment(SearchFragment.newInstance(SearchSource.UNSPLASH), getString(R.string.unsplash))
-        viewPagerAdapter.addFragment(SearchFragment.newInstance(SearchSource.PEXELS), getString(R.string.pexels))
+        viewPagerAdapter.addFragment(SearchFragment.newInstance(PhotoSource.UNSPLASH), getString(R.string.unsplash))
+        viewPagerAdapter.addFragment(SearchFragment.newInstance(PhotoSource.PEXELS), getString(R.string.pexels))
 
         searchViewPager.adapter = viewPagerAdapter
         searchTabLayout.setupWithViewPager(searchViewPager)

@@ -3,18 +3,17 @@ package com.github.sikv.photos.data
 import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.PositionalDataSource
 import com.github.sikv.photos.api.ApiClient
-import com.github.sikv.photos.model.PexelsSearchResponse
+import com.github.sikv.photos.model.PexelsCuratedPhotosResponse
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.model.UnsplashSearchResponse
+import com.github.sikv.photos.model.UnsplashPhoto
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 
-class SearchPhotosDataSource(
+class PhotosDataSource(
         private val apiClient: ApiClient,
-        private val photoSource: PhotoSource,
-        private val searchQuery: String
+        private val photoSource: PhotoSource
 
 ) : PositionalDataSource<Photo>() {
 
@@ -22,22 +21,19 @@ class SearchPhotosDataSource(
         private set
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Photo>) {
-        updateState(DataSourceState.LOADING)
+        updateState(DataSourceState.LOADING_INITIAL)
 
-        // TODO Refactor
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
-                apiClient.unsplashClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
-                        .enqueue(object : Callback<UnsplashSearchResponse> {
-                            override fun onFailure(call: Call<UnsplashSearchResponse>?, t: Throwable?) {
+                apiClient.unsplashClient.getLatestPhotos(params.requestedStartPosition, params.requestedLoadSize)
+                        .enqueue(object : Callback<List<UnsplashPhoto>> {
+                            override fun onFailure(call: Call<List<UnsplashPhoto>>?, t: Throwable?) {
                                 updateState(DataSourceState.ERROR)
                             }
 
-                            override fun onResponse(call: Call<UnsplashSearchResponse>?, response: Response<UnsplashSearchResponse>?) {
+                            override fun onResponse(call: Call<List<UnsplashPhoto>>?, response: Response<List<UnsplashPhoto>>?) {
                                 response?.body()?.let {
-                                    val res = it.results
-                                    callback.onResult(res,0, res.size)
-
+                                    callback.onResult(it, 0)
                                     updateState(DataSourceState.DONE)
 
                                 } ?: run {
@@ -48,17 +44,15 @@ class SearchPhotosDataSource(
             }
 
             PhotoSource.PEXELS -> {
-                apiClient.pexelsClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
-                        .enqueue(object : Callback<PexelsSearchResponse> {
-                            override fun onFailure(call: Call<PexelsSearchResponse>?, t: Throwable?) {
+                apiClient.pexelsClient.getCuratedPhotos(params.requestedStartPosition, params.requestedLoadSize)
+                        .enqueue(object : Callback<PexelsCuratedPhotosResponse> {
+                            override fun onFailure(call: Call<PexelsCuratedPhotosResponse>?, t: Throwable?) {
                                 updateState(DataSourceState.ERROR)
                             }
 
-                            override fun onResponse(call: Call<PexelsSearchResponse>?, response: Response<PexelsSearchResponse>?) {
+                            override fun onResponse(call: Call<PexelsCuratedPhotosResponse>?, response: Response<PexelsCuratedPhotosResponse>?) {
                                 response?.body()?.let {
-                                    val res = it.photos
-                                    callback.onResult(res,0, res.size)
-
+                                    callback.onResult(it.photos, 0)
                                     updateState(DataSourceState.DONE)
 
                                 } ?: run {
@@ -73,19 +67,17 @@ class SearchPhotosDataSource(
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Photo>) {
         updateState(DataSourceState.LOADING)
 
-        // TODO Refactor
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
-                apiClient.unsplashClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
-                        .enqueue(object : Callback<UnsplashSearchResponse> {
-                            override fun onFailure(call: Call<UnsplashSearchResponse>?, t: Throwable?) {
+                apiClient.unsplashClient.getLatestPhotos(params.startPosition, params.loadSize)
+                        .enqueue(object : Callback<List<UnsplashPhoto>> {
+                            override fun onFailure(call: Call<List<UnsplashPhoto>>?, t: Throwable?) {
                                 updateState(DataSourceState.ERROR)
                             }
 
-                            override fun onResponse(call: Call<UnsplashSearchResponse>?, response: Response<UnsplashSearchResponse>?) {
+                            override fun onResponse(call: Call<List<UnsplashPhoto>>?, response: Response<List<UnsplashPhoto>>?) {
                                 response?.body()?.let {
-                                    callback.onResult(it.results)
-
+                                    callback.onResult(it)
                                     updateState(DataSourceState.DONE)
 
                                 } ?: run {
@@ -96,16 +88,15 @@ class SearchPhotosDataSource(
             }
 
             PhotoSource.PEXELS -> {
-                apiClient.pexelsClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
-                        .enqueue(object : Callback<PexelsSearchResponse> {
-                            override fun onFailure(call: Call<PexelsSearchResponse>?, t: Throwable?) {
+                apiClient.pexelsClient.getCuratedPhotos(params.startPosition, params.loadSize)
+                        .enqueue(object : Callback<PexelsCuratedPhotosResponse> {
+                            override fun onFailure(call: Call<PexelsCuratedPhotosResponse>?, t: Throwable?) {
                                 updateState(DataSourceState.ERROR)
                             }
 
-                            override fun onResponse(call: Call<PexelsSearchResponse>?, response: Response<PexelsSearchResponse>?) {
+                            override fun onResponse(call: Call<PexelsCuratedPhotosResponse>?, response: Response<PexelsCuratedPhotosResponse>?) {
                                 response?.body()?.let {
                                     callback.onResult(it.photos)
-
                                     updateState(DataSourceState.DONE)
 
                                 } ?: run {

@@ -5,9 +5,10 @@ import android.arch.paging.DataSource
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.model.Photo
 
+
 class SearchPhotosDataSourceFactory(
         private val apiClient: ApiClient,
-        private val searchSource: SearchSource,
+        private val photoSource: PhotoSource,
         private val searchQuery: String
 
 ) : DataSource.Factory<Int, Photo>() {
@@ -15,7 +16,7 @@ class SearchPhotosDataSourceFactory(
     val searchDataSourceLiveData = MutableLiveData<SearchPhotosDataSource>()
 
     override fun create(): DataSource<Int, Photo> {
-        val searchPhotosDataSource = SearchPhotosDataSource(apiClient, searchSource, searchQuery)
+        val searchPhotosDataSource = SearchPhotosDataSource(apiClient, photoSource, searchQuery)
         searchDataSourceLiveData.postValue(searchPhotosDataSource)
 
         return searchPhotosDataSource

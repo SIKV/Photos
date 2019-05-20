@@ -3,6 +3,7 @@ package com.github.sikv.photos.model
 import android.os.Parcel
 import android.os.Parcelable
 
+
 data class Src(
         val original: String,
         val large: String,

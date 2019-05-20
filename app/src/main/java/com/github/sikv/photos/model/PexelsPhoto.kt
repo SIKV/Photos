@@ -3,6 +3,7 @@ package com.github.sikv.photos.model
 import android.os.Parcel
 import android.os.Parcelable
 
+
 data class PexelsPhoto(
         val width: Int,
         val height: Int,
@@ -44,7 +45,7 @@ data class PexelsPhoto(
     }
 
     override fun getSmallUrl(): String {
-        return src.medium
+        return src.large
     }
 
     override fun getShareUrl(): String {

@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.DataSourceState
-import com.github.sikv.photos.data.SearchSource
+import com.github.sikv.photos.data.PhotoSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
@@ -26,11 +26,11 @@ class SearchFragment : Fragment() {
     companion object {
         private const val SEARCH_SOURCE = "search_source"
 
-        fun newInstance(searchSource: SearchSource): SearchFragment {
+        fun newInstance(photoSource: PhotoSource): SearchFragment {
             val fragment = SearchFragment()
 
             val args = Bundle()
-            args.putSerializable(SEARCH_SOURCE, searchSource)
+            args.putSerializable(SEARCH_SOURCE, photoSource)
 
             fragment.arguments = args
 
@@ -42,13 +42,13 @@ class SearchFragment : Fragment() {
         ViewModelProviders.of(this).get(SearchViewModel::class.java)
     }
 
-    private var searchSource: SearchSource? = null
+    private var photoSource: PhotoSource? = null
     private var photoAdapter: PhotoPagedListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        searchSource = arguments?.getSerializable(SEARCH_SOURCE) as? SearchSource
+        photoSource = arguments?.getSerializable(SEARCH_SOURCE) as? PhotoSource
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,7 +62,7 @@ class SearchFragment : Fragment() {
     }
 
     fun searchPhotos(text: String) {
-        searchSource?.let { searchSource ->
+        photoSource?.let { searchSource ->
             viewModel.searchPhotos(searchSource, text)?.observe(this, Observer {
                 photoAdapter?.submitList(it)
             })
@@ -79,9 +79,9 @@ class SearchFragment : Fragment() {
         } else {
             loadingErrorLayout.visibility = View.GONE
 
-            searchSource?.let { searchSource ->
+            photoSource?.let { searchSource ->
                 noResultsFoundLayout.visibility =
-                        if (state != DataSourceState.LOADING && viewModel.searchListIsEmpty(searchSource)) View.VISIBLE
+                        if (state != DataSourceState.LOADING && viewModel.isSearchListEmpty(searchSource)) View.VISIBLE
                         else View.GONE
             }
         }
