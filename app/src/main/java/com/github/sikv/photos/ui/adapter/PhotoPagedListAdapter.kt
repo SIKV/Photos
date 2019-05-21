@@ -10,6 +10,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
+
 class PhotoPagedListAdapter(
         private val glide: RequestManager,
         private val clickCallback: (Photo, View) -> Unit,
@@ -19,10 +20,10 @@ class PhotoPagedListAdapter(
 
     companion object {
         val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<Photo>() {
-            override fun areItemsTheSame(oldItem: Photo?, newItem: Photo?): Boolean =
-                    oldItem?.getPhotoId() == newItem?.getPhotoId()
+            override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean =
+                    oldItem.getPhotoId() == newItem.getPhotoId()
 
-            override fun areContentsTheSame(oldItem: Photo?, newItem: Photo?): Boolean =
+            override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean =
                     oldItem == newItem
         }
     }

@@ -10,6 +10,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
+
 class PhotoDataListAdapter(
         private val glide: RequestManager,
         private val clickCallback: (PhotoData, View) -> Unit,
@@ -19,10 +20,10 @@ class PhotoDataListAdapter(
 
     companion object {
         val PHOTO_DATA_COMPARATOR = object : DiffUtil.ItemCallback<PhotoData>() {
-            override fun areItemsTheSame(oldItem: PhotoData?, newItem: PhotoData?): Boolean =
-                    oldItem?.id == newItem?.id
+            override fun areItemsTheSame(oldItem: PhotoData, newItem: PhotoData): Boolean =
+                    oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: PhotoData?, newItem: PhotoData?): Boolean =
+            override fun areContentsTheSame(oldItem: PhotoData, newItem: PhotoData): Boolean =
                     oldItem == newItem
         }
     }

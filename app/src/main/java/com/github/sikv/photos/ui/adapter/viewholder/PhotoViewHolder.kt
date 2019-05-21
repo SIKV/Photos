@@ -10,8 +10,9 @@ import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.Photo
 import kotlinx.android.synthetic.main.item_photo.view.*
 
+
 class PhotoViewHolder(
-        itemView: View?,
+        itemView: View,
         private val glide: RequestManager
 
 ) : RecyclerView.ViewHolder(itemView) {

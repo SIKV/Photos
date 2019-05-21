@@ -18,36 +18,64 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
+            android:layout_height="match_parent">
 
             <ImageButton
                 android:id="@+id/mainFavoritesButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:layout_centerVertical="true"
                 android:src="@drawable/ic_favorite_border_white_24dp"
                 android:contentDescription="@string/cn_open_favorites"
                 style="@style/BorderlessTransparentButton"/>
 
-            <TextView
-                android:id="@+id/mainTitleText"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/mainTitleLayout"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/mainFavoritesButton"
-                android:layout_toStartOf="@+id/mainSearchButton"
+                android:orientation="horizontal"
+                android:paddingTop="6dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="6dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:gravity="center_horizontal"
-                android:textAllCaps="true"
-                android:fontFamily="sans-serif-black"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:text="@string/app_name"/>
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?selectableItemBackground">
+
+                <TextView
+                    android:id="@+id/mainSourceText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:textAllCaps="true"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    tools:text="SOURCE"/>
+
+                <TextView
+                    android:id="@+id/mainTitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAllCaps="true"
+                    android:drawableEnd="@drawable/ic_arrow_drop_down_white_24dp"
+                    android:fontFamily="sans-serif-black"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp"
+                    android:text="@string/app_name"/>
+
+            </LinearLayout>
 
             <ImageButton
                 android:id="@+id/mainSearchButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_search_white_24dp"
                 android:contentDescription="@string/cn_open_search"

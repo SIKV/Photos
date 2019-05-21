@@ -6,6 +6,7 @@ import android.arch.paging.PagedList
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
@@ -33,6 +34,24 @@ class MainActivity : BaseActivity() {
 
     private var photoAdapter: PhotoPagedListAdapter? = null
 
+    private var currentSource: PhotoSource = PhotoSource.UNSPLASH
+        set(value) {
+            field = value
+
+            when (field) {
+                PhotoSource.UNSPLASH -> {
+                    mainSourceText.setText(R.string.unsplash)
+                }
+
+                PhotoSource.PEXELS -> {
+                    mainSourceText.setText(R.string.pexels)
+                }
+            }
+
+            observePhotos()
+            observeState()
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,18 +60,17 @@ class MainActivity : BaseActivity() {
         init()
         initPhotoAdapter()
 
-        observeRecentPhotos()
-        observeState()
+        currentSource = PhotoSource.UNSPLASH
     }
 
-    private fun observeRecentPhotos() {
-        viewModel.getPhotos(PhotoSource.PEXELS)?.observe(this, Observer<PagedList<Photo>> { pagedList ->
+    private fun observePhotos() {
+        viewModel.getPhotos(currentSource)?.observe(this, Observer<PagedList<Photo>> { pagedList ->
             photoAdapter?.submitList(pagedList)
         })
     }
 
     private fun observeState() {
-        viewModel.getState(PhotoSource.PEXELS)?.observe(this, Observer { state ->
+        viewModel.getState(currentSource)?.observe(this, Observer { state ->
             mainLoadingLayout.visibility = View.GONE
             loadingErrorLayout.visibility = View.GONE
 
@@ -79,6 +97,27 @@ class MainActivity : BaseActivity() {
         PhotoPreviewPopup.show(this, mainRootLayout, photo)
     }
 
+    private fun showSourcePopup() {
+        val popup = PopupMenu(this, mainTitleLayout)
+        popup.menuInflater.inflate(R.menu.menu_source, popup.menu)
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.itemSourceUnsplash -> {
+                    currentSource = PhotoSource.UNSPLASH
+                }
+
+                R.id.itemSourcePexels -> {
+                    currentSource = PhotoSource.PEXELS
+                }
+            }
+
+            return@setOnMenuItemClickListener true
+        }
+
+        popup.show()
+    }
+
     private fun init() {
         mainSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorAccent))
 
@@ -89,10 +128,10 @@ class MainActivity : BaseActivity() {
         }
 
         mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                recyclerView?.computeVerticalScrollOffset()?.let {
+                recyclerView.computeVerticalScrollOffset().let {
                     if (it > 0) {
                         ViewCompat.setElevation(mainAppBarLayout, TOOLBAR_ELEVATION)
                     } else {
@@ -108,6 +147,10 @@ class MainActivity : BaseActivity() {
 
         mainFavoritesButton.setOnClickListener {
             FavoritesActivity.startActivity(this)
+        }
+
+        mainTitleLayout.setOnClickListener {
+            showSourcePopup()
         }
     }
 
