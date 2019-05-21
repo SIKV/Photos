@@ -9,6 +9,7 @@ import com.github.sikv.photos.database.PhotoData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
 
     private val favoritesDatabase: FavoritesDatabase

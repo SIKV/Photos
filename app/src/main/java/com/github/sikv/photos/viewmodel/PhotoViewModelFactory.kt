@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.github.sikv.photos.model.Photo
 
+
 class PhotoViewModelFactory(
         private val application: Application,
         private val photo: Photo

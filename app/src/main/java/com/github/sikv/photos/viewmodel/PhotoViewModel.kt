@@ -10,7 +10,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.AsyncTask
 import android.os.Build
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget
@@ -24,6 +23,9 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.util.CustomWallpaperManager
 import com.github.sikv.photos.util.Utils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,23 +55,17 @@ class PhotoViewModel(
         photoReadyEvent = MutableLiveData()
         favoriteChangedEvent = MutableLiveData()
 
-        object : AsyncTask<String, Void, Boolean>() {
-            override fun doInBackground(vararg p0: String?): Boolean {
-                (favoritesDatabase.photoDao().get(photo.getPhotoId()))?.let {
-                    return true
-                } ?: run {
-                    return false
+        GlobalScope.launch {
+            (favoritesDatabase.photoDao().get(photo.getPhotoId()))?.let {
+                GlobalScope.launch(Dispatchers.Main) {
+                    favorited = true
+                }
+            } ?: run {
+                GlobalScope.launch(Dispatchers.Main) {
+                    favorited = false
                 }
             }
-
-            override fun onPostExecute(result: Boolean?) {
-                super.onPostExecute(result)
-
-                result?.let {
-                    favorited = it
-                }
-            }
-        }.execute(photo.getPhotoId())
+        }
     }
 
     fun loadPhoto(glide: RequestManager): LiveData<Event<Bitmap>> {
@@ -164,8 +160,15 @@ class PhotoViewModel(
     fun favorite() {
         favorited = !favorited
 
-        FavoriteAsyncTask(favoritesDatabase, favorited).execute(
-                PhotoData(photo.getPhotoId(), photo.getSmallUrl(), photo.getSource()))
+        val photoData = PhotoData(photo.getPhotoId(), photo.getSmallUrl(), photo.getSource())
+
+        GlobalScope.launch {
+            if (favorited) {
+                favoritesDatabase.photoDao().insert(photoData)
+            } else {
+                favoritesDatabase.photoDao().delete(photoData)
+            }
+        }
     }
 
     fun createShareIntent(): Intent {
@@ -191,21 +194,5 @@ class PhotoViewModel(
     @TargetApi(Build.VERSION_CODES.N)
     fun setWallpaper(activity: Activity, which: CustomWallpaperManager.Which) {
         CustomWallpaperManager.setWallpaper(activity, photo.getLargeUrl(), which)
-    }
-
-    private class FavoriteAsyncTask internal constructor(
-            private val db: FavoritesDatabase,
-            private val favorite: Boolean
-
-    ) : AsyncTask<PhotoData, Void, Void>() {
-
-        override fun doInBackground(vararg params: PhotoData): Void? {
-            if (favorite) {
-                db.photoDao().insert(params[0])
-            } else {
-                db.photoDao().delete(params[0])
-            }
-            return null
-        }
     }
 }
