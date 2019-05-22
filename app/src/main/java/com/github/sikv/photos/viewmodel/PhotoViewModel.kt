@@ -1,6 +1,5 @@
 package com.github.sikv.photos.viewmodel
 
-import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.Application
@@ -32,7 +31,6 @@ import retrofit2.Response
 import kotlin.properties.Delegates
 
 
-@SuppressLint("StaticFieldLeak")
 class PhotoViewModel(
         application: Application,
         private var photo: Photo
