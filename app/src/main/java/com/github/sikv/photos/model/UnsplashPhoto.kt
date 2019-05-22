@@ -53,7 +53,7 @@ data class UnsplashPhoto(
     }
 
     override fun getSmallUrl(): String {
-        return urls.small
+        return urls.regular
     }
 
     override fun getShareUrl(): String {
