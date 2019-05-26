@@ -190,12 +190,12 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         Utils.makeClickable(photoAuthorText, arrayOf(authorName, source),
                 arrayOf(
                         object : ClickableSpan() {
-                            override fun onClick(p0: View?) {
+                            override fun onClick(view: View?) {
                                 viewModel.openAuthorUrl()
                             }
                         },
                         object : ClickableSpan() {
-                            override fun onClick(p0: View?) {
+                            override fun onClick(view: View?) {
                                 viewModel.openPhotoSource()
                             }
                         }
@@ -269,22 +269,22 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         window.sharedElementEnterTransition = changeBounds
 
         window.sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
-            override fun onTransitionStart(p0: Transition?) {
+            override fun onTransitionStart(transition: Transition?) {
                 setViewsVisibility(View.INVISIBLE)
             }
 
-            override fun onTransitionEnd(p0: Transition?) {
+            override fun onTransitionEnd(transition: Transition?) {
                 photoRootLayout.layoutTransition = LayoutTransition()
                 setViewsVisibility(View.VISIBLE)
             }
 
-            override fun onTransitionResume(p0: Transition?) {
+            override fun onTransitionResume(transition: Transition?) {
             }
 
-            override fun onTransitionPause(p0: Transition?) {
+            override fun onTransitionPause(transition: Transition?) {
             }
 
-            override fun onTransitionCancel(p0: Transition?) {
+            override fun onTransitionCancel(transition: Transition?) {
             }
         })
     }

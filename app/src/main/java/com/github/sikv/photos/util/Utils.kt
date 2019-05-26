@@ -1,6 +1,7 @@
 package com.github.sikv.photos.util
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.content.ContextCompat
@@ -69,7 +70,10 @@ object Utils {
         val builder = CustomTabsIntent.Builder()
         builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
 
-        builder.build().launchUrl(context, Uri.parse(url))
+        val intent = builder.build()
+        intent.intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+        intent.launchUrl(context, Uri.parse(url))
     }
 
     fun showSoftInput(context: Context, view: View) {
