@@ -2,21 +2,24 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/photoRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:transitionName="@string/transition_photo"
+    android:background="@color/colorPrimary"
     tools:targetApi="lollipop">
 
-    <ImageView
+    <com.github.sikv.photos.ui.RoundedImageView
         android:id="@+id/photoImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:radius="@dimen/photoCornerRadius"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/cn_photo"/>
+        android:contentDescription="@string/cn_photo"
+        android:transitionName="@string/transition_photo"/>
 
     <View
         android:layout_width="0dp"

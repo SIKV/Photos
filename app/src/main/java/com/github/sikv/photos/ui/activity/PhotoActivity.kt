@@ -1,5 +1,6 @@
 package com.github.sikv.photos.ui.activity
 
+import android.animation.LayoutTransition
 import android.annotation.TargetApi
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -16,6 +17,7 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.text.style.ClickableSpan
 import android.transition.ChangeBounds
+import android.transition.Transition
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -69,15 +71,15 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_photo)
-        setTransitionAnimationDuration()
+        tweakTransitions()
 
         val photo: Photo = intent.getParcelableExtra(EXTRA_PHOTO)
 
         viewModel = ViewModelProviders.of(this, PhotoViewModelFactory(application, photo))
                 .get(PhotoViewModel::class.java)
 
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+        // sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        // gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
 
         init()
 
@@ -88,24 +90,18 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     override fun onResume() {
         super.onResume()
 
-        sensorManager.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_FASTEST)
+        // sensorManager.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_FASTEST)
     }
 
     override fun onPause() {
         super.onPause()
 
-        sensorManager.unregisterListener(this)
+        // sensorManager.unregisterListener(this)
     }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-        hideViews()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -264,13 +260,33 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun setTransitionAnimationDuration() {
+    private fun tweakTransitions() {
         val duration = 220L
 
         val changeBounds = ChangeBounds()
         changeBounds.duration = duration
 
         window.sharedElementEnterTransition = changeBounds
+
+        window.sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
+            override fun onTransitionStart(p0: Transition?) {
+                setViewsVisibility(View.INVISIBLE)
+            }
+
+            override fun onTransitionEnd(p0: Transition?) {
+                photoRootLayout.layoutTransition = LayoutTransition()
+                setViewsVisibility(View.VISIBLE)
+            }
+
+            override fun onTransitionResume(p0: Transition?) {
+            }
+
+            override fun onTransitionPause(p0: Transition?) {
+            }
+
+            override fun onTransitionCancel(p0: Transition?) {
+            }
+        })
     }
 
     private fun adjustMargins() {
@@ -281,11 +297,11 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         }
     }
 
-    private fun hideViews() {
-        photoToolbar.visibility = View.INVISIBLE
-        photoAuthorText.visibility = View.INVISIBLE
-        photoSetWallpaperButton.visibility = View.INVISIBLE
-        photoShareButton.visibility = View.INVISIBLE
-        photoDownloadButton.visibility = View.INVISIBLE
+    private fun setViewsVisibility(visibility: Int) {
+        photoToolbar.visibility = visibility
+        photoAuthorText.visibility = visibility
+        photoSetWallpaperButton.visibility = visibility
+        photoShareButton.visibility = visibility
+        photoDownloadButton.visibility = visibility
     }
 }
