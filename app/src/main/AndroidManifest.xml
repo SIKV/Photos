@@ -27,10 +27,6 @@
         <activity android:name=".ui.activity.PhotoActivity"
             android:theme="@style/AppTheme.Translucent"/>
 
-        <activity android:name=".ui.activity.SearchActivity"/>
-
-        <activity android:name=".ui.activity.FavoritesActivity"/>
-
         <service android:name=".service.SetWallpaperIntentService"
             android:exported="false"/>
 

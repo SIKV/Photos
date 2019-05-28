@@ -10,7 +10,7 @@
     android:layout_marginBottom="6dp"
     app:cardCornerRadius="@dimen/photoCornerRadius"
     app:cardElevation="8dp"
-    app:cardBackgroundColor="@color/colorPrimaryDark"
+    app:cardBackgroundColor="@color/colorPlaceholder"
     android:focusable="true"
     android:clickable="true"
     android:transitionName="@string/transition_photo"

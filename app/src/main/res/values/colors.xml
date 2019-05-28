@@ -4,7 +4,11 @@
     <color name="colorPrimary">#273245</color>
     <color name="colorPrimaryDark">#1D2533</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorBackground">#1D2533</color>
     <color name="colorOverlay">#AA000000</color>
     <color name="colorRipple">#353535</color>
+    <color name="colorNavigationIcon">#FFFFFF</color>
+    <color name="colorPlaceholder">#273245</color>
 
 </resources>

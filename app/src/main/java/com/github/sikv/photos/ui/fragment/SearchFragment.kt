@@ -1,104 +1,149 @@
 package com.github.sikv.photos.ui.fragment
 
-import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.bumptech.glide.Glide
+import android.support.v4.app.FragmentManager
+import android.support.v4.app.FragmentPagerAdapter
+import android.support.v7.app.AppCompatActivity
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.*
+import android.view.inputmethod.EditorInfo
 import com.github.sikv.photos.R
-import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.data.PhotoSource
-import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.ui.activity.PhotoActivity
-import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
-import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
-import com.github.sikv.photos.viewmodel.SearchViewModel
-import kotlinx.android.synthetic.main.fragment_search.*
-import kotlinx.android.synthetic.main.layout_loading_error.*
-import kotlinx.android.synthetic.main.layout_no_results_found.*
+import com.github.sikv.photos.util.Utils
+import kotlinx.android.synthetic.main.fragment_favorites.*
+import kotlinx.android.synthetic.main.fragment_search2.*
+
 
 class SearchFragment : Fragment() {
 
-    companion object {
-        private const val SEARCH_SOURCE = "search_source"
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
 
-        fun newInstance(photoSource: PhotoSource): SearchFragment {
-            val fragment = SearchFragment()
+    private var clearButtonVisible: Boolean = false
+        set(value) {
+            field = value
 
-            val args = Bundle()
-            args.putSerializable(SEARCH_SOURCE, photoSource)
-
-            fragment.arguments = args
-
-            return fragment
+            (activity as? AppCompatActivity)?.apply {
+                invalidateOptionsMenu()
+            }
         }
-    }
-
-    private val viewModel: SearchViewModel by lazy {
-        ViewModelProviders.of(this).get(SearchViewModel::class.java)
-    }
-
-    private var photoSource: PhotoSource? = null
-    private var photoAdapter: PhotoPagedListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        photoSource = arguments?.getSerializable(SEARCH_SOURCE) as? PhotoSource
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
+        return inflater.inflate(R.layout.fragment_search2, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
-    }
+        (activity as? AppCompatActivity)?.apply {
+            setSupportActionBar(favoritesToolbar)
 
-    fun searchPhotos(text: String) {
-        photoSource?.let { searchSource ->
-            viewModel.searchPhotos(searchSource, text)?.observe(this, Observer {
-                photoAdapter?.submitList(it)
-            })
-
-            viewModel.getSearchState(searchSource)?.observe(this, Observer { state ->
-                state?.let(::handleState)
-            })
+            supportActionBar?.setDisplayShowTitleEnabled(false)
         }
+
+        initViewPager()
+        init()
+
+        searchRequestFocus()
     }
 
-    private fun handleState(state: DataSourceState) {
-        if (state == DataSourceState.ERROR) {
-            loadingErrorLayout.visibility = View.VISIBLE
-        } else {
-            loadingErrorLayout.visibility = View.GONE
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_clear, menu)
+    }
 
-            photoSource?.let { searchSource ->
-                noResultsFoundLayout.visibility =
-                        if (state != DataSourceState.LOADING && viewModel.isSearchListEmpty(searchSource)) View.VISIBLE
-                        else View.GONE
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        super.onPrepareOptionsMenu(menu)
+
+        menu?.findItem(R.id.itemClear)?.isVisible = clearButtonVisible
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.itemClear -> {
+                searchEdit.text.clear()
+                searchRequestFocus()
+                return true
             }
         }
+
+        return super.onOptionsItemSelected(item)
     }
 
-    private fun onPhotoClick(photo: Photo, view: View) {
-        activity?.let { activity ->
-            PhotoActivity.startActivity(activity, view, photo)
+    private fun searchPhotos(text: String) {
+        viewPagerAdapter.fragments.forEach {
+            it.searchPhotos(text)
         }
     }
 
-    private fun onPhotoLongClick(photo: Photo, view: View) {
-        PhotoPreviewPopup.show(activity as Activity, searchRootLayout, photo)
+    private fun searchRequestFocus() {
+        searchEdit.requestFocus()
+        Utils.showSoftInput(context!!, searchEdit)
+    }
+
+    private fun initViewPager() {
+        viewPagerAdapter = ViewPagerAdapter(childFragmentManager)
+
+        viewPagerAdapter.addFragment(SingleSearchFragment.newInstance(PhotoSource.UNSPLASH), getString(R.string.unsplash))
+        viewPagerAdapter.addFragment(SingleSearchFragment.newInstance(PhotoSource.PEXELS), getString(R.string.pexels))
+
+        searchViewPager.adapter = viewPagerAdapter
+        searchTabLayout.setupWithViewPager(searchViewPager)
     }
 
     private fun init() {
-        photoAdapter = PhotoPagedListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
-        searchRecycler.adapter = photoAdapter
+        searchEdit.setOnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                Utils.hideSoftInput(context!!, searchEdit)
+                searchEdit.clearFocus()
+
+                searchPhotos(textView.text.toString())
+                return@setOnEditorActionListener true
+            }
+
+            return@setOnEditorActionListener false
+        }
+
+        searchEdit.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(editable: Editable?) {
+                clearButtonVisible = editable?.isNotEmpty() ?: false
+            }
+
+            override fun beforeTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+    }
+
+    internal inner class ViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
+        var fragments: MutableList<SingleSearchFragment> = mutableListOf()
+            private set
+
+        private var titles: MutableList<String> = mutableListOf()
+
+        override fun getItem(position: Int): Fragment {
+            return fragments[position]
+        }
+
+        override fun getCount(): Int {
+            return fragments.size
+        }
+
+        fun addFragment(fragment: SingleSearchFragment, title: String) {
+            fragments.add(fragment)
+            titles.add(title)
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return titles[position]
+        }
     }
 }

@@ -5,13 +5,14 @@
     android:id="@+id/favoritesRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary">
+    android:animateLayoutChanges="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/favoritesAppBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="?android:actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="16dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/favoritesToolbar"
@@ -37,6 +38,9 @@
         android:id="@+id/favoritesRecycler"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:paddingTop="@dimen/recyclerPaddingTop"
+        android:paddingBottom="@dimen/recyclerPaddingTop"
+        android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@id/favoritesAppBarLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_photo"/>
@@ -56,7 +60,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_favorite_primary_dark_96dp"
+            android:src="@drawable/ic_favorite_placeholder_96dp"
             android:contentDescription="@string/cn_favorite_icon"/>
 
     </LinearLayout>
