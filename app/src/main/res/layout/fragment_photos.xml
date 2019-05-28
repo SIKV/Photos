@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
-        android:elevation="16dp">
+        android:elevation="@dimen/appBarElevation">
 
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
@@ -74,6 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="@dimen/recyclerPaddingTop"
+            android:paddingBottom="@dimen/recyclerPaddingTop"
             android:clipToPadding="false"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 

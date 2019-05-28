@@ -18,7 +18,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_search_primary_dark_96dp"
+            android:src="@drawable/ic_search_placeholder_96dp"
             android:contentDescription="@string/cn_search_icon"/>
 
         <TextView
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:textSize="28sp"
             android:fontFamily="sans-serif-black"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPlaceholder"
             android:text="@string/no_results_found"/>
 
         <TextView
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:textSize="10sp"
             android:fontFamily="sans-serif-black"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPlaceholder"
             android:text="@string/can_not_find_any_photos_matching"
             tools:ignore="SmallSp"/>
 

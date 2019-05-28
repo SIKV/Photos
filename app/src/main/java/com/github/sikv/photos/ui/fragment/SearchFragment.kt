@@ -13,7 +13,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.data.PhotoSource
 import com.github.sikv.photos.util.Utils
 import kotlinx.android.synthetic.main.fragment_favorites.*
-import kotlinx.android.synthetic.main.fragment_search2.*
+import kotlinx.android.synthetic.main.fragment_search.*
 
 
 class SearchFragment : Fragment() {
@@ -36,7 +36,7 @@ class SearchFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_search2, container, false)
+        return inflater.inflate(R.layout.fragment_search, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

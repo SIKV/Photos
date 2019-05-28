@@ -17,7 +17,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_error_outline_primary_dark_96dp"
+            android:src="@drawable/ic_error_outline_placeholder_96dp"
             android:contentDescription="@string/cn_loading_error_icon"/>
 
         <TextView
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:textSize="28sp"
             android:fontFamily="sans-serif-black"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPlaceholder"
             android:text="@string/loading_error"/>
 
     </LinearLayout>

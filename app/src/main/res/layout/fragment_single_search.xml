@@ -9,6 +9,9 @@
         android:id="@+id/searchRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@dimen/recyclerPaddingTop"
+        android:paddingBottom="@dimen/recyclerPaddingTop"
+        android:clipToPadding="false"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
     <include layout="@layout/layout_no_results_found"/>
