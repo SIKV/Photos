@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.support.v7.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.PhotoSource
+import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.Utils
-import kotlinx.android.synthetic.main.fragment_favorites.*
 import kotlinx.android.synthetic.main.fragment_search.*
 
 
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment() {
 
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
@@ -24,15 +26,29 @@ class SearchFragment : Fragment() {
         set(value) {
             field = value
 
-            (activity as? AppCompatActivity)?.apply {
-                invalidateOptionsMenu()
-            }
+            setMenuItemVisibility(R.id.itemClear, field)
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateToolbar(): FragmentToolbar? {
+        return FragmentToolbar.Builder()
+                .withId(R.id.searchToolbar)
+                .withMenu(R.menu.menu_search)
+                .withMenuItems(
+                        listOf(
+                                R.id.itemClear
+                        ),
+                        listOf(
+                                object : MenuItem.OnMenuItemClickListener {
+                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                                        searchEdit.text.clear()
+                                        searchRequestFocus()
 
-        setHasOptionsMenu(true)
+                                        return true
+                                    }
+                                }
+                        )
+                )
+                .build()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -42,38 +58,12 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(favoritesToolbar)
-
-            supportActionBar?.setDisplayShowTitleEnabled(false)
-        }
-
         initViewPager()
         init()
 
         searchRequestFocus()
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_clear, menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?) {
-        super.onPrepareOptionsMenu(menu)
-
-        menu?.findItem(R.id.itemClear)?.isVisible = clearButtonVisible
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.itemClear -> {
-                searchEdit.text.clear()
-                searchRequestFocus()
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
+        clearButtonVisible = false
     }
 
     private fun searchPhotos(text: String) {

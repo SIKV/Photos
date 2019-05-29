@@ -5,21 +5,23 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.BaseTransientBottomBar
 import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoDataListAdapter
+import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.setBackgroundColor
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import kotlinx.android.synthetic.main.fragment_favorites.*
 
 
-class FavoritesFragment : Fragment() {
+class FavoritesFragment : BaseFragment() {
 
     private val viewModel: FavoritesViewModel by lazy {
         ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
@@ -34,75 +36,77 @@ class FavoritesFragment : Fragment() {
         }
 
     private var viewListOptionVisible = true
+        set(value) {
+            field = value
+
+            setMenuItemVisibility(R.id.itemViewList, field)
+        }
+
     private var viewGridOptionVisible = false
+        set(value) {
+            field = value
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setHasOptionsMenu(true)
-    }
+            setMenuItemVisibility(R.id.itemViewGrid, field)
+        }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
+    override fun onCreateToolbar(): FragmentToolbar? {
+        return FragmentToolbar.Builder()
+                .withId(R.id.favoritesToolbar)
+                .withMenu(R.menu.menu_favorites)
+                .withMenuItems(
+                        listOf(
+                                R.id.itemViewList,
+                                R.id.itemViewGrid,
+                                R.id.itemDelete),
+                        listOf(
+                                object : MenuItem.OnMenuItemClickListener {
+                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                                        currentSpanCount = 1
+
+                                        viewListOptionVisible = false
+                                        viewGridOptionVisible = true
+
+                                        return true
+                                    }
+                                },
+
+                                object : MenuItem.OnMenuItemClickListener {
+                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                                        currentSpanCount = 2
+
+                                        viewListOptionVisible = true
+                                        viewGridOptionVisible = false
+
+                                        return true
+                                    }
+                                },
+
+                                object : MenuItem.OnMenuItemClickListener {
+                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                                        viewModel.deleteAll()
+
+                                        return true
+                                    }
+                                }
+                        )
+                )
+                .build()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(favoritesToolbar)
-
-            supportActionBar?.setDisplayShowTitleEnabled(false)
-        }
 
         init()
 
         observeFavorites()
         observeEvents()
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_favorites, menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?) {
-        super.onPrepareOptionsMenu(menu)
-
-        menu?.findItem(R.id.itemViewList)?.isVisible = viewListOptionVisible
-        menu?.findItem(R.id.itemViewGrid)?.isVisible = viewGridOptionVisible
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.itemViewList -> {
-                currentSpanCount = 1
-
-                viewListOptionVisible = false
-                viewGridOptionVisible = true
-
-                (activity as? AppCompatActivity)?.apply {
-                    invalidateOptionsMenu()
-                }
-            }
-
-            R.id.itemViewGrid -> {
-                currentSpanCount = 2
-
-                viewListOptionVisible = true
-                viewGridOptionVisible = false
-
-                (activity as? AppCompatActivity)?.apply {
-                    invalidateOptionsMenu()
-                }
-            }
-
-            R.id.itemDelete -> {
-                viewModel.deleteAll()
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
+        viewListOptionVisible = true
+        viewGridOptionVisible = false
     }
 
     private fun observeFavorites() {

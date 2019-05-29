@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.PopupMenu
@@ -26,7 +25,7 @@ import kotlinx.android.synthetic.main.layout_loading_error.*
 import kotlinx.android.synthetic.main.layout_no_results_found.*
 
 
-class PhotosFragment : Fragment() {
+class PhotosFragment : BaseFragment() {
 
     companion object {
         private const val TOOLBAR_ELEVATION = 12f

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.github.sikv.photos.ui.SquareCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.github.sikv.photos.ui.custom.SquareCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -24,4 +24,4 @@
         android:scaleType="centerCrop"
         android:contentDescription="@string/cn_photo"/>
 
-</com.github.sikv.photos.ui.SquareCardView>
+</com.github.sikv.photos.ui.custom.SquareCardView>

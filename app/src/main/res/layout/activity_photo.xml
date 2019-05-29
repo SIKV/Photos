@@ -8,7 +8,7 @@
     android:background="@color/colorPrimary"
     tools:targetApi="lollipop">
 
-    <com.github.sikv.photos.ui.RoundedImageView
+    <com.github.sikv.photos.ui.custom.RoundedImageView
         android:id="@+id/photoImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
