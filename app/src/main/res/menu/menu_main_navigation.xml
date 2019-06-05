@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/itemPhotos"
+    <item android:id="@+id/photosFragment"
         android:title="@string/photos"
         android:icon="@drawable/ic_photo_camera_white_24dp"/>
 
-    <item android:id="@+id/itemSearch"
+    <item android:id="@+id/searchFragment"
         android:title="@string/search"
         android:icon="@drawable/ic_search_white_24dp"/>
 
-    <item android:id="@+id/itemFavorites"
+    <item android:id="@+id/favoritesFragment"
         android:title="@string/favorites"
-        android:icon="@drawable/ic_favorite_border_white_24dp"/>
+        android:icon="@drawable/ic_favorite_white_24dp"/>
 
-    <item android:id="@+id/itemSettings"
+    <item android:id="@+id/settingsFragment"
         android:title="@string/settings"
         android:icon="@drawable/ic_settings_white_24dp"/>
 

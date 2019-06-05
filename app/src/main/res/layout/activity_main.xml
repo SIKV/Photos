@@ -6,10 +6,13 @@
     android:background="@color/colorBackground"
     android:fitsSystemWindows="true">
 
-    <FrameLayout
-        android:id="@+id/mainFragmentContainer"
+    <fragment
+        android:id="@+id/mainNavigationFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/navigation_main"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/mainBottomNavigation"/>
 
@@ -24,8 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/menu_navigation"
+        app:menu="@menu/menu_main_navigation"
         app:elevation="0dp"
         android:background="@color/colorPrimary"
         android:theme="@style/NavigationTheme"/>

@@ -6,9 +6,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.arch.paging.PagedList
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewCompat
 import android.support.v7.widget.PopupMenu
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,10 +24,6 @@ import kotlinx.android.synthetic.main.layout_no_results_found.*
 
 
 class PhotosFragment : BaseFragment() {
-
-    companion object {
-        private const val TOOLBAR_ELEVATION = 12f
-    }
 
     private val viewModel: PhotosViewModel by lazy {
         ViewModelProviders.of(this).get(PhotosViewModel::class.java)
@@ -130,20 +124,6 @@ class PhotosFragment : BaseFragment() {
 
             // TODO Implement
         }
-
-        photosRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-
-                recyclerView.computeVerticalScrollOffset().let {
-                    if (it > 0) {
-                        ViewCompat.setElevation(photosAppBarLayout, TOOLBAR_ELEVATION)
-                    } else {
-                        ViewCompat.setElevation(photosAppBarLayout, 0.0f)
-                    }
-                }
-            }
-        })
 
         photosTitleLayout.setOnClickListener {
             showSourcePopup()
