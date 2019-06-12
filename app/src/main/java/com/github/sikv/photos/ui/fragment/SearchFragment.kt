@@ -7,13 +7,11 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.PhotoSource
-import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.Utils
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -26,30 +24,8 @@ class SearchFragment : BaseFragment() {
         set(value) {
             field = value
 
-            setMenuItemVisibility(R.id.itemClear, field)
+            searchClearButton.visibility = if (field) View.VISIBLE else View.INVISIBLE
         }
-
-    override fun onCreateToolbar(): FragmentToolbar? {
-        return FragmentToolbar.Builder()
-                .withId(R.id.searchToolbar)
-                .withMenu(R.menu.menu_search)
-                .withMenuItems(
-                        listOf(
-                                R.id.itemClear
-                        ),
-                        listOf(
-                                object : MenuItem.OnMenuItemClickListener {
-                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        searchEdit.text.clear()
-                                        searchRequestFocus()
-
-                                        return true
-                                    }
-                                }
-                        )
-                )
-                .build()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_search, container, false)
@@ -61,7 +37,7 @@ class SearchFragment : BaseFragment() {
         initViewPager()
         init()
 
-        searchRequestFocus()
+        searchRequestFocus(false)
 
         clearButtonVisible = false
     }
@@ -72,9 +48,12 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    private fun searchRequestFocus() {
+    private fun searchRequestFocus(showSoftInput: Boolean = true) {
         searchEdit.requestFocus()
-        Utils.showSoftInput(context!!, searchEdit)
+
+        if (showSoftInput) {
+            Utils.showSoftInput(context!!, searchEdit)
+        }
     }
 
     private fun initViewPager() {
@@ -111,6 +90,11 @@ class SearchFragment : BaseFragment() {
             override fun onTextChanged(charSequence: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
         })
+
+        searchClearButton.setOnClickListener {
+            searchEdit.text.clear()
+            searchRequestFocus()
+        }
     }
 
     internal inner class ViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {

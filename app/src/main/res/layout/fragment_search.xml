@@ -15,22 +15,56 @@
             android:id="@+id/searchToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:contentInsetStart="0dp"
+            app:contentInsetEnd="0dp"
             app:theme="@style/Toolbar">
 
-            <EditText
-                android:id="@+id/searchEdit"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="sans-serif-black"
-                android:hint="@string/search_uc"
-                android:inputType="textCapSentences"
-                android:imeOptions="actionSearch"
-                android:singleLine="true"
-                android:maxLength="64"
-                android:textColorHint="@color/colorPrimaryDark"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:background="@null"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:paddingTop="12dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="12dp"
+                android:background="@drawable/bg_search_layout">
+
+                <EditText
+                    android:id="@+id/searchEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/searchClearButton"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:fontFamily="sans-serif-black"
+                    android:hint="@string/search_uc"
+                    android:inputType="textCapSentences"
+                    android:imeOptions="actionSearch"
+                    android:singleLine="true"
+                    android:maxLength="64"
+                    android:textColorHint="@color/colorPrimary"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:background="@null"/>
+
+                <ImageButton
+                    android:id="@+id/searchClearButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:contentDescription="@string/cn_clear_button"
+                    android:src="@drawable/ic_close_circle_white_24dp"
+                    android:background="@android:color/transparent"/>
+
+            </android.support.constraint.ConstraintLayout>
 
         </android.support.v7.widget.Toolbar>
 

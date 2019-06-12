@@ -10,6 +10,7 @@
     <string name="cn_search_icon">Search icon</string>
     <string name="cn_favorite_icon">Favorite icon</string>
     <string name="cn_loading_error_icon">Loading error icon</string>
+    <string name="cn_clear_button">Clear button</string>
 
     <string name="transition_photo">Transition Photo</string>
     <string name="photo_by_s_on_s">Photo by %s on %s</string>
@@ -28,7 +29,6 @@
     <string name="grid">Grid</string>
     <string name="search">Search</string>
     <string name="search_uc">SEARCH</string>
-    <string name="clear">Clear</string>
     <string name="deleted">Deleted</string>
     <string name="undo">UNDO</string>
 
