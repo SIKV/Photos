@@ -16,19 +16,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/mainBottomNavigation"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        app:layout_constraintBottom_toTopOf="@id/mainBottomNavigation"
-        android:background="@drawable/shadow"/>
-
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/mainBottomNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/menu_main_navigation"
-        app:elevation="0dp"
+        app:labelVisibilityMode="labeled"
         android:background="@color/colorPrimary"
         android:theme="@style/NavigationTheme"/>
 

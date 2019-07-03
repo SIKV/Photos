@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#273245</color>
+    <color name="colorPrimary">#1D2533</color>
     <color name="colorPrimaryDark">#1D2533</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="colorBackground">#1D2533</color>
+    <color name="colorBackground">#151A24</color>
     <color name="colorOverlay">#AA000000</color>
     <color name="colorRipple">#353535</color>
     <color name="colorNavigationIcon">#FFFFFF</color>
-    <color name="colorPlaceholder">#313C4F</color>
+    <color name="colorPlaceholder">#1D2533</color>
+    <color name="colorHint">#9E9E9E</color>
+    <color name="colorSearchBackground">#151A24</color>
 
 </resources>

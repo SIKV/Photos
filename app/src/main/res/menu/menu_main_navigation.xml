@@ -14,7 +14,7 @@
         android:icon="@drawable/ic_favorite_white_24dp"/>
 
     <item android:id="@+id/settingsFragment"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_settings_white_24dp"/>
+        android:title="@string/more"
+        android:icon="@drawable/ic_menu_white_24dp"/>
 
 </menu>

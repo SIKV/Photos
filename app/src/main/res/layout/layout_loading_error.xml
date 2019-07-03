@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:textSize="28sp"
             android:fontFamily="sans-serif-black"
-            android:textColor="@color/colorPlaceholder"
+            android:textColor="@color/colorHint"
             android:text="@string/loading_error"/>
 
     </LinearLayout>

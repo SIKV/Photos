@@ -1,9 +1,10 @@
 package com.github.sikv.photos.ui.fragment
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -12,8 +13,14 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.PhotoSource
+import com.github.sikv.photos.ui.adapter.ViewPagerAdapter
 import com.github.sikv.photos.util.Utils
+import com.github.sikv.photos.util.Utils.dp2px
 import kotlinx.android.synthetic.main.fragment_search.*
+
+
+const val SEARCH_MARGIN_ANIMATION_DURATION = 250L
+const val TAB_LAYOUT_BACKGROUND_ANIMATION_DURATION = 750L
 
 
 class SearchFragment : BaseFragment() {
@@ -37,15 +44,15 @@ class SearchFragment : BaseFragment() {
         initViewPager()
         init()
 
-        searchRequestFocus(false)
-
         clearButtonVisible = false
     }
 
     private fun searchPhotos(text: String) {
         viewPagerAdapter.fragments.forEach {
-            it.searchPhotos(text)
+            (it as? SingleSearchFragment)?.searchPhotos(text)
         }
+
+        searchTabLayout.visibility = View.VISIBLE
     }
 
     private fun searchRequestFocus(showSoftInput: Boolean = true) {
@@ -93,31 +100,53 @@ class SearchFragment : BaseFragment() {
 
         searchClearButton.setOnClickListener {
             searchEdit.text.clear()
-            searchRequestFocus()
+        }
+
+        searchEdit.setOnFocusChangeListener { _, hasFocus ->
+            animateSearchMargins(hasFocus)
+            animateTabLayoutBackground(hasFocus)
         }
     }
 
-    internal inner class ViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
-        var fragments: MutableList<SingleSearchFragment> = mutableListOf()
-            private set
+    private fun animateSearchMargins(hasFocus: Boolean) {
+        val margin = dp2px(6)
 
-        private var titles: MutableList<String> = mutableListOf()
+        var from = 0
+        var to = margin
 
-        override fun getItem(position: Int): Fragment {
-            return fragments[position]
+        if (hasFocus) {
+            from = margin
+            to = 0
         }
 
-        override fun getCount(): Int {
-            return fragments.size
+        val animator = ValueAnimator.ofInt(from, to)
+
+        animator.addUpdateListener { valueAnimator ->
+            val params = searchEditLayout.layoutParams as? ViewGroup.MarginLayoutParams
+
+            val newMargin = valueAnimator.animatedValue as Int
+            params?.setMargins(newMargin, newMargin, newMargin, newMargin)
+
+            searchEditLayout.layoutParams = params
         }
 
-        fun addFragment(fragment: SingleSearchFragment, title: String) {
-            fragments.add(fragment)
-            titles.add(title)
-        }
+        animator.duration = SEARCH_MARGIN_ANIMATION_DURATION
+        animator.start()
+    }
 
-        override fun getPageTitle(position: Int): CharSequence? {
-            return titles[position]
+    private fun animateTabLayoutBackground(hasFocus: Boolean) {
+        context?.let { context ->
+            var fromColor = ContextCompat.getColor(context, R.color.colorSearchBackground)
+            var toColor = ContextCompat.getColor(context, R.color.colorPrimary)
+
+            if (hasFocus) {
+                fromColor = ContextCompat.getColor(context, R.color.colorPrimary)
+                toColor = ContextCompat.getColor(context, R.color.colorSearchBackground)
+            }
+
+            ObjectAnimator.ofObject(searchTabLayout, "backgroundColor", ArgbEvaluator(), fromColor, toColor)
+                    .setDuration(TAB_LAYOUT_BACKGROUND_ANIMATION_DURATION)
+                    .start()
         }
     }
 }

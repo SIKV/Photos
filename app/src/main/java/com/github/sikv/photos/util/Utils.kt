@@ -10,9 +10,11 @@ import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.UnderlineSpan
+import android.util.DisplayMetrics
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import kotlin.math.atan2
 import kotlin.math.sqrt
@@ -84,6 +86,15 @@ object Utils {
     fun hideSoftInput(context: Context, view: View) {
         val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun dp2px(dp: Int): Int {
+        App.instance?.let { app ->
+            return Math.round(dp * (app.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
+
+        }
+
+        return 0
     }
 
     fun calculateP(x: Double, y: Double, z: Double,
