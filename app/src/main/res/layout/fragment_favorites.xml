@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/favoritesRootLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/favoritesAppBarLayout"
@@ -18,6 +17,7 @@
             android:id="@+id/favoritesToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:theme="@style/Toolbar">
 
             <TextView
@@ -34,35 +34,36 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/favoritesRecycler"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:paddingTop="@dimen/recyclerPaddingTop"
-        android:paddingBottom="@dimen/recyclerPaddingTop"
-        android:clipToPadding="false"
-        app:layout_constraintTop_toBottomOf="@id/favoritesAppBarLayout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_photo"/>
-
-    <LinearLayout
-        android:id="@+id/favoritesEmptyLayout"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone">
+        app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior">
 
-        <ImageView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/favoritesRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/recyclerPaddingTop"
+            android:paddingBottom="@dimen/recyclerPaddingTop"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_photo"/>
+
+        <LinearLayout
+            android:id="@+id/favoritesEmptyLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_favorite_placeholder_96dp"
-            android:contentDescription="@string/cn_favorite_icon"/>
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_favorite_placeholder_96dp"
+                android:contentDescription="@string/cn_favorite_icon"/>
 
-</android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>
