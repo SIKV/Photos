@@ -1,7 +1,7 @@
 package com.github.sikv.photos
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 
 
 class App : Application() {

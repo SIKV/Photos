@@ -3,9 +3,9 @@ package com.github.sikv.photos.viewmodel
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable

@@ -1,8 +1,8 @@
 package com.github.sikv.photos.util
 
-import android.support.annotation.ColorRes
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
+import androidx.annotation.ColorRes
+import com.google.android.material.snackbar.Snackbar
+import androidx.core.content.ContextCompat
 
 
 fun Snackbar.setBackgroundColor(@ColorRes color: Int): Snackbar {

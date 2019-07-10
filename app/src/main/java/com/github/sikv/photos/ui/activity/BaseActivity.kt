@@ -1,8 +1,8 @@
 package com.github.sikv.photos.ui.activity
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import com.github.sikv.photos.App
 

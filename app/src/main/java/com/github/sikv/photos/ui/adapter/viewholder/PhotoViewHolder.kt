@@ -1,7 +1,7 @@
 package com.github.sikv.photos.ui.adapter.viewholder
 
 import android.graphics.Bitmap
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget

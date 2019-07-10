@@ -1,12 +1,12 @@
 package com.github.sikv.photos.ui.fragment
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.arch.paging.PagedList
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedList
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.PopupMenu
+import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.PopupMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup

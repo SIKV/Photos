@@ -1,7 +1,7 @@
 package com.github.sikv.photos.ui.custom.toolbar
 
-import android.support.annotation.IdRes
-import android.support.annotation.MenuRes
+import androidx.annotation.IdRes
+import androidx.annotation.MenuRes
 import android.view.MenuItem
 
 

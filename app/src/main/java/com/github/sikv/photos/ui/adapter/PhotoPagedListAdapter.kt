@@ -1,7 +1,7 @@
 package com.github.sikv.photos.ui.adapter
 
-import android.arch.paging.PagedListAdapter
-import android.support.v7.util.DiffUtil
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
