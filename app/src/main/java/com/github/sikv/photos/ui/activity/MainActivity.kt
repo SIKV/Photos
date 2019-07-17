@@ -1,9 +1,8 @@
 package com.github.sikv.photos.ui.activity
 
 import android.os.Bundle
-import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.github.sikv.photos.R
+import com.github.sikv.photos.util.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -14,7 +13,21 @@ class MainActivity : BaseActivity() {
 
         setContentView(R.layout.activity_main)
 
-        val navController = findNavController(R.id.mainNavigationFragment)
-        mainBottomNavigation.setupWithNavController(navController)
+        setupBottomNavigation()
+    }
+
+    private fun setupBottomNavigation() {
+        val navGraphIds = listOf(
+                R.navigation.photos,
+                R.navigation.search,
+                R.navigation.favorites,
+                R.navigation.more
+        )
+
+        mainBottomNavigation.setupWithNavController(
+                navGraphIds = navGraphIds,
+                fragmentManager = supportFragmentManager,
+                containerId = R.id.mainNavigationHostContainer,
+                intent = intent)
     }
 }

@@ -6,13 +6,10 @@
     android:background="@color/colorBackground"
     android:fitsSystemWindows="true">
 
-    <fragment
-        android:id="@+id/mainNavigationFragment"
+    <FrameLayout
+        android:id="@+id/mainNavigationHostContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        app:defaultNavHost="true"
-        app:navGraph="@navigation/navigation_main"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/mainBottomNavigation"/>
 

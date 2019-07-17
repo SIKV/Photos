@@ -1,15 +1,13 @@
 package com.github.sikv.photos.ui.fragment
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
-import androidx.recyclerview.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.database.PhotoData
@@ -18,6 +16,8 @@ import com.github.sikv.photos.ui.adapter.PhotoDataListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.setBackgroundColor
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favorites.*
 
 
@@ -29,7 +29,7 @@ class FavoritesFragment : BaseFragment() {
 
     private var photoAdapter: PhotoDataListAdapter? = null
 
-    private var currentSpanCount: Int = 2
+    private var currentSpanCount: Int = 1
         set(value) {
             field = value
             setFavoritesRecyclerLayoutManager(value)
@@ -38,14 +38,12 @@ class FavoritesFragment : BaseFragment() {
     private var viewListOptionVisible = true
         set(value) {
             field = value
-
             setMenuItemVisibility(R.id.itemViewList, field)
         }
 
     private var viewGridOptionVisible = false
         set(value) {
             field = value
-
             setMenuItemVisibility(R.id.itemViewGrid, field)
         }
 
