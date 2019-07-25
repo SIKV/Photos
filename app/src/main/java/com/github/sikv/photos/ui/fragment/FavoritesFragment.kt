@@ -21,6 +21,10 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favorites.*
 
 
+private const val SPAN_COUNT_LIST = 1
+private const val SPAN_COUNT_GRID = 2
+
+
 class FavoritesFragment : BaseFragment() {
 
     private val viewModel: FavoritesViewModel by lazy {
@@ -29,22 +33,13 @@ class FavoritesFragment : BaseFragment() {
 
     private var photoAdapter: PhotoDataListAdapter? = null
 
-    private var currentSpanCount: Int = 1
+    private var currentSpanCount: Int = SPAN_COUNT_LIST
         set(value) {
             field = value
             setFavoritesRecyclerLayoutManager(value)
-        }
 
-    private var viewListOptionVisible = true
-        set(value) {
-            field = value
-            setMenuItemVisibility(R.id.itemViewList, field)
-        }
-
-    private var viewGridOptionVisible = false
-        set(value) {
-            field = value
-            setMenuItemVisibility(R.id.itemViewGrid, field)
+            setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)
+            setMenuItemVisibility(R.id.itemViewGrid, field == SPAN_COUNT_LIST)
         }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,22 +58,14 @@ class FavoritesFragment : BaseFragment() {
                         listOf(
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        currentSpanCount = 1
-
-                                        viewListOptionVisible = false
-                                        viewGridOptionVisible = true
-
+                                        currentSpanCount = SPAN_COUNT_LIST
                                         return true
                                     }
                                 },
 
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        currentSpanCount = 2
-
-                                        viewListOptionVisible = true
-                                        viewGridOptionVisible = false
-
+                                        currentSpanCount = SPAN_COUNT_GRID
                                         return true
                                     }
                                 },
@@ -86,7 +73,6 @@ class FavoritesFragment : BaseFragment() {
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
                                         viewModel.deleteAll()
-
                                         return true
                                     }
                                 }
@@ -103,8 +89,7 @@ class FavoritesFragment : BaseFragment() {
         observeFavorites()
         observeEvents()
 
-        viewListOptionVisible = true
-        viewGridOptionVisible = false
+        currentSpanCount = SPAN_COUNT_LIST
     }
 
     private fun observeFavorites() {

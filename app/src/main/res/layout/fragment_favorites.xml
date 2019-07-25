@@ -36,7 +36,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -48,12 +48,12 @@
             android:clipToPadding="false"
             tools:listitem="@layout/item_photo"/>
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/favoritesEmptyLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center"
+            android:layout_gravity="center"
             android:visibility="gone">
 
             <ImageView
@@ -62,7 +62,7 @@
                 android:src="@drawable/ic_favorite_placeholder_96dp"
                 android:contentDescription="@string/cn_favorite_icon"/>
 
-        </LinearLayout>
+        </FrameLayout>
 
     </FrameLayout>
 
