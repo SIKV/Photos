@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:shortcutId="search"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_search"
+        android:shortcutShortLabel="@string/search"
+        android:shortcutLongLabel="@string/search"
+        android:shortcutDisabledMessage="@string/search">
+
+        <intent
+            android:action="com.github.sikv.photos.action.SEARCH"
+            android:targetPackage="com.github.sikv.photos"
+            android:targetClass="com.github.sikv.photos.ui.activity.MainActivity"/>
+
+    </shortcut>
+
+</shortcuts>
