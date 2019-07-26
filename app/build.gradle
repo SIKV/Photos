@@ -59,10 +59,6 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.1.0'
     kapt 'androidx.room:room-compiler:2.1.0'
 
-    // Navigation
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.1.0-alpha06'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.1.0-alpha06'
-
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'

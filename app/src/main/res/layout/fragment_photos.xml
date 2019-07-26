@@ -40,22 +40,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
-                    android:textAllCaps="true"
-                    android:fontFamily="sans-serif-black"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="18sp"
-                    tools:text="SOURCE"/>
+                    tools:text="SOURCE"
+                    android:textColor="@color/colorSourceText"
+                    style="@style/ToolbarTitle"/>
 
                 <TextView
                     android:id="@+id/photosTitleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAllCaps="true"
-                    android:drawableEnd="@drawable/ic_arrow_drop_down_white_24dp"
-                    android:fontFamily="sans-serif-black"
-                    android:textColor="@android:color/white"
-                    android:textSize="18sp"
-                    android:text="@string/app_name"/>
+                    android:drawableEnd="@drawable/ic_arrow_drop_down_24dp"
+                    android:text="@string/app_name"
+                    style="@style/ToolbarTitle"/>
 
             </LinearLayout>
 

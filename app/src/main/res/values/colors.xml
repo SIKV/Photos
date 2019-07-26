@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#1D2533</color>
-    <color name="colorPrimaryDark">#1D2533</color>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="colorBackground">#151A24</color>
+    <color name="colorNavigationBar">@color/colorPrimaryDark</color>
+    <color name="colorBackground">#FEFEFE</color>
+
+    <color name="colorTitleText">@color/colorAccent</color>
+    <color name="colorText">#555555</color>
+    <color name="colorIcon">#555555</color>
+    <color name="colorSourceText">@color/colorText</color>
+
     <color name="colorOverlay">#AA000000</color>
     <color name="colorRipple">#353535</color>
-    <color name="colorNavigationIcon">#FFFFFF</color>
+    <color name="colorNavigationIcon">#555555</color>
     <color name="colorPlaceholder">#1D2533</color>
     <color name="colorHint">#9E9E9E</color>
-    <color name="colorSearchBackground">#151A24</color>
+    <color name="colorSearchBackground">#85EEEEEE</color>
 
 </resources>

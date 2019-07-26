@@ -21,14 +21,10 @@
             app:theme="@style/Toolbar">
 
             <TextView
-                android:id="@+id/mainTitleText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAllCaps="true"
-                android:fontFamily="sans-serif-black"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:text="@string/favorites"/>
+                android:text="@string/favorites"
+                style="@style/ToolbarTitle"/>
 
         </androidx.appcompat.widget.Toolbar>
 

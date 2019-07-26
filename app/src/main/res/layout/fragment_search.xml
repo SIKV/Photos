@@ -23,7 +23,8 @@
                 android:id="@+id/searchEditLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="6dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:background="@drawable/bg_search_layout">
@@ -36,7 +37,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:contentDescription="@string/cn_search_icon"
-                    android:src="@drawable/ic_search_gray_24dp"
+                    android:src="@drawable/ic_search_24dp"
                     android:background="@android:color/transparent"/>
 
                 <EditText
@@ -55,7 +56,7 @@
                     android:singleLine="true"
                     android:maxLength="64"
                     android:textColorHint="@color/colorHint"
-                    android:textColor="@android:color/white"
+                    android:textColor="@color/colorText"
                     android:textSize="16sp"
                     android:background="@null"/>
 
@@ -67,7 +68,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:contentDescription="@string/cn_clear_button"
-                    android:src="@drawable/ic_close_circle_gray_24dp"
+                    android:src="@drawable/ic_close_circle_22dp"
                     android:background="@android:color/transparent"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -78,8 +79,8 @@
             android:id="@+id/searchTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextColor="@android:color/white"
-            app:tabSelectedTextColor="@android:color/white"
+            app:tabTextColor="@color/colorText"
+            app:tabSelectedTextColor="@color/colorText"
             app:tabTextAppearance="@style/TabBarTextAppearance"
             app:tabMode="fixed"
             app:tabGravity="fill"

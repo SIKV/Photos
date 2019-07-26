@@ -125,7 +125,7 @@ class SearchFragment : BaseFragment() {
             val params = searchEditLayout.layoutParams as? ViewGroup.MarginLayoutParams
 
             val newMargin = valueAnimator.animatedValue as Int
-            params?.setMargins(newMargin, newMargin, newMargin, newMargin)
+            params?.setMargins(0, newMargin, 0, newMargin)
 
             searchEditLayout.layoutParams = params
         }
