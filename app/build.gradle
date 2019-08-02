@@ -59,6 +59,10 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.1.0'
     kapt 'androidx.room:room-compiler:2.1.0'
 
+    // Preferences
+    implementation 'androidx.preference:preference:1.1.0-rc01'
+    implementation 'androidx.preference:preference-ktx:1.1.0-rc01'
+
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'

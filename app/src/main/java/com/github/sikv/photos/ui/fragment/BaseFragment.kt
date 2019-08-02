@@ -1,8 +1,8 @@
 package com.github.sikv.photos.ui.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbarManager
 

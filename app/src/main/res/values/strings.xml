@@ -5,6 +5,8 @@
     <string name="unsplash">Unsplash</string>
     <string name="pexels">Pexels</string>
 
+    <string name="pref_dark_theme">PreferenceDarkTheme</string>
+
     <string name="cn_photo">Photo</string>
     <string name="cn_photo_preview">Photo preview</string>
     <string name="cn_search_icon">Search icon</string>
@@ -21,7 +23,7 @@
     <string name="download">Download</string>
     <string name="favorite">Favorite</string>
     <string name="favorites">Favorites</string>
-    <string name="more">More</string>
+    <string name="settings">Settings</string>
     <string name="no_results_found">NO RESULTS FOUND</string>
     <string name="can_not_find_any_photos_matching">WE CAN\'T FIND ANY PHOTOS MATCHING YOUR SEARCH</string>
     <string name="loading_error">LOADING ERROR</string>
@@ -33,13 +35,13 @@
     <string name="search_for_photos">Search for photos</string>
     <string name="deleted">Deleted</string>
     <string name="undo">UNDO</string>
-
     <string name="home_screen">Home screen</string>
     <string name="lock_screen">Lock screen</string>
     <string name="home_and_lock_screen">Home screen and lock screen</string>
-
     <string name="setting_wallpaper">Setting wallpaper…</string>
     <string name="wallpaper_set">Wallpaper set</string>
     <string name="error_setting_wallpaper">Error setting wallpaper</string>
+    <string name="appearance">Appearance</string>
+    <string name="dark_theme">Dark theme</string>
 
 </resources>

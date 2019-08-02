@@ -3,6 +3,7 @@ package com.github.sikv.photos
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
+import androidx.preference.PreferenceManager
 
 
 class App : Application() {
@@ -19,6 +20,14 @@ class App : Application() {
 
         instance = this
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        updateTheme()
+    }
+
+    fun updateTheme() {
+        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
+
+        val nightModeEnabled = preferenceManager.getBoolean(getString(R.string.pref_dark_theme), true)
+
+        AppCompatDelegate.setDefaultNightMode(if (nightModeEnabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
     }
 }
