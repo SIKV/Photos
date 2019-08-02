@@ -4,13 +4,13 @@ import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.content.ContextCompat
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.PhotoSource
 import com.github.sikv.photos.ui.adapter.ViewPagerAdapter
@@ -125,7 +125,7 @@ class SearchFragment : BaseFragment() {
             val params = searchEditLayout.layoutParams as? ViewGroup.MarginLayoutParams
 
             val newMargin = valueAnimator.animatedValue as Int
-            params?.setMargins(0, newMargin, 0, newMargin)
+            params?.setMargins(newMargin, newMargin, newMargin, newMargin)
 
             searchEditLayout.layoutParams = params
         }

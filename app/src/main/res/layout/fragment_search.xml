@@ -23,8 +23,7 @@
                 android:id="@+id/searchEditLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="6dp"
+                android:layout_margin="6dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
                 android:background="@drawable/bg_search_layout">
@@ -80,11 +79,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabTextColor="@color/colorText"
-            app:tabSelectedTextColor="@color/colorText"
+            app:tabSelectedTextColor="@color/colorAccent"
             app:tabTextAppearance="@style/TabBarTextAppearance"
+            app:tabIndicatorFullWidth="false"
+            app:tabIndicator="@drawable/tab_indicator"
             app:tabMode="fixed"
             app:tabGravity="fill"
-            app:tabIndicatorHeight="4dp"
             android:background="@color/colorPrimary"
             android:visibility="gone"/>
 
