@@ -23,6 +23,9 @@ import kotlinx.android.synthetic.main.layout_loading_error.*
 import kotlinx.android.synthetic.main.layout_no_results_found.*
 
 
+private const val KEY_CURRENT_SOURCE = "key_current_source"
+
+
 class PhotosFragment : BaseFragment() {
 
     private val viewModel: PhotosViewModel by lazy {
@@ -49,6 +52,7 @@ class PhotosFragment : BaseFragment() {
             observeState()
         }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_photos, container, false)
     }
@@ -59,7 +63,19 @@ class PhotosFragment : BaseFragment() {
         init()
         initPhotoAdapter()
 
-        currentSource = PhotoSource.UNSPLASH
+        if (savedInstanceState != null) {
+            savedInstanceState.getString(KEY_CURRENT_SOURCE)?.let { currentSourceName ->
+                currentSource = PhotoSource.valueOf(currentSourceName)
+            }
+        } else {
+            currentSource = PhotoSource.UNSPLASH
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString(KEY_CURRENT_SOURCE, currentSource.name)
     }
 
     private fun observePhotos() {
