@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.github.sikv.photos.Event
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
 import kotlinx.coroutines.GlobalScope
@@ -16,7 +17,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     val favoritesLiveData: LiveData<List<PhotoData>>
 
-    var favoritesDeleteEvent: MutableLiveData<Boolean>
+    var favoritesDeleteEvent: MutableLiveData<Event<Boolean>>
         private set
 
     private var deletedFavorites: List<PhotoData> = emptyList()
@@ -37,10 +38,10 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
                deletedFavorites = favoritesDatabase.photoDao().getAllList()
                favoritesDatabase.photoDao().deleteAll()
 
-               favoritesDeleteEvent.postValue(true)
+               favoritesDeleteEvent.postValue(Event(true))
 
            } else {
-               favoritesDeleteEvent.postValue(false)
+               favoritesDeleteEvent.postValue(Event(false))
            }
        }
     }

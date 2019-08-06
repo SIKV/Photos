@@ -102,8 +102,8 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private fun observeEvents() {
-        viewModel.favoritesDeleteEvent.observe(this, Observer { deleted ->
-            if (deleted == true) {
+        viewModel.favoritesDeleteEvent.observe(this, Observer { deleteEvent ->
+            if (deleteEvent.getContentIfNotHandled() == true) {
                 Snackbar.make(favoritesRootLayout, R.string.deleted, Snackbar.LENGTH_LONG)
                         .setBackgroundColor(R.color.colorPrimaryDark)
                         .setAction(R.string.undo) {
