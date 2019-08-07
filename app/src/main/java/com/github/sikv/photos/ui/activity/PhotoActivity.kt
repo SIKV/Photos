@@ -104,7 +104,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_favorite, menu)
+        menuInflater.inflate(R.menu.menu_photo, menu)
         return true
     }
 

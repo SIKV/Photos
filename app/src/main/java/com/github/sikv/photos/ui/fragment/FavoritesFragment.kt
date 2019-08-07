@@ -14,16 +14,13 @@ import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoDataListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
+import com.github.sikv.photos.util.SPAN_COUNT_GRID
+import com.github.sikv.photos.util.SPAN_COUNT_LIST
 import com.github.sikv.photos.util.setBackgroundColor
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favorites.*
-
-
-private const val SPAN_COUNT_LIST = 1
-private const val SPAN_COUNT_GRID = 2
-
 
 class FavoritesFragment : BaseFragment() {
 
@@ -36,7 +33,7 @@ class FavoritesFragment : BaseFragment() {
     private var currentSpanCount: Int = SPAN_COUNT_LIST
         set(value) {
             field = value
-            setFavoritesRecyclerLayoutManager(value)
+            setRecyclerLayoutManager(value)
 
             setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)
             setMenuItemVisibility(R.id.itemViewGrid, field == SPAN_COUNT_LIST)
@@ -44,6 +41,17 @@ class FavoritesFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favorites, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        init()
+
+        observeFavorites()
+        observeEvents()
+
+        currentSpanCount = SPAN_COUNT_LIST
     }
 
     override fun onCreateToolbar(): FragmentToolbar? {
@@ -81,17 +89,6 @@ class FavoritesFragment : BaseFragment() {
                 .build()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        init()
-
-        observeFavorites()
-        observeEvents()
-
-        currentSpanCount = SPAN_COUNT_LIST
-    }
-
     private fun observeFavorites() {
         viewModel.favoritesLiveData.observe(this, Observer {
             it?.let { photos ->
@@ -126,7 +123,7 @@ class FavoritesFragment : BaseFragment() {
     private fun onPhotoLongClick(photo: PhotoData, view: View) {
     }
 
-    private fun setFavoritesRecyclerLayoutManager(spanCount: Int) {
+    private fun setRecyclerLayoutManager(spanCount: Int) {
         favoritesRecycler.layoutManager = GridLayoutManager(context, spanCount)
     }
 
@@ -134,6 +131,6 @@ class FavoritesFragment : BaseFragment() {
         photoAdapter = PhotoDataListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
         favoritesRecycler.adapter = photoAdapter
 
-        setFavoritesRecyclerLayoutManager(currentSpanCount)
+        setRecyclerLayoutManager(currentSpanCount)
     }
 }

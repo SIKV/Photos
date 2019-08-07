@@ -3,8 +3,6 @@ package com.github.sikv.photos.util
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContextCompat
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
@@ -14,11 +12,15 @@ import android.util.DisplayMetrics
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
+const val SPAN_COUNT_LIST = 1
+const val SPAN_COUNT_GRID = 2
 
 object Utils {
 
