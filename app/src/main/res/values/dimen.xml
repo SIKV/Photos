@@ -8,4 +8,7 @@
     <dimen name="recyclerPaddingTop">4dp</dimen>
     <dimen name="appBarElevation">16dp</dimen>
 
+    <dimen name="bottomSheetCornerRadius">8dp</dimen>
+    <dimen name="bottomSheetSideMargin">16dp</dimen>
+
 </resources>

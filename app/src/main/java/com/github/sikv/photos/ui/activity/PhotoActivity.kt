@@ -26,13 +26,12 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.ui.fragment.SetWallpaperBottomSheetDialogFragment
+import com.github.sikv.photos.ui.fragment.OptionsBottomSheetDialogFragment
 import com.github.sikv.photos.util.CustomWallpaperManager
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
 import kotlinx.android.synthetic.main.activity_photo.*
-
 
 class PhotoActivity : BaseActivity(), SensorEventListener {
 
@@ -64,7 +63,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
     private var favoriteMenuItemIcon: Int? = null
 
-    private val setWallpaperBottomSheet = SetWallpaperBottomSheetDialogFragment()
+    private lateinit var setWallpaperDialog: OptionsBottomSheetDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,6 +80,8 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         // gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
 
         init()
+        setListeners()
+        adjustMargins()
 
         observePhotoLoading()
         observeEvents()
@@ -159,25 +160,6 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         }
     }
 
-    private fun init() {
-        setSupportActionBar(photoToolbar)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        photoImageView.post {
-            val extraOutOfScreen = 250
-
-            photoImageView.layoutParams.width = photoImageView.measuredWidth + extraOutOfScreen
-            photoImageView.layoutParams.height = photoImageView.measuredHeight + extraOutOfScreen
-        }
-
-        initListeners()
-
-        adjustMargins()
-    }
-
     private fun showPhoto(photo: Photo) {
         val authorName = photo.getPhotographerName()
         val source = photo.getSource()
@@ -199,37 +181,6 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
                             }
                         }
                 ))
-    }
-
-    private fun initListeners() {
-        photoSetWallpaperButton.setOnClickListener {
-            setWallpaperBottomSheet.show(supportFragmentManager, setWallpaperBottomSheet.tag)
-        }
-
-        photoShareButton.setOnClickListener {
-            startActivity(viewModel.createShareIntent())
-        }
-
-        photoDownloadButton.setOnClickListener {
-        }
-
-        setWallpaperBottomSheet.callback = object : SetWallpaperBottomSheetDialogFragment.Callback {
-            override fun setHomeScreen() {
-                setWallpaperBottomSheet.dismiss()
-                viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.HOME)
-            }
-
-            override fun setLockScreen() {
-                setWallpaperBottomSheet.dismiss()
-                viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.LOCK)
-
-            }
-
-            override fun setHomeAndLockScreen() {
-                setWallpaperBottomSheet.dismiss()
-                viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.BOTH)
-            }
-        }
     }
 
     private fun observePhotoLoading() {
@@ -256,6 +207,69 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
             invalidateOptionsMenu()
         })
+    }
+
+    private fun init() {
+        setSupportActionBar(photoToolbar)
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        photoImageView.post {
+            val extraOutOfScreen = 250
+
+            photoImageView.layoutParams.width = photoImageView.measuredWidth + extraOutOfScreen
+            photoImageView.layoutParams.height = photoImageView.measuredHeight + extraOutOfScreen
+        }
+
+        createSetWallpaperDialog()
+    }
+
+    private fun setListeners() {
+        photoSetWallpaperButton.setOnClickListener {
+            setWallpaperDialog.show(supportFragmentManager)
+        }
+
+        photoShareButton.setOnClickListener {
+            startActivity(viewModel.createShareIntent())
+        }
+
+        photoDownloadButton.setOnClickListener {
+        }
+    }
+
+    private fun createSetWallpaperDialog() {
+        setWallpaperDialog = OptionsBottomSheetDialogFragment.newInstance(getString(R.string.set_wallpaper),
+                listOf(
+                        getString(R.string.home_screen),
+                        getString(R.string.lock_screen),
+                        getString(R.string.home_and_lock_screen)
+
+                )) { index ->
+
+            when (index) {
+                0 -> {
+                    viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.HOME)
+                }
+
+                1 -> {
+                    viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.LOCK)
+                }
+
+                2 -> {
+                    viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.BOTH)
+                }
+            }
+        }
+    }
+
+    private fun adjustMargins() {
+        val photoAuthorTextLayoutParams = photoAuthorText.layoutParams
+
+        if (photoAuthorTextLayoutParams is ViewGroup.MarginLayoutParams) {
+            photoAuthorTextLayoutParams.bottomMargin += Utils.navigationBarHeight(this)
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -286,14 +300,6 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
             override fun onTransitionCancel(transition: Transition?) {
             }
         })
-    }
-
-    private fun adjustMargins() {
-        val photoAuthorTextLayoutParams = photoAuthorText.layoutParams
-
-        if (photoAuthorTextLayoutParams is ViewGroup.MarginLayoutParams) {
-            photoAuthorTextLayoutParams.bottomMargin += Utils.navigationBarHeight(this)
-        }
     }
 
     private fun setViewsVisibility(visibility: Int) {

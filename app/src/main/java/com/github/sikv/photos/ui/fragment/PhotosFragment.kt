@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -66,6 +65,8 @@ class PhotosFragment : BaseFragment() {
             setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)
             setMenuItemVisibility(R.id.itemViewGrid, field == SPAN_COUNT_LIST)
         }
+
+    private lateinit var photoSourceDialog: OptionsBottomSheetDialogFragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_photos, container, false)
@@ -157,27 +158,6 @@ class PhotosFragment : BaseFragment() {
     private fun onPhotoLongClick(photo: Photo, view: View) {
     }
 
-    private fun showSourcePopup() {
-        val popup = PopupMenu(context!!, photosTitleLayout)
-        popup.menuInflater.inflate(R.menu.menu_source, popup.menu)
-
-        popup.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.itemSourceUnsplash -> {
-                    currentSource = PhotoSource.UNSPLASH
-                }
-
-                R.id.itemSourcePexels -> {
-                    currentSource = PhotoSource.PEXELS
-                }
-            }
-
-            return@setOnMenuItemClickListener true
-        }
-
-        popup.show()
-    }
-
     private fun setRecyclerLayoutManager(spanCount: Int) {
         photosRecycler.layoutManager = GridLayoutManager(context, spanCount)
     }
@@ -190,6 +170,8 @@ class PhotosFragment : BaseFragment() {
         noResultsFoundLayout.visibility = View.GONE
 
         photosSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(context!!, R.color.colorAccent))
+
+        createPhotoSourceDialog()
     }
 
     private fun setListeners() {
@@ -200,7 +182,27 @@ class PhotosFragment : BaseFragment() {
         }
 
         photosTitleLayout.setOnClickListener {
-            showSourcePopup()
+            photoSourceDialog.show(childFragmentManager)
+        }
+    }
+
+    private fun createPhotoSourceDialog() {
+        photoSourceDialog = OptionsBottomSheetDialogFragment.newInstance(getString(R.string.photo_source),
+                listOf(
+                        getString(R.string.unsplash),
+                        getString(R.string.pexels)
+
+                )) { index ->
+
+            when (index) {
+                0 -> {
+                    currentSource = PhotoSource.UNSPLASH
+                }
+
+                1 -> {
+                    currentSource = PhotoSource.PEXELS
+                }
+            }
         }
     }
 }
