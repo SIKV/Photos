@@ -10,7 +10,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class SearchPhotosDataSource(
         private val apiClient: ApiClient,
         private val photoSource: PhotoSource,
@@ -22,7 +21,7 @@ class SearchPhotosDataSource(
         private set
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Photo>) {
-        updateState(DataSourceState.LOADING)
+        updateState(DataSourceState.LOADING_INITIAL)
 
         // TODO Refactor
         when (photoSource) {
@@ -38,7 +37,7 @@ class SearchPhotosDataSource(
                                     val res = it.results
                                     callback.onResult(res,0, res.size)
 
-                                    updateState(DataSourceState.DONE)
+                                    updateState(DataSourceState.INITIAL_LOADING_DONE)
 
                                 } ?: run {
                                     updateState(DataSourceState.ERROR)
@@ -59,7 +58,7 @@ class SearchPhotosDataSource(
                                     val res = it.photos
                                     callback.onResult(res,0, res.size)
 
-                                    updateState(DataSourceState.DONE)
+                                    updateState(DataSourceState.INITIAL_LOADING_DONE)
 
                                 } ?: run {
                                     updateState(DataSourceState.ERROR)
@@ -71,7 +70,7 @@ class SearchPhotosDataSource(
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Photo>) {
-        updateState(DataSourceState.LOADING)
+        updateState(DataSourceState.LOADING_NEXT)
 
         // TODO Refactor
         when (photoSource) {
@@ -86,7 +85,7 @@ class SearchPhotosDataSource(
                                 response?.body()?.let {
                                     callback.onResult(it.results)
 
-                                    updateState(DataSourceState.DONE)
+                                    updateState(DataSourceState.NEXT_DONE)
 
                                 } ?: run {
                                     updateState(DataSourceState.ERROR)
@@ -106,7 +105,7 @@ class SearchPhotosDataSource(
                                 response?.body()?.let {
                                     callback.onResult(it.photos)
 
-                                    updateState(DataSourceState.DONE)
+                                    updateState(DataSourceState.NEXT_DONE)
 
                                 } ?: run {
                                     updateState(DataSourceState.ERROR)

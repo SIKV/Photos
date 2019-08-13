@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.github.sikv.photos.Event
+import com.github.sikv.photos.data.Event
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
 import kotlinx.coroutines.GlobalScope

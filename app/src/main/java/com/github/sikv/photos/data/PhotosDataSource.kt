@@ -34,7 +34,7 @@ class PhotosDataSource(
                             override fun onResponse(call: Call<List<UnsplashPhoto>>?, response: Response<List<UnsplashPhoto>>?) {
                                 response?.body()?.let {
                                     callback.onResult(it, 0)
-                                    updateState(DataSourceState.DONE)
+                                    updateState(DataSourceState.INITIAL_LOADING_DONE)
 
                                 } ?: run {
                                     updateState(DataSourceState.ERROR)
@@ -53,7 +53,7 @@ class PhotosDataSource(
                             override fun onResponse(call: Call<PexelsCuratedPhotosResponse>?, response: Response<PexelsCuratedPhotosResponse>?) {
                                 response?.body()?.let {
                                     callback.onResult(it.photos, 0)
-                                    updateState(DataSourceState.DONE)
+                                    updateState(DataSourceState.INITIAL_LOADING_DONE)
 
                                 } ?: run {
                                     updateState(DataSourceState.ERROR)
@@ -65,7 +65,7 @@ class PhotosDataSource(
     }
 
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Photo>) {
-        updateState(DataSourceState.LOADING)
+        updateState(DataSourceState.LOADING_NEXT)
 
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
@@ -78,7 +78,7 @@ class PhotosDataSource(
                             override fun onResponse(call: Call<List<UnsplashPhoto>>?, response: Response<List<UnsplashPhoto>>?) {
                                 response?.body()?.let {
                                     callback.onResult(it)
-                                    updateState(DataSourceState.DONE)
+                                    updateState(DataSourceState.NEXT_DONE)
 
                                 } ?: run {
                                     updateState(DataSourceState.ERROR)
@@ -97,7 +97,7 @@ class PhotosDataSource(
                             override fun onResponse(call: Call<PexelsCuratedPhotosResponse>?, response: Response<PexelsCuratedPhotosResponse>?) {
                                 response?.body()?.let {
                                     callback.onResult(it.photos)
-                                    updateState(DataSourceState.DONE)
+                                    updateState(DataSourceState.NEXT_DONE)
 
                                 } ?: run {
                                     updateState(DataSourceState.ERROR)

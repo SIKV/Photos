@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
-
+import com.github.sikv.photos.data.Event
 
 class App : Application() {
 

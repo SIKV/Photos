@@ -1,6 +1,9 @@
 package com.github.sikv.photos.data
 
-
 enum class DataSourceState {
-    DONE, LOADING_INITIAL, LOADING, ERROR
+    LOADING_INITIAL,
+    INITIAL_LOADING_DONE,
+    LOADING_NEXT,
+    NEXT_DONE,
+    ERROR
 }

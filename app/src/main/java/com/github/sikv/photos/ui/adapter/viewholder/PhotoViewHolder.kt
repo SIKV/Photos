@@ -1,21 +1,22 @@
 package com.github.sikv.photos.ui.adapter.viewholder
 
-import android.graphics.Bitmap
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.Photo
 import kotlinx.android.synthetic.main.item_photo.view.*
-
 
 class PhotoViewHolder(
         itemView: View,
         private val glide: RequestManager
 
 ) : RecyclerView.ViewHolder(itemView) {
+
+    companion object {
+        private const val TRANSITION_DURATION = 1500
+    }
 
     fun bind(photo: Photo?,
              clickCallback: (Photo, View) -> Unit,
@@ -25,13 +26,9 @@ class PhotoViewHolder(
         itemView.setOnClickListener(null)
 
         photo?.let {
-            glide.asBitmap()
-                    .load(photo.getSmallUrl())
-                    .into(object : SimpleTarget<Bitmap>() {
-                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            itemView.itemPhotoImage.setImageBitmap(resource)
-                        }
-                    })
+            glide.load(photo.getSmallUrl())
+                    .transition(DrawableTransitionOptions.withCrossFade(TRANSITION_DURATION))
+                    .into(itemView.itemPhotoImage)
 
             itemView.setOnClickListener {
                 clickCallback.invoke(photo, it)
@@ -52,13 +49,9 @@ class PhotoViewHolder(
         itemView.setOnClickListener(null)
 
         photo?.let {
-            glide.asBitmap()
-                    .load(photo.url)
-                    .into(object : SimpleTarget<Bitmap>() {
-                        override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                            itemView.itemPhotoImage.setImageBitmap(resource)
-                        }
-                    })
+            glide.load(photo.url)
+                    .transition(DrawableTransitionOptions.withCrossFade(TRANSITION_DURATION))
+                    .into(itemView.itemPhotoImage)
 
             itemView.setOnClickListener {
                 clickCallback.invoke(photo, it)

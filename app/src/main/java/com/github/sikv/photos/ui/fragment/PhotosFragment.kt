@@ -21,10 +21,10 @@ import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.SPAN_COUNT_GRID
 import com.github.sikv.photos.util.SPAN_COUNT_LIST
+import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.fragment_photos.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
-import kotlinx.android.synthetic.main.layout_no_results_found.*
 
 class PhotosFragment : BaseFragment() {
 
@@ -133,20 +133,31 @@ class PhotosFragment : BaseFragment() {
 
     private fun observeState() {
         viewModel.getState(currentSource)?.observe(this, Observer { state ->
-            photosLoadingLayout.visibility = View.GONE
-            loadingErrorLayout.visibility = View.GONE
-
             when (state) {
                 DataSourceState.LOADING_INITIAL -> {
-                    photosLoadingLayout.visibility = View.VISIBLE
+                    loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
+                    photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
+                    photosLoadingLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
+                }
+
+                DataSourceState.INITIAL_LOADING_DONE -> {
+                    photosRecycler.setVisibilityAnimated(View.VISIBLE)
+                    photosLoadingLayout.setVisibilityAnimated(View.GONE)
+                }
+
+                DataSourceState.NEXT_DONE -> {
+                    // In some cases INITIAL_LOADING_DONE is not being called
+                    if (photosRecycler.visibility != View.VISIBLE) {
+                        photosRecycler.setVisibilityAnimated(View.VISIBLE)
+                        photosLoadingLayout.setVisibilityAnimated(View.GONE)
+                    }
                 }
 
                 DataSourceState.ERROR -> {
-                    loadingErrorLayout.visibility = View.VISIBLE
+                    loadingErrorLayout.setVisibilityAnimated(View.VISIBLE)
                 }
 
-                else -> {
-                }
+                else -> { }
             }
         })
     }
@@ -165,9 +176,6 @@ class PhotosFragment : BaseFragment() {
     private fun init() {
         photoAdapter = PhotoPagedListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
         photosRecycler.adapter = photoAdapter
-
-        loadingErrorLayout.visibility = View.GONE
-        noResultsFoundLayout.visibility = View.GONE
 
         photosSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(context!!, R.color.colorAccent))
 

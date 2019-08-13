@@ -5,7 +5,6 @@ import androidx.paging.DataSource
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.model.Photo
 
-
 class SearchPhotosDataSourceFactory(
         private val apiClient: ApiClient,
         private val photoSource: PhotoSource,

@@ -1,15 +1,14 @@
 package com.github.sikv.photos.ui.adapter
 
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
-
 
 class PhotoDataListAdapter(
         private val glide: RequestManager,

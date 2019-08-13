@@ -2,7 +2,6 @@ package com.github.sikv.photos.model
 
 import android.os.Parcelable
 
-
 interface Photo : Parcelable {
 
     fun getPhotoId(): String = ""

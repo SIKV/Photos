@@ -1,11 +1,10 @@
 package com.github.sikv.photos.database
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.github.sikv.photos.model.Photo
-
 
 @Entity(tableName = "PhotoData")
 data class PhotoData(

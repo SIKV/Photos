@@ -82,7 +82,7 @@ class SingleSearchFragment : Fragment() {
 
             photoSource?.let { searchSource ->
                 noResultsFoundLayout.visibility =
-                        if (state != DataSourceState.LOADING && viewModel.isSearchListEmpty(searchSource)) View.VISIBLE
+                        if (state != DataSourceState.LOADING_NEXT && viewModel.isSearchListEmpty(searchSource)) View.VISIBLE
                         else View.GONE
             }
         }

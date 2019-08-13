@@ -13,7 +13,7 @@ import android.os.Build
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.github.sikv.photos.Event
+import com.github.sikv.photos.data.Event
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
