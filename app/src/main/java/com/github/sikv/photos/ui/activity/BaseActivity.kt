@@ -1,11 +1,10 @@
 package com.github.sikv.photos.ui.activity
 
-import androidx.lifecycle.Observer
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.github.sikv.photos.App
-
 
 abstract class BaseActivity : AppCompatActivity() {
 

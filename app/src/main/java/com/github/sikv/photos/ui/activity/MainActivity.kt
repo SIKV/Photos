@@ -10,21 +10,21 @@ import com.github.sikv.photos.ui.fragment.SettingsFragment
 import com.github.sikv.photos.util.customTag
 import kotlinx.android.synthetic.main.activity_main.*
 
-
-private const val ACTION_SEARCH = "com.github.sikv.photos.action.SEARCH"
-
-private const val PHOTOS_FRAGMENT_INDEX = 0
-private const val SEARCH_FRAGMENT_INDEX = 1
-private const val FAVORITES_FRAGMENT_INDEX = 2
-private const val SETTINGS_FRAGMENT_INDEX = 3
-
-private const val PHOTOS_ITEM_ID = R.id.photos
-private const val SEARCH_ITEM_ID = R.id.search
-
-private const val FRAGMENT_TAG = "fragment_tag"
-
-
 class MainActivity : BaseActivity() {
+
+    companion object {
+        private const val ACTION_SEARCH = "com.github.sikv.photos.action.SEARCH"
+
+        private const val PHOTOS_FRAGMENT_INDEX = 0
+        private const val SEARCH_FRAGMENT_INDEX = 1
+        private const val FAVORITES_FRAGMENT_INDEX = 2
+        private const val SETTINGS_FRAGMENT_INDEX = 3
+
+        private const val PHOTOS_ITEM_ID = R.id.photos
+        private const val SEARCH_ITEM_ID = R.id.search
+
+        private const val KEY_FRAGMENT_TAG = "key_fragment_tag"
+    }
 
     private val fragments = listOf(
             PhotosFragment(),
@@ -58,7 +58,7 @@ class MainActivity : BaseActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        supportFragmentManager.findFragmentByTag(savedInstanceState?.getString(FRAGMENT_TAG))?.let { fragment ->
+        supportFragmentManager.findFragmentByTag(savedInstanceState?.getString(KEY_FRAGMENT_TAG))?.let { fragment ->
             activeFragment = fragment
         }
     }
@@ -66,7 +66,7 @@ class MainActivity : BaseActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putString(FRAGMENT_TAG, activeFragment.customTag())
+        outState.putString(KEY_FRAGMENT_TAG, activeFragment.customTag())
     }
 
     private fun setupBottomNavigation(initialFragmentIndex: Int, initialItemId: Int) {

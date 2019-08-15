@@ -5,29 +5,30 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [(PhotoData::class)], version = 1)
+@Database(entities = [(PhotoData::class)], version = 1, exportSchema = false)
 abstract class FavoritesDatabase : RoomDatabase() {
 
     companion object {
-        private const val DB_NAME = "favorites.db"
+        private const val DATABASE_NAME = "favorites.db"
 
-        private var instance: FavoritesDatabase? = null
+        @Volatile
+        private var INSTANCE: FavoritesDatabase? = null
 
         fun getInstance(context: Context): FavoritesDatabase {
-            if (instance == null) {
-                synchronized(FavoritesDatabase::class) {
-                    instance = Room.databaseBuilder(context.applicationContext, FavoritesDatabase::class.java, DB_NAME)
+            synchronized(this) {
+                var instance = INSTANCE
+
+                if (instance == null) {
+                    instance = Room.databaseBuilder(context.applicationContext, FavoritesDatabase::class.java, DATABASE_NAME)
                             .build()
+
+                    INSTANCE = instance
                 }
+
+                return instance
             }
-
-            return instance!!
-        }
-
-        fun destroyInstance() {
-            instance = null
         }
     }
 
-    abstract fun photoDao(): FavoritesDao
+    abstract val favoritesDao: FavoritesDao
 }

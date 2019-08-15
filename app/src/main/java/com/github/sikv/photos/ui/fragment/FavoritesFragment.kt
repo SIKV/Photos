@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
+import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoDataListAdapter
@@ -18,6 +19,7 @@ import com.github.sikv.photos.util.SPAN_COUNT_GRID
 import com.github.sikv.photos.util.SPAN_COUNT_LIST
 import com.github.sikv.photos.util.setBackgroundColor
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
+import com.github.sikv.photos.viewmodel.FavoritesViewModelFactory
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favorites.*
@@ -29,7 +31,13 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private val viewModel: FavoritesViewModel by lazy {
-        ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
+        val application = requireNotNull(activity).application
+
+        val viewModelFactory = FavoritesViewModelFactory(application,
+                FavoritesDatabase.getInstance(application).favoritesDao)
+
+        ViewModelProviders.of(this, viewModelFactory)
+                .get(FavoritesViewModel::class.java)
     }
 
     private var photoAdapter: PhotoDataListAdapter? = null

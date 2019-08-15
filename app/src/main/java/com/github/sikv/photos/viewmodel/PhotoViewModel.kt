@@ -15,7 +15,7 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.Event
-import com.github.sikv.photos.database.FavoritesDatabase
+import com.github.sikv.photos.database.FavoritesDao
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
@@ -32,11 +32,10 @@ import kotlin.properties.Delegates
 
 class PhotoViewModel(
         application: Application,
-        private var photo: Photo
+        private var photo: Photo,
+        private val favoritesDataSource: FavoritesDao
 
 ) : AndroidViewModel(application) {
-
-    private val favoritesDatabase: FavoritesDatabase = FavoritesDatabase.getInstance(getApplication())
 
     var photoReadyEvent: MutableLiveData<Event<Photo?>>
         private set
@@ -53,14 +52,10 @@ class PhotoViewModel(
         favoriteChangedEvent = MutableLiveData()
 
         GlobalScope.launch {
-            (favoritesDatabase.photoDao().get(photo.getPhotoId()))?.let {
-                GlobalScope.launch(Dispatchers.Main) {
-                    favorited = true
-                }
-            } ?: run {
-                GlobalScope.launch(Dispatchers.Main) {
-                    favorited = false
-                }
+            val photo = favoritesDataSource.get(photo.getPhotoId())
+
+            GlobalScope.launch(Dispatchers.Main) {
+                favorited = photo != null
             }
         }
     }
@@ -161,9 +156,9 @@ class PhotoViewModel(
 
         GlobalScope.launch {
             if (favorited) {
-                favoritesDatabase.photoDao().insert(photoData)
+                favoritesDataSource.insert(photoData)
             } else {
-                favoritesDatabase.photoDao().delete(photoData)
+                favoritesDataSource.delete(photoData)
             }
         }
     }

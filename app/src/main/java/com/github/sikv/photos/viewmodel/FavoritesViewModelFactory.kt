@@ -4,11 +4,9 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.database.FavoritesDao
-import com.github.sikv.photos.model.Photo
 
-class PhotoViewModelFactory(
+class FavoritesViewModelFactory(
         private val application: Application,
-        private val photo: Photo,
         private val favoritesDataSource: FavoritesDao
 
 ) : ViewModelProvider.NewInstanceFactory() {
@@ -16,7 +14,7 @@ class PhotoViewModelFactory(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(modelClass)) {
-            return PhotoViewModel(application, photo, favoritesDataSource) as T
+            return FavoritesViewModel(application, favoritesDataSource) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")

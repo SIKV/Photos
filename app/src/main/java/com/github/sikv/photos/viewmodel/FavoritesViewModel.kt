@@ -5,16 +5,18 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.sikv.photos.data.Event
-import com.github.sikv.photos.database.FavoritesDatabase
+import com.github.sikv.photos.database.FavoritesDao
 import com.github.sikv.photos.database.PhotoData
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
+class FavoritesViewModel(
+        application: Application,
+        private val favoritesDataSource: FavoritesDao
 
-    private val favoritesDatabase: FavoritesDatabase
+) : AndroidViewModel(application) {
 
-    val favoritesLiveData: LiveData<List<PhotoData>>
+    val favoritesLiveData: LiveData<List<PhotoData>> = favoritesDataSource.getAll()
 
     var favoritesDeleteEvent: MutableLiveData<Event<Boolean>>
         private set
@@ -22,20 +24,16 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     private var deletedFavorites: List<PhotoData> = emptyList()
 
     init {
-        favoritesDatabase = FavoritesDatabase.getInstance(getApplication())
-
-        favoritesLiveData = favoritesDatabase.photoDao().getAll()
-
         favoritesDeleteEvent = MutableLiveData()
     }
 
     fun deleteAll() {
         GlobalScope.launch {
-           val count = favoritesDatabase.photoDao().getCount()
+           val count = favoritesDataSource.getCount()
 
            if (count > 0) {
-               deletedFavorites = favoritesDatabase.photoDao().getAllList()
-               favoritesDatabase.photoDao().deleteAll()
+               deletedFavorites = favoritesDataSource.getAllList()
+               favoritesDataSource.deleteAll()
 
                favoritesDeleteEvent.postValue(Event(true))
 
@@ -48,7 +46,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     fun undoDeleteAll() {
         GlobalScope.launch {
             deletedFavorites.forEach { photo ->
-                favoritesDatabase.photoDao().insert(photo)
+                favoritesDataSource.insert(photo)
             }
 
             deletedFavorites = emptyList()

@@ -25,6 +25,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
+import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.fragment.OptionsBottomSheetDialogFragment
 import com.github.sikv.photos.util.CustomWallpaperManager
@@ -38,11 +39,11 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     companion object {
         private const val FAVORITE_ANIMATION_DURATION = 200L
 
-        private const val EXTRA_PHOTO = "photo"
+        private const val KEY_PHOTO = "key_photo"
 
         fun startActivity(activity: Activity, transitionView: View, photo: Photo) {
             val intent = Intent(activity, PhotoActivity::class.java)
-            intent.putExtra(EXTRA_PHOTO, photo)
+            intent.putExtra(KEY_PHOTO, photo)
 
             val transitionName = activity.getString(R.string.transition_photo)
 
@@ -71,9 +72,12 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         setContentView(R.layout.activity_photo)
         tweakTransitions()
 
-        val photo: Photo = intent.getParcelableExtra(EXTRA_PHOTO)
+        val photo: Photo = intent.getParcelableExtra(KEY_PHOTO)
 
-        viewModel = ViewModelProviders.of(this, PhotoViewModelFactory(application, photo))
+        val viewModelFactory = PhotoViewModelFactory(application,
+                photo, FavoritesDatabase.getInstance(application).favoritesDao)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
                 .get(PhotoViewModel::class.java)
 
         // sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
