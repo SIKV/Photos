@@ -9,7 +9,6 @@ import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 
-
 class SettingsFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -21,6 +20,10 @@ class SettingsFragment : BaseFragment() {
 
         return view
     }
+
+    /**
+     * PreferenceFragment
+     */
 
     internal class PreferenceFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

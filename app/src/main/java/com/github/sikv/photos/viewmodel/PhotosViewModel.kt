@@ -13,7 +13,6 @@ import com.github.sikv.photos.data.PhotosDataSourceFactory
 import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
 
-
 class PhotosViewModel : ViewModel() {
 
     companion object {
@@ -75,18 +74,6 @@ class PhotosViewModel : ViewModel() {
                         .build()
 
                 return pexelsSearchLivePagedList
-            }
-        }
-    }
-
-    fun isListEmpty(photoSource: PhotoSource): Boolean {
-        return when (photoSource) {
-            PhotoSource.UNSPLASH -> {
-                unsplashSearchLivePagedList?.value?.isEmpty() ?: true
-            }
-
-            PhotoSource.PEXELS -> {
-                pexelsSearchLivePagedList?.value?.isEmpty() ?: true
             }
         }
     }

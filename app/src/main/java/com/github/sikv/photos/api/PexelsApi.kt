@@ -10,7 +10,6 @@ import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-
 interface PexelsApi {
 
     @Headers("Authorization: ${BuildConfig.PEXELS_API_KEY}")

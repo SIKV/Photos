@@ -21,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_single_search.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
 import kotlinx.android.synthetic.main.layout_no_results_found.*
 
-
 class SingleSearchFragment : Fragment() {
 
     companion object {

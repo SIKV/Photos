@@ -15,7 +15,7 @@ class PhotoViewHolder(
 ) : RecyclerView.ViewHolder(itemView) {
 
     companion object {
-        private const val TRANSITION_DURATION = 1500
+        private const val TRANSITION_DURATION = 1000
     }
 
     fun bind(photo: Photo?,

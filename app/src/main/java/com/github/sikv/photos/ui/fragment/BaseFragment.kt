@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbarManager
 
-
 abstract class BaseFragment : Fragment() {
 
     private var toolbar: FragmentToolbar? = null

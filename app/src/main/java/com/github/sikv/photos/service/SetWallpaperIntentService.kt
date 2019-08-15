@@ -7,10 +7,9 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
 import com.github.sikv.photos.App
-import com.github.sikv.photos.data.Event
 import com.github.sikv.photos.R
+import com.github.sikv.photos.data.Event
 import java.net.URL
-
 
 class SetWallpaperIntentService : IntentService("SetWallpaperIntentService") {
 

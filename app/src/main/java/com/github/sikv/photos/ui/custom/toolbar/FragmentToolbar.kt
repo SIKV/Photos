@@ -1,9 +1,8 @@
 package com.github.sikv.photos.ui.custom.toolbar
 
+import android.view.MenuItem
 import androidx.annotation.IdRes
 import androidx.annotation.MenuRes
-import android.view.MenuItem
-
 
 class FragmentToolbar(
         @IdRes val resId: Int,

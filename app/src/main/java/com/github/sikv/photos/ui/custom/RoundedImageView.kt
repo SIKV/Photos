@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.widget.ImageView
 import com.github.sikv.photos.R
 
-
 class RoundedImageView : ImageView {
 
     private var radius = 0F

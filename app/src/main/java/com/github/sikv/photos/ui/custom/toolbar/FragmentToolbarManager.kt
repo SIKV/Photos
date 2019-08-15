@@ -1,9 +1,8 @@
 package com.github.sikv.photos.ui.custom.toolbar
 
-import androidx.appcompat.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
-
+import androidx.appcompat.widget.Toolbar
 
 class FragmentToolbarManager constructor(
         private var builder: FragmentToolbar,

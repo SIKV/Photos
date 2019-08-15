@@ -3,18 +3,18 @@ package com.github.sikv.photos.viewmodel
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Build
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.github.sikv.photos.data.Event
 import com.github.sikv.photos.api.ApiClient
+import com.github.sikv.photos.data.Event
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.PexelsPhoto
@@ -29,7 +29,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.properties.Delegates
-
 
 class PhotoViewModel(
         application: Application,

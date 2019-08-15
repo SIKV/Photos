@@ -22,14 +22,14 @@ import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.Utils.dp2px
 import kotlinx.android.synthetic.main.fragment_search.*
 
-
-private const val SEARCH_MARGIN_ANIMATION_DURATION = 250L
-private const val TAB_LAYOUT_BACKGROUND_ANIMATION_DURATION = 750L
-
-private const val KEY_LAST_SEARCH_TEXT = "key_last_search_text"
-
-
 class SearchFragment : BaseFragment() {
+
+    companion object {
+        private const val SEARCH_MARGIN_ANIMATION_DURATION = 250L
+        private const val TAB_LAYOUT_BACKGROUND_ANIMATION_DURATION = 750L
+
+        private const val KEY_LAST_SEARCH_TEXT = "key_last_search_text"
+    }
 
     private lateinit var viewPagerAdapter: SearchViewPagerAdapter
 
@@ -79,14 +79,6 @@ class SearchFragment : BaseFragment() {
         viewPagerAdapter.searchPhotos(searchViewPager, text)
 
         searchTabLayout.visibility = View.VISIBLE
-    }
-
-    private fun searchRequestFocus(showSoftInput: Boolean = true) {
-        searchEdit.requestFocus()
-
-        if (showSoftInput) {
-            Utils.showSoftInput(context!!, searchEdit)
-        }
     }
 
     private fun initViewPager() {
@@ -173,6 +165,10 @@ class SearchFragment : BaseFragment() {
                     .start()
         }
     }
+
+    /**
+     * SearchViewPagerAdapter
+     */
 
     private class SearchViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

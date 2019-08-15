@@ -10,7 +10,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class PhotosDataSource(
         private val apiClient: ApiClient,
         private val photoSource: PhotoSource

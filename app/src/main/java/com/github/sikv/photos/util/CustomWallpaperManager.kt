@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Build
 import com.github.sikv.photos.service.SetWallpaperIntentService
 
-
 @TargetApi(Build.VERSION_CODES.N)
 object CustomWallpaperManager {
 

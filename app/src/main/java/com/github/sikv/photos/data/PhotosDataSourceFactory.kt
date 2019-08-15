@@ -9,7 +9,7 @@ class PhotosDataSourceFactory(
         private val apiClient: ApiClient,
         private val photoSource: PhotoSource
 
-        ) : DataSource.Factory<Int, Photo>() {
+) : DataSource.Factory<Int, Photo>() {
 
     val recentPhotosDataSourceLiveData = MutableLiveData<PhotosDataSource>()
 

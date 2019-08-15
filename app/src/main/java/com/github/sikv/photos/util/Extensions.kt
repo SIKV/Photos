@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 
-
 fun Fragment.customTag(): String {
     return this::class.java.simpleName
 }
@@ -17,7 +16,7 @@ fun Snackbar.setBackgroundColor(@ColorRes color: Int): Snackbar {
     return this
 }
 
-fun View.setVisibilityAnimated(newVisibility: Int, duration: Long = 1000L) {
+fun View.setVisibilityAnimated(newVisibility: Int, duration: Long = 500L) {
     animate()
             .alpha(if (newVisibility == View.VISIBLE) 1.0F else 0.0F)
             .setDuration(duration)

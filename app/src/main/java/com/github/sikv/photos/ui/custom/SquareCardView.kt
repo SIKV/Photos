@@ -1,9 +1,8 @@
 package com.github.sikv.photos.ui.custom
 
 import android.content.Context
-import androidx.cardview.widget.CardView
 import android.util.AttributeSet
-
+import androidx.cardview.widget.CardView
 
 class SquareCardView(context: Context, attrs: AttributeSet?) : CardView(context, attrs) {
 

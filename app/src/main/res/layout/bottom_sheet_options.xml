@@ -21,7 +21,7 @@
         tools:text="Title"
         android:textAllCaps="true"
         android:textColor="@color/colorAccent"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:fontFamily="sans-serif-black"
         tools:ignore="SmallSp"/>
 

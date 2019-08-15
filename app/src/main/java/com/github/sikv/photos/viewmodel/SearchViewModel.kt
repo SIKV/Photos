@@ -13,7 +13,6 @@ import com.github.sikv.photos.data.SearchPhotosDataSourceFactory
 import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
 
-
 class SearchViewModel : ViewModel() {
 
     companion object {

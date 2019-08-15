@@ -14,4 +14,6 @@ interface Photo : Parcelable {
     fun getSource(): String = ""
     fun getSourceUrl(): String = ""
     fun isLocalPhoto(): Boolean = false
+
+    override fun equals(other: Any?): Boolean
 }

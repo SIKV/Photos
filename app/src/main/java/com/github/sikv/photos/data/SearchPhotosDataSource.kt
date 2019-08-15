@@ -23,7 +23,6 @@ class SearchPhotosDataSource(
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Photo>) {
         updateState(DataSourceState.LOADING_INITIAL)
 
-        // TODO Refactor
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
                 apiClient.unsplashClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
@@ -72,7 +71,6 @@ class SearchPhotosDataSource(
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Photo>) {
         updateState(DataSourceState.LOADING_NEXT)
 
-        // TODO Refactor
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
                 apiClient.unsplashClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)

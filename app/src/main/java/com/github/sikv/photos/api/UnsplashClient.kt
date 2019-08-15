@@ -4,7 +4,6 @@ import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.model.UnsplashSearchResponse
 import retrofit2.Call
 
-
 class UnsplashClient(private val unsplashApi: UnsplashApi) {
 
     fun getLatestPhotos(page: Int, perPage: Int): Call<List<UnsplashPhoto>> =
