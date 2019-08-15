@@ -60,6 +60,7 @@ class PhotosFragment : BaseFragment() {
     private var currentSpanCount: Int = SPAN_COUNT_LIST
         set(value) {
             field = value
+
             setRecyclerLayoutManager(value)
 
             setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)

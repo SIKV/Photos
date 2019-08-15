@@ -24,6 +24,10 @@ import kotlinx.android.synthetic.main.fragment_favorites.*
 
 class FavoritesFragment : BaseFragment() {
 
+    companion object {
+        private const val KEY_CURRENT_SPAN_COUNT = "key_current_span_count"
+    }
+
     private val viewModel: FavoritesViewModel by lazy {
         ViewModelProviders.of(this).get(FavoritesViewModel::class.java)
     }
@@ -33,6 +37,7 @@ class FavoritesFragment : BaseFragment() {
     private var currentSpanCount: Int = SPAN_COUNT_LIST
         set(value) {
             field = value
+
             setRecyclerLayoutManager(value)
 
             setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)
@@ -48,10 +53,14 @@ class FavoritesFragment : BaseFragment() {
 
         init()
 
+        if (savedInstanceState != null) {
+            currentSpanCount = savedInstanceState.getInt(KEY_CURRENT_SPAN_COUNT, SPAN_COUNT_LIST)
+        } else {
+            currentSpanCount = SPAN_COUNT_LIST
+        }
+
         observeFavorites()
         observeEvents()
-
-        currentSpanCount = SPAN_COUNT_LIST
     }
 
     override fun onCreateToolbar(): FragmentToolbar? {
@@ -87,6 +96,12 @@ class FavoritesFragment : BaseFragment() {
                         )
                 )
                 .build()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putInt(KEY_CURRENT_SPAN_COUNT, currentSpanCount)
     }
 
     private fun observeFavorites() {
@@ -130,7 +145,5 @@ class FavoritesFragment : BaseFragment() {
     private fun init() {
         photoAdapter = PhotoDataListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
         favoritesRecycler.adapter = photoAdapter
-
-        setRecyclerLayoutManager(currentSpanCount)
     }
 }
