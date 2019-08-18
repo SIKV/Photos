@@ -244,7 +244,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     private fun createSetWallpaperDialog() {
-        setWallpaperDialog = OptionsBottomSheetDialogFragment.newInstance(getString(R.string.set_wallpaper),
+        setWallpaperDialog = OptionsBottomSheetDialogFragment.newInstance(
                 listOf(
                         getString(R.string.home_screen),
                         getString(R.string.lock_screen),

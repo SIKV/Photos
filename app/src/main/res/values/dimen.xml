@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <dimen name="bgRoundButtonRadius">32dp</dimen>
     <dimen name="bgRoundButtonStrokeWidth">2dp</dimen>
-
     <dimen name="photoCornerRadius">12dp</dimen>
     <dimen name="recyclerPaddingTop">4dp</dimen>
     <dimen name="appBarElevation">16dp</dimen>
-
-    <dimen name="bottomSheetCornerRadius">8dp</dimen>
+    <dimen name="bottomSheetCornerRadius">10dp</dimen>
     <dimen name="bottomSheetSideMargin">16dp</dimen>
-
+    <dimen name="searchCornerRadius">12dp</dimen>
+    <dimen name="searchMargins">6dp</dimen>
 </resources>

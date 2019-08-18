@@ -1,5 +1,4 @@
 <resources>
-
     <string name="app_name">Photos</string>
 
     <string name="unsplash">Unsplash</string>
@@ -43,6 +42,4 @@
     <string name="error_setting_wallpaper">Error setting wallpaper</string>
     <string name="appearance">Appearance</string>
     <string name="dark_theme">Dark theme</string>
-    <string name="photo_source">Photo Source</string>
-
 </resources>

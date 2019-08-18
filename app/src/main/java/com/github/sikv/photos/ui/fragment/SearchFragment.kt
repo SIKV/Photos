@@ -19,13 +19,12 @@ import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.PhotoSource
 import com.github.sikv.photos.util.Utils
-import com.github.sikv.photos.util.Utils.dp2px
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : BaseFragment() {
 
     companion object {
-        private const val SEARCH_MARGIN_ANIMATION_DURATION = 250L
+        private const val SEARCH_ANIMATION_DURATION = 250L
         private const val TAB_LAYOUT_BACKGROUND_ANIMATION_DURATION = 750L
 
         private const val KEY_LAST_SEARCH_TEXT = "key_last_search_text"
@@ -119,35 +118,52 @@ class SearchFragment : BaseFragment() {
         }
 
         searchEdit.setOnFocusChangeListener { _, hasFocus ->
-            animateSearchMargins(hasFocus)
+            animateSearch(hasFocus)
             animateTabLayoutBackground(hasFocus)
         }
     }
 
-    private fun animateSearchMargins(hasFocus: Boolean) {
-        val margin = dp2px(6)
+    private fun animateSearch(hasFocus: Boolean) {
+        val margin: Float = context?.resources?.getDimension(R.dimen.searchMargins) ?: 0.0F
+        val cornerRadius: Float = context?.resources?.getDimension(R.dimen.searchCornerRadius) ?: 0.0F
 
-        var from = 0
-        var to = margin
+        var fromMargin = 0
+        var toMargin: Int = margin.toInt()
+
+        var fromCornerRadius = 0
+        var toCornerRadius: Int = cornerRadius.toInt()
 
         if (hasFocus) {
-            from = margin
-            to = 0
+            fromMargin = margin.toInt()
+            toMargin = 0
+
+            fromCornerRadius = cornerRadius.toInt()
+            toCornerRadius = 0
         }
 
-        val animator = ValueAnimator.ofInt(from, to)
+        val marginAnimator = ValueAnimator.ofInt(fromMargin, toMargin)
+        val cornerRadiusAnimator = ValueAnimator.ofInt(fromCornerRadius, toCornerRadius)
 
-        animator.addUpdateListener { valueAnimator ->
-            val params = searchEditLayout.layoutParams as? ViewGroup.MarginLayoutParams
+        marginAnimator.addUpdateListener { valueAnimator ->
+            val params = searchEditCard.layoutParams as? ViewGroup.MarginLayoutParams
 
             val newMargin = valueAnimator.animatedValue as Int
             params?.setMargins(newMargin, newMargin, newMargin, newMargin)
 
-            searchEditLayout.layoutParams = params
+            searchEditCard.layoutParams = params
         }
 
-        animator.duration = SEARCH_MARGIN_ANIMATION_DURATION
-        animator.start()
+        cornerRadiusAnimator.addUpdateListener { valueAnimator ->
+            val newCornerRadius = valueAnimator.animatedValue as Int
+
+            searchEditCard.radius = newCornerRadius.toFloat()
+        }
+
+        marginAnimator.duration = SEARCH_ANIMATION_DURATION
+        cornerRadiusAnimator.duration = SEARCH_ANIMATION_DURATION
+
+        marginAnimator.start()
+        cornerRadiusAnimator.start()
     }
 
     private fun animateTabLayoutBackground(hasFocus: Boolean) {

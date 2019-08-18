@@ -196,7 +196,7 @@ class PhotosFragment : BaseFragment() {
     }
 
     private fun createPhotoSourceDialog() {
-        photoSourceDialog = OptionsBottomSheetDialogFragment.newInstance(getString(R.string.photo_source),
+        photoSourceDialog = OptionsBottomSheetDialogFragment.newInstance(
                 listOf(
                         getString(R.string.unsplash),
                         getString(R.string.pexels)

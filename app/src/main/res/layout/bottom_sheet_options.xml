@@ -1,29 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/optionsBottomSheetRootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:paddingBottom="8dp"
     app:behavior_hideable="true"
     app:behavior_peekHeight="0dp"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-    <TextView
-        android:id="@+id/optionsBottomSheetTitleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <View
+        android:layout_width="48dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="@dimen/bottomSheetSideMargin"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="@dimen/bottomSheetSideMargin"
-        tools:text="Title"
-        android:textAllCaps="true"
-        android:textColor="@color/colorAccent"
-        android:textSize="12sp"
-        android:fontFamily="sans-serif-black"
-        tools:ignore="SmallSp"/>
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/shape_bottom_sheet_close"/>
 
     <!-- Populated dynamically -->
 

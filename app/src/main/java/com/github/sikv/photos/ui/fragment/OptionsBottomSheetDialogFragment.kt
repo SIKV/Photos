@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import com.github.sikv.photos.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -15,16 +14,13 @@ import java.util.*
 class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     companion object {
-        private const val KEY_TITLE = "key_title"
         private const val KEY_OPTIONS = "key_options"
 
-        fun newInstance(title: String, items: List<String>, onItemSelected: (Int) -> Unit): OptionsBottomSheetDialogFragment {
+        fun newInstance(items: List<String>, onItemSelected: (Int) -> Unit): OptionsBottomSheetDialogFragment {
             val dialogFragment = OptionsBottomSheetDialogFragment()
             dialogFragment.onItemSelected = onItemSelected
 
             val args = Bundle()
-
-            args.putString(KEY_TITLE, title)
             args.putStringArrayList(KEY_OPTIONS, ArrayList(items))
 
             dialogFragment.arguments = args
@@ -41,8 +37,6 @@ class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
         val view = inflater.inflate(R.layout.bottom_sheet_options, container, false)
 
         arguments?.let { args ->
-            view.findViewById<TextView>(R.id.optionsBottomSheetTitleText).text = args.getString(KEY_TITLE, "")
-
             args.getStringArrayList(KEY_OPTIONS)?.let { optionsList ->
                 val layout = view.findViewById<ViewGroup>(R.id.optionsBottomSheetRootLayout)
 

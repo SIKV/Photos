@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <color name="colorPrimary">#1D2533</color>
     <color name="colorPrimaryDark">#1D2533</color>
 
     <color name="colorBackground">#151A24</color>
-
     <color name="colorTitleText">#FFFFFF</color>
     <color name="colorText">#FFFFFF</color>
     <color name="colorIcon">#EEEEEE</color>
     <color name="colorSourceText">@color/colorAccent</color>
-
     <color name="colorNavigationIcon">#FFFFFF</color>
     <color name="colorSearchBackground">#151A24</color>
-
+    <color name="colorPlaceholder">#1D2533</color>
+    <color name="colorBottomSheetClose">#151A24</color>
 </resources>
