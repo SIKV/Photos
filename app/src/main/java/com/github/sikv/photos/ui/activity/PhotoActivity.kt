@@ -238,9 +238,6 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         photoShareButton.setOnClickListener {
             startActivity(viewModel.createShareIntent())
         }
-
-        photoDownloadButton.setOnClickListener {
-        }
     }
 
     private fun createSetWallpaperDialog() {
@@ -311,6 +308,5 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         photoAuthorText.visibility = visibility
         photoSetWallpaperButton.visibility = visibility
         photoShareButton.visibility = visibility
-        photoDownloadButton.visibility = visibility
     }
 }
