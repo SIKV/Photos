@@ -22,9 +22,7 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.util.CustomWallpaperManager
 import com.github.sikv.photos.util.Utils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,8 +35,9 @@ class PhotoViewModel(
 
 ) : AndroidViewModel(application) {
 
-    var photoReadyEvent: MutableLiveData<Event<Photo?>>
-        private set
+    private var viewModelJob = Job()
+
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private var favorited: Boolean by Delegates.observable(false) { _, _, newValue ->
         favoriteChangedEvent.value = Event(newValue)
@@ -47,17 +46,20 @@ class PhotoViewModel(
     var favoriteChangedEvent: MutableLiveData<Event<Boolean>>
         private set
 
+    var photoReadyEvent: MutableLiveData<Event<Photo?>>
+        private set
+
     init {
         photoReadyEvent = MutableLiveData()
         favoriteChangedEvent = MutableLiveData()
 
-        GlobalScope.launch {
-            val photo = favoritesDataSource.get(photo.getPhotoId())
+        initFavorited()
+    }
 
-            GlobalScope.launch(Dispatchers.Main) {
-                favorited = photo != null
-            }
-        }
+    override fun onCleared() {
+        super.onCleared()
+
+        viewModelJob.cancel()
     }
 
     fun loadPhoto(glide: RequestManager): LiveData<Event<Bitmap>> {
@@ -186,5 +188,17 @@ class PhotoViewModel(
     @TargetApi(Build.VERSION_CODES.N)
     fun setWallpaper(activity: Activity, which: CustomWallpaperManager.Which) {
         CustomWallpaperManager.setWallpaper(activity, photo.getLargeUrl(), which)
+    }
+
+    private fun initFavorited() {
+        uiScope.launch {
+            favorited = getPhotoFromFavoritesDatabase() != null
+        }
+    }
+
+    private suspend fun getPhotoFromFavoritesDatabase(): Photo? {
+        return withContext(Dispatchers.IO) {
+            favoritesDataSource.get(photo.getPhotoId())
+        }
     }
 }
