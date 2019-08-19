@@ -15,10 +15,10 @@ class PhotoDataListAdapter(
         private val clickCallback: (PhotoData, View) -> Unit,
         private val longClickCallback: ((PhotoData, View) -> Unit)? = null
 
-) : ListAdapter<PhotoData, PhotoViewHolder>(PHOTO_DATA_COMPARATOR) {
+) : ListAdapter<PhotoData, PhotoViewHolder>(COMPARATOR) {
 
     companion object {
-        val PHOTO_DATA_COMPARATOR = object : DiffUtil.ItemCallback<PhotoData>() {
+        val COMPARATOR = object : DiffUtil.ItemCallback<PhotoData>() {
             override fun areItemsTheSame(oldItem: PhotoData, newItem: PhotoData): Boolean =
                     oldItem.id == newItem.id
 

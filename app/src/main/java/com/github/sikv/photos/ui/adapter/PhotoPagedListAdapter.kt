@@ -15,10 +15,10 @@ class PhotoPagedListAdapter(
         private val clickCallback: (Photo, View) -> Unit,
         private val longClickCallback: ((Photo, View) -> Unit)? = null
 
-) : PagedListAdapter<Photo, PhotoViewHolder>(PHOTO_COMPARATOR) {
+) : PagedListAdapter<Photo, PhotoViewHolder>(COMPARATOR) {
 
     companion object {
-        val PHOTO_COMPARATOR = object : DiffUtil.ItemCallback<Photo>() {
+        val COMPARATOR = object : DiffUtil.ItemCallback<Photo>() {
             override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean =
                     oldItem.getPhotoId() == newItem.getPhotoId()
 

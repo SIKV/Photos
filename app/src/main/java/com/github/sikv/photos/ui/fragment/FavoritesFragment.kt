@@ -153,5 +153,8 @@ class FavoritesFragment : BaseFragment() {
     private fun init() {
         photoAdapter = PhotoDataListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
         favoritesRecycler.adapter = photoAdapter
+
+        // TODO Default value is not working good. When a photo is removed animation is broken.
+        favoritesRecycler.itemAnimator?.removeDuration = 50
     }
 }
