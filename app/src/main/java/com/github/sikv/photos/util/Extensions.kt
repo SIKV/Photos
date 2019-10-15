@@ -2,6 +2,7 @@ package com.github.sikv.photos.util
 
 import android.animation.Animator
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -9,6 +10,12 @@ import com.google.android.material.snackbar.Snackbar
 
 fun Fragment.customTag(): String {
     return this::class.java.simpleName
+}
+
+fun Snackbar.setTextColor(@ColorRes color: Int): Snackbar {
+    this.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+            .setTextColor(ContextCompat.getColor(context, color))
+    return this
 }
 
 fun Snackbar.setBackgroundColor(@ColorRes color: Int): Snackbar {

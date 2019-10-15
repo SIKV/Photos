@@ -18,6 +18,7 @@ import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.SPAN_COUNT_GRID
 import com.github.sikv.photos.util.SPAN_COUNT_LIST
 import com.github.sikv.photos.util.setBackgroundColor
+import com.github.sikv.photos.util.setTextColor
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import com.github.sikv.photos.viewmodel.FavoritesViewModelFactory
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -125,6 +126,7 @@ class FavoritesFragment : BaseFragment() {
         viewModel.favoritesDeleteEvent.observe(this, Observer { deleteEvent ->
             if (deleteEvent.getContentIfNotHandled() == true) {
                 Snackbar.make(favoritesRootLayout, R.string.deleted, Snackbar.LENGTH_LONG)
+                        .setTextColor(R.color.colorText)
                         .setBackgroundColor(R.color.colorPrimaryDark)
                         .setAction(R.string.undo) {
                             viewModel.undoDeleteAll()
