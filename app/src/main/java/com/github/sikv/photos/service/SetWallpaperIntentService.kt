@@ -33,17 +33,21 @@ class SetWallpaperIntentService : IntentService("SetWallpaperIntentService") {
     private fun setWallpaper(photoUrl: String, which: Int) {
         postMessage(applicationContext.getString(R.string.setting_wallpaper))
 
-        val url = URL(photoUrl)
-        val bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+        try {
+            val url = URL(photoUrl)
+            val bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream())
 
-        val wallpaperManager = WallpaperManager.getInstance(applicationContext)
+            val wallpaperManager = WallpaperManager.getInstance(applicationContext)
 
-        if (wallpaperManager.isSetWallpaperAllowed) {
-            wallpaperManager.setBitmap(bitmap, null, true, which)
+            if (wallpaperManager.isSetWallpaperAllowed) {
+                wallpaperManager.setBitmap(bitmap, null, true, which)
 
-            postMessage(applicationContext.getString(R.string.wallpaper_set))
+                postMessage(applicationContext.getString(R.string.wallpaper_set))
 
-        } else {
+            } else {
+                postMessage(applicationContext.getString(R.string.error_setting_wallpaper))
+            }
+        } catch (e: OutOfMemoryError) {
             postMessage(applicationContext.getString(R.string.error_setting_wallpaper))
         }
     }
