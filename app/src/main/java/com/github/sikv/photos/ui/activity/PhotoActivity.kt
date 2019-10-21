@@ -23,7 +23,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.model.Photo
@@ -188,7 +187,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     private fun observePhotoLoading() {
-        viewModel.loadPhoto(Glide.with(this)).observe(this, Observer {
+        viewModel.loadPhoto().observe(this, Observer {
             it?.getContentIfNotHandled()?.let {
                 photoImageView.setImageBitmap(it)
             }

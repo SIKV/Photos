@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.data.PhotoSource
@@ -175,7 +174,7 @@ class PhotosFragment : BaseFragment() {
     }
 
     private fun init() {
-        photoAdapter = PhotoPagedListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
+        photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick)
         photosRecycler.adapter = photoAdapter
 
         photosSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(context!!, R.color.colorAccent))

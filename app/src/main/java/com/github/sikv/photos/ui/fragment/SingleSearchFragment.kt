@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.data.PhotoSource
@@ -98,7 +97,7 @@ class SingleSearchFragment : Fragment() {
     }
 
     private fun init() {
-        photoAdapter = PhotoPagedListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
+        photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick)
         searchRecycler.adapter = photoAdapter
     }
 }

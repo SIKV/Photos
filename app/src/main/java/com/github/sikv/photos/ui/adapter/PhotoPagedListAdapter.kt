@@ -5,13 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
 class PhotoPagedListAdapter(
-        private val glide: RequestManager,
         private val clickCallback: (Photo, View) -> Unit,
         private val longClickCallback: ((Photo, View) -> Unit)? = null
 
@@ -31,7 +29,7 @@ class PhotoPagedListAdapter(
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_photo, parent, false)
 
-        return PhotoViewHolder(view, glide)
+        return PhotoViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {

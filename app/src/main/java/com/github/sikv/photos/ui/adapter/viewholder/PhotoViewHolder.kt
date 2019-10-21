@@ -4,18 +4,23 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.github.sikv.photos.App
 import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.Photo
 import kotlinx.android.synthetic.main.item_photo.view.*
+import javax.inject.Inject
 
-class PhotoViewHolder(
-        itemView: View,
-        private val glide: RequestManager
-
-) : RecyclerView.ViewHolder(itemView) {
+class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     companion object {
         private const val TRANSITION_DURATION = 1000
+    }
+
+    @Inject
+    lateinit var glide: RequestManager
+
+    init {
+        App.instance.glideComponent.inject(this)
     }
 
     fun bind(photo: Photo?,

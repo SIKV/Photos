@@ -5,13 +5,26 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import com.github.sikv.photos.data.Event
+import com.github.sikv.photos.di.component.ApiClientComponent
+import com.github.sikv.photos.di.component.DaggerApiClientComponent
+import com.github.sikv.photos.di.component.DaggerGlideComponent
+import com.github.sikv.photos.di.component.GlideComponent
+import com.github.sikv.photos.di.module.ApiClientModule
+import com.github.sikv.photos.di.module.GlideModule
+import com.github.sikv.photos.di.module.RetrofitModule
 
 class App : Application() {
 
     companion object {
-        var instance: App? = null
+        lateinit var instance: App
             private set
     }
+
+    lateinit var apiClientComponent: ApiClientComponent
+        private set
+
+    lateinit var glideComponent: GlideComponent
+        private set
 
     val messageLiveData = MutableLiveData<Event<String>>()
 
@@ -19,6 +32,17 @@ class App : Application() {
         super.onCreate()
 
         instance = this
+
+        apiClientComponent = DaggerApiClientComponent
+                .builder()
+                .retrofitModule(RetrofitModule())
+                .apiClientModule(ApiClientModule())
+                .build()
+
+        glideComponent = DaggerGlideComponent
+                .builder()
+                .glideModule(GlideModule(instance))
+                .build()
 
         updateTheme()
     }

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import com.github.sikv.photos.R
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.database.PhotoData
@@ -153,7 +152,7 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private fun init() {
-        photoAdapter = PhotoDataListAdapter(Glide.with(this), ::onPhotoClick, ::onPhotoLongClick)
+        photoAdapter = PhotoDataListAdapter(::onPhotoClick, ::onPhotoLongClick)
         favoritesRecycler.adapter = photoAdapter
 
         // TODO Default value is not working good. When a photo is removed animation is broken.

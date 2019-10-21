@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.Event
 import com.github.sikv.photos.database.FavoritesDao
@@ -26,6 +27,7 @@ import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
 class PhotoViewModel(
@@ -38,6 +40,9 @@ class PhotoViewModel(
     private var viewModelJob = Job()
 
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    @Inject
+    lateinit var glide: RequestManager
 
     private var favorited: Boolean by Delegates.observable(false) { _, _, newValue ->
         favoriteChangedEvent.value = Event(newValue)
@@ -53,6 +58,8 @@ class PhotoViewModel(
         photoReadyEvent = MutableLiveData()
         favoriteChangedEvent = MutableLiveData()
 
+        App.instance.glideComponent.inject(this)
+
         initFavorited()
     }
 
@@ -62,7 +69,7 @@ class PhotoViewModel(
         viewModelJob.cancel()
     }
 
-    fun loadPhoto(glide: RequestManager): LiveData<Event<Bitmap>> {
+    fun loadPhoto(): LiveData<Event<Bitmap>> {
         val photoLoadedEvent = MutableLiveData<Event<Bitmap>>()
         var photoLoaded = false
 

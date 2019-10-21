@@ -11,7 +11,6 @@ import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
 class PhotoDataListAdapter(
-        private val glide: RequestManager,
         private val clickCallback: (PhotoData, View) -> Unit,
         private val longClickCallback: ((PhotoData, View) -> Unit)? = null
 
@@ -31,7 +30,7 @@ class PhotoDataListAdapter(
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_photo, parent, false)
 
-        return PhotoViewHolder(view, glide)
+        return PhotoViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
