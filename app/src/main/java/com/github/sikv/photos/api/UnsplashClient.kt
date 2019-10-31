@@ -3,8 +3,11 @@ package com.github.sikv.photos.api
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.model.UnsplashSearchResponse
 import retrofit2.Call
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UnsplashClient(private val unsplashApi: UnsplashApi) {
+@Singleton
+class UnsplashClient @Inject constructor(private val unsplashApi: UnsplashApi) {
 
     fun getLatestPhotos(page: Int, perPage: Int): Call<List<UnsplashPhoto>> =
             unsplashApi.getPhotos(page, perPage, "latest")

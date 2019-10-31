@@ -4,8 +4,11 @@ import com.github.sikv.photos.model.PexelsCuratedPhotosResponse
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.PexelsSearchResponse
 import retrofit2.Call
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PexelsClient(private val pexelsApi: PexelsApi) {
+@Singleton
+class PexelsClient @Inject constructor(private val pexelsApi: PexelsApi) {
 
     fun getCuratedPhotos(page: Int, perPage: Int): Call<PexelsCuratedPhotosResponse> =
             pexelsApi.getCuratedPhotos(page, perPage)

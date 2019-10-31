@@ -5,13 +5,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import com.github.sikv.photos.data.Event
-import com.github.sikv.photos.di.component.ApiClientComponent
-import com.github.sikv.photos.di.component.DaggerApiClientComponent
+import com.github.sikv.photos.di.component.NetworkComponent
 import com.github.sikv.photos.di.component.DaggerGlideComponent
+import com.github.sikv.photos.di.component.DaggerNetworkComponent
 import com.github.sikv.photos.di.component.GlideComponent
-import com.github.sikv.photos.di.module.ApiClientModule
-import com.github.sikv.photos.di.module.GlideModule
-import com.github.sikv.photos.di.module.RetrofitModule
 
 class App : Application() {
 
@@ -20,11 +17,13 @@ class App : Application() {
             private set
     }
 
-    lateinit var apiClientComponent: ApiClientComponent
-        private set
+    val networkComponent: NetworkComponent by lazy {
+        DaggerNetworkComponent.factory().create()
+    }
 
-    lateinit var glideComponent: GlideComponent
-        private set
+    val glideComponent: GlideComponent by lazy {
+        DaggerGlideComponent.factory().create(applicationContext)
+    }
 
     val messageLiveData = MutableLiveData<Event<String>>()
 
@@ -32,17 +31,6 @@ class App : Application() {
         super.onCreate()
 
         instance = this
-
-        apiClientComponent = DaggerApiClientComponent
-                .builder()
-                .retrofitModule(RetrofitModule())
-                .apiClientModule(ApiClientModule())
-                .build()
-
-        glideComponent = DaggerGlideComponent
-                .builder()
-                .glideModule(GlideModule(instance))
-                .build()
 
         updateTheme()
     }

@@ -7,10 +7,10 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class GlideModule(val context: Context) {
+class GlideModule {
 
     @Provides
-    fun provideGlide(): RequestManager {
+    fun provideGlide(context: Context): RequestManager {
         return Glide.with(context)
     }
 }

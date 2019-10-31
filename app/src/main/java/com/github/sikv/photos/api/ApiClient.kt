@@ -16,6 +16,6 @@ class ApiClient private constructor() {
     lateinit var pexelsClient: PexelsClient
 
     init {
-        App.instance.apiClientComponent.inject(this)
+        App.instance.networkComponent.inject(this)
     }
 }

@@ -9,7 +9,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
-import javax.inject.Singleton
 
 @Module
 class RetrofitModule {
@@ -20,7 +19,6 @@ class RetrofitModule {
     }
 
     @Provides
-    @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
@@ -31,7 +29,6 @@ class RetrofitModule {
     }
 
     @Provides
-    @Singleton
     @Named(UNSPLASH)
     fun provideUnsplashRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
@@ -42,7 +39,6 @@ class RetrofitModule {
     }
 
     @Provides
-    @Singleton
     @Named(PEXELS)
     fun providePexelsRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
