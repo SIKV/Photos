@@ -19,9 +19,6 @@ import com.github.sikv.photos.R
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
-const val UNSPLASH = "unsplash"
-const val PEXELS = "pexels"
-
 const val SPAN_COUNT_LIST = 1
 const val SPAN_COUNT_GRID = 2
 

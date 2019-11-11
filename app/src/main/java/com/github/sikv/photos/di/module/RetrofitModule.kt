@@ -1,14 +1,20 @@
 package com.github.sikv.photos.di.module
 
-import com.github.sikv.photos.util.PEXELS
-import com.github.sikv.photos.util.UNSPLASH
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
+import javax.inject.Qualifier
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class UnsplashRetrofit
+
+@Retention(AnnotationRetention.BINARY)
+@Qualifier
+annotation class PexelsRetrofit
 
 @Module
 class RetrofitModule {
@@ -29,7 +35,7 @@ class RetrofitModule {
     }
 
     @Provides
-    @Named(UNSPLASH)
+    @UnsplashRetrofit
     fun provideUnsplashRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(UNSPLASH_BASE_URL)
@@ -39,7 +45,7 @@ class RetrofitModule {
     }
 
     @Provides
-    @Named(PEXELS)
+    @PexelsRetrofit
     fun providePexelsRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .baseUrl(PEXELS_BASE_URL)
