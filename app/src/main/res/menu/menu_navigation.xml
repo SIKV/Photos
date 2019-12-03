@@ -3,18 +3,22 @@
 
     <item android:id="@+id/photos"
         android:title="@string/photos"
-        android:icon="@drawable/ic_photo_camera_white_24dp"/>
+        android:icon="@drawable/ic_photo_camera_white_24dp" />
+
+    <item android:id="@+id/queue"
+        android:title="@string/queue"
+        android:icon="@drawable/ic_collections_white_24dp" />
 
     <item android:id="@+id/search"
         android:title="@string/search"
-        android:icon="@drawable/ic_search_white_24dp"/>
+        android:icon="@drawable/ic_search_white_24dp" />
 
     <item android:id="@+id/favorites"
         android:title="@string/favorites"
-        android:icon="@drawable/ic_favorite_white_24dp"/>
+        android:icon="@drawable/ic_favorite_white_24dp" />
 
-    <item android:id="@+id/settings"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_settings_white_24dp"/>
+    <item android:id="@+id/more"
+        android:title="@string/more"
+        android:icon="@drawable/ic_menu_white_24dp" />
 
 </menu>

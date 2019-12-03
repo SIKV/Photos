@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/mainBottomNavigation"/>
+        app:layout_constraintBottom_toTopOf="@id/mainBottomNavigation" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/mainBottomNavigation"
@@ -20,6 +20,6 @@
         app:menu="@menu/menu_navigation"
         app:labelVisibilityMode="labeled"
         android:background="@color/colorPrimary"
-        android:theme="@style/NavigationTheme"/>
+        android:theme="@style/NavigationTheme" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

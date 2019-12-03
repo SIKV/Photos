@@ -23,8 +23,8 @@
 
     <style name="NavigationTheme" parent="AppTheme">
         <item name="colorPrimary">@color/colorAccent</item>
-        <item name="android:textSize">12sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">10sp</item>
         <item name="android:textColorSecondary">@color/colorNavigationIcon</item>
     </style>
 
