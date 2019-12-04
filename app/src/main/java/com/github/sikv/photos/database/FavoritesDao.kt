@@ -23,7 +23,7 @@ interface FavoritesDao {
     fun getAllList(): List<PhotoData>
 
     @Query("SELECT * FROM PhotoData WHERE id=:id")
-    fun get(id: String): PhotoData?
+    fun getById(id: String): PhotoData?
 
     @Query("SELECT COUNT(*) FROM PhotoData")
     fun getCount(): Int

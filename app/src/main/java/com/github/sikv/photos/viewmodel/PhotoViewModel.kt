@@ -205,7 +205,7 @@ class PhotoViewModel(
 
     private suspend fun getPhotoFromFavoritesDatabase(): Photo? {
         return withContext(Dispatchers.IO) {
-            favoritesDataSource.get(photo.getPhotoId())
+            favoritesDataSource.getById(photo.getPhotoId())
         }
     }
 }
