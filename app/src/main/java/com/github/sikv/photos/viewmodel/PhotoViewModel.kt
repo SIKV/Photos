@@ -1,15 +1,14 @@
 package com.github.sikv.photos.viewmodel
 
-import android.annotation.TargetApi
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.Build
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
@@ -21,7 +20,8 @@ import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
-import com.github.sikv.photos.util.CustomWallpaperManager
+import com.github.sikv.photos.util.PhotoManager
+import com.github.sikv.photos.util.SetWallpaperState
 import com.github.sikv.photos.util.Utils
 import kotlinx.coroutines.*
 import retrofit2.Call
@@ -53,6 +53,10 @@ class PhotoViewModel(
 
     var photoReadyEvent: MutableLiveData<Event<Photo?>>
         private set
+
+    val setWallpaperInProgressLiveData = Transformations.map(App.instance.setWallpaperStateLiveData) { state ->
+        state == SetWallpaperState.DOWNLOADING_PHOTO
+    }
 
     init {
         photoReadyEvent = MutableLiveData()
@@ -192,9 +196,8 @@ class PhotoViewModel(
         Utils.openUrl(getApplication(), photo.getSourceUrl())
     }
 
-    @TargetApi(Build.VERSION_CODES.N)
-    fun setWallpaper(activity: Activity, which: CustomWallpaperManager.Which) {
-        CustomWallpaperManager.setWallpaper(activity, photo.getLargeUrl(), which)
+    fun setWallpaper(activity: Activity) {
+        PhotoManager.setWallpaper(activity, photo.getLargeUrl())
     }
 
     private fun initFavorited() {

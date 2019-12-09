@@ -32,7 +32,7 @@ class MoreFragment : BaseFragment() {
 
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             return when (preference?.key) {
-                getString(R.string.pref_dark_theme) -> {
+                getString(R.string._pref_dark_theme) -> {
                     App.instance.updateTheme()
                     true
                 }

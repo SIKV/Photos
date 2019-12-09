@@ -1,12 +1,17 @@
 package com.github.sikv.photos.ui.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.fragment.*
+import com.github.sikv.photos.util.SetWallpaperState
 import com.github.sikv.photos.util.customTag
 import kotlinx.android.synthetic.main.activity_main.*
 
+// TODO Use ViewModel
 class MainActivity : BaseActivity() {
 
     companion object {
@@ -52,6 +57,8 @@ class MainActivity : BaseActivity() {
         }
 
         setNavigationItemSelectedListener()
+
+        observeSetWallpaperInProgress()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -66,6 +73,45 @@ class MainActivity : BaseActivity() {
         super.onSaveInstanceState(outState)
 
         outState.putString(KEY_FRAGMENT_TAG, activeFragment.customTag())
+    }
+
+    private fun observeSetWallpaperInProgress() {
+        App.instance.setWallpaperStateLiveData.observe(this, Observer { state ->
+            when (state) {
+                SetWallpaperState.DOWNLOADING_PHOTO -> {
+                    mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
+                    mainSetWallpaperDownloadingLayout.visibility = View.VISIBLE
+                    mainSetWallpaperStatusLayout.visibility = View.GONE
+                    mainSetWallpaperButton.visibility = View.GONE
+                }
+
+                SetWallpaperState.PHOTO_READY -> {
+                    mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
+                    mainSetWallpaperDownloadingLayout.visibility = View.GONE
+                    mainSetWallpaperStatusLayout.visibility = View.VISIBLE
+                    mainSetWallpaperButton.visibility = View.VISIBLE
+
+                    mainSetWallpaperStatusImage.setImageResource(R.drawable.ic_check_green_24dp)
+                    mainSetWallpaperStatusText.setText(R.string.photo_ready)
+                }
+
+                SetWallpaperState.CANCEL -> {
+                    mainSetWallpaperInProgressLayout.visibility = View.GONE
+                }
+
+                SetWallpaperState.ERROR_DOWNLOADING_PHOTO -> {
+                    mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
+                    mainSetWallpaperDownloadingLayout.visibility = View.GONE
+                    mainSetWallpaperStatusLayout.visibility = View.VISIBLE
+                    mainSetWallpaperButton.visibility = View.GONE
+
+                    mainSetWallpaperStatusImage.setImageResource(R.drawable.ic_close_red_24dp)
+                    mainSetWallpaperStatusText.setText(R.string.error_downloading_photo)
+                }
+
+                else -> { }
+            }
+        })
     }
 
     private fun setupBottomNavigation(initialFragmentIndex: Int, initialItemId: Int) {

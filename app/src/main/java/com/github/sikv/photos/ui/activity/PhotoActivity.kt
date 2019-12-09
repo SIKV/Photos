@@ -26,8 +26,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.ui.fragment.OptionsBottomSheetDialogFragment
-import com.github.sikv.photos.util.CustomWallpaperManager
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
@@ -62,8 +60,6 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     private var lastGravity1 = 0.0
 
     private var favoriteMenuItemIcon: Int? = null
-
-    private lateinit var setWallpaperDialog: OptionsBottomSheetDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -210,6 +206,10 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
             invalidateOptionsMenu()
         })
+
+        viewModel.setWallpaperInProgressLiveData.observe(this, Observer {
+            photoSetWallpaperButton.visibility = if (it) View.GONE else View.VISIBLE
+        })
     }
 
     private fun init() {
@@ -225,42 +225,15 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
             photoImageView.layoutParams.width = photoImageView.measuredWidth + extraOutOfScreen
             photoImageView.layoutParams.height = photoImageView.measuredHeight + extraOutOfScreen
         }
-
-        createSetWallpaperDialog()
     }
 
     private fun setListeners() {
         photoSetWallpaperButton.setOnClickListener {
-            setWallpaperDialog.show(supportFragmentManager)
+            viewModel.setWallpaper(this@PhotoActivity)
         }
 
         photoShareButton.setOnClickListener {
             startActivity(viewModel.createShareIntent())
-        }
-    }
-
-    private fun createSetWallpaperDialog() {
-        setWallpaperDialog = OptionsBottomSheetDialogFragment.newInstance(
-                listOf(
-                        getString(R.string.home_screen),
-                        getString(R.string.lock_screen),
-                        getString(R.string.home_and_lock_screen)
-
-                )) { index ->
-
-            when (index) {
-                0 -> {
-                    viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.HOME)
-                }
-
-                1 -> {
-                    viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.LOCK)
-                }
-
-                2 -> {
-                    viewModel.setWallpaper(this@PhotoActivity, CustomWallpaperManager.Which.BOTH)
-                }
-            }
         }
     }
 
@@ -282,30 +255,17 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         window.sharedElementEnterTransition = changeBounds
 
         window.sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
-            override fun onTransitionStart(transition: Transition?) {
-                setViewsVisibility(View.INVISIBLE)
-            }
+            override fun onTransitionStart(transition: Transition?) { }
 
             override fun onTransitionEnd(transition: Transition?) {
                 photoRootLayout.layoutTransition = LayoutTransition()
-                setViewsVisibility(View.VISIBLE)
             }
 
-            override fun onTransitionResume(transition: Transition?) {
-            }
+            override fun onTransitionResume(transition: Transition?) { }
 
-            override fun onTransitionPause(transition: Transition?) {
-            }
+            override fun onTransitionPause(transition: Transition?) { }
 
-            override fun onTransitionCancel(transition: Transition?) {
-            }
+            override fun onTransitionCancel(transition: Transition?) { }
         })
-    }
-
-    private fun setViewsVisibility(visibility: Int) {
-        photoToolbar.visibility = visibility
-        photoAuthorText.visibility = visibility
-        photoSetWallpaperButton.visibility = visibility
-        photoShareButton.visibility = visibility
     }
 }

@@ -7,7 +7,7 @@
             app:iconSpaceReserved="false">
 
                 <SwitchPreference
-                    android:key="@string/pref_dark_theme"
+                    android:key="@string/_pref_dark_theme"
                     android:defaultValue="true"
                     android:title="@string/dark_theme"
                     app:iconSpaceReserved="false"/>

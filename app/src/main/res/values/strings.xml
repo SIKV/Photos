@@ -1,10 +1,17 @@
 <resources>
     <string name="app_name">Photos</string>
 
+    <!-- -->
+
+    <string name="_file_provider">com.github.sikv.photos.fileprovider</string>
+
+    <string name="_pref_dark_theme">PreferenceDarkTheme</string>
+    <string name="_download_photo_channel_name">Downloading Photo</string>
+
+    <!-- -->
+
     <string name="unsplash">Unsplash</string>
     <string name="pexels">Pexels</string>
-
-    <string name="pref_dark_theme">PreferenceDarkTheme</string>
 
     <string name="cn_photo">Photo</string>
     <string name="cn_photo_preview">Photo preview</string>
@@ -34,12 +41,11 @@
     <string name="search_for_photos">Search for photos</string>
     <string name="deleted">Deleted</string>
     <string name="undo">UNDO</string>
-    <string name="home_screen">Home screen</string>
-    <string name="lock_screen">Lock screen</string>
-    <string name="home_and_lock_screen">Home screen and lock screen</string>
-    <string name="setting_wallpaper">Setting wallpaper…</string>
-    <string name="wallpaper_set">Wallpaper set</string>
-    <string name="error_setting_wallpaper">Error setting wallpaper</string>
     <string name="appearance">Appearance</string>
     <string name="dark_theme">Dark theme</string>
+    <string name="cancel">Cancel</string>
+    <string name="downloading_photo">Downloading photo…</string>
+    <string name="error_downloading_photo">Error downloading photo</string>
+    <string name="photo_ready">Photo is ready</string>
+
 </resources>

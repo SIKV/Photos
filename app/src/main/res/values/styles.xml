@@ -59,6 +59,12 @@
         <item name="android:background">?android:selectableItemBackgroundBorderless</item>
     </style>
 
+    <style name="FlatButton">
+        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorText</item>
+    </style>
+
     <style name="RoundButton">
         <item name="android:layout_width">192dp</item>
         <item name="android:layout_height">wrap_content</item>

@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.github.sikv.photos">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:name=".App"
@@ -26,15 +28,26 @@
             </intent-filter>
 
             <meta-data android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts"/>
+                android:resource="@xml/shortcuts" />
 
         </activity>
 
         <activity android:name=".ui.activity.PhotoActivity"
-            android:theme="@style/AppTheme.Translucent"/>
+            android:theme="@style/AppTheme.Translucent" />
 
-        <service android:name=".service.SetWallpaperIntentService"
-            android:exported="false"/>
+        <service android:name=".service.SetWallpaperService" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.github.sikv.photos.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+
+        </provider>
 
     </application>
 
