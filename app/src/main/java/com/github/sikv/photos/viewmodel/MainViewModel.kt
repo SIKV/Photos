@@ -17,15 +17,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     val downloadPhotoStateLiveData = App.instance.downloadPhotoStateLiveData
+    val setWallpaperStateLiveData = App.instance.setWallpaperStateLiveData
 
     fun setWallpaper() {
-        // TODO Implement
+        photoManager.getSavedPhotoUri(getApplication())?.let { uri ->
+            photoManager.startSetWallpaper(getApplication(), uri)
+        } ?: run {
+
+            // TODO Handle
+        }
     }
 
     fun cancelSetWallpaper() {
         when (downloadPhotoStateLiveData.value) {
             DownloadPhotoState.DOWNLOADING_PHOTO -> {
-                photoManager.cancelDownloadingIfActive(getApplication())
+                photoManager.cancelDownloading(getApplication())
             }
 
             else -> { }

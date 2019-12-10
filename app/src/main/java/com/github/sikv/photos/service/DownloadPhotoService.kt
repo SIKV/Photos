@@ -88,11 +88,15 @@ class DownloadPhotoService : Service() {
                 .into(object : SimpleTarget<Bitmap>() {
                     override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
                         uiScore.launch {
-                            val uri = savePhoto(bitmap)
+                            savePhoto(bitmap)?.let { uri ->
+                                photoManager.savePhotoUri(this@DownloadPhotoService, uri)
 
-                            // TODO Save URI
+                                updateDownloadPhotoState(DownloadPhotoState.PHOTO_READY)
 
-                            updateDownloadPhotoState(DownloadPhotoState.PHOTO_READY)
+                            } ?: run {
+                                postMessage(getString(R.string.error_downloading_photo))
+                                updateDownloadPhotoState(DownloadPhotoState.ERROR_DOWNLOADING_PHOTO)
+                            }
                         }
                     }
 

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.fragment.*
 import com.github.sikv.photos.util.DownloadPhotoState
+import com.github.sikv.photos.util.SetWallpaperState
 import com.github.sikv.photos.util.customTag
 import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -116,6 +117,20 @@ class MainActivity : BaseActivity() {
 
                     mainSetWallpaperStatusImage.setImageResource(R.drawable.ic_close_red_24dp)
                     mainSetWallpaperStatusText.setText(R.string.error_downloading_photo)
+                }
+
+                else -> { }
+            }
+        })
+
+        viewModel.setWallpaperStateLiveData.observe(this, Observer { state ->
+            when (state) {
+                SetWallpaperState.SUCCESS -> {
+                    mainSetWallpaperInProgressLayout.visibility = View.GONE
+                }
+
+                SetWallpaperState.FAILURE -> {
+                    mainSetWallpaperInProgressLayout.visibility = View.GONE
                 }
 
                 else -> { }

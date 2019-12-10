@@ -10,6 +10,7 @@ import com.github.sikv.photos.di.component.DaggerAppComponent
 import com.github.sikv.photos.di.component.DaggerNetworkComponent
 import com.github.sikv.photos.di.component.NetworkComponent
 import com.github.sikv.photos.util.DownloadPhotoState
+import com.github.sikv.photos.util.SetWallpaperState
 
 class App : Application() {
 
@@ -29,6 +30,7 @@ class App : Application() {
     val messageLiveData = MutableLiveData<Event<String>>()
 
     val downloadPhotoStateLiveData = MutableLiveData<DownloadPhotoState>()
+    val setWallpaperStateLiveData = MutableLiveData<SetWallpaperState>()
 
     override fun onCreate() {
         super.onCreate()
