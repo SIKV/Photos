@@ -7,18 +7,24 @@ import android.graphics.Bitmap
 import android.net.Uri
 import androidx.core.content.FileProvider
 import com.github.sikv.photos.R
-import com.github.sikv.photos.service.SetWallpaperService
+import com.github.sikv.photos.service.DownloadPhotoService
 import java.io.ByteArrayOutputStream
 import java.io.File
+import javax.inject.Inject
+import javax.inject.Singleton
 
-// TODO Use DI
-object PhotoManager {
+@Singleton
+class PhotoManager @Inject constructor() {
 
-    fun setWallpaper(context: Context, photoUrl: String) {
-        SetWallpaperService.startService(context, photoUrl)
+    fun downloadPhoto(context: Context, photoUrl: String) {
+        DownloadPhotoService.startServiceActionDownload(context, photoUrl)
     }
 
-    fun setWallpaper(context: Context, photoUri: Uri) {
+    fun cancelDownloadingIfActive(context: Context) {
+        DownloadPhotoService.startServiceActionCancel(context)
+    }
+
+    fun startSetWallpaper(context: Context, photoUri: Uri) {
         val wallpaperManager = WallpaperManager.getInstance(context)
 
         val intent = wallpaperManager.getCropAndSetWallpaperIntent(photoUri)

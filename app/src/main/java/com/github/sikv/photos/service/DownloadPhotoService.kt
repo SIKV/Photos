@@ -8,28 +8,38 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.IBinder
 import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.Event
+import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.util.PhotoManager
-import com.github.sikv.photos.util.SetWallpaperState
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class SetWallpaperService : Service() {
+class DownloadPhotoService : Service() {
 
     companion object {
-        private const val ACTION_SET_WALLPAPER = "action_set_wallpaper"
+        private const val ACTION_DOWNLOAD_PHOTO = "action_download_photo"
         private const val ACTION_CANCEL = "action_cancel"
 
         private const val KEY_PHOTO_URL = "key_photo_url"
 
-        fun startService(context: Context, photoUrl: String) {
-            val intent = Intent(context, SetWallpaperService::class.java)
+        fun startServiceActionDownload(context: Context, photoUrl: String) {
+            val intent = Intent(context, DownloadPhotoService::class.java)
 
-            intent.action = ACTION_SET_WALLPAPER
+            intent.action = ACTION_DOWNLOAD_PHOTO
             intent.putExtra(KEY_PHOTO_URL, photoUrl)
+
+            context.startService(intent)
+        }
+
+        fun startServiceActionCancel(context: Context) {
+            val intent = Intent(context, DownloadPhotoService::class.java)
+
+            intent.action = ACTION_CANCEL
 
             context.startService(intent)
         }
@@ -38,29 +48,40 @@ class SetWallpaperService : Service() {
     private val serviceJob = Job()
     private val uiScore = CoroutineScope(Dispatchers.Main + serviceJob)
 
+    @Inject
+    lateinit var photoManager: PhotoManager
+
+    @Inject
+    lateinit var glide: RequestManager
+
+    init {
+        App.instance.appComponent.inject(this)
+    }
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
-            ACTION_SET_WALLPAPER -> {
-                downloadPhotoAndSetWallpaper(intent.getStringExtra(KEY_PHOTO_URL))
+            ACTION_DOWNLOAD_PHOTO -> {
+                downloadAndSavePhoto(intent.getStringExtra(KEY_PHOTO_URL))
             }
 
             ACTION_CANCEL -> {
                 serviceJob.cancel()
 
-                // TODO Cancel
+                postMessage(getString(R.string.photo_downloading_canceled))
+                updateDownloadPhotoState(DownloadPhotoState.CANCELED)
             }
         }
 
         return START_NOT_STICKY
     }
 
-    private fun downloadPhotoAndSetWallpaper(photoUrl: String) {
+    private fun downloadAndSavePhoto(photoUrl: String) {
         postMessage(getString(R.string.downloading_photo))
-        updateSetWallpaperState(SetWallpaperState.DOWNLOADING_PHOTO)
+        updateDownloadPhotoState(DownloadPhotoState.DOWNLOADING_PHOTO)
 
         Glide.with(this).asBitmap()
                 .load(photoUrl)
@@ -71,7 +92,7 @@ class SetWallpaperService : Service() {
 
                             // TODO Save URI
 
-                            updateSetWallpaperState(SetWallpaperState.PHOTO_READY)
+                            updateDownloadPhotoState(DownloadPhotoState.PHOTO_READY)
                         }
                     }
 
@@ -79,14 +100,14 @@ class SetWallpaperService : Service() {
                         super.onLoadFailed(errorDrawable)
 
                         postMessage(getString(R.string.error_downloading_photo))
-                        updateSetWallpaperState(SetWallpaperState.ERROR_DOWNLOADING_PHOTO)
+                        updateDownloadPhotoState(DownloadPhotoState.ERROR_DOWNLOADING_PHOTO)
                     }
                 })
     }
 
     private suspend fun savePhoto(photo: Bitmap): Uri? {
         return withContext(Dispatchers.IO) {
-            PhotoManager.savePhoto(this@SetWallpaperService, photo)
+            photoManager.savePhoto(this@DownloadPhotoService, photo)
         }
     }
 
@@ -96,7 +117,7 @@ class SetWallpaperService : Service() {
         }
     }
 
-    private fun updateSetWallpaperState(state: SetWallpaperState) {
-        App.instance.setWallpaperStateLiveData.value = state
+    private fun updateDownloadPhotoState(state: DownloadPhotoState) {
+        App.instance.downloadPhotoStateLiveData.value = state
     }
 }

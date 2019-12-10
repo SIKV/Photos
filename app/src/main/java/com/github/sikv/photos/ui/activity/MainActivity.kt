@@ -4,18 +4,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.github.sikv.photos.App
+import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.fragment.*
-import com.github.sikv.photos.util.SetWallpaperState
+import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.util.customTag
+import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
-// TODO Use ViewModel
 class MainActivity : BaseActivity() {
 
     companion object {
         private const val ACTION_SEARCH = "com.github.sikv.photos.action.SEARCH"
+
+        private const val KEY_FRAGMENT_TAG = "key_fragment_tag"
 
         private const val PHOTOS_FRAGMENT_INDEX = 0
         private const val QUEUE_FRAGMENT_INDEX = 1
@@ -25,8 +27,10 @@ class MainActivity : BaseActivity() {
 
         private const val PHOTOS_ITEM_ID = R.id.photos
         private const val SEARCH_ITEM_ID = R.id.search
+    }
 
-        private const val KEY_FRAGMENT_TAG = "key_fragment_tag"
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProviders.of(this).get(MainViewModel::class.java)
     }
 
     private val fragments = listOf(
@@ -58,7 +62,9 @@ class MainActivity : BaseActivity() {
 
         setNavigationItemSelectedListener()
 
-        observeSetWallpaperInProgress()
+        setWallpaperSetListeners()
+
+        observe()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -75,35 +81,38 @@ class MainActivity : BaseActivity() {
         outState.putString(KEY_FRAGMENT_TAG, activeFragment.customTag())
     }
 
-    private fun observeSetWallpaperInProgress() {
-        App.instance.setWallpaperStateLiveData.observe(this, Observer { state ->
+    private fun observe() {
+        viewModel.downloadPhotoStateLiveData.observe(this, Observer { state ->
             when (state) {
-                SetWallpaperState.DOWNLOADING_PHOTO -> {
+                DownloadPhotoState.DOWNLOADING_PHOTO -> {
                     mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
                     mainSetWallpaperDownloadingLayout.visibility = View.VISIBLE
                     mainSetWallpaperStatusLayout.visibility = View.GONE
                     mainSetWallpaperButton.visibility = View.GONE
+                    mainSetWallpaperCancelButton.visibility = View.VISIBLE
                 }
 
-                SetWallpaperState.PHOTO_READY -> {
+                DownloadPhotoState.PHOTO_READY -> {
                     mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
                     mainSetWallpaperDownloadingLayout.visibility = View.GONE
                     mainSetWallpaperStatusLayout.visibility = View.VISIBLE
                     mainSetWallpaperButton.visibility = View.VISIBLE
+                    mainSetWallpaperCancelButton.visibility = View.VISIBLE
 
                     mainSetWallpaperStatusImage.setImageResource(R.drawable.ic_check_green_24dp)
                     mainSetWallpaperStatusText.setText(R.string.photo_ready)
                 }
 
-                SetWallpaperState.CANCEL -> {
+                DownloadPhotoState.CANCELED -> {
                     mainSetWallpaperInProgressLayout.visibility = View.GONE
                 }
 
-                SetWallpaperState.ERROR_DOWNLOADING_PHOTO -> {
+                DownloadPhotoState.ERROR_DOWNLOADING_PHOTO -> {
                     mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
                     mainSetWallpaperDownloadingLayout.visibility = View.GONE
                     mainSetWallpaperStatusLayout.visibility = View.VISIBLE
                     mainSetWallpaperButton.visibility = View.GONE
+                    mainSetWallpaperCancelButton.visibility = View.VISIBLE
 
                     mainSetWallpaperStatusImage.setImageResource(R.drawable.ic_close_red_24dp)
                     mainSetWallpaperStatusText.setText(R.string.error_downloading_photo)
@@ -165,6 +174,16 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    private fun setWallpaperSetListeners() {
+        mainSetWallpaperButton.setOnClickListener {
+            viewModel.setWallpaper()
+        }
+
+        mainSetWallpaperCancelButton.setOnClickListener {
+            viewModel.cancelSetWallpaper()
+        }
+    }
+
     private fun changeFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
                 .hide(findFragment(activeFragment))
@@ -172,7 +191,6 @@ class MainActivity : BaseActivity() {
                 .commit()
 
         activeFragment = fragment
-
     }
 
     private fun findFragment(fragment: Fragment): Fragment {

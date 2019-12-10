@@ -27,14 +27,14 @@
 
             <ProgressBar
                 android:id="@+id/mainSetWallpaperInProgressBar"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_centerVertical="true" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/mainSetWallpaperInProgressBar"
                 android:text="@string/downloading_photo"
@@ -53,15 +53,17 @@
 
             <ImageView
                 android:id="@+id/mainSetWallpaperStatusImage"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/cn_set_wallpaper_status_icon"
+                tools:src="@drawable/ic_check_green_24dp"
                 android:layout_centerVertical="true" />
 
             <TextView
                 android:id="@+id/mainSetWallpaperStatusText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/mainSetWallpaperStatusImage"
                 tools:text="Text"
@@ -71,7 +73,7 @@
 
         <RelativeLayout
             android:id="@+id/mainSetWallpaperButtonsLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -82,9 +84,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_alignParentEnd="true"
+                android:layout_toStartOf="@+id/mainSetWallpaperCancelButton"
                 android:text="@string/set_wallpaper"
                 android:theme="@style/FlatButton"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/mainSetWallpaperCancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/cn_set_wallpaper_close_or_cancel_icon"
+                android:src="@drawable/ic_close_22dp"
+                style="@style/ImageButton"
                 android:visibility="gone" />
 
         </RelativeLayout>

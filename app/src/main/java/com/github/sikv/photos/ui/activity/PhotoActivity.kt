@@ -207,7 +207,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
             invalidateOptionsMenu()
         })
 
-        viewModel.setWallpaperInProgressLiveData.observe(this, Observer {
+        viewModel.downloadPhotoInProgressLiveData.observe(this, Observer {
             photoSetWallpaperButton.visibility = if (it) View.GONE else View.VISIBLE
         })
     }

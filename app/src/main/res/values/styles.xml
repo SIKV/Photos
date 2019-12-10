@@ -54,15 +54,15 @@
     <style name="TabBarTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="android:fontFamily">sans-serif-black</item>
     </style>
-    
-    <style name="BorderlessTransparentButton">
-        <item name="android:background">?android:selectableItemBackgroundBorderless</item>
-    </style>
 
     <style name="FlatButton">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
         <item name="colorAccent">@color/colorText</item>
+    </style>
+
+    <style name="ImageButton">
+        <item name="android:background">?android:selectableItemBackground</item>
     </style>
 
     <style name="RoundButton">

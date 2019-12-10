@@ -20,7 +20,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     lateinit var glide: RequestManager
 
     init {
-        App.instance.glideComponent.inject(this)
+        App.instance.appComponent.inject(this)
     }
 
     fun bind(photo: Photo?,

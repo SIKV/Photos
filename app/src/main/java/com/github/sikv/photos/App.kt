@@ -5,11 +5,11 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import com.github.sikv.photos.data.Event
-import com.github.sikv.photos.di.component.DaggerGlideComponent
+import com.github.sikv.photos.di.component.AppComponent
+import com.github.sikv.photos.di.component.DaggerAppComponent
 import com.github.sikv.photos.di.component.DaggerNetworkComponent
-import com.github.sikv.photos.di.component.GlideComponent
 import com.github.sikv.photos.di.component.NetworkComponent
-import com.github.sikv.photos.util.SetWallpaperState
+import com.github.sikv.photos.util.DownloadPhotoState
 
 class App : Application() {
 
@@ -18,17 +18,17 @@ class App : Application() {
             private set
     }
 
+    val appComponent: AppComponent by lazy {
+        DaggerAppComponent.factory().create(applicationContext)
+    }
+
     val networkComponent: NetworkComponent by lazy {
         DaggerNetworkComponent.factory().create()
     }
 
-    val glideComponent: GlideComponent by lazy {
-        DaggerGlideComponent.factory().create(applicationContext)
-    }
-
     val messageLiveData = MutableLiveData<Event<String>>()
 
-    val setWallpaperStateLiveData = MutableLiveData<SetWallpaperState>()
+    val downloadPhotoStateLiveData = MutableLiveData<DownloadPhotoState>()
 
     override fun onCreate() {
         super.onCreate()

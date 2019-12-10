@@ -20,8 +20,8 @@ import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
+import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.util.PhotoManager
-import com.github.sikv.photos.util.SetWallpaperState
 import com.github.sikv.photos.util.Utils
 import kotlinx.coroutines.*
 import retrofit2.Call
@@ -38,8 +38,10 @@ class PhotoViewModel(
 ) : AndroidViewModel(application) {
 
     private var viewModelJob = Job()
-
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    @Inject
+    lateinit var photoManager: PhotoManager
 
     @Inject
     lateinit var glide: RequestManager
@@ -54,15 +56,15 @@ class PhotoViewModel(
     var photoReadyEvent: MutableLiveData<Event<Photo?>>
         private set
 
-    val setWallpaperInProgressLiveData = Transformations.map(App.instance.setWallpaperStateLiveData) { state ->
-        state == SetWallpaperState.DOWNLOADING_PHOTO
+    val downloadPhotoInProgressLiveData: LiveData<Boolean> = Transformations.map(App.instance.downloadPhotoStateLiveData) { state ->
+        state == DownloadPhotoState.DOWNLOADING_PHOTO
     }
 
     init {
         photoReadyEvent = MutableLiveData()
         favoriteChangedEvent = MutableLiveData()
 
-        App.instance.glideComponent.inject(this)
+        App.instance.appComponent.inject(this)
 
         initFavorited()
     }
@@ -197,7 +199,7 @@ class PhotoViewModel(
     }
 
     fun setWallpaper(activity: Activity) {
-        PhotoManager.setWallpaper(activity, photo.getLargeUrl())
+        photoManager.downloadPhoto(activity, photo.getLargeUrl())
     }
 
     private fun initFavorited() {
