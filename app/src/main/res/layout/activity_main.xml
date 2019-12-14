@@ -32,12 +32,13 @@
                 android:layout_centerVertical="true" />
 
             <TextView
+                android:id="@+id/mainSetWallpaperInProgressText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@id/mainSetWallpaperInProgressBar"
-                android:text="@string/downloading_photo"
+                tools:text="@string/downloading_photo"
                 android:textColor="@color/colorText" />
 
         </RelativeLayout>

@@ -34,6 +34,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 photoManager.cancelDownloading(getApplication())
             }
 
+            DownloadPhotoState.PHOTO_READY,
+            DownloadPhotoState.ERROR_DOWNLOADING_PHOTO -> {
+                downloadPhotoStateLiveData.postValue(DownloadPhotoState.CANCELED)
+            }
+
             else -> { }
         }
     }

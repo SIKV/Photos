@@ -65,7 +65,7 @@ class PhotoManager @Inject constructor() {
 
     fun savePhoto(context: Context, bitmap: Bitmap): Uri? {
         val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
 
         val byteArray = byteArrayOutputStream.toByteArray()
 

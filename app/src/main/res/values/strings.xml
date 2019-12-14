@@ -49,6 +49,7 @@
     <string name="downloading_photo">Downloading photo…</string>
     <string name="error_downloading_photo">Error downloading photo</string>
     <string name="photo_downloading_canceled">Photo downloading has been canceled</string>
+    <string name="canceling">Canceling…</string>
     <string name="photo_ready">Photo is ready</string>
 
 </resources>

@@ -91,6 +91,8 @@ class MainActivity : BaseActivity() {
                     mainSetWallpaperStatusLayout.visibility = View.GONE
                     mainSetWallpaperButton.visibility = View.GONE
                     mainSetWallpaperCancelButton.visibility = View.VISIBLE
+
+                    mainSetWallpaperInProgressText.setText(R.string.downloading_photo)
                 }
 
                 DownloadPhotoState.PHOTO_READY -> {
@@ -104,10 +106,6 @@ class MainActivity : BaseActivity() {
                     mainSetWallpaperStatusText.setText(R.string.photo_ready)
                 }
 
-                DownloadPhotoState.CANCELED -> {
-                    mainSetWallpaperInProgressLayout.visibility = View.GONE
-                }
-
                 DownloadPhotoState.ERROR_DOWNLOADING_PHOTO -> {
                     mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
                     mainSetWallpaperDownloadingLayout.visibility = View.GONE
@@ -119,17 +117,27 @@ class MainActivity : BaseActivity() {
                     mainSetWallpaperStatusText.setText(R.string.error_downloading_photo)
                 }
 
+                DownloadPhotoState.CANCELING -> {
+                    mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
+                    mainSetWallpaperDownloadingLayout.visibility = View.VISIBLE
+                    mainSetWallpaperStatusLayout.visibility = View.GONE
+                    mainSetWallpaperButton.visibility = View.GONE
+                    mainSetWallpaperCancelButton.visibility = View.GONE
+
+                    mainSetWallpaperInProgressText.setText(R.string.canceling)
+                }
+
+                DownloadPhotoState.CANCELED -> {
+                    mainSetWallpaperInProgressLayout.visibility = View.GONE
+                }
+
                 else -> { }
             }
         })
 
         viewModel.setWallpaperStateLiveData.observe(this, Observer { state ->
             when (state) {
-                SetWallpaperState.SUCCESS -> {
-                    mainSetWallpaperInProgressLayout.visibility = View.GONE
-                }
-
-                SetWallpaperState.FAILURE -> {
+                SetWallpaperState.SUCCESS, SetWallpaperState.FAILURE -> {
                     mainSetWallpaperInProgressLayout.visibility = View.GONE
                 }
 

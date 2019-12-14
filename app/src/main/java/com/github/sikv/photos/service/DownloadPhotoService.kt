@@ -45,8 +45,7 @@ class DownloadPhotoService : Service() {
         }
     }
 
-    private val serviceJob = Job()
-    private val uiScore = CoroutineScope(Dispatchers.Main + serviceJob)
+    private lateinit var job: Job
 
     @Inject
     lateinit var photoManager: PhotoManager
@@ -69,14 +68,23 @@ class DownloadPhotoService : Service() {
             }
 
             ACTION_CANCEL -> {
-                serviceJob.cancel()
-
-                postMessage(getString(R.string.photo_downloading_canceled))
-                updateDownloadPhotoState(DownloadPhotoState.CANCELED)
+                cancel()
             }
         }
 
         return START_NOT_STICKY
+    }
+
+    private fun cancel() {
+        CoroutineScope(Dispatchers.Main).launch {
+            postMessage(getString(R.string.canceling))
+            updateDownloadPhotoState(DownloadPhotoState.CANCELING)
+
+            job.cancelAndJoin()
+
+            postMessage(getString(R.string.photo_downloading_canceled))
+            updateDownloadPhotoState(DownloadPhotoState.CANCELED)
+        }
     }
 
     private fun downloadAndSavePhoto(photoUrl: String) {
@@ -87,7 +95,7 @@ class DownloadPhotoService : Service() {
                 .load(photoUrl)
                 .into(object : SimpleTarget<Bitmap>() {
                     override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                        uiScore.launch {
+                        job = CoroutineScope(Dispatchers.Main).launch{
                             savePhoto(bitmap)?.let { uri ->
                                 photoManager.savePhotoUri(this@DownloadPhotoService, uri)
 
