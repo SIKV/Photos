@@ -36,9 +36,9 @@ class App : Application() {
 
     val downloadPhotoStateLiveData: LiveData<DownloadPhotoState> = Transformations.map(downloadPhotoStateMutableLiveData) { state ->
         when (state) {
-            // PHOTO_READY state should be handled only once.
+            // PHOTO_READY and ERROR_DOWNLOADING_PHOTO states should be handled only once.
             // For example, if PhotoActivity handled it then it SHOULD NOT be handled by MainActivity and vice versa.
-            DownloadPhotoState.PHOTO_READY -> {
+            DownloadPhotoState.PHOTO_READY, DownloadPhotoState.ERROR_DOWNLOADING_PHOTO -> {
                 downloadPhotoStateMutableLiveData.value = null
                 state
             }
