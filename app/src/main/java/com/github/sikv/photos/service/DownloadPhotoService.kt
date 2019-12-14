@@ -130,6 +130,6 @@ class DownloadPhotoService : Service() {
     }
 
     private fun updateDownloadPhotoState(state: DownloadPhotoState) {
-        App.instance.downloadPhotoStateLiveData.value = state
+        App.instance.postDownloadPhotoStateLiveData(state)
     }
 }

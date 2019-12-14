@@ -78,6 +78,6 @@ class PhotoManager @Inject constructor() {
     }
 
     private fun updateSetWallpaperState(state: SetWallpaperState) {
-        App.instance.setWallpaperStateLiveData.value = state
+        App.instance.postSetWallpaperStateLiveData(state)
     }
 }

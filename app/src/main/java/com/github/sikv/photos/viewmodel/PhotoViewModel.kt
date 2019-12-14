@@ -47,22 +47,24 @@ class PhotoViewModel(
     lateinit var glide: RequestManager
 
     private var favorited: Boolean by Delegates.observable(false) { _, _, newValue ->
-        favoriteChangedEvent.value = Event(newValue)
+        favoriteChangedLiveData.value = Event(newValue)
     }
 
-    var favoriteChangedEvent: MutableLiveData<Event<Boolean>>
+    var favoriteChangedLiveData: MutableLiveData<Event<Boolean>>
         private set
 
-    var photoReadyEvent: MutableLiveData<Event<Photo?>>
+    var photoReadyLiveData: MutableLiveData<Event<Photo?>>
         private set
 
     val downloadPhotoInProgressLiveData: LiveData<Boolean> = Transformations.map(App.instance.downloadPhotoStateLiveData) { state ->
         state == DownloadPhotoState.DOWNLOADING_PHOTO
     }
 
+    val downloadPhotoStateLiveData = App.instance.downloadPhotoStateLiveData
+
     init {
-        photoReadyEvent = MutableLiveData()
-        favoriteChangedEvent = MutableLiveData()
+        photoReadyLiveData = MutableLiveData()
+        favoriteChangedLiveData = MutableLiveData()
 
         App.instance.appComponent.inject(this)
 
@@ -111,7 +113,7 @@ class PhotoViewModel(
                                         this@PhotoViewModel.photo = unsplashPhoto
                                         loadFullSizePhoto()
 
-                                        photoReadyEvent.value = Event(unsplashPhoto)
+                                        photoReadyLiveData.value = Event(unsplashPhoto)
                                     }
                                 }
                             })
@@ -128,7 +130,7 @@ class PhotoViewModel(
                                         this@PhotoViewModel.photo = pexelsPhoto
                                         loadFullSizePhoto()
 
-                                        photoReadyEvent.value = Event(pexelsPhoto)
+                                        photoReadyLiveData.value = Event(pexelsPhoto)
 
                                     }
                                 }
@@ -158,10 +160,19 @@ class PhotoViewModel(
                         }
                     })
 
-            photoReadyEvent.value = Event(photo)
+            photoReadyLiveData.value = Event(photo)
         }
 
         return photoLoadedEvent
+    }
+
+    fun setWallpaper() {
+        photoManager.getSavedPhotoUri(getApplication())?.let { uri ->
+            photoManager.startSetWallpaper(getApplication(), uri)
+        } ?: run {
+
+            // TODO Handle
+        }
     }
 
     fun favorite() {

@@ -2,7 +2,9 @@ package com.github.sikv.photos
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.preference.PreferenceManager
 import com.github.sikv.photos.data.Event
 import com.github.sikv.photos.di.component.AppComponent
@@ -29,8 +31,23 @@ class App : Application() {
 
     val messageLiveData = MutableLiveData<Event<String>>()
 
-    val downloadPhotoStateLiveData = MutableLiveData<DownloadPhotoState>()
-    val setWallpaperStateLiveData = MutableLiveData<SetWallpaperState>()
+    private val downloadPhotoStateMutableLiveData = MutableLiveData<DownloadPhotoState>()
+    private val setWallpaperStateMutableLiveData = MutableLiveData<SetWallpaperState>()
+
+    val downloadPhotoStateLiveData: LiveData<DownloadPhotoState> = Transformations.map(downloadPhotoStateMutableLiveData) { state ->
+        when (state) {
+            // PHOTO_READY state should be handled only once.
+            // For example, if PhotoActivity handled it then it SHOULD NOT be handled by MainActivity and vice versa.
+            DownloadPhotoState.PHOTO_READY -> {
+                downloadPhotoStateMutableLiveData.value = null
+                state
+            }
+
+            else -> state
+        }
+    }
+
+    val setWallpaperStateLiveData: LiveData<SetWallpaperState> = setWallpaperStateMutableLiveData
 
     override fun onCreate() {
         super.onCreate()
@@ -38,6 +55,14 @@ class App : Application() {
         instance = this
 
         updateTheme()
+    }
+
+    fun postDownloadPhotoStateLiveData(state: DownloadPhotoState) {
+        downloadPhotoStateMutableLiveData.postValue(state)
+    }
+
+    fun postSetWallpaperStateLiveData(state: SetWallpaperState) {
+        setWallpaperStateMutableLiveData.postValue(state)
     }
 
     fun updateTheme() {

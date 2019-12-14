@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
 import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
@@ -83,7 +84,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         adjustMargins()
 
         observePhotoLoading()
-        observeEvents()
+        observe()
     }
 
     override fun onResume() {
@@ -190,14 +191,14 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         })
     }
 
-    private fun observeEvents() {
-        viewModel.photoReadyEvent.observe(this, Observer {
+    private fun observe() {
+        viewModel.photoReadyLiveData.observe(this, Observer {
             it?.getContentIfNotHandled()?.let { photo ->
                 showPhoto(photo)
             }
         })
 
-        viewModel.favoriteChangedEvent.observe(this, Observer {
+        viewModel.favoriteChangedLiveData.observe(this, Observer {
             favoriteMenuItemIcon = if (it?.getContentIfNotHandled() == true) {
                 R.drawable.ic_favorite_white_24dp
             } else {
@@ -207,8 +208,18 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
             invalidateOptionsMenu()
         })
 
-        viewModel.downloadPhotoInProgressLiveData.observe(this, Observer {
-            photoSetWallpaperButton.visibility = if (it) View.GONE else View.VISIBLE
+        viewModel.downloadPhotoInProgressLiveData.observe(this, Observer { downloading ->
+            photoSetWallpaperButton.visibility = if (downloading) View.GONE else View.VISIBLE
+        })
+
+        viewModel.downloadPhotoStateLiveData.observe(this, Observer { state ->
+            when (state) {
+                DownloadPhotoState.PHOTO_READY -> {
+                    viewModel.setWallpaper()
+                }
+
+                else -> { }
+            }
         })
     }
 
