@@ -99,6 +99,7 @@ class DownloadPhotoService : Service() {
                             savePhoto(bitmap)?.let { uri ->
                                 photoManager.savePhotoUri(this@DownloadPhotoService, uri)
 
+                                postMessage(getString(R.string.photo_ready))
                                 updateDownloadPhotoState(DownloadPhotoState.PHOTO_READY)
 
                             } ?: run {

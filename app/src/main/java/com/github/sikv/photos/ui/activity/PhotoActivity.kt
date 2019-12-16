@@ -3,6 +3,7 @@ package com.github.sikv.photos.ui.activity
 import android.animation.LayoutTransition
 import android.annotation.TargetApi
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -52,10 +53,19 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         }
     }
 
-    private lateinit var viewModel: PhotoViewModel
+    private val viewModel: PhotoViewModel by lazy {
+        val photo: Photo = intent.getParcelableExtra(KEY_PHOTO)
 
-    private lateinit var sensorManager: SensorManager
-    private lateinit var gravitySensor: Sensor
+        val viewModelFactory = PhotoViewModelFactory(application,
+                photo, FavoritesDatabase.getInstance(application).favoritesDao)
+
+        ViewModelProviders.of(this, viewModelFactory)
+                .get(PhotoViewModel::class.java)
+    }
+
+    // Parallax Effect
+    private var sensorManager: SensorManager? = null
+    private var gravitySensor: Sensor? = null
 
     private var lastGravity0 = 0.0
     private var lastGravity1 = 0.0
@@ -68,16 +78,8 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         setContentView(R.layout.activity_photo)
         tweakTransitions()
 
-        val photo: Photo = intent.getParcelableExtra(KEY_PHOTO)
-
-        val viewModelFactory = PhotoViewModelFactory(application,
-                photo, FavoritesDatabase.getInstance(application).favoritesDao)
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-                .get(PhotoViewModel::class.java)
-
-        // sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        // gravitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY)
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        gravitySensor = sensorManager?.getDefaultSensor(Sensor.TYPE_GRAVITY)
 
         init()
         setListeners()
@@ -90,13 +92,19 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     override fun onResume() {
         super.onResume()
 
-        // sensorManager.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_FASTEST)
+        startParallax()
     }
 
     override fun onPause() {
         super.onPause()
 
-        // sensorManager.unregisterListener(this)
+        stopParallax()
+    }
+
+    override fun onBackPressed() {
+        stopParallax()
+
+        super.onBackPressed()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -139,10 +147,8 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         }
     }
 
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-    }
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) { }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onSensorChanged(event: SensorEvent?) {
         if (event?.sensor?.type == Sensor.TYPE_GRAVITY) {
             Utils.calculateP(
@@ -246,6 +252,14 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         photoShareButton.setOnClickListener {
             startActivity(viewModel.createShareIntent())
         }
+    }
+
+    private fun startParallax() {
+        sensorManager?.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_FASTEST)
+    }
+
+    private fun stopParallax() {
+        sensorManager?.unregisterListener(this)
     }
 
     private fun adjustMargins() {
