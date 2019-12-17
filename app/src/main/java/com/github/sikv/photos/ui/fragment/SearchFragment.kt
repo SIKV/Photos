@@ -193,9 +193,11 @@ class SearchFragment : BaseFragment() {
                 0 -> {
                     SingleSearchFragment.newInstance(PhotoSource.UNSPLASH)
                 }
+
                 1 -> {
                     SingleSearchFragment.newInstance(PhotoSource.PEXELS)
                 }
+
                 else -> {
                     Fragment()
                 }
@@ -205,11 +207,13 @@ class SearchFragment : BaseFragment() {
         override fun getPageTitle(position: Int): CharSequence? {
             return when (position) {
                 0 -> {
-                    App.instance?.getString(R.string.unsplash)
+                    App.instance.getString(R.string.unsplash)
                 }
+
                 1 -> {
-                    App.instance?.getString(R.string.pexels)
+                    App.instance.getString(R.string.pexels)
                 }
+
                 else -> {
                     null
                 }

@@ -10,6 +10,6 @@
         android:layout_height="match_parent"
         android:layout_margin="32dp"
         android:scaleType="fitCenter"
-        android:contentDescription="@string/cn_photo_preview"/>
+        android:contentDescription="@string/cn_photo_preview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

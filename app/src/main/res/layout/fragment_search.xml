@@ -44,7 +44,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:contentDescription="@string/cn_search_icon"
                         android:src="@drawable/ic_search_24dp"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent" />
 
                     <EditText
                         android:id="@+id/searchEdit"
@@ -64,7 +64,7 @@
                         android:textColorHint="@color/colorHint"
                         android:textColor="@color/colorText"
                         android:textSize="16sp"
-                        android:background="@null"/>
+                        android:background="@null" />
 
                     <ImageButton
                         android:id="@+id/searchClearButton"
@@ -75,7 +75,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         android:contentDescription="@string/cn_clear_button"
                         android:src="@drawable/ic_close_22dp"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -94,7 +94,7 @@
             app:tabMode="fixed"
             app:tabGravity="fill"
             android:background="@color/colorPrimary"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -108,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintTop_toBottomOf="@id/searchAppBarLayout"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </FrameLayout>
 

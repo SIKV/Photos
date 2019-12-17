@@ -23,6 +23,7 @@ import com.github.sikv.photos.viewmodel.FavoritesViewModelFactory
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favorites.*
+import kotlinx.android.synthetic.main.layout_scrollable_toolbar.*
 
 class FavoritesFragment : BaseFragment() {
 
@@ -59,6 +60,8 @@ class FavoritesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        toolbarTitleText.setText(R.string.favorites)
+
         init()
 
         if (savedInstanceState != null) {
@@ -73,7 +76,7 @@ class FavoritesFragment : BaseFragment() {
 
     override fun onCreateToolbar(): FragmentToolbar? {
         return FragmentToolbar.Builder()
-                .withId(R.id.favoritesToolbar)
+                .withId(R.id.toolbar)
                 .withMenu(R.menu.menu_favorites)
                 .withMenuItems(
                         listOf(
@@ -155,7 +158,7 @@ class FavoritesFragment : BaseFragment() {
         photoAdapter = PhotoDataListAdapter(::onPhotoClick, ::onPhotoLongClick)
         favoritesRecycler.adapter = photoAdapter
 
-        // TODO Default value is not working good. When a photo is removed animation is broken.
-        favoritesRecycler.itemAnimator?.removeDuration = 50
+        // Default value is not working good. When a photo is removed animation is broken.
+        favoritesRecycler.itemAnimator?.removeDuration = 0
     }
 }

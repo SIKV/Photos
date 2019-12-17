@@ -42,7 +42,7 @@
                     android:layout_marginEnd="4dp"
                     tools:text="SOURCE"
                     android:textColor="@color/colorSourceText"
-                    style="@style/ToolbarTitle"/>
+                    style="@style/ToolbarTitle" />
 
                 <TextView
                     android:id="@+id/photosTitleText"
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_arrow_drop_down_24dp"
                     android:text="@string/app_name"
-                    style="@style/ToolbarTitle"/>
+                    style="@style/ToolbarTitle" />
 
             </LinearLayout>
 
@@ -63,21 +63,14 @@
         android:layout_height="wrap_content"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/photosSwipeRefreshLayout"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/photosRecycler"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/photosRecycler"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="@dimen/recyclerPaddingTop"
-                android:paddingBottom="@dimen/recyclerPaddingTop"
-                android:scrollbars="vertical"
-                android:clipToPadding="false"/>
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent"
+            android:paddingTop="@dimen/recyclerPaddingTop"
+            android:paddingBottom="@dimen/recyclerPaddingTop"
+            android:scrollbars="vertical"
+            android:clipToPadding="false" />
 
         <LinearLayout
             android:id="@+id/photosLoadingLayout"
@@ -89,13 +82,13 @@
             app:layout_constraintTop_toBottomOf="@id/photosAppBarLayout"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <include layout="@layout/item_photo"/>
-            <include layout="@layout/item_photo"/>
-            <include layout="@layout/item_photo"/>
+            <include layout="@layout/item_photo" />
+            <include layout="@layout/item_photo" />
+            <include layout="@layout/item_photo" />
 
         </LinearLayout>
 
-        <include layout="@layout/layout_loading_error"/>
+        <include layout="@layout/layout_loading_error" />
 
     </FrameLayout>
 

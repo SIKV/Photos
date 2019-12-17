@@ -13,20 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:elevation="@dimen/appBarElevation">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/favoritesToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:theme="@style/Toolbar">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/favorites"
-                style="@style/ToolbarTitle"/>
-
-        </androidx.appcompat.widget.Toolbar>
+        <include layout="@layout/layout_scrollable_toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -42,7 +29,7 @@
             android:paddingTop="@dimen/recyclerPaddingTop"
             android:paddingBottom="@dimen/recyclerPaddingTop"
             android:clipToPadding="false"
-            tools:listitem="@layout/item_photo"/>
+            tools:listitem="@layout/item_photo" />
 
         <FrameLayout
             android:id="@+id/favoritesEmptyLayout"
@@ -56,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_favorite_placeholder_96dp"
-                android:contentDescription="@string/cn_favorite_icon"/>
+                android:contentDescription="@string/cn_favorite_icon" />
 
         </FrameLayout>
 

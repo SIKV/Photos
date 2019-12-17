@@ -183,12 +183,6 @@ class PhotosFragment : BaseFragment() {
     }
 
     private fun setListeners() {
-        photosSwipeRefreshLayout.setOnRefreshListener {
-            photosSwipeRefreshLayout.isRefreshing = false
-
-            // TODO Implement
-        }
-
         photosTitleLayout.setOnClickListener {
             photoSourceDialog.show(childFragmentManager)
         }
