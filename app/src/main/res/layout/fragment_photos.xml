@@ -6,21 +6,21 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/photosAppBarLayout"
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
         android:elevation="@dimen/appBarElevation">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/photosToolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways"
             app:contentInsetStart="0dp">
 
             <LinearLayout
-                android:id="@+id/photosTitleLayout"
+                android:id="@+id/toolbarTitleLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -36,7 +36,7 @@
                 android:background="?selectableItemBackground">
 
                 <TextView
-                    android:id="@+id/photosSourceText"
+                    android:id="@+id/toolbarSourceText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
@@ -45,7 +45,7 @@
                     style="@style/ToolbarTitle" />
 
                 <TextView
-                    android:id="@+id/photosTitleText"
+                    android:id="@+id/toolbarTitleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_arrow_drop_down_24dp"
@@ -73,13 +73,13 @@
             android:clipToPadding="false" />
 
         <LinearLayout
-            android:id="@+id/photosLoadingLayout"
+            android:id="@+id/loadingLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="@dimen/recyclerPaddingTop"
             android:paddingBottom="@dimen/recyclerPaddingTop"
-            app:layout_constraintTop_toBottomOf="@id/photosAppBarLayout"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
             app:layout_constraintBottom_toBottomOf="parent">
 
             <include layout="@layout/item_photo" />

@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/photoRootLayout"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
@@ -31,14 +31,14 @@
         android:background="@color/colorOverlay" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/photoToolbar"
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         android:fitsSystemWindows="true"/>
 
     <TextView
-        android:id="@+id/photoAuthorText"
+        android:id="@+id/authorText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -49,20 +49,20 @@
         android:theme="@style/AppTheme.Span" />
 
     <Button
-        android:id="@+id/photoShareButton"
+        android:id="@+id/shareButton"
         android:layout_marginBottom="56dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/photoAuthorText"
+        app:layout_constraintBottom_toTopOf="@id/authorText"
         android:text="@string/share"
         style="@style/RoundButton" />
 
     <Button
-        android:id="@+id/photoSetWallpaperButton"
+        android:id="@+id/setWallpaperButton"
         android:layout_marginBottom="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/photoShareButton"
+        app:layout_constraintBottom_toTopOf="@id/shareButton"
         android:text="@string/set_wallpaper"
         style="@style/RoundButton" />
 

@@ -7,7 +7,7 @@
     android:background="@color/colorBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/mainSetWallpaperInProgressLayout"
+        android:id="@+id/setWallpaperInProgressLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -17,7 +17,7 @@
         android:visibility="gone">
 
         <RelativeLayout
-            android:id="@+id/mainSetWallpaperDownloadingLayout"
+            android:id="@+id/setWallpaperDownloadingLayout"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -26,25 +26,25 @@
             android:visibility="gone">
 
             <ProgressBar
-                android:id="@+id/mainSetWallpaperInProgressBar"
+                android:id="@+id/setWallpaperInProgressBar"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true" />
 
             <TextView
-                android:id="@+id/mainSetWallpaperInProgressText"
+                android:id="@+id/setWallpaperInProgressText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/mainSetWallpaperInProgressBar"
+                android:layout_toEndOf="@id/setWallpaperInProgressBar"
                 tools:text="@string/downloading_photo"
                 android:textColor="@color/colorText" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/mainSetWallpaperStatusLayout"
+            android:id="@+id/setWallpaperStatusLayout"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -53,7 +53,7 @@
             android:visibility="gone">
 
             <ImageView
-                android:id="@+id/mainSetWallpaperStatusImage"
+                android:id="@+id/setWallpaperStatusImage"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:contentDescription="@string/cn_set_wallpaper_status_icon"
@@ -61,19 +61,19 @@
                 android:layout_centerVertical="true" />
 
             <TextView
-                android:id="@+id/mainSetWallpaperStatusText"
+                android:id="@+id/setWallpaperStatusText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/mainSetWallpaperStatusImage"
+                android:layout_toEndOf="@id/setWallpaperStatusImage"
                 tools:text="Text"
                 android:textColor="@color/colorText" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/mainSetWallpaperButtonsLayout"
+            android:id="@+id/setWallpaperButtonsLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -81,17 +81,17 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <Button
-                android:id="@+id/mainSetWallpaperButton"
+                android:id="@+id/setWallpaperButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/mainSetWallpaperCancelButton"
+                android:layout_toStartOf="@+id/setWallpaperCancelButton"
                 android:text="@string/set_wallpaper"
                 android:theme="@style/FlatButton"
                 android:visibility="gone" />
 
             <ImageButton
-                android:id="@+id/mainSetWallpaperCancelButton"
+                android:id="@+id/setWallpaperCancelButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
@@ -107,14 +107,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
-        android:id="@+id/mainNavigationContainer"
+        android:id="@+id/navigationContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/mainSetWallpaperInProgressLayout"
-        app:layout_constraintBottom_toTopOf="@id/mainBottomNavigation" />
+        app:layout_constraintTop_toBottomOf="@id/setWallpaperInProgressLayout"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/mainBottomNavigation"
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

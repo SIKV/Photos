@@ -75,17 +75,17 @@ class SearchFragment : BaseFragment() {
     private fun searchPhotos(text: String) {
         lastSearchText = text
 
-        viewPagerAdapter.searchPhotos(searchViewPager, text)
+        viewPagerAdapter.searchPhotos(viewPager, text)
 
-        searchTabLayout.visibility = View.VISIBLE
+        tabLayout.visibility = View.VISIBLE
     }
 
     private fun initViewPager() {
         viewPagerAdapter = SearchViewPagerAdapter(childFragmentManager)
 
-        searchViewPager.adapter = viewPagerAdapter
+        viewPager.adapter = viewPagerAdapter
 
-        searchTabLayout.setupWithViewPager(searchViewPager)
+        tabLayout.setupWithViewPager(viewPager)
     }
 
     private fun setListeners() {
@@ -176,7 +176,7 @@ class SearchFragment : BaseFragment() {
                 toColor = ContextCompat.getColor(context, R.color.colorSearchBackground)
             }
 
-            ObjectAnimator.ofObject(searchTabLayout, "backgroundColor", ArgbEvaluator(), fromColor, toColor)
+            ObjectAnimator.ofObject(tabLayout, "backgroundColor", ArgbEvaluator(), fromColor, toColor)
                     .setDuration(TAB_LAYOUT_BACKGROUND_ANIMATION_DURATION)
                     .start()
         }

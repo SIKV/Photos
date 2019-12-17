@@ -101,49 +101,49 @@ class MainActivity : BaseActivity() {
         viewModel.downloadPhotoStateLiveData.observe(this, Observer { state ->
             when (state) {
                 DownloadPhotoState.DOWNLOADING_PHOTO -> {
-                    mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
-                    mainSetWallpaperDownloadingLayout.visibility = View.VISIBLE
-                    mainSetWallpaperStatusLayout.visibility = View.GONE
-                    mainSetWallpaperButton.visibility = View.GONE
-                    mainSetWallpaperCancelButton.visibility = View.VISIBLE
+                    setWallpaperInProgressLayout.visibility = View.VISIBLE
+                    setWallpaperDownloadingLayout.visibility = View.VISIBLE
+                    setWallpaperStatusLayout.visibility = View.GONE
+                    setWallpaperButton.visibility = View.GONE
+                    setWallpaperCancelButton.visibility = View.VISIBLE
 
-                    mainSetWallpaperInProgressText.setText(R.string.downloading_photo)
+                    setWallpaperInProgressText.setText(R.string.downloading_photo)
                 }
 
                 DownloadPhotoState.PHOTO_READY -> {
-                    mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
-                    mainSetWallpaperDownloadingLayout.visibility = View.GONE
-                    mainSetWallpaperStatusLayout.visibility = View.VISIBLE
-                    mainSetWallpaperButton.visibility = View.VISIBLE
-                    mainSetWallpaperCancelButton.visibility = View.VISIBLE
+                    setWallpaperInProgressLayout.visibility = View.VISIBLE
+                    setWallpaperDownloadingLayout.visibility = View.GONE
+                    setWallpaperStatusLayout.visibility = View.VISIBLE
+                    setWallpaperButton.visibility = View.VISIBLE
+                    setWallpaperCancelButton.visibility = View.VISIBLE
 
-                    mainSetWallpaperStatusImage.setImageResource(R.drawable.ic_check_green_24dp)
-                    mainSetWallpaperStatusText.setText(R.string.photo_ready)
+                    setWallpaperStatusImage.setImageResource(R.drawable.ic_check_green_24dp)
+                    setWallpaperStatusText.setText(R.string.photo_ready)
                 }
 
                 DownloadPhotoState.ERROR_DOWNLOADING_PHOTO -> {
-                    mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
-                    mainSetWallpaperDownloadingLayout.visibility = View.GONE
-                    mainSetWallpaperStatusLayout.visibility = View.VISIBLE
-                    mainSetWallpaperButton.visibility = View.GONE
-                    mainSetWallpaperCancelButton.visibility = View.VISIBLE
+                    setWallpaperInProgressLayout.visibility = View.VISIBLE
+                    setWallpaperDownloadingLayout.visibility = View.GONE
+                    setWallpaperStatusLayout.visibility = View.VISIBLE
+                    setWallpaperButton.visibility = View.GONE
+                    setWallpaperCancelButton.visibility = View.VISIBLE
 
-                    mainSetWallpaperStatusImage.setImageResource(R.drawable.ic_close_red_24dp)
-                    mainSetWallpaperStatusText.setText(R.string.error_downloading_photo)
+                    setWallpaperStatusImage.setImageResource(R.drawable.ic_close_red_24dp)
+                    setWallpaperStatusText.setText(R.string.error_downloading_photo)
                 }
 
                 DownloadPhotoState.CANCELING -> {
-                    mainSetWallpaperInProgressLayout.visibility = View.VISIBLE
-                    mainSetWallpaperDownloadingLayout.visibility = View.VISIBLE
-                    mainSetWallpaperStatusLayout.visibility = View.GONE
-                    mainSetWallpaperButton.visibility = View.GONE
-                    mainSetWallpaperCancelButton.visibility = View.GONE
+                    setWallpaperInProgressLayout.visibility = View.VISIBLE
+                    setWallpaperDownloadingLayout.visibility = View.VISIBLE
+                    setWallpaperStatusLayout.visibility = View.GONE
+                    setWallpaperButton.visibility = View.GONE
+                    setWallpaperCancelButton.visibility = View.GONE
 
-                    mainSetWallpaperInProgressText.setText(R.string.canceling)
+                    setWallpaperInProgressText.setText(R.string.canceling)
                 }
 
                 DownloadPhotoState.CANCELED -> {
-                    mainSetWallpaperInProgressLayout.visibility = View.GONE
+                    setWallpaperInProgressLayout.visibility = View.GONE
                 }
 
                 else -> { }
@@ -153,7 +153,7 @@ class MainActivity : BaseActivity() {
         viewModel.setWallpaperStateLiveData.observe(this, Observer { state ->
             when (state) {
                 SetWallpaperState.SUCCESS, SetWallpaperState.FAILURE -> {
-                    mainSetWallpaperInProgressLayout.visibility = View.GONE
+                    setWallpaperInProgressLayout.visibility = View.GONE
                 }
 
                 else -> { }
@@ -164,11 +164,11 @@ class MainActivity : BaseActivity() {
     private fun setupBottomNavigation(initialFragmentIndex: Int, initialItemId: Int) {
         activeFragment = fragments[initialFragmentIndex]
 
-        mainBottomNavigation.selectedItemId = initialItemId
+        bottomNavigationView.selectedItemId = initialItemId
 
         fragments.forEachIndexed { index, fragment ->
             val transaction = supportFragmentManager.beginTransaction()
-                    .add(R.id.mainNavigationContainer, fragment, fragment.customTag())
+                    .add(R.id.navigationContainer, fragment, fragment.customTag())
 
             if (index != initialFragmentIndex) {
                 transaction.hide(fragment)
@@ -179,7 +179,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setNavigationItemSelectedListener() {
-        mainBottomNavigation.setOnNavigationItemSelectedListener { menuItem ->
+        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.photos -> {
                     changeFragment(fragments[PHOTOS_FRAGMENT_INDEX])
@@ -205,6 +205,7 @@ class MainActivity : BaseActivity() {
                     changeFragment(fragments[SETTINGS_FRAGMENT_INDEX])
                     true
                 }
+
                 else -> {
                     false
                 }
@@ -213,11 +214,11 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setWallpaperSetListeners() {
-        mainSetWallpaperButton.setOnClickListener {
+        setWallpaperButton.setOnClickListener {
             viewModel.setWallpaper()
         }
 
-        mainSetWallpaperCancelButton.setOnClickListener {
+        setWallpaperCancelButton.setOnClickListener {
             viewModel.cancelSetWallpaper()
         }
     }

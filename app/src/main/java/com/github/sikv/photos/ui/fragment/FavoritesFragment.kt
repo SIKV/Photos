@@ -119,7 +119,7 @@ class FavoritesFragment : BaseFragment() {
         viewModel.favoritesLiveData.observe(this, Observer {
             it?.let { photos ->
                 photoAdapter?.submitList(photos)
-                favoritesEmptyLayout.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
+                listEmptyLayout.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
             }
         })
     }
@@ -127,7 +127,7 @@ class FavoritesFragment : BaseFragment() {
     private fun observeEvents() {
         viewModel.favoritesDeleteEvent.observe(this, Observer { deleteEvent ->
             if (deleteEvent.getContentIfNotHandled() == true) {
-                Snackbar.make(favoritesRootLayout, R.string.deleted, Snackbar.LENGTH_LONG)
+                Snackbar.make(rootLayout, R.string.deleted, Snackbar.LENGTH_LONG)
                         .setTextColor(R.color.colorText)
                         .setBackgroundColor(R.color.colorPrimaryDark)
                         .setAction(R.string.undo) {

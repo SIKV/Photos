@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
@@ -44,11 +43,11 @@ class PhotosFragment : BaseFragment() {
 
             when (field) {
                 PhotoSource.UNSPLASH -> {
-                    photosSourceText.setText(R.string.unsplash)
+                    toolbarSourceText.setText(R.string.unsplash)
                 }
 
                 PhotoSource.PEXELS -> {
-                    photosSourceText.setText(R.string.pexels)
+                    toolbarSourceText.setText(R.string.pexels)
                 }
             }
 
@@ -93,7 +92,7 @@ class PhotosFragment : BaseFragment() {
 
     override fun onCreateToolbar(): FragmentToolbar? {
         return FragmentToolbar.Builder()
-                .withId(R.id.photosToolbar)
+                .withId(R.id.toolbar)
                 .withMenu(R.menu.menu_photos)
                 .withMenuItems(
                         listOf(
@@ -137,19 +136,19 @@ class PhotosFragment : BaseFragment() {
                 DataSourceState.LOADING_INITIAL -> {
                     loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
                     photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
-                    photosLoadingLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
+                    loadingLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
                 }
 
                 DataSourceState.INITIAL_LOADING_DONE -> {
                     photosRecycler.setVisibilityAnimated(View.VISIBLE)
-                    photosLoadingLayout.setVisibilityAnimated(View.GONE)
+                    loadingLayout.setVisibilityAnimated(View.GONE)
                 }
 
                 DataSourceState.NEXT_DONE -> {
                     // In some cases INITIAL_LOADING_DONE is not being called
                     if (photosRecycler.visibility != View.VISIBLE) {
                         photosRecycler.setVisibilityAnimated(View.VISIBLE)
-                        photosLoadingLayout.setVisibilityAnimated(View.GONE)
+                        loadingLayout.setVisibilityAnimated(View.GONE)
                     }
                 }
 
@@ -177,13 +176,11 @@ class PhotosFragment : BaseFragment() {
         photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick)
         photosRecycler.adapter = photoAdapter
 
-        photosSwipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(context!!, R.color.colorAccent))
-
         createPhotoSourceDialog()
     }
 
     private fun setListeners() {
-        photosTitleLayout.setOnClickListener {
+        toolbarTitleLayout.setOnClickListener {
             photoSourceDialog.show(childFragmentManager)
         }
     }

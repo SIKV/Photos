@@ -170,11 +170,11 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         val authorName = photo.getPhotographerName()
         val source = photo.getSource()
 
-        photoAuthorText.text = String.format(getString(R.string.photo_by_s_on_s), authorName, source)
+        authorText.text = String.format(getString(R.string.photo_by_s_on_s), authorName, source)
 
-        Utils.makeUnderlineBold(photoAuthorText, arrayOf(authorName, source))
+        Utils.makeUnderlineBold(authorText, arrayOf(authorName, source))
 
-        Utils.makeClickable(photoAuthorText, arrayOf(authorName, source),
+        Utils.makeClickable(authorText, arrayOf(authorName, source),
                 arrayOf(
                         object : ClickableSpan() {
                             override fun onClick(view: View?) {
@@ -215,7 +215,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         })
 
         viewModel.downloadPhotoInProgressLiveData.observe(this, Observer { downloading ->
-            photoSetWallpaperButton.visibility = if (downloading) View.GONE else View.VISIBLE
+            setWallpaperButton.visibility = if (downloading) View.GONE else View.VISIBLE
         })
 
         viewModel.downloadPhotoStateLiveData.observe(this, Observer { state ->
@@ -230,7 +230,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     private fun init() {
-        setSupportActionBar(photoToolbar)
+        setSupportActionBar(toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -245,11 +245,11 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     private fun setListeners() {
-        photoSetWallpaperButton.setOnClickListener {
+        setWallpaperButton.setOnClickListener {
             viewModel.setWallpaper(this@PhotoActivity)
         }
 
-        photoShareButton.setOnClickListener {
+        shareButton.setOnClickListener {
             startActivity(viewModel.createShareIntent())
         }
     }
@@ -263,7 +263,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     private fun adjustMargins() {
-        val photoAuthorTextLayoutParams = photoAuthorText.layoutParams
+        val photoAuthorTextLayoutParams = authorText.layoutParams
 
         if (photoAuthorTextLayoutParams is ViewGroup.MarginLayoutParams) {
             photoAuthorTextLayoutParams.bottomMargin += Utils.navigationBarHeight(this)
@@ -283,7 +283,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
             override fun onTransitionStart(transition: Transition?) { }
 
             override fun onTransitionEnd(transition: Transition?) {
-                photoRootLayout.layoutTransition = LayoutTransition()
+                rootLayout.layoutTransition = LayoutTransition()
             }
 
             override fun onTransitionResume(transition: Transition?) { }

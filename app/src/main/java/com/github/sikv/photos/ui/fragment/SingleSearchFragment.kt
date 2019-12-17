@@ -93,7 +93,7 @@ class SingleSearchFragment : Fragment() {
     }
 
     private fun onPhotoLongClick(photo: Photo, view: View) {
-        PhotoPreviewPopup.show(activity as Activity, searchRootLayout, photo)
+        PhotoPreviewPopup.show(activity as Activity, rootLayout, photo)
     }
 
     private fun init() {

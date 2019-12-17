@@ -38,7 +38,7 @@ class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
         arguments?.let { args ->
             args.getStringArrayList(KEY_OPTIONS)?.let { optionsList ->
-                val layout = view.findViewById<ViewGroup>(R.id.optionsBottomSheetRootLayout)
+                val layout = view.findViewById<ViewGroup>(R.id.rootLayout)
 
                 optionsList.forEachIndexed { index, option ->
                     val button = Button(ContextThemeWrapper(context, R.style.BottomSheetButton), null, 0)
