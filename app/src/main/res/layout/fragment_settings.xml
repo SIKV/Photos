@@ -10,19 +10,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:elevation="@dimen/appBarElevation">
 
-        <androidx.appcompat.widget.Toolbar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:theme="@style/Toolbar">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/more"
-                style="@style/ToolbarTitle" />
-
-        </androidx.appcompat.widget.Toolbar>
+        <include layout="@layout/layout_scrollable_toolbar" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -32,10 +20,16 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <FrameLayout
-            android:id="@+id/settingsContainer"
+            android:id="@+id/settingsPreferenceContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/settingsFragmentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="@dimen/appBarElevation" />  <!-- Elevation is needed to show this view above the toolbar -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

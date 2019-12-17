@@ -24,7 +24,7 @@ class MainActivity : BaseActivity() {
         private const val QUEUE_FRAGMENT_INDEX = 1
         private const val SEARCH_FRAGMENT_INDEX = 2
         private const val FAVORITES_FRAGMENT_INDEX = 3
-        private const val MORE_FRAGMENT_INDEX = 4
+        private const val SETTINGS_FRAGMENT_INDEX = 4
 
         private const val PHOTOS_ITEM_ID = R.id.photos
         private const val SEARCH_ITEM_ID = R.id.search
@@ -39,7 +39,7 @@ class MainActivity : BaseActivity() {
             QueueFragment(),
             SearchFragment(),
             FavoritesFragment(),
-            MoreFragment()
+            SettingsFragment()
     )
 
     private lateinit var activeFragment: Fragment
@@ -66,6 +66,21 @@ class MainActivity : BaseActivity() {
         setWallpaperSetListeners()
 
         observe()
+    }
+
+    override fun onBackPressed() {
+        for (fragment in supportFragmentManager.fragments) {
+            if (fragment.isVisible) {
+                val childFragment = fragment.childFragmentManager
+
+                if (childFragment.backStackEntryCount > 0) {
+                    childFragment.popBackStack()
+                    return
+                }
+            }
+        }
+
+        super.onBackPressed()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
@@ -186,8 +201,8 @@ class MainActivity : BaseActivity() {
                     true
                 }
 
-                R.id.more -> {
-                    changeFragment(fragments[MORE_FRAGMENT_INDEX])
+                R.id.settings -> {
+                    changeFragment(fragments[SETTINGS_FRAGMENT_INDEX])
                     true
                 }
                 else -> {

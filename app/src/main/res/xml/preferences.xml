@@ -10,7 +10,24 @@
                     android:key="@string/_pref_dark_theme"
                     android:defaultValue="true"
                     android:title="@string/dark_theme"
-                    app:iconSpaceReserved="false"/>
+                    app:iconSpaceReserved="false" />
+
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="@string/help"
+            app:iconSpaceReserved="false"
+            app:allowDividerAbove="false">
+
+                <Preference
+                    android:title="@string/report_problem"
+                    android:key="@string/_pref_report_problem"
+                    app:iconSpaceReserved="false" />
+
+                <Preference
+                    android:title="@string/send_feedback"
+                    android:key="@string/_pref_send_feedback"
+                    app:iconSpaceReserved="false" />
 
         </PreferenceCategory>
 
