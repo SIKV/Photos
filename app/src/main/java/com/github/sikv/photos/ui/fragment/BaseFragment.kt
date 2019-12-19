@@ -22,6 +22,8 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
+    open fun onScrollToTop() { }
+
     protected open fun onCreateToolbar(): FragmentToolbar? {
         return null
     }

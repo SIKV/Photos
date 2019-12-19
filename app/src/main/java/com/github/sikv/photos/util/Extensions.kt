@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 
 fun Fragment.customTag(): String {
@@ -44,4 +45,8 @@ fun View.setVisibilityAnimated(newVisibility: Int, duration: Long = 500L) {
                     }
                 }
             })
+}
+
+fun RecyclerView.scrollToTop() {
+    this.smoothScrollToPosition(0)
 }

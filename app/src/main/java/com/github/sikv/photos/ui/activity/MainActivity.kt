@@ -61,7 +61,7 @@ class MainActivity : BaseActivity() {
             setupBottomNavigation(initialFragmentIndex, initialItemId)
         }
 
-        setNavigationItemSelectedListener()
+        setNavigationListener()
 
         setWallpaperSetListeners()
 
@@ -178,38 +178,35 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun setNavigationItemSelectedListener() {
+    private fun setNavigationListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.photos -> {
-                    changeFragment(fragments[PHOTOS_FRAGMENT_INDEX])
-                    true
-                }
+            changeFragment(fragments[getFragmentIndexByItemId(menuItem.itemId)])
+            true
+        }
 
-                R.id.queue -> {
-                    changeFragment(fragments[QUEUE_FRAGMENT_INDEX])
-                    true
-                }
+        bottomNavigationView.setOnNavigationItemReselectedListener { menuItem ->
+            val fragment = fragments[getFragmentIndexByItemId(menuItem.itemId)]
+            val childFragment = fragment.childFragmentManager
 
-                R.id.search -> {
-                    changeFragment(fragments[SEARCH_FRAGMENT_INDEX])
-                    true
+            if (childFragment.backStackEntryCount > 0) {
+                for (i in childFragment.backStackEntryCount downTo 1) {
+                    childFragment.popBackStack()
                 }
-
-                R.id.favorites -> {
-                    changeFragment(fragments[FAVORITES_FRAGMENT_INDEX])
-                    true
-                }
-
-                R.id.settings -> {
-                    changeFragment(fragments[SETTINGS_FRAGMENT_INDEX])
-                    true
-                }
-
-                else -> {
-                    false
-                }
+            } else {
+                fragment.onScrollToTop()
             }
+        }
+    }
+
+    private fun getFragmentIndexByItemId(itemId: Int): Int {
+        return when (itemId) {
+            R.id.photos -> PHOTOS_FRAGMENT_INDEX
+            R.id.queue -> QUEUE_FRAGMENT_INDEX
+            R.id.search -> SEARCH_FRAGMENT_INDEX
+            R.id.favorites -> FAVORITES_FRAGMENT_INDEX
+            R.id.settings -> SETTINGS_FRAGMENT_INDEX
+
+            else -> -1
         }
     }
 

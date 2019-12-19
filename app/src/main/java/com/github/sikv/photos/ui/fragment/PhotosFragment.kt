@@ -19,6 +19,7 @@ import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.SPAN_COUNT_GRID
 import com.github.sikv.photos.util.SPAN_COUNT_LIST
+import com.github.sikv.photos.util.scrollToTop
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.fragment_photos.*
@@ -122,6 +123,10 @@ class PhotosFragment : BaseFragment() {
 
         outState.putString(KEY_CURRENT_SOURCE, currentSource.name)
         outState.putInt(KEY_CURRENT_SPAN_COUNT, currentSpanCount)
+    }
+
+    override fun onScrollToTop() {
+        photosRecycler.scrollToTop()
     }
 
     private fun observePhotos() {

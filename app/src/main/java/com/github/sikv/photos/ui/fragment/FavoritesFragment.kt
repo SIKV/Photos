@@ -14,10 +14,7 @@ import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoDataListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
-import com.github.sikv.photos.util.SPAN_COUNT_GRID
-import com.github.sikv.photos.util.SPAN_COUNT_LIST
-import com.github.sikv.photos.util.setBackgroundColor
-import com.github.sikv.photos.util.setTextColor
+import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import com.github.sikv.photos.viewmodel.FavoritesViewModelFactory
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -113,6 +110,10 @@ class FavoritesFragment : BaseFragment() {
         super.onSaveInstanceState(outState)
 
         outState.putInt(KEY_CURRENT_SPAN_COUNT, currentSpanCount)
+    }
+
+    override fun onScrollToTop() {
+        favoritesRecycler.scrollToTop()
     }
 
     private fun observeFavorites() {
