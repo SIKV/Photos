@@ -36,35 +36,55 @@
 
         <ImageView
             android:id="@+id/photographerImage"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="@dimen/photoContentMarginX"
             app:layout_constraintTop_toTopOf="@id/favoriteButton"
             app:layout_constraintBottom_toBottomOf="@id/favoriteButton"
             app:layout_constraintStart_toStartOf="parent"
             android:contentDescription="@string/cn_photographer_image"
             tools:src="#FF0000" />
 
-        <TextView
-            android:id="@+id/photographerNameText"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginStart="@dimen/photoContentMarginX"
+            android:layout_marginEnd="@dimen/photoContentMarginX"
             app:layout_constraintTop_toTopOf="@id/favoriteButton"
             app:layout_constraintBottom_toBottomOf="@id/favoriteButton"
             app:layout_constraintStart_toEndOf="@id/photographerImage"
             app:layout_constraintEnd_toStartOf="@id/favoriteButton"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            android:textColor="@color/colorPhotoOverlayContent"
-            tools:text="Photographer Name" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/photographerNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:textSize="13sp"
+                android:textColor="@color/colorPhotoOverlayContent"
+                tools:text="Photographer Name" />
+
+            <TextView
+                android:id="@+id/sourceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:textSize="10sp"
+                android:textColor="@color/colorPhotoOverlayContent"
+                tools:text="Source"
+                tools:ignore="SmallSp" />
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/favoriteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginEnd="@dimen/photoContentMarginX"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:contentDescription="@string/cn_favorite_icon"

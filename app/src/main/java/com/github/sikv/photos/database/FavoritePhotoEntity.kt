@@ -10,10 +10,21 @@ import kotlinx.android.parcel.Parcelize
 data class FavoritePhotoEntity(
         @PrimaryKey
         var id: String,
-
         var url: String,
+        var photographer: String,
         var originalSource: String
 ) : Photo {
+
+    companion object {
+        fun fromPhoto(photo: Photo): FavoritePhotoEntity {
+            return FavoritePhotoEntity(
+                    photo.getPhotoId(),
+                    photo.getSmallUrl(),
+                    photo.getPhotographerName(),
+                    photo.getSource()
+            )
+        }
+    }
 
     override fun getPhotoId(): String {
         return id
@@ -21,6 +32,10 @@ data class FavoritePhotoEntity(
 
     override fun getSmallUrl(): String {
         return url
+    }
+
+    override fun getPhotographerName(): String {
+        return photographer
     }
 
     override fun getSource(): String {

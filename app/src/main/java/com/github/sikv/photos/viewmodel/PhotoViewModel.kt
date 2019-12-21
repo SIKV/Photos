@@ -168,13 +168,13 @@ class PhotoViewModel(
     fun favorite() {
         favorited = !favorited
 
-        val photoData = FavoritePhotoEntity(photo.getPhotoId(), photo.getSmallUrl(), photo.getSource())
+        val favoritePhoto = FavoritePhotoEntity.fromPhoto(photo)
 
         GlobalScope.launch {
             if (favorited) {
-                favoritesDao.insert(photoData)
+                favoritesDao.insert(favoritePhoto)
             } else {
-                favoritesDao.delete(photoData)
+                favoritesDao.delete(favoritePhoto)
             }
         }
     }

@@ -53,6 +53,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
 
             itemView.photographerNameText.text = it.getPhotographerName()
+            itemView.sourceText.text = itemView.context.getString(R.string.on_s, it.getSource())
 
             itemView.favoriteButton.setImageResource(if (it.isFavoritePhoto()) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp)
 

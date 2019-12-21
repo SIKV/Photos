@@ -56,5 +56,6 @@
     <string name="photo_downloading_canceled">Photo downloading has been canceled</string>
     <string name="canceling">Canceling…</string>
     <string name="photo_ready">Photo is ready</string>
+    <string name="on_s">on %s</string>
 
 </resources>
