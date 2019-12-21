@@ -20,7 +20,7 @@ data class UnsplashPhoto(
         @SerializedName("links")
         val links: UnsplashLinks,
 
-        var isFavorite: Boolean = false
+        var favorite: Boolean = false
 ) : Photo {
 
     companion object {
@@ -65,5 +65,9 @@ data class UnsplashPhoto(
 
     override fun getSourceUrl(): String {
         return links.html
+    }
+
+    override fun isFavoritePhoto(): Boolean {
+        return favorite
     }
 }

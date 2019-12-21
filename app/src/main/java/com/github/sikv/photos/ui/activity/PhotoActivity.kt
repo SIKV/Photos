@@ -25,7 +25,6 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
-import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.util.Utils
@@ -56,8 +55,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     private val viewModel: PhotoViewModel by lazy {
         val photo: Photo = intent.getParcelableExtra(KEY_PHOTO)
 
-        val viewModelFactory = PhotoViewModelFactory(application,
-                photo, FavoritesDatabase.getInstance(application).favoritesDao)
+        val viewModelFactory = PhotoViewModelFactory(application, photo)
 
         ViewModelProviders.of(this, viewModelFactory)
                 .get(PhotoViewModel::class.java)

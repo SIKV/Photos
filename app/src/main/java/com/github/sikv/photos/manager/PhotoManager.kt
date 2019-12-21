@@ -1,4 +1,4 @@
-package com.github.sikv.photos.util
+package com.github.sikv.photos.manager
 
 import android.app.WallpaperManager
 import android.content.Context
@@ -9,6 +9,7 @@ import androidx.core.content.FileProvider
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.service.DownloadPhotoService
+import com.github.sikv.photos.util.SetWallpaperState
 import java.io.ByteArrayOutputStream
 import java.io.File
 import javax.inject.Inject

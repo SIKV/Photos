@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.github.sikv.photos.App
 import com.github.sikv.photos.util.DownloadPhotoState
-import com.github.sikv.photos.util.PhotoManager
+import com.github.sikv.photos.manager.PhotoManager
 import javax.inject.Inject
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {

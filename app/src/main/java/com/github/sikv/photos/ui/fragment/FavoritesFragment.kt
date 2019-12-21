@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.sikv.photos.R
-import com.github.sikv.photos.database.FavoritesDatabase
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
@@ -32,8 +31,7 @@ class FavoritesFragment : BaseFragment() {
     private val viewModel: FavoritesViewModel by lazy {
         val application = requireNotNull(activity).application
 
-        val viewModelFactory = FavoritesViewModelFactory(application,
-                FavoritesDatabase.getInstance(application).favoritesDao)
+        val viewModelFactory = FavoritesViewModelFactory(application)
 
         ViewModelProviders.of(this, viewModelFactory)
                 .get(FavoritesViewModel::class.java)
@@ -68,8 +66,7 @@ class FavoritesFragment : BaseFragment() {
             currentSpanCount = SPAN_COUNT_LIST
         }
 
-        observeFavorites()
-        observeEvents()
+        observe()
     }
 
     override fun onCreateToolbar(): FragmentToolbar? {
@@ -117,17 +114,15 @@ class FavoritesFragment : BaseFragment() {
         favoritesRecycler.scrollToTop()
     }
 
-    private fun observeFavorites() {
+    private fun observe() {
         viewModel.favoritesLiveData.observe(this, Observer {
             it?.let { photos ->
                 photoAdapter?.submitList(photos)
                 listEmptyLayout.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
             }
         })
-    }
 
-    private fun observeEvents() {
-        viewModel.favoritesDeleteEvent.observe(this, Observer { deleteEvent ->
+        viewModel.favoritesDeleteAllLiveData.observe(this, Observer { deleteEvent ->
             if (deleteEvent.getContentIfNotHandled() == true) {
                 Snackbar.make(rootLayout, R.string.deleted, Snackbar.LENGTH_LONG)
                         .setTextColor(R.color.colorText)

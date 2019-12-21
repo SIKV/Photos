@@ -17,11 +17,11 @@ import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.Event
 import com.github.sikv.photos.database.FavoritePhotoEntity
 import com.github.sikv.photos.database.FavoritesDao
+import com.github.sikv.photos.manager.PhotoManager
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.util.DownloadPhotoState
-import com.github.sikv.photos.util.PhotoManager
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.subscribeAsync
 import kotlinx.coroutines.*
@@ -30,13 +30,14 @@ import kotlin.properties.Delegates
 
 class PhotoViewModel(
         application: Application,
-        private var photo: Photo,
-        private val favoritesDataSource: FavoritesDao
-
+        private var photo: Photo
 ) : AndroidViewModel(application) {
 
     private var viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    @Inject
+    lateinit var favoritesDao: FavoritesDao
 
     @Inject
     lateinit var photoManager: PhotoManager
@@ -171,9 +172,9 @@ class PhotoViewModel(
 
         GlobalScope.launch {
             if (favorited) {
-                favoritesDataSource.insert(photoData)
+                favoritesDao.insert(photoData)
             } else {
-                favoritesDataSource.delete(photoData)
+                favoritesDao.delete(photoData)
             }
         }
     }
@@ -210,7 +211,7 @@ class PhotoViewModel(
 
     private suspend fun getPhotoFromFavoritesDatabase(): Photo? {
         return withContext(Dispatchers.IO) {
-            favoritesDataSource.getById(photo.getPhotoId())
+            favoritesDao.getById(photo.getPhotoId())
         }
     }
 }
