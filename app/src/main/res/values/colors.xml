@@ -17,4 +17,5 @@
     <color name="colorHint">#9E9E9E</color>
     <color name="colorSearchBackground">#A3EEEEEE</color>
     <color name="colorBottomSheetClose">#DDDDDD</color>
+    <color name="colorPhotoOverlayContent">#BBBBBB</color>
 </resources>

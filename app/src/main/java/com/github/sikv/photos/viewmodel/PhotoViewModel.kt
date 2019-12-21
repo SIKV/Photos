@@ -15,18 +15,16 @@ import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.Event
+import com.github.sikv.photos.database.FavoritePhotoEntity
 import com.github.sikv.photos.database.FavoritesDao
-import com.github.sikv.photos.database.PhotoData
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.util.PhotoManager
 import com.github.sikv.photos.util.Utils
+import com.github.sikv.photos.util.subscribeAsync
 import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -46,10 +44,12 @@ class PhotoViewModel(
     @Inject
     lateinit var glide: RequestManager
 
+    // TODO Refactor
     private var favorited: Boolean by Delegates.observable(false) { _, _, newValue ->
         favoriteChangedLiveData.value = Event(newValue)
     }
 
+    // TODO Refactor
     var favoriteChangedLiveData: MutableLiveData<Event<Boolean>>
         private set
 
@@ -104,36 +104,25 @@ class PhotoViewModel(
             when (photo.getSource()) {
                 UnsplashPhoto.SOURCE -> {
                     ApiClient.INSTANCE.unsplashClient.getPhoto(photo.getPhotoId())
-                            .enqueue(object : Callback<UnsplashPhoto> {
-                                override fun onFailure(call: Call<UnsplashPhoto>, t: Throwable) {
-                                }
+                            .subscribeAsync({
+                                this@PhotoViewModel.photo = it
+                                loadFullSizePhoto()
 
-                                override fun onResponse(call: Call<UnsplashPhoto>, response: Response<UnsplashPhoto>) {
-                                    response.body()?.let { unsplashPhoto ->
-                                        this@PhotoViewModel.photo = unsplashPhoto
-                                        loadFullSizePhoto()
-
-                                        photoReadyLiveData.value = Event(unsplashPhoto)
-                                    }
-                                }
+                                photoReadyLiveData.value = Event(it)
+                            }, {
+                                // TODO Handle Error
                             })
                 }
 
                 PexelsPhoto.SOURCE -> {
                     ApiClient.INSTANCE.pexelsClient.getPhoto(photo.getPhotoId())
-                            .enqueue(object : Callback<PexelsPhoto> {
-                                override fun onFailure(call: Call<PexelsPhoto>, t: Throwable) {
-                                }
+                            .subscribeAsync({
+                                this@PhotoViewModel.photo = it
+                                loadFullSizePhoto()
 
-                                override fun onResponse(call: Call<PexelsPhoto>, response: Response<PexelsPhoto>) {
-                                    response.body()?.let { pexelsPhoto ->
-                                        this@PhotoViewModel.photo = pexelsPhoto
-                                        loadFullSizePhoto()
-
-                                        photoReadyLiveData.value = Event(pexelsPhoto)
-
-                                    }
-                                }
+                                photoReadyLiveData.value = Event(it)
+                            }, {
+                                // TODO Handle Error
                             })
                 }
             }
@@ -178,7 +167,7 @@ class PhotoViewModel(
     fun favorite() {
         favorited = !favorited
 
-        val photoData = PhotoData(photo.getPhotoId(), photo.getSmallUrl(), photo.getSource())
+        val photoData = FavoritePhotoEntity(photo.getPhotoId(), photo.getSmallUrl(), photo.getSource())
 
         GlobalScope.launch {
             if (favorited) {

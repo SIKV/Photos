@@ -1,6 +1,5 @@
 package com.github.sikv.photos.ui.fragment
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -87,13 +86,11 @@ class SingleSearchFragment : Fragment() {
     }
 
     private fun onPhotoClick(photo: Photo, view: View) {
-        activity?.let { activity ->
-            PhotoActivity.startActivity(activity, view, photo)
-        }
+        PhotoActivity.startActivity(activity!!, view, photo)
     }
 
     private fun onPhotoLongClick(photo: Photo, view: View) {
-        PhotoPreviewPopup.show(activity as Activity, rootLayout, photo)
+        PhotoPreviewPopup.show(activity!!, rootLayout, photo)
     }
 
     private fun init() {

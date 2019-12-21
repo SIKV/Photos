@@ -21,8 +21,8 @@ class FavoritesDaoTest {
     private lateinit var favoritesDatabase: FavoritesDatabase
     private lateinit var favoritesDao: FavoritesDao
 
-    private val photo1 = PhotoData("1", "URL_1", "Source_1")
-    private val photo2 = PhotoData("2", "URL_2", "Source_2")
+    private val photo1 = FavoritePhotoEntity("1", "URL_1", "Source_1")
+    private val photo2 = FavoritePhotoEntity("2", "URL_2", "Source_2")
 
     @Before
     fun setup() {
@@ -51,10 +51,10 @@ class FavoritesDaoTest {
         favoritesDao.insert(photo1)
         favoritesDao.insert(photo2)
 
-        val observer: Observer<List<PhotoData>> = mock()
+        val observer: Observer<List<FavoritePhotoEntity>> = mock()
         favoritesDao.getAll().observeForever(observer)
 
-        val listClass = ArrayList::class.java as Class<ArrayList<PhotoData>>
+        val listClass = ArrayList::class.java as Class<ArrayList<FavoritePhotoEntity>>
         val argumentCaptor = ArgumentCaptor.forClass(listClass)
 
         verify(observer).onChanged(argumentCaptor.capture())
@@ -79,10 +79,10 @@ class FavoritesDaoTest {
 
         favoritesDao.delete(photo1)
 
-        val observer: Observer<List<PhotoData>> = mock()
+        val observer: Observer<List<FavoritePhotoEntity>> = mock()
         favoritesDao.getAll().observeForever(observer)
 
-        val listClass = ArrayList::class.java as Class<ArrayList<PhotoData>>
+        val listClass = ArrayList::class.java as Class<ArrayList<FavoritePhotoEntity>>
         val argumentCaptor = ArgumentCaptor.forClass(listClass)
 
         verify(observer).onChanged(argumentCaptor.capture())

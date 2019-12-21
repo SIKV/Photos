@@ -1,6 +1,5 @@
 package com.github.sikv.photos.ui.fragment
 
-import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -17,6 +16,7 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
+import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.util.SPAN_COUNT_GRID
 import com.github.sikv.photos.util.SPAN_COUNT_LIST
 import com.github.sikv.photos.util.scrollToTop
@@ -167,10 +167,11 @@ class PhotosFragment : BaseFragment() {
     }
 
     private fun onPhotoClick(photo: Photo, view: View) {
-        PhotoActivity.startActivity(activity as Activity, view, photo)
+        PhotoActivity.startActivity(activity!!, view, photo)
     }
 
     private fun onPhotoLongClick(photo: Photo, view: View) {
+        PhotoPreviewPopup.show(activity!!, rootLayout, photo)
     }
 
     private fun setRecyclerLayoutManager(spanCount: Int) {

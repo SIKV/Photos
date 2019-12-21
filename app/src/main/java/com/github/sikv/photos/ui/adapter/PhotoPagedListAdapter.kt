@@ -11,8 +11,8 @@ import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
 class PhotoPagedListAdapter(
         private val clickCallback: (Photo, View) -> Unit,
-        private val longClickCallback: ((Photo, View) -> Unit)? = null
-
+        private val longClickCallback: ((Photo, View) -> Unit)? = null,
+        private val favoriteClickCallback: ((Photo) -> Unit)? = null
 ) : PagedListAdapter<Photo, PhotoViewHolder>(COMPARATOR) {
 
     companion object {
@@ -33,6 +33,6 @@ class PhotoPagedListAdapter(
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(getItem(position), clickCallback, longClickCallback)
+        holder.bind(getItem(position), clickCallback, longClickCallback, favoriteClickCallback)
     }
 }

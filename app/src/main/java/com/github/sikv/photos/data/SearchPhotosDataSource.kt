@@ -3,18 +3,13 @@ package com.github.sikv.photos.data
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PositionalDataSource
 import com.github.sikv.photos.api.ApiClient
-import com.github.sikv.photos.model.PexelsSearchResponse
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.model.UnsplashSearchResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.github.sikv.photos.util.subscribeAsync
 
 class SearchPhotosDataSource(
         private val apiClient: ApiClient,
         private val photoSource: PhotoSource,
         private val searchQuery: String
-
 ) : PositionalDataSource<Photo>() {
 
     var state: MutableLiveData<DataSourceState> = MutableLiveData()
@@ -26,43 +21,25 @@ class SearchPhotosDataSource(
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
                 apiClient.unsplashClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
-                        .enqueue(object : Callback<UnsplashSearchResponse> {
-                            override fun onFailure(call: Call<UnsplashSearchResponse>?, t: Throwable?) {
-                                updateState(DataSourceState.ERROR)
-                            }
+                        .subscribeAsync({
+                            val res = it.results
+                            callback.onResult(res,0, res.size)
 
-                            override fun onResponse(call: Call<UnsplashSearchResponse>?, response: Response<UnsplashSearchResponse>?) {
-                                response?.body()?.let {
-                                    val res = it.results
-                                    callback.onResult(res,0, res.size)
-
-                                    updateState(DataSourceState.INITIAL_LOADING_DONE)
-
-                                } ?: run {
-                                    updateState(DataSourceState.ERROR)
-                                }
-                            }
+                            updateState(DataSourceState.INITIAL_LOADING_DONE)
+                        }, {
+                            updateState(DataSourceState.ERROR)
                         })
             }
 
             PhotoSource.PEXELS -> {
                 apiClient.pexelsClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
-                        .enqueue(object : Callback<PexelsSearchResponse> {
-                            override fun onFailure(call: Call<PexelsSearchResponse>?, t: Throwable?) {
-                                updateState(DataSourceState.ERROR)
-                            }
+                        .subscribeAsync({
+                            val res = it.photos
+                            callback.onResult(res,0, res.size)
 
-                            override fun onResponse(call: Call<PexelsSearchResponse>?, response: Response<PexelsSearchResponse>?) {
-                                response?.body()?.let {
-                                    val res = it.photos
-                                    callback.onResult(res,0, res.size)
-
-                                    updateState(DataSourceState.INITIAL_LOADING_DONE)
-
-                                } ?: run {
-                                    updateState(DataSourceState.ERROR)
-                                }
-                            }
+                            updateState(DataSourceState.INITIAL_LOADING_DONE)
+                        }, {
+                            updateState(DataSourceState.ERROR)
                         })
             }
         }
@@ -74,41 +51,23 @@ class SearchPhotosDataSource(
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
                 apiClient.unsplashClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
-                        .enqueue(object : Callback<UnsplashSearchResponse> {
-                            override fun onFailure(call: Call<UnsplashSearchResponse>?, t: Throwable?) {
-                                updateState(DataSourceState.ERROR)
-                            }
+                        .subscribeAsync({
+                            callback.onResult(it.results)
 
-                            override fun onResponse(call: Call<UnsplashSearchResponse>?, response: Response<UnsplashSearchResponse>?) {
-                                response?.body()?.let {
-                                    callback.onResult(it.results)
-
-                                    updateState(DataSourceState.NEXT_DONE)
-
-                                } ?: run {
-                                    updateState(DataSourceState.ERROR)
-                                }
-                            }
+                            updateState(DataSourceState.NEXT_DONE)
+                        }, {
+                            updateState(DataSourceState.ERROR)
                         })
             }
 
             PhotoSource.PEXELS -> {
                 apiClient.pexelsClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
-                        .enqueue(object : Callback<PexelsSearchResponse> {
-                            override fun onFailure(call: Call<PexelsSearchResponse>?, t: Throwable?) {
-                                updateState(DataSourceState.ERROR)
-                            }
+                        .subscribeAsync({
+                            callback.onResult(it.photos)
 
-                            override fun onResponse(call: Call<PexelsSearchResponse>?, response: Response<PexelsSearchResponse>?) {
-                                response?.body()?.let {
-                                    callback.onResult(it.photos)
-
-                                    updateState(DataSourceState.NEXT_DONE)
-
-                                } ?: run {
-                                    updateState(DataSourceState.ERROR)
-                                }
-                            }
+                            updateState(DataSourceState.NEXT_DONE)
+                        }, {
+                            updateState(DataSourceState.ERROR)
                         })
             }
         }

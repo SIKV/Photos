@@ -24,6 +24,7 @@
     <string name="cn_navigate_next_icon">Navigate next icon</string>
     <string name="cn_set_wallpaper_close_or_cancel_icon">Set wallpaper close or cancel icon</string>
     <string name="cn_set_wallpaper_status_icon">Set wallpaper status icon</string>
+    <string name="cn_photographer_image">Photographer image</string>
 
     <string name="transition_photo">Transition Photo</string>
     <string name="photo_by_s_on_s">Photo by %s on %s</string>

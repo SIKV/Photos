@@ -10,10 +10,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.database.FavoritesDatabase
-import com.github.sikv.photos.database.PhotoData
+import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
-import com.github.sikv.photos.ui.adapter.PhotoDataListAdapter
+import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
+import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import com.github.sikv.photos.viewmodel.FavoritesViewModelFactory
@@ -38,7 +39,7 @@ class FavoritesFragment : BaseFragment() {
                 .get(FavoritesViewModel::class.java)
     }
 
-    private var photoAdapter: PhotoDataListAdapter? = null
+    private var photoAdapter: PhotoListAdapter? = null
 
     private var currentSpanCount: Int = SPAN_COUNT_LIST
         set(value) {
@@ -144,11 +145,12 @@ class FavoritesFragment : BaseFragment() {
         })
     }
 
-    private fun onPhotoClick(photo: PhotoData, view: View) {
+    private fun onPhotoClick(photo: Photo, view: View) {
         PhotoActivity.startActivity(activity!!, view, photo)
     }
 
-    private fun onPhotoLongClick(photo: PhotoData, view: View) {
+    private fun onPhotoLongClick(photo: Photo, view: View) {
+        PhotoPreviewPopup.show(activity!!, rootLayout, photo)
     }
 
     private fun setRecyclerLayoutManager(spanCount: Int) {
@@ -156,7 +158,7 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private fun init() {
-        photoAdapter = PhotoDataListAdapter(::onPhotoClick, ::onPhotoLongClick)
+        photoAdapter = PhotoListAdapter(::onPhotoClick, ::onPhotoLongClick)
         favoritesRecycler.adapter = photoAdapter
 
         // Default value is not working good. When a photo is removed animation is broken.

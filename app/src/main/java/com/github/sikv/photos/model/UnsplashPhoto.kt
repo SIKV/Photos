@@ -1,43 +1,31 @@
 package com.github.sikv.photos.model
 
-import android.os.Parcel
-import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class UnsplashPhoto(
+        @SerializedName("id")
         val id: String,
-        val width: Int,
-        val height: Int,
-        val color: String,
-        val likes: Int,
-        val description: String?,
-        val user: User,
-        val urls: Urls,
-        val links: Links
 
+        @SerializedName("description")
+        val description: String?,
+
+        @SerializedName("user")
+        val user: UnsplashUser,
+
+        @SerializedName("urls")
+        val urls: UnsplashUrls,
+
+        @SerializedName("links")
+        val links: UnsplashLinks,
+
+        var isFavorite: Boolean = false
 ) : Photo {
 
-    companion object CREATOR : Parcelable.Creator<UnsplashPhoto> {
+    companion object {
         const val SOURCE = "Unsplash"
-
-        override fun createFromParcel(parcel: Parcel): UnsplashPhoto {
-            return UnsplashPhoto(parcel)
-        }
-
-        override fun newArray(size: Int): Array<UnsplashPhoto?> {
-            return arrayOfNulls(size)
-        }
     }
-
-    constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readInt(),
-            parcel.readInt(),
-            parcel.readString(),
-            parcel.readInt(),
-            parcel.readString(),
-            parcel.readParcelable(User::class.java.classLoader),
-            parcel.readParcelable(Urls::class.java.classLoader),
-            parcel.readParcelable(Links::class.java.classLoader))
 
     override fun getPhotoId(): String {
         return id
@@ -63,6 +51,10 @@ data class UnsplashPhoto(
         return user.name
     }
 
+    override fun getPhotographerImageUrl(): String? {
+        return user.profileImage?.medium
+    }
+
     override fun getPhotographerUrl(): String? {
         return user.portfolioUrl
     }
@@ -73,21 +65,5 @@ data class UnsplashPhoto(
 
     override fun getSourceUrl(): String {
         return links.html
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(id)
-        parcel.writeInt(width)
-        parcel.writeInt(height)
-        parcel.writeString(color)
-        parcel.writeInt(likes)
-        parcel.writeString(description)
-        parcel.writeParcelable(user, flags)
-        parcel.writeParcelable(urls, flags)
-        parcel.writeParcelable(links, flags)
-    }
-
-    override fun describeContents(): Int {
-        return 0
     }
 }

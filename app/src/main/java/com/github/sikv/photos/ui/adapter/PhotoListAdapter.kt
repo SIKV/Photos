@@ -5,23 +5,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
-import com.github.sikv.photos.database.PhotoData
+import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
-class PhotoDataListAdapter(
-        private val clickCallback: (PhotoData, View) -> Unit,
-        private val longClickCallback: ((PhotoData, View) -> Unit)? = null
-
-) : ListAdapter<PhotoData, PhotoViewHolder>(COMPARATOR) {
+class PhotoListAdapter(
+        private val clickCallback: (Photo, View) -> Unit,
+        private val longClickCallback: ((Photo, View) -> Unit)? = null,
+        private val favoriteClickCallback: ((Photo) -> Unit)? = null
+) : ListAdapter<Photo, PhotoViewHolder>(COMPARATOR) {
 
     companion object {
-        val COMPARATOR = object : DiffUtil.ItemCallback<PhotoData>() {
-            override fun areItemsTheSame(oldItem: PhotoData, newItem: PhotoData): Boolean =
-                    oldItem.id == newItem.id
+        val COMPARATOR = object : DiffUtil.ItemCallback<Photo>() {
+            override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean =
+                    oldItem.getPhotoId() == newItem.getPhotoId()
 
-            override fun areContentsTheSame(oldItem: PhotoData, newItem: PhotoData): Boolean =
+            override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean =
                     oldItem == newItem
         }
     }
@@ -34,6 +33,6 @@ class PhotoDataListAdapter(
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(getItem(position), clickCallback, longClickCallback)
+        holder.bind(getItem(position), clickCallback, longClickCallback, favoriteClickCallback)
     }
 }

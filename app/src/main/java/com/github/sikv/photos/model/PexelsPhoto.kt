@@ -1,35 +1,25 @@
 package com.github.sikv.photos.model
 
-import android.os.Parcel
-import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class PexelsPhoto(
-        val width: Int,
-        val height: Int,
+        @SerializedName("url")
         val url: String,
-        val photographer: String,
-        val src: Src
 
+        @SerializedName("photographer")
+        val photographer: String,
+
+        @SerializedName("src")
+        val src: PexelsSrc,
+
+        var isFavorite: Boolean = false
 ) : Photo {
 
-    companion object CREATOR : Parcelable.Creator<PexelsPhoto> {
+    companion object {
         const val SOURCE = "Pexels"
-
-        override fun createFromParcel(parcel: Parcel): PexelsPhoto {
-            return PexelsPhoto(parcel)
-        }
-
-        override fun newArray(size: Int): Array<PexelsPhoto?> {
-            return arrayOfNulls(size)
-        }
     }
-
-    constructor(parcel: Parcel) : this(
-            parcel.readInt(),
-            parcel.readInt(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readParcelable(Src::class.java.classLoader))
 
     override fun getPhotoId(): String {
         return url.substring(url.substring(0, url.length - 1).lastIndexOf("-") + 1, url.lastIndexOf("/"))
@@ -55,6 +45,10 @@ data class PexelsPhoto(
         return photographer
     }
 
+    override fun getPhotographerImageUrl(): String? {
+        return null
+    }
+
     override fun getPhotographerUrl(): String? {
         return null
     }
@@ -65,17 +59,5 @@ data class PexelsPhoto(
 
     override fun getSourceUrl(): String {
         return url
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeInt(width)
-        parcel.writeInt(height)
-        parcel.writeString(url)
-        parcel.writeString(photographer)
-        parcel.writeParcelable(src, flags)
-    }
-
-    override fun describeContents(): Int {
-        return 0
     }
 }

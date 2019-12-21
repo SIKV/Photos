@@ -2,7 +2,7 @@
 <resources>
     <dimen name="bgRoundButtonRadius">32dp</dimen>
     <dimen name="bgRoundButtonStrokeWidth">2dp</dimen>
-    <dimen name="photoCornerRadius">12dp</dimen>
+    <dimen name="photoCornerRadius">0dp</dimen>
     <dimen name="recyclerPaddingTop">4dp</dimen>
     <dimen name="appBarElevation">16dp</dimen>
     <dimen name="bottomSheetCornerRadius">10dp</dimen>

@@ -11,23 +11,23 @@ import androidx.room.Query
 interface FavoritesDao {
 
     @Insert(onConflict = REPLACE)
-    fun insert(photo: PhotoData)
+    fun insert(photo: FavoritePhotoEntity)
 
     @Delete
-    fun delete(photo: PhotoData)
+    fun delete(photo: FavoritePhotoEntity)
 
-    @Query("SELECT * from PhotoData")
-    fun getAll(): LiveData<List<PhotoData>>
+    @Query("SELECT * from FavoritePhoto")
+    fun getAll(): LiveData<List<FavoritePhotoEntity>>
 
-    @Query("SELECT * from PhotoData")
-    fun getAllList(): List<PhotoData>
+    @Query("SELECT * from FavoritePhoto")
+    fun getAllList(): List<FavoritePhotoEntity>
 
-    @Query("SELECT * FROM PhotoData WHERE id=:id")
-    fun getById(id: String): PhotoData?
+    @Query("SELECT * FROM FavoritePhoto WHERE id=:id")
+    fun getById(id: String): FavoritePhotoEntity?
 
-    @Query("SELECT COUNT(*) FROM PhotoData")
+    @Query("SELECT COUNT(*) FROM FavoritePhoto")
     fun getCount(): Int
 
-    @Query("DELETE from PhotoData")
+    @Query("DELETE from FavoritePhoto")
     fun deleteAll()
 }

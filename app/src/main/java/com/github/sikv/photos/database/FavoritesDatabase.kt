@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [(PhotoData::class)], version = 1, exportSchema = false)
+@Database(entities = [(FavoritePhotoEntity::class)], version = 1, exportSchema = false)
 abstract class FavoritesDatabase : RoomDatabase() {
 
     companion object {
@@ -20,6 +20,7 @@ abstract class FavoritesDatabase : RoomDatabase() {
 
                 if (instance == null) {
                     instance = Room.databaseBuilder(context.applicationContext, FavoritesDatabase::class.java, DATABASE_NAME)
+                            .fallbackToDestructiveMigration()
                             .build()
 
                     INSTANCE = instance
