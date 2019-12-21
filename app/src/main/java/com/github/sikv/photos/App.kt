@@ -26,7 +26,7 @@ class App : Application() {
     }
 
     val networkComponent: NetworkComponent by lazy {
-        DaggerNetworkComponent.factory().create()
+        DaggerNetworkComponent.factory().create(applicationContext)
     }
 
     val messageLiveData = MutableLiveData<Event<String>>()

@@ -18,7 +18,9 @@ class UnsplashClient @Inject constructor(
 
     fun getPhoto(id: String): Single<UnsplashPhoto> =
             unsplashApi.getPhoto(id)
+                    .map(favoritesManager::populateFavorite)
 
     fun searchPhotos(query: String, page: Int, perPage: Int): Single<UnsplashSearchResponse> =
             unsplashApi.searchPhotos(query, page, perPage)
+                    .map(favoritesManager::populateFavorite)
 }

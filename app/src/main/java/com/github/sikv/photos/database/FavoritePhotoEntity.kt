@@ -30,4 +30,8 @@ data class FavoritePhotoEntity(
     override fun isLocalPhoto(): Boolean {
         return true
     }
+
+    override fun isFavoritePhoto(): Boolean {
+        return true
+    }
 }
