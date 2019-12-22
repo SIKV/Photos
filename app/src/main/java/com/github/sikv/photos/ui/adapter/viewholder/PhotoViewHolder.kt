@@ -25,9 +25,10 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun bind(photo: Photo?,
+             favorite: Boolean,
              clickCallback: (Photo, View) -> Unit,
              longClickCallback: ((Photo, View) -> Unit)? = null,
-             favoriteClickCallback: ((Photo) -> Unit)? = null) {
+             favoriteClickCallback: ((Photo, Boolean) -> Unit)? = null) {
 
         itemView.photoImage.setImageDrawable(null)
         itemView.photographerImage.setImageDrawable(null)
@@ -55,7 +56,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             itemView.photographerNameText.text = it.getPhotographerName()
             itemView.sourceText.text = itemView.context.getString(R.string.on_s, it.getSource())
 
-            itemView.favoriteButton.setImageResource(if (it.isFavoritePhoto()) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp)
+            itemView.favoriteButton.setImageResource(if (favorite) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp)
 
             itemView.setOnClickListener {
                 clickCallback.invoke(photo, it)
@@ -67,7 +68,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
 
             itemView.favoriteButton.setOnClickListener {
-                favoriteClickCallback?.invoke(photo)
+                favoriteClickCallback?.invoke(photo, favorite)
             }
         }
     }

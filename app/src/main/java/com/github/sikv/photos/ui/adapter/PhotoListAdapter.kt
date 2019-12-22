@@ -12,7 +12,7 @@ import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 class PhotoListAdapter(
         private val clickCallback: (Photo, View) -> Unit,
         private val longClickCallback: ((Photo, View) -> Unit)? = null,
-        private val favoriteClickCallback: ((Photo) -> Unit)? = null
+        private val favoriteClickCallback: ((Photo, Boolean) -> Unit)? = null
 ) : ListAdapter<Photo, PhotoViewHolder>(COMPARATOR) {
 
     companion object {
@@ -33,6 +33,6 @@ class PhotoListAdapter(
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(getItem(position), clickCallback, longClickCallback, favoriteClickCallback)
+        holder.bind(getItem(position), false, clickCallback, longClickCallback, favoriteClickCallback)
     }
 }

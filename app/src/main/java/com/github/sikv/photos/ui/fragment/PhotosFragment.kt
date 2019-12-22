@@ -52,7 +52,7 @@ class PhotosFragment : BaseFragment() {
                 }
             }
 
-            observePhotos()
+            observe()
             observeState()
         }
 
@@ -129,14 +129,18 @@ class PhotosFragment : BaseFragment() {
         photosRecycler.scrollToTop()
     }
 
-    private fun observePhotos() {
-        viewModel.getPhotos(currentSource)?.observe(this, Observer<PagedList<Photo>> { pagedList ->
+    private fun observe() {
+        viewModel.getPhotos(currentSource)?.observe(viewLifecycleOwner, Observer<PagedList<Photo>> { pagedList ->
             photoAdapter?.submitList(pagedList)
+        })
+
+        viewModel.favoriteChangedLiveData.observe(viewLifecycleOwner, Observer {
+            photoAdapter?.notifyPhotoChanged(it)
         })
     }
 
     private fun observeState() {
-        viewModel.getState(currentSource)?.observe(this, Observer { state ->
+        viewModel.getState(currentSource)?.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 DataSourceState.LOADING_INITIAL -> {
                     loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
@@ -174,12 +178,16 @@ class PhotosFragment : BaseFragment() {
         PhotoPreviewPopup.show(activity!!, rootLayout, photo)
     }
 
+    private fun onPhotoFavoriteClickCallback(photo: Photo, favorite: Boolean) {
+        viewModel.favoritesManager.invertFavorite(photo)
+    }
+
     private fun setRecyclerLayoutManager(spanCount: Int) {
         photosRecycler.layoutManager = GridLayoutManager(context, spanCount)
     }
 
     private fun init() {
-        photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick)
+        photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClickCallback)
         photosRecycler.adapter = photoAdapter
 
         createPhotoSourceDialog()

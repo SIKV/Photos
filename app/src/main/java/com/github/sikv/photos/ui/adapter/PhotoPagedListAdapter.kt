@@ -5,14 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.github.sikv.photos.manager.FavoritesManager
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
+import javax.inject.Inject
 
 class PhotoPagedListAdapter(
         private val clickCallback: (Photo, View) -> Unit,
         private val longClickCallback: ((Photo, View) -> Unit)? = null,
-        private val favoriteClickCallback: ((Photo) -> Unit)? = null
+        private val favoriteClickCallback: ((Photo, Boolean) -> Unit)? = null
 ) : PagedListAdapter<Photo, PhotoViewHolder>(COMPARATOR) {
 
     companion object {
@@ -25,6 +28,19 @@ class PhotoPagedListAdapter(
         }
     }
 
+    @Inject
+    lateinit var favoritesManager: FavoritesManager
+
+    init {
+        App.instance.appComponent.inject(this)
+    }
+
+    fun notifyPhotoChanged(photo: Photo) {
+        currentList?.indexOf(photo)?.let { photoPosition ->
+            notifyItemChanged(photoPosition)
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_photo, parent, false)
@@ -33,6 +49,9 @@ class PhotoPagedListAdapter(
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(getItem(position), clickCallback, longClickCallback, favoriteClickCallback)
+        val photo = getItem(position)
+        val favorite = favoritesManager.getFavoriteFlagFor(photo)
+
+        holder.bind(photo, favorite, clickCallback, longClickCallback, favoriteClickCallback)
     }
 }

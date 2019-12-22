@@ -15,8 +15,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.Event
-import com.github.sikv.photos.database.FavoritePhotoEntity
-import com.github.sikv.photos.database.FavoritesDao
+import com.github.sikv.photos.manager.FavoritesManager
 import com.github.sikv.photos.manager.PhotoManager
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
@@ -24,38 +23,30 @@ import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.subscribeAsync
-import kotlinx.coroutines.*
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class PhotoViewModel(
         application: Application,
         private var photo: Photo
-) : AndroidViewModel(application) {
-
-    private var viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    @Inject
-    lateinit var favoritesDao: FavoritesDao
+) : AndroidViewModel(application), FavoritesManager.Callback {
 
     @Inject
     lateinit var photoManager: PhotoManager
 
     @Inject
+    lateinit var favoritesManager: FavoritesManager
+
+    @Inject
     lateinit var glide: RequestManager
-
-    // TODO Refactor
-    private var favorited: Boolean by Delegates.observable(false) { _, _, newValue ->
-        favoriteChangedLiveData.value = Event(newValue)
-    }
-
-    // TODO Refactor
-    var favoriteChangedLiveData: MutableLiveData<Event<Boolean>>
-        private set
 
     var photoReadyLiveData: MutableLiveData<Event<Photo?>>
         private set
+
+    private val favoriteInitMutableLiveData = MutableLiveData<Event<Boolean>>()
+    val favoriteInitLiveData = favoriteInitMutableLiveData
+
+    private val favoriteChangedMutableLiveData = MutableLiveData<Boolean>()
+    val favoriteChangedLiveData: LiveData<Boolean> = favoriteChangedMutableLiveData
 
     val downloadPhotoInProgressLiveData: LiveData<Boolean> = Transformations.map(App.instance.downloadPhotoStateLiveData) { state ->
         state == DownloadPhotoState.DOWNLOADING_PHOTO
@@ -64,18 +55,23 @@ class PhotoViewModel(
     val downloadPhotoStateLiveData = App.instance.downloadPhotoStateLiveData
 
     init {
-        photoReadyLiveData = MutableLiveData()
-        favoriteChangedLiveData = MutableLiveData()
-
         App.instance.appComponent.inject(this)
 
-        initFavorited()
+        photoReadyLiveData = MutableLiveData()
+
+        favoriteInitMutableLiveData.postValue(Event(favoritesManager.getFavoriteFlagFor(photo)))
+
+        favoritesManager.subscribe(this)
     }
 
     override fun onCleared() {
         super.onCleared()
 
-        viewModelJob.cancel()
+        favoritesManager.unsubscribe(this)
+    }
+
+    override fun onFavoriteChanged(photo: Photo, favorite: Boolean) {
+        favoriteChangedMutableLiveData.postValue(favorite)
     }
 
     fun loadPhoto(): LiveData<Event<Bitmap>> {
@@ -165,18 +161,8 @@ class PhotoViewModel(
         }
     }
 
-    fun favorite() {
-        favorited = !favorited
-
-        val favoritePhoto = FavoritePhotoEntity.fromPhoto(photo)
-
-        GlobalScope.launch {
-            if (favorited) {
-                favoritesDao.insert(favoritePhoto)
-            } else {
-                favoritesDao.delete(favoritePhoto)
-            }
-        }
+    fun invertFavorite() {
+        favoritesManager.invertFavorite(photo)
     }
 
     fun createShareIntent(): Intent {
@@ -201,17 +187,5 @@ class PhotoViewModel(
 
     fun setWallpaper(activity: Activity) {
         photoManager.downloadPhoto(activity, photo.getLargeUrl())
-    }
-
-    private fun initFavorited() {
-        uiScope.launch {
-            favorited = getPhotoFromFavoritesDatabase() != null
-        }
-    }
-
-    private suspend fun getPhotoFromFavoritesDatabase(): Photo? {
-        return withContext(Dispatchers.IO) {
-            favoritesDao.getById(photo.getPhotoId())
-        }
     }
 }

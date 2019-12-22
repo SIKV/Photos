@@ -20,7 +20,7 @@ data class UnsplashPhoto(
         @SerializedName("links")
         val links: UnsplashLinks,
 
-        var favorite: Boolean = false
+        private var favorite: Boolean = false
 ) : Photo {
 
     companion object {
@@ -69,5 +69,9 @@ data class UnsplashPhoto(
 
     override fun isFavoritePhoto(): Boolean {
         return favorite
+    }
+
+    override fun setIsFavorite(favorite: Boolean) {
+        this.favorite = favorite
     }
 }

@@ -1,24 +1,34 @@
 package com.github.sikv.photos.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.data.PhotoSource
 import com.github.sikv.photos.data.PhotosDataSource
 import com.github.sikv.photos.data.PhotosDataSourceFactory
+import com.github.sikv.photos.manager.FavoritesManager
 import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
-class PhotosViewModel : ViewModel() {
+class PhotosViewModel : ViewModel(), FavoritesManager.Callback {
 
     companion object {
         const val INITIAL_LOAD_SIZE = 10
         const val PAGE_SIZE = 10
     }
+
+    @Inject
+    lateinit var favoritesManager: FavoritesManager
+
+    private val favoriteChangedMutableLiveData = MutableLiveData<Photo>()
+    val favoriteChangedLiveData: LiveData<Photo> = favoriteChangedMutableLiveData
 
     private val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -31,6 +41,22 @@ class PhotosViewModel : ViewModel() {
 
     private var unsplashSearchLivePagedList: LiveData<PagedList<Photo>>? = null
     private var pexelsSearchLivePagedList: LiveData<PagedList<Photo>>? = null
+
+    init {
+        App.instance.appComponent.inject(this)
+
+        favoritesManager.subscribe(this)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        favoritesManager.unsubscribe(this)
+    }
+
+    override fun onFavoriteChanged(photo: Photo, favorite: Boolean) {
+        favoriteChangedMutableLiveData.postValue(photo)
+    }
 
     fun getState(photoSource: PhotoSource): LiveData<DataSourceState>? {
         when (photoSource) {

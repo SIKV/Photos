@@ -14,7 +14,7 @@ data class PexelsPhoto(
         @SerializedName("src")
         val src: PexelsSrc,
 
-        var favorite: Boolean = false
+        private var favorite: Boolean = false
 ) : Photo {
 
     companion object {
@@ -63,5 +63,9 @@ data class PexelsPhoto(
 
     override fun isFavoritePhoto(): Boolean {
         return favorite
+    }
+
+    override fun setIsFavorite(favorite: Boolean) {
+        this.favorite = favorite
     }
 }

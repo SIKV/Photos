@@ -126,7 +126,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.itemFavorite -> {
-                viewModel.favorite()
+                viewModel.invertFavorite()
 
                 val itemView = findViewById<View>(R.id.itemFavorite)
 
@@ -195,6 +195,16 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         })
     }
 
+    private fun updateFavoriteMenuItemIcon(favorite: Boolean) {
+        favoriteMenuItemIcon = if (favorite) {
+            R.drawable.ic_favorite_white_24dp
+        } else {
+            R.drawable.ic_favorite_border_white_24dp
+        }
+
+        invalidateOptionsMenu()
+    }
+
     private fun observe() {
         viewModel.photoReadyLiveData.observe(this, Observer {
             it?.getContentIfNotHandled()?.let { photo ->
@@ -202,14 +212,14 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
             }
         })
 
-        viewModel.favoriteChangedLiveData.observe(this, Observer {
-            favoriteMenuItemIcon = if (it?.getContentIfNotHandled() == true) {
-                R.drawable.ic_favorite_white_24dp
-            } else {
-                R.drawable.ic_favorite_border_white_24dp
+        viewModel.favoriteInitLiveData.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                updateFavoriteMenuItemIcon(it)
             }
+        })
 
-            invalidateOptionsMenu()
+        viewModel.favoriteChangedLiveData.observe(this, Observer {
+            updateFavoriteMenuItemIcon(it)
         })
 
         viewModel.downloadPhotoInProgressLiveData.observe(this, Observer { downloading ->

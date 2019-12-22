@@ -17,5 +17,7 @@ interface Photo : Parcelable {
     fun isFavoritePhoto(): Boolean = false
     fun isLocalPhoto(): Boolean = false
 
+    fun setIsFavorite(favorite: Boolean) { }
+
     override fun equals(other: Any?): Boolean
 }
