@@ -28,7 +28,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
              favorite: Boolean,
              clickCallback: (Photo, View) -> Unit,
              longClickCallback: ((Photo, View) -> Unit)? = null,
-             favoriteClickCallback: ((Photo, Boolean) -> Unit)? = null) {
+             favoriteClickCallback: ((Photo) -> Unit)? = null) {
 
         itemView.photoImage.setImageDrawable(null)
         itemView.photographerImage.setImageDrawable(null)
@@ -58,17 +58,17 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             itemView.favoriteButton.setImageResource(if (favorite) R.drawable.ic_favorite_white_24dp else R.drawable.ic_favorite_border_white_24dp)
 
-            itemView.setOnClickListener {
-                clickCallback.invoke(photo, it)
+            itemView.setOnClickListener { view ->
+                clickCallback.invoke(photo, view)
             }
 
-            itemView.setOnLongClickListener {
-                longClickCallback?.invoke(photo, it)
+            itemView.setOnLongClickListener { view ->
+                longClickCallback?.invoke(photo, view)
                 return@setOnLongClickListener true
             }
 
             itemView.favoriteButton.setOnClickListener {
-                favoriteClickCallback?.invoke(photo, favorite)
+                favoriteClickCallback?.invoke(photo)
             }
         }
     }

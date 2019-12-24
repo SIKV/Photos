@@ -37,7 +37,7 @@ class FavoritesFragment : BaseFragment() {
                 .get(FavoritesViewModel::class.java)
     }
 
-    private var photoAdapter: PhotoListAdapter? = null
+    private var photoAdapter = PhotoListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
 
     private var currentSpanCount: Int = SPAN_COUNT_LIST
         set(value) {
@@ -58,7 +58,10 @@ class FavoritesFragment : BaseFragment() {
 
         toolbarTitleText.setText(R.string.favorites)
 
-        init()
+        favoritesRecycler.adapter = photoAdapter
+
+        // Default value is not working good. When a photo is removed animation is broken.
+        favoritesRecycler.itemAnimator?.removeDuration = 0
 
         if (savedInstanceState != null) {
             currentSpanCount = savedInstanceState.getInt(KEY_CURRENT_SPAN_COUNT, SPAN_COUNT_LIST)
@@ -115,14 +118,14 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private fun observe() {
-        viewModel.favoritesLiveData.observe(this, Observer {
+        viewModel.favoritesLiveData.observe(viewLifecycleOwner, Observer {
             it?.let { photos ->
-                photoAdapter?.submitList(photos)
+                photoAdapter.submitList(photos)
                 listEmptyLayout.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
             }
         })
 
-        viewModel.favoritesDeleteAllLiveData.observe(this, Observer { deleteEvent ->
+        viewModel.deleteAllEvent.observe(viewLifecycleOwner, Observer { deleteEvent ->
             if (deleteEvent.getContentIfNotHandled() == true) {
                 Snackbar.make(rootLayout, R.string.deleted, Snackbar.LENGTH_LONG)
                         .setTextColor(R.color.colorText)
@@ -132,7 +135,7 @@ class FavoritesFragment : BaseFragment() {
                         }
                         .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                                viewModel.deleteAllForever()
+                                viewModel.deleteAllFinally()
                             }
                         })
                         .show()
@@ -148,15 +151,11 @@ class FavoritesFragment : BaseFragment() {
         PhotoPreviewPopup.show(activity!!, rootLayout, photo)
     }
 
-    private fun setRecyclerLayoutManager(spanCount: Int) {
-        favoritesRecycler.layoutManager = GridLayoutManager(context, spanCount)
+    private fun onPhotoFavoriteClick(photo: Photo) {
+        viewModel.invertFavorite(photo)
     }
 
-    private fun init() {
-        photoAdapter = PhotoListAdapter(::onPhotoClick, ::onPhotoLongClick)
-        favoritesRecycler.adapter = photoAdapter
-
-        // Default value is not working good. When a photo is removed animation is broken.
-        favoritesRecycler.itemAnimator?.removeDuration = 0
+    private fun setRecyclerLayoutManager(spanCount: Int) {
+        favoritesRecycler.layoutManager = GridLayoutManager(context, spanCount)
     }
 }

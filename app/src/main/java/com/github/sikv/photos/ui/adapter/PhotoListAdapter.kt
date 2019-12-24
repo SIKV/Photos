@@ -5,14 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.github.sikv.photos.manager.FavoritesManager
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
+import javax.inject.Inject
 
 class PhotoListAdapter(
         private val clickCallback: (Photo, View) -> Unit,
         private val longClickCallback: ((Photo, View) -> Unit)? = null,
-        private val favoriteClickCallback: ((Photo, Boolean) -> Unit)? = null
+        private val favoriteClickCallback: ((Photo) -> Unit)? = null
 ) : ListAdapter<Photo, PhotoViewHolder>(COMPARATOR) {
 
     companion object {
@@ -25,14 +28,22 @@ class PhotoListAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_photo, parent, false)
+    @Inject
+    lateinit var favoritesManager: FavoritesManager
 
+    init {
+        App.instance.appComponent.inject(this)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
         return PhotoViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.bind(getItem(position), false, clickCallback, longClickCallback, favoriteClickCallback)
+        val photo = getItem(position)
+        val favorite = favoritesManager.isFavorite(photo)
+
+        holder.bind(photo, favorite, clickCallback, longClickCallback, favoriteClickCallback)
     }
 }

@@ -13,7 +13,7 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.data.Event
+import com.github.sikv.photos.util.Event
 import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.manager.PhotoManager
 import kotlinx.coroutines.*

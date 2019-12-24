@@ -14,6 +14,8 @@ import com.github.sikv.photos.data.PhotosDataSource
 import com.github.sikv.photos.data.PhotosDataSourceFactory
 import com.github.sikv.photos.manager.FavoritesManager
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.util.Event
+import com.github.sikv.photos.util.VoidEvent
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -27,9 +29,6 @@ class PhotosViewModel : ViewModel(), FavoritesManager.Callback {
     @Inject
     lateinit var favoritesManager: FavoritesManager
 
-    private val favoriteChangedMutableLiveData = MutableLiveData<Photo>()
-    val favoriteChangedLiveData: LiveData<Photo> = favoriteChangedMutableLiveData
-
     private val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setInitialLoadSizeHint(INITIAL_LOAD_SIZE)
@@ -41,6 +40,12 @@ class PhotosViewModel : ViewModel(), FavoritesManager.Callback {
 
     private var unsplashSearchLivePagedList: LiveData<PagedList<Photo>>? = null
     private var pexelsSearchLivePagedList: LiveData<PagedList<Photo>>? = null
+
+    private val favoriteChangedMutableEvent = MutableLiveData<Event<Photo>>()
+    val favoriteChangedEvent: LiveData<Event<Photo>> = favoriteChangedMutableEvent
+
+    private val favoritesChangedMutableEvent = MutableLiveData<VoidEvent>()
+    val favoritesChangedEvent: LiveData<VoidEvent> = favoritesChangedMutableEvent
 
     init {
         App.instance.appComponent.inject(this)
@@ -55,7 +60,15 @@ class PhotosViewModel : ViewModel(), FavoritesManager.Callback {
     }
 
     override fun onFavoriteChanged(photo: Photo, favorite: Boolean) {
-        favoriteChangedMutableLiveData.postValue(photo)
+        favoriteChangedMutableEvent.postValue(Event(photo))
+    }
+
+    override fun onFavoritesChanged() {
+        favoritesChangedMutableEvent.postValue(VoidEvent())
+    }
+
+    fun invertFavorite(photo: Photo) {
+        favoritesManager.invertFavorite(photo)
     }
 
     fun getState(photoSource: PhotoSource): LiveData<DataSourceState>? {

@@ -1,24 +1,33 @@
 package com.github.sikv.photos.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.data.PhotoSource
 import com.github.sikv.photos.data.SearchPhotosDataSource
 import com.github.sikv.photos.data.SearchPhotosDataSourceFactory
+import com.github.sikv.photos.manager.FavoritesManager
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.util.Event
+import com.github.sikv.photos.util.VoidEvent
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
-class SearchViewModel : ViewModel() {
+class SearchViewModel : ViewModel(), FavoritesManager.Callback {
 
     companion object {
         const val INITIAL_LOAD_SIZE = 10
         const val PAGE_SIZE = 10
     }
+
+    @Inject
+    lateinit var favoritesManager: FavoritesManager
 
     private val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -31,6 +40,36 @@ class SearchViewModel : ViewModel() {
 
     private var unsplashSearchLivePagedList: LiveData<PagedList<Photo>>? = null
     private var pexelsSearchLivePagedList: LiveData<PagedList<Photo>>? = null
+
+    private val favoriteChangedMutableEvent = MutableLiveData<Event<Photo>>()
+    val favoriteChangedEvent: LiveData<Event<Photo>> = favoriteChangedMutableEvent
+
+    private val favoritesChangedMutableEvent = MutableLiveData<VoidEvent>()
+    val favoritesChangedEvent: LiveData<VoidEvent> = favoritesChangedMutableEvent
+
+    init {
+        App.instance.appComponent.inject(this)
+
+        favoritesManager.subscribe(this)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        favoritesManager.unsubscribe(this)
+    }
+
+    override fun onFavoriteChanged(photo: Photo, favorite: Boolean) {
+        favoriteChangedMutableEvent.postValue(Event(photo))
+    }
+
+    override fun onFavoritesChanged() {
+        favoritesChangedMutableEvent.postValue(VoidEvent())
+    }
+
+    fun invertFavorite(photo: Photo) {
+        favoritesManager.invertFavorite(photo)
+    }
 
     fun getSearchState(photoSource: PhotoSource): LiveData<DataSourceState>? {
         when (photoSource) {

@@ -15,7 +15,7 @@ import javax.inject.Inject
 class PhotoPagedListAdapter(
         private val clickCallback: (Photo, View) -> Unit,
         private val longClickCallback: ((Photo, View) -> Unit)? = null,
-        private val favoriteClickCallback: ((Photo, Boolean) -> Unit)? = null
+        private val favoriteClickCallback: ((Photo) -> Unit)? = null
 ) : PagedListAdapter<Photo, PhotoViewHolder>(COMPARATOR) {
 
     companion object {
@@ -36,21 +36,19 @@ class PhotoPagedListAdapter(
     }
 
     fun notifyPhotoChanged(photo: Photo) {
-        currentList?.indexOf(photo)?.let { photoPosition ->
-            notifyItemChanged(photoPosition)
+        currentList?.indexOf(photo)?.let {
+            notifyItemChanged(it)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_photo, parent, false)
-
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
         return PhotoViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val photo = getItem(position)
-        val favorite = favoritesManager.getFavoriteFlagFor(photo)
+        val favorite = favoritesManager.isFavorite(photo)
 
         holder.bind(photo, favorite, clickCallback, longClickCallback, favoriteClickCallback)
     }

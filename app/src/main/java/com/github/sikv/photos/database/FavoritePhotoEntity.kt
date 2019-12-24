@@ -26,6 +26,18 @@ data class FavoritePhotoEntity(
         }
     }
 
+    override fun equals(other: Any?): Boolean {
+        return if (other !is Photo) {
+            false
+        } else {
+            this.getPhotoId() == other.getPhotoId()
+        }
+    }
+
+    override fun hashCode(): Int {
+        return getPhotoId().hashCode()
+    }
+
     override fun getPhotoId(): String {
         return id
     }

@@ -3,63 +3,45 @@ package com.github.sikv.photos.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.github.sikv.photos.App
-import com.github.sikv.photos.data.Event
 import com.github.sikv.photos.database.FavoritePhotoEntity
 import com.github.sikv.photos.database.FavoritesDao
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.github.sikv.photos.manager.FavoritesManager
+import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.util.Event
 import javax.inject.Inject
 
-class FavoritesViewModel(
-        application: Application
-) : AndroidViewModel(application) {
+class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
 
     @Inject
     lateinit var favoritesDao: FavoritesDao
 
-    var favoritesLiveData: LiveData<List<FavoritePhotoEntity>>
-        private set
+    @Inject
+    lateinit var favoritesManager: FavoritesManager
 
-    private val favoritesDeleteAllMutableLiveData: MutableLiveData<Event<Boolean>> = MutableLiveData()
-
-    var favoritesDeleteAllLiveData: LiveData<Event<Boolean>> = favoritesDeleteAllMutableLiveData
-
-    private var deletedFavorites: List<FavoritePhotoEntity> = emptyList()
+    val favoritesLiveData: LiveData<List<FavoritePhotoEntity>>
+    val deleteAllEvent: LiveData<Event<Boolean>>
 
     init {
         App.instance.appComponent.inject(this)
 
         favoritesLiveData = favoritesDao.getAll()
+        deleteAllEvent = favoritesManager.deleteAllEvent
+    }
+
+    fun invertFavorite(photo: Photo) {
+        favoritesManager.invertFavorite(photo)
     }
 
     fun deleteAll() {
-        GlobalScope.launch {
-           val count = favoritesDao.getCount()
-
-           if (count > 0) {
-               deletedFavorites = favoritesDao.getAllList()
-               favoritesDao.deleteAll()
-
-               favoritesDeleteAllMutableLiveData.postValue(Event(true))
-           } else {
-               favoritesDeleteAllMutableLiveData.postValue(Event(false))
-           }
-       }
+        favoritesManager.deleteAll()
     }
 
     fun undoDeleteAll() {
-        GlobalScope.launch {
-            deletedFavorites.forEach { photo ->
-                favoritesDao.insert(photo)
-            }
-
-            deletedFavorites = emptyList()
-        }
+        favoritesManager.undoDeleteAll()
     }
 
-    fun deleteAllForever() {
-        deletedFavorites = emptyList()
+    fun deleteAllFinally() {
+        favoritesManager.deleteAllFinally()
     }
 }

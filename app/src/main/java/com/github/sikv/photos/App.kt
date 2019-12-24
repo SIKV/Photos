@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.preference.PreferenceManager
-import com.github.sikv.photos.data.Event
+import com.github.sikv.photos.util.Event
 import com.github.sikv.photos.di.component.AppComponent
 import com.github.sikv.photos.di.component.DaggerAppComponent
 import com.github.sikv.photos.di.component.DaggerNetworkComponent

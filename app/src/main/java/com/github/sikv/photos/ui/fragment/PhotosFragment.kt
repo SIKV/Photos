@@ -36,7 +36,7 @@ class PhotosFragment : BaseFragment() {
         ViewModelProviders.of(this).get(PhotosViewModel::class.java)
     }
 
-    private var photoAdapter: PhotoPagedListAdapter? = null
+    private var photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
 
     private var currentSource: PhotoSource = PhotoSource.UNSPLASH
         set(value) {
@@ -75,7 +75,9 @@ class PhotosFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
+        photosRecycler.adapter = photoAdapter
+
+        createPhotoSourceDialog()
         setListeners()
 
         if (savedInstanceState != null) {
@@ -131,11 +133,19 @@ class PhotosFragment : BaseFragment() {
 
     private fun observe() {
         viewModel.getPhotos(currentSource)?.observe(viewLifecycleOwner, Observer<PagedList<Photo>> { pagedList ->
-            photoAdapter?.submitList(pagedList)
+            photoAdapter.submitList(pagedList)
         })
 
-        viewModel.favoriteChangedLiveData.observe(viewLifecycleOwner, Observer {
-            photoAdapter?.notifyPhotoChanged(it)
+        viewModel.favoriteChangedEvent.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let { photo ->
+                photoAdapter.notifyPhotoChanged(photo)
+            }
+        })
+
+        viewModel.favoritesChangedEvent.observe(viewLifecycleOwner, Observer {
+            if (it.canHandle()) {
+                photoAdapter.notifyDataSetChanged()
+            }
         })
     }
 
@@ -178,19 +188,12 @@ class PhotosFragment : BaseFragment() {
         PhotoPreviewPopup.show(activity!!, rootLayout, photo)
     }
 
-    private fun onPhotoFavoriteClickCallback(photo: Photo, favorite: Boolean) {
-        viewModel.favoritesManager.invertFavorite(photo)
+    private fun onPhotoFavoriteClick(photo: Photo) {
+        viewModel.invertFavorite(photo)
     }
 
     private fun setRecyclerLayoutManager(spanCount: Int) {
         photosRecycler.layoutManager = GridLayoutManager(context, spanCount)
-    }
-
-    private fun init() {
-        photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClickCallback)
-        photosRecycler.adapter = photoAdapter
-
-        createPhotoSourceDialog()
     }
 
     private fun setListeners() {
@@ -201,11 +204,7 @@ class PhotosFragment : BaseFragment() {
 
     private fun createPhotoSourceDialog() {
         photoSourceDialog = OptionsBottomSheetDialogFragment.newInstance(
-                listOf(
-                        getString(R.string.unsplash),
-                        getString(R.string.pexels)
-
-                )) { index ->
+                listOf(getString(R.string.unsplash), getString(R.string.pexels))) { index ->
 
             when (index) {
                 0 -> {

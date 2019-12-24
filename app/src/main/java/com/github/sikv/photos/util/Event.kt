@@ -1,4 +1,4 @@
-package com.github.sikv.photos.data
+package com.github.sikv.photos.util
 
 /**
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.

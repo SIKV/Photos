@@ -14,13 +14,13 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
-import com.github.sikv.photos.data.Event
 import com.github.sikv.photos.manager.FavoritesManager
 import com.github.sikv.photos.manager.PhotoManager
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.util.DownloadPhotoState
+import com.github.sikv.photos.util.Event
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.subscribeAsync
 import javax.inject.Inject
@@ -59,7 +59,7 @@ class PhotoViewModel(
 
         photoReadyLiveData = MutableLiveData()
 
-        favoriteInitMutableLiveData.postValue(Event(favoritesManager.getFavoriteFlagFor(photo)))
+        favoriteInitMutableLiveData.postValue(Event(favoritesManager.isFavorite(photo)))
 
         favoritesManager.subscribe(this)
     }
@@ -72,6 +72,10 @@ class PhotoViewModel(
 
     override fun onFavoriteChanged(photo: Photo, favorite: Boolean) {
         favoriteChangedMutableLiveData.postValue(favorite)
+    }
+
+    override fun onFavoritesChanged() {
+        // Don't need to handle it
     }
 
     fun loadPhoto(): LiveData<Event<Bitmap>> {

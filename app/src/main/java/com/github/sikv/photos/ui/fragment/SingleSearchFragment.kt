@@ -22,14 +22,13 @@ import kotlinx.android.synthetic.main.layout_no_results_found.*
 class SingleSearchFragment : Fragment() {
 
     companion object {
-        private const val SEARCH_SOURCE = "search_source"
+        private const val KEY_SEARCH_SOURCE = "key_search_source"
 
         fun newInstance(photoSource: PhotoSource): SingleSearchFragment {
-            val fragment = SingleSearchFragment()
-
             val args = Bundle()
-            args.putSerializable(SEARCH_SOURCE, photoSource)
+            args.putSerializable(KEY_SEARCH_SOURCE, photoSource)
 
+            val fragment = SingleSearchFragment()
             fragment.arguments = args
 
             return fragment
@@ -41,12 +40,12 @@ class SingleSearchFragment : Fragment() {
     }
 
     private var photoSource: PhotoSource? = null
-    private var photoAdapter: PhotoPagedListAdapter? = null
+    private var photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        photoSource = arguments?.getSerializable(SEARCH_SOURCE) as? PhotoSource
+        photoSource = arguments?.getSerializable(KEY_SEARCH_SOURCE) as? PhotoSource
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,19 +55,47 @@ class SingleSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
+        searchRecycler.adapter = photoAdapter
+
+        observe()
+    }
+
+    private fun observe() {
+        viewModel.favoriteChangedEvent.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let { photo ->
+                photoAdapter.notifyPhotoChanged(photo)
+            }
+        })
+
+        viewModel.favoritesChangedEvent.observe(viewLifecycleOwner, Observer {
+            if (it.canHandle()) {
+                photoAdapter.notifyDataSetChanged()
+            }
+        })
     }
 
     fun searchPhotos(text: String) {
         photoSource?.let { searchSource ->
-            viewModel.searchPhotos(searchSource, text)?.observe(this, Observer {
-                photoAdapter?.submitList(it)
+            viewModel.searchPhotos(searchSource, text)?.observe(viewLifecycleOwner, Observer {
+                photoAdapter.submitList(it)
             })
 
-            viewModel.getSearchState(searchSource)?.observe(this, Observer { state ->
+            viewModel.getSearchState(searchSource)?.observe(viewLifecycleOwner, Observer { state ->
                 state?.let(::handleState)
             })
         }
+    }
+
+    private fun onPhotoClick(photo: Photo, view: View) {
+        PhotoActivity.startActivity(activity!!, view, photo)
+    }
+
+    private fun onPhotoLongClick(photo: Photo, view: View) {
+        PhotoPreviewPopup.show(activity!!, rootLayout, photo)
+    }
+
+    private fun onPhotoFavoriteClick(photo: Photo) {
+        viewModel.invertFavorite(photo)
     }
 
     private fun handleState(state: DataSourceState) {
@@ -83,18 +110,5 @@ class SingleSearchFragment : Fragment() {
                         else View.GONE
             }
         }
-    }
-
-    private fun onPhotoClick(photo: Photo, view: View) {
-        PhotoActivity.startActivity(activity!!, view, photo)
-    }
-
-    private fun onPhotoLongClick(photo: Photo, view: View) {
-        PhotoPreviewPopup.show(activity!!, rootLayout, photo)
-    }
-
-    private fun init() {
-        photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick)
-        searchRecycler.adapter = photoAdapter
     }
 }
