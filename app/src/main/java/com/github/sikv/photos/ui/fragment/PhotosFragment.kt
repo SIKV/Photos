@@ -24,6 +24,7 @@ import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.fragment_photos.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
+import kotlinx.android.synthetic.main.layout_loading_list.*
 
 class PhotosFragment : BaseFragment() {
 
@@ -36,7 +37,7 @@ class PhotosFragment : BaseFragment() {
         ViewModelProviders.of(this).get(PhotosViewModel::class.java)
     }
 
-    private var photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
+    private val photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
 
     private var currentSource: PhotoSource = PhotoSource.UNSPLASH
         set(value) {
@@ -53,7 +54,7 @@ class PhotosFragment : BaseFragment() {
             }
 
             observe()
-            observeState()
+            observeLoadingState()
         }
 
     private var currentSpanCount: Int = SPAN_COUNT_LIST
@@ -149,30 +150,34 @@ class PhotosFragment : BaseFragment() {
         })
     }
 
-    private fun observeState() {
-        viewModel.getState(currentSource)?.observe(viewLifecycleOwner, Observer { state ->
+    private fun observeLoadingState() {
+        viewModel.getLoadingState(currentSource)?.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 DataSourceState.LOADING_INITIAL -> {
                     loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
                     photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
-                    loadingLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
+                    loadingListLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
                 }
 
                 DataSourceState.INITIAL_LOADING_DONE -> {
                     photosRecycler.setVisibilityAnimated(View.VISIBLE)
-                    loadingLayout.setVisibilityAnimated(View.GONE)
+                    loadingListLayout.setVisibilityAnimated(View.GONE)
+                    loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
                 }
 
                 DataSourceState.NEXT_DONE -> {
                     // In some cases INITIAL_LOADING_DONE is not being called
                     if (photosRecycler.visibility != View.VISIBLE) {
                         photosRecycler.setVisibilityAnimated(View.VISIBLE)
-                        loadingLayout.setVisibilityAnimated(View.GONE)
+                        loadingListLayout.setVisibilityAnimated(View.GONE)
+                        loadingErrorLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
                     }
                 }
 
                 DataSourceState.ERROR -> {
-                    loadingErrorLayout.setVisibilityAnimated(View.VISIBLE)
+                    photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
+                    loadingListLayout.setVisibilityAnimated(View.GONE, duration = 0)
+                    loadingErrorLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
                 }
 
                 else -> { }

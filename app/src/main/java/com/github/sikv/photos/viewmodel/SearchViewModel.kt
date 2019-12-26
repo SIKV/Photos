@@ -71,7 +71,7 @@ class SearchViewModel : ViewModel(), FavoritesRepository.Callback {
         favoritesRepository.invertFavorite(photo)
     }
 
-    fun getSearchState(photoSource: PhotoSource): LiveData<DataSourceState>? {
+    fun getSearchLoadingState(photoSource: PhotoSource): LiveData<DataSourceState>? {
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
                 unsplashSearchDataSourceFactory?.let {

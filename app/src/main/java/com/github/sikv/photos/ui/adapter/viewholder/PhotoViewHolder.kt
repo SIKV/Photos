@@ -36,6 +36,9 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.setOnClickListener(null)
         itemView.favoriteButton.setOnClickListener(null)
 
+        itemView.overlayLayout.visibility = View.VISIBLE
+        itemView.favoriteButton.visibility = View.VISIBLE
+
         photo?.let {
             glide.load(photo.getSmallUrl())
                     .transition(DrawableTransitionOptions.withCrossFade(TRANSITION_DURATION))

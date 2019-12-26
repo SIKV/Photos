@@ -61,7 +61,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -73,22 +73,7 @@
             android:scrollbars="vertical"
             android:clipToPadding="false" />
 
-        <LinearLayout
-            android:id="@+id/loadingLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/recyclerPaddingTop"
-            android:paddingBottom="@dimen/recyclerPaddingTop"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-            app:layout_constraintBottom_toBottomOf="parent">
-
-            <include layout="@layout/item_photo" />
-            <include layout="@layout/item_photo" />
-            <include layout="@layout/item_photo" />
-
-        </LinearLayout>
-
+        <include layout="@layout/layout_loading_list" />
         <include layout="@layout/layout_loading_error" />
 
     </FrameLayout>

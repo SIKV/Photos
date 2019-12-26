@@ -14,9 +14,11 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
+import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_single_search.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
+import kotlinx.android.synthetic.main.layout_loading_list.*
 import kotlinx.android.synthetic.main.layout_no_results_found.*
 
 class SingleSearchFragment : Fragment() {
@@ -39,13 +41,13 @@ class SingleSearchFragment : Fragment() {
         ViewModelProviders.of(this).get(SearchViewModel::class.java)
     }
 
-    private var photoSource: PhotoSource? = null
-    private var photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
+    private lateinit var photoSource: PhotoSource
+    private val photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        photoSource = arguments?.getSerializable(KEY_SEARCH_SOURCE) as? PhotoSource
+        photoSource = arguments?.getSerializable(KEY_SEARCH_SOURCE) as PhotoSource
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -55,9 +57,17 @@ class SingleSearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchRecycler.adapter = photoAdapter
+        photosRecycler.adapter = photoAdapter
 
         observe()
+    }
+
+    fun searchPhotos(text: String) {
+        viewModel.searchPhotos(photoSource, text)?.observe(viewLifecycleOwner, Observer {
+            photoAdapter.submitList(it)
+        })
+
+        observeLoadingState()
     }
 
     private fun observe() {
@@ -74,16 +84,38 @@ class SingleSearchFragment : Fragment() {
         })
     }
 
-    fun searchPhotos(text: String) {
-        photoSource?.let { searchSource ->
-            viewModel.searchPhotos(searchSource, text)?.observe(viewLifecycleOwner, Observer {
-                photoAdapter.submitList(it)
-            })
+    private fun observeLoadingState() {
+        viewModel.getSearchLoadingState(photoSource)?.observe(viewLifecycleOwner, Observer { state ->
+            when (state) {
+                DataSourceState.LOADING_INITIAL -> {
+                    loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
+                    photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
+                    loadingListLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
+                    noResultsFoundLayout.setVisibilityAnimated(View.GONE, duration = 0)
+                }
 
-            viewModel.getSearchState(searchSource)?.observe(viewLifecycleOwner, Observer { state ->
-                state?.let(::handleState)
-            })
-        }
+                DataSourceState.INITIAL_LOADING_DONE -> {
+                    photosRecycler.setVisibilityAnimated(View.VISIBLE)
+                    loadingListLayout.setVisibilityAnimated(View.GONE)
+                    loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
+
+                    if (viewModel.isSearchListEmpty(photoSource)) {
+                        noResultsFoundLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
+                    } else {
+                        noResultsFoundLayout.setVisibilityAnimated(View.GONE, duration = 0)
+                    }
+                }
+
+                DataSourceState.ERROR -> {
+                    photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
+                    loadingListLayout.setVisibilityAnimated(View.GONE, duration = 0)
+                    loadingErrorLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
+                    noResultsFoundLayout.setVisibilityAnimated(View.GONE, duration = 0)
+                }
+
+                else -> { }
+            }
+        })
     }
 
     private fun onPhotoClick(photo: Photo, view: View) {
@@ -96,19 +128,5 @@ class SingleSearchFragment : Fragment() {
 
     private fun onPhotoFavoriteClick(photo: Photo) {
         viewModel.invertFavorite(photo)
-    }
-
-    private fun handleState(state: DataSourceState) {
-        if (state == DataSourceState.ERROR) {
-            loadingErrorLayout.visibility = View.VISIBLE
-        } else {
-            loadingErrorLayout.visibility = View.GONE
-
-            photoSource?.let { searchSource ->
-                noResultsFoundLayout.visibility =
-                        if (state != DataSourceState.LOADING_NEXT && viewModel.isSearchListEmpty(searchSource)) View.VISIBLE
-                        else View.GONE
-            }
-        }
     }
 }

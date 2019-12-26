@@ -71,7 +71,7 @@ class PhotosViewModel : ViewModel(), FavoritesRepository.Callback {
         favoritesRepository.invertFavorite(photo)
     }
 
-    fun getState(photoSource: PhotoSource): LiveData<DataSourceState>? {
+    fun getLoadingState(photoSource: PhotoSource): LiveData<DataSourceState>? {
         when (photoSource) {
             PhotoSource.UNSPLASH -> {
                 unsplashDataSourceFactory?.let {
