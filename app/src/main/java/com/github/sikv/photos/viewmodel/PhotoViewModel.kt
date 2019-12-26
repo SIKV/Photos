@@ -15,14 +15,12 @@ import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.FavoritesRepository
-import com.github.sikv.photos.util.PhotoManager
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
-import com.github.sikv.photos.util.DownloadPhotoState
-import com.github.sikv.photos.util.Event
-import com.github.sikv.photos.util.Utils
-import com.github.sikv.photos.util.subscribeAsync
+import com.github.sikv.photos.util.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PhotoViewModel(
@@ -39,11 +37,11 @@ class PhotoViewModel(
     @Inject
     lateinit var glide: RequestManager
 
-    var photoReadyLiveData: MutableLiveData<Event<Photo?>>
-        private set
+    private val photoReadyMutableEvent = MutableLiveData<Event<Photo?>>()
+    val photoReadyEvent: LiveData<Event<Photo?>> = photoReadyMutableEvent
 
-    private val favoriteInitMutableLiveData = MutableLiveData<Event<Boolean>>()
-    val favoriteInitLiveData = favoriteInitMutableLiveData
+    private val favoriteInitMutableEvent = MutableLiveData<Event<Boolean>>()
+    val favoriteInitEvent: LiveData<Event<Boolean>> = favoriteInitMutableEvent
 
     private val favoriteChangedMutableLiveData = MutableLiveData<Boolean>()
     val favoriteChangedLiveData: LiveData<Boolean> = favoriteChangedMutableLiveData
@@ -57,9 +55,11 @@ class PhotoViewModel(
     init {
         App.instance.appComponent.inject(this)
 
-        photoReadyLiveData = MutableLiveData()
-
-        favoriteInitMutableLiveData.postValue(Event(favoritesRepository.isFavorite(photo)))
+        GlobalScope.launch {
+            /** Don't use FavoritesRepository.isFavorite(Photo) here because that method is using Photo.favorite flag.
+             * Photo.favorite flag will be always false after using parcelable. */
+            favoriteInitMutableEvent.postValue(Event(favoritesRepository.isFavoriteFromDatabase(photo)))
+        }
 
         favoritesRepository.subscribe(this)
     }
@@ -109,7 +109,7 @@ class PhotoViewModel(
                                 this@PhotoViewModel.photo = it
                                 loadFullSizePhoto()
 
-                                photoReadyLiveData.value = Event(it)
+                                photoReadyMutableEvent.postValue(Event(it))
                             }, {
                                 // TODO Handle Error
                             })
@@ -121,7 +121,7 @@ class PhotoViewModel(
                                 this@PhotoViewModel.photo = it
                                 loadFullSizePhoto()
 
-                                photoReadyLiveData.value = Event(it)
+                                photoReadyMutableEvent.postValue(Event(it))
                             }, {
                                 // TODO Handle Error
                             })
@@ -150,7 +150,7 @@ class PhotoViewModel(
                         }
                     })
 
-            photoReadyLiveData.value = Event(photo)
+            photoReadyMutableEvent.postValue(Event(photo))
         }
 
         return photoLoadedEvent

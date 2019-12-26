@@ -113,45 +113,45 @@ class FavoritesRepository @Inject constructor(private val favoritesDao: Favorite
         return favorites[photo] ?: photo?.favorite ?: false
     }
 
+    fun isFavoriteFromDatabase(photo: Photo): Boolean {
+        return favoritesDao.getById(photo.getPhotoId()) != null
+    }
+
     fun populateFavorite(photos: List<UnsplashPhoto>): List<UnsplashPhoto> {
         photos.forEach {
-            it.favorite = isFavoritePhoto(it)
+            it.favorite = isFavoriteFromDatabase(it)
         }
         return photos
     }
 
     fun populateFavorite(photo: UnsplashPhoto): UnsplashPhoto {
-        photo.favorite = isFavoritePhoto(photo)
+        photo.favorite = isFavoriteFromDatabase(photo)
         return photo
     }
 
     fun populateFavorite(response: UnsplashSearchResponse): UnsplashSearchResponse {
         response.results.forEach {
-            it.favorite = isFavoritePhoto(it)
+            it.favorite = isFavoriteFromDatabase(it)
         }
         return response
     }
 
     fun populateFavorite(response: PexelsCuratedPhotosResponse): PexelsCuratedPhotosResponse {
         response.photos.forEach {
-            it.favorite = isFavoritePhoto(it)
+            it.favorite = isFavoriteFromDatabase(it)
         }
         return response
     }
 
     fun populateFavorite(photo: PexelsPhoto): PexelsPhoto {
-        photo.favorite = isFavoritePhoto(photo)
+        photo.favorite = isFavoriteFromDatabase(photo)
         return photo
     }
 
     fun populateFavorite(response: PexelsSearchResponse): PexelsSearchResponse {
         response.photos.forEach {
-            it.favorite = isFavoritePhoto(it)
+            it.favorite = isFavoriteFromDatabase(it)
         }
         return response
-    }
-
-    private fun isFavoritePhoto(photo: Photo): Boolean {
-        return favoritesDao.getById(photo.getPhotoId()) != null
     }
 }

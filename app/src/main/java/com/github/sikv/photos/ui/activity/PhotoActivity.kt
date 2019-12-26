@@ -206,15 +206,15 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     private fun observe() {
-        viewModel.photoReadyLiveData.observe(this, Observer {
+        viewModel.photoReadyEvent.observe(this, Observer {
             it?.getContentIfNotHandled()?.let { photo ->
                 showPhoto(photo)
             }
         })
 
-        viewModel.favoriteInitLiveData.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
-                updateFavoriteMenuItemIcon(it)
+        viewModel.favoriteInitEvent.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let { favorite ->
+                updateFavoriteMenuItemIcon(favorite)
             }
         })
 
