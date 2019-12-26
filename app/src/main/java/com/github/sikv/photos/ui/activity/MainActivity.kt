@@ -6,7 +6,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
-import com.github.sikv.photos.ui.fragment.*
+import com.github.sikv.photos.ui.fragment.FavoritesFragment
+import com.github.sikv.photos.ui.fragment.PhotosFragment
+import com.github.sikv.photos.ui.fragment.SearchFragment
+import com.github.sikv.photos.ui.fragment.SettingsFragment
 import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.util.SetWallpaperState
 import com.github.sikv.photos.util.customTag
@@ -21,10 +24,9 @@ class MainActivity : BaseActivity() {
         private const val KEY_FRAGMENT_TAG = "key_fragment_tag"
 
         private const val PHOTOS_FRAGMENT_INDEX = 0
-        private const val QUEUE_FRAGMENT_INDEX = 1
-        private const val SEARCH_FRAGMENT_INDEX = 2
-        private const val FAVORITES_FRAGMENT_INDEX = 3
-        private const val SETTINGS_FRAGMENT_INDEX = 4
+        private const val SEARCH_FRAGMENT_INDEX = 1
+        private const val FAVORITES_FRAGMENT_INDEX = 2
+        private const val SETTINGS_FRAGMENT_INDEX = 3
 
         private const val PHOTOS_ITEM_ID = R.id.photos
         private const val SEARCH_ITEM_ID = R.id.search
@@ -36,7 +38,6 @@ class MainActivity : BaseActivity() {
 
     private val fragments = listOf(
             PhotosFragment(),
-            QueueFragment(),
             SearchFragment(),
             FavoritesFragment(),
             SettingsFragment()
@@ -201,7 +202,6 @@ class MainActivity : BaseActivity() {
     private fun getFragmentIndexByItemId(itemId: Int): Int {
         return when (itemId) {
             R.id.photos -> PHOTOS_FRAGMENT_INDEX
-            R.id.queue -> QUEUE_FRAGMENT_INDEX
             R.id.search -> SEARCH_FRAGMENT_INDEX
             R.id.favorites -> FAVORITES_FRAGMENT_INDEX
             R.id.settings -> SETTINGS_FRAGMENT_INDEX
