@@ -7,13 +7,13 @@ import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "FavoritePhoto")
 @Parcelize
-data class FavoritePhotoEntity(
+class FavoritePhotoEntity(
         @PrimaryKey
         var id: String,
         var url: String,
         var photographer: String,
         var originalSource: String
-) : Photo {
+) : Photo() {
 
     companion object {
         fun fromPhoto(photo: Photo): FavoritePhotoEntity {
@@ -24,18 +24,6 @@ data class FavoritePhotoEntity(
                     photo.getSource()
             )
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return if (other !is Photo) {
-            false
-        } else {
-            this.getPhotoId() == other.getPhotoId()
-        }
-    }
-
-    override fun hashCode(): Int {
-        return getPhotoId().hashCode()
     }
 
     override fun getPhotoId(): String {
@@ -55,10 +43,6 @@ data class FavoritePhotoEntity(
     }
 
     override fun isLocalPhoto(): Boolean {
-        return true
-    }
-
-    override fun isFavoritePhoto(): Boolean {
         return true
     }
 }

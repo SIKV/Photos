@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class UnsplashPhoto(
+class UnsplashPhoto(
         @SerializedName("id")
         val id: String,
 
@@ -18,25 +18,11 @@ data class UnsplashPhoto(
         val urls: UnsplashUrls,
 
         @SerializedName("links")
-        val links: UnsplashLinks,
-
-        private var favorite: Boolean = false
-) : Photo {
+        val links: UnsplashLinks
+) : Photo() {
 
     companion object {
         const val SOURCE = "Unsplash"
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return if (other !is Photo) {
-            false
-        } else {
-            this.getPhotoId() == other.getPhotoId()
-        }
-    }
-
-    override fun hashCode(): Int {
-        return getPhotoId().hashCode()
     }
 
     override fun getPhotoId(): String {
@@ -77,13 +63,5 @@ data class UnsplashPhoto(
 
     override fun getSourceUrl(): String {
         return links.html
-    }
-
-    override fun isFavoritePhoto(): Boolean {
-        return favorite
-    }
-
-    override fun setIsFavorite(favorite: Boolean) {
-        this.favorite = favorite
     }
 }

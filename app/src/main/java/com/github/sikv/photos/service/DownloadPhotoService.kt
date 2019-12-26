@@ -15,7 +15,7 @@ import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.util.Event
 import com.github.sikv.photos.util.DownloadPhotoState
-import com.github.sikv.photos.manager.PhotoManager
+import com.github.sikv.photos.util.PhotoManager
 import kotlinx.coroutines.*
 import javax.inject.Inject
 

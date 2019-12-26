@@ -14,8 +14,8 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
-import com.github.sikv.photos.manager.FavoritesManager
-import com.github.sikv.photos.manager.PhotoManager
+import com.github.sikv.photos.data.FavoritesRepository
+import com.github.sikv.photos.util.PhotoManager
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
@@ -28,13 +28,13 @@ import javax.inject.Inject
 class PhotoViewModel(
         application: Application,
         private var photo: Photo
-) : AndroidViewModel(application), FavoritesManager.Callback {
+) : AndroidViewModel(application), FavoritesRepository.Callback {
 
     @Inject
     lateinit var photoManager: PhotoManager
 
     @Inject
-    lateinit var favoritesManager: FavoritesManager
+    lateinit var favoritesRepository: FavoritesRepository
 
     @Inject
     lateinit var glide: RequestManager
@@ -59,15 +59,15 @@ class PhotoViewModel(
 
         photoReadyLiveData = MutableLiveData()
 
-        favoriteInitMutableLiveData.postValue(Event(favoritesManager.isFavorite(photo)))
+        favoriteInitMutableLiveData.postValue(Event(favoritesRepository.isFavorite(photo)))
 
-        favoritesManager.subscribe(this)
+        favoritesRepository.subscribe(this)
     }
 
     override fun onCleared() {
         super.onCleared()
 
-        favoritesManager.unsubscribe(this)
+        favoritesRepository.unsubscribe(this)
     }
 
     override fun onFavoriteChanged(photo: Photo, favorite: Boolean) {
@@ -166,7 +166,7 @@ class PhotoViewModel(
     }
 
     fun invertFavorite() {
-        favoritesManager.invertFavorite(photo)
+        favoritesRepository.invertFavorite(photo)
     }
 
     fun createShareIntent(): Intent {

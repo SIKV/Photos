@@ -2,22 +2,34 @@ package com.github.sikv.photos.model
 
 import android.os.Parcelable
 
-interface Photo : Parcelable {
+abstract class Photo : Parcelable {
 
-    fun getPhotoId(): String = ""
-    fun getLargeUrl(): String = ""
-    fun getNormalUrl(): String = ""
-    fun getSmallUrl(): String = ""
-    fun getShareUrl(): String = ""
-    fun getPhotographerName(): String = ""
-    fun getPhotographerImageUrl(): String? = null
-    fun getPhotographerUrl(): String? = null
-    fun getSource(): String = ""
-    fun getSourceUrl(): String = ""
-    fun isFavoritePhoto(): Boolean = false
-    fun isLocalPhoto(): Boolean = false
+    /**
+     * This SHOULD NOT be used directly. Use FavoritesManager#isFavorite(Photo) instead.
+     */
+    var favorite: Boolean = false
 
-    fun setIsFavorite(favorite: Boolean) { }
+    open fun getPhotoId(): String = ""
+    open fun getLargeUrl(): String = ""
+    open fun getNormalUrl(): String = ""
+    open fun getSmallUrl(): String = ""
+    open fun getShareUrl(): String = ""
+    open fun getPhotographerName(): String = ""
+    open fun getPhotographerImageUrl(): String? = null
+    open fun getPhotographerUrl(): String? = null
+    open fun getSource(): String = ""
+    open fun getSourceUrl(): String = ""
+    open fun isLocalPhoto(): Boolean = false
 
-    override fun equals(other: Any?): Boolean
+    override fun equals(other: Any?): Boolean {
+        return if (other !is Photo) {
+            false
+        } else {
+            this.getPhotoId() == other.getPhotoId()
+        }
+    }
+
+    override fun hashCode(): Int {
+        return getPhotoId().hashCode()
+    }
 }

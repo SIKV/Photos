@@ -1,18 +1,17 @@
-package com.github.sikv.photos.manager
+package com.github.sikv.photos.data
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.github.sikv.photos.database.FavoritePhotoEntity
 import com.github.sikv.photos.database.FavoritesDao
 import com.github.sikv.photos.model.*
-import com.github.sikv.photos.util.Event
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FavoritesManager @Inject constructor(private val favoritesDao: FavoritesDao) {
+class FavoritesRepository @Inject constructor(private val favoritesDao: FavoritesDao) {
 
     interface Callback {
         fun onFavoriteChanged(photo: Photo, favorite: Boolean)
@@ -21,12 +20,20 @@ class FavoritesManager @Inject constructor(private val favoritesDao: FavoritesDa
 
     private val subscribers = mutableListOf<Callback>()
 
+    // This overrides default value for isFavorite flag for photos.
+    // Only if [Add to Favorites], [Remove from Favorites] or [Delete All Favorites] action has been occurred.
     private val favorites = mutableMapOf<Photo, Boolean>()
 
-    private var deletedFavorites: List<FavoritePhotoEntity> = emptyList()
+    val favoritesLiveData: LiveData<List<FavoritePhotoEntity>> = Transformations.map(favoritesDao.getAll()) {
+        it.forEach { photo ->
+            photo.favorite = true
+        }
 
-    private val deleteAllMutableEvent: MutableLiveData<Event<Boolean>> = MutableLiveData()
-    val deleteAllEvent: LiveData<Event<Boolean>> = deleteAllMutableEvent
+        it
+    }
+
+    // Needed to UNDO Delete All action.
+    private var deletedFavorites: List<FavoritePhotoEntity> = emptyList()
 
     fun subscribe(callback: Callback) {
         subscribers.add(callback)
@@ -36,6 +43,9 @@ class FavoritesManager @Inject constructor(private val favoritesDao: FavoritesDa
         subscribers.remove(callback)
     }
 
+    /**
+     * Inverts isFavorite flag for [photo] and notifies all subscribers that [photo] has been changed.
+     */
     fun invertFavorite(photo: Photo) {
         val favorite = !isFavorite(photo)
 
@@ -56,7 +66,7 @@ class FavoritesManager @Inject constructor(private val favoritesDao: FavoritesDa
         }
     }
 
-    fun deleteAll() {
+    fun deleteAll(completion: (Boolean) -> Unit) {
         GlobalScope.launch {
             val count = favoritesDao.getCount()
 
@@ -64,16 +74,19 @@ class FavoritesManager @Inject constructor(private val favoritesDao: FavoritesDa
                 deletedFavorites = favoritesDao.getAllList()
                 favoritesDao.deleteAll()
 
-                deleteAllMutableEvent.postValue(Event(true))
-
-                favorites.clear()
+                // We can't just call favorites.clear() because in that case isFavorite() method will return
+                favorites.keys.forEach {
+                    favorites[it] = false
+                }
 
                 subscribers.forEach {
                     it.onFavoritesChanged()
                 }
 
+                completion(true)
+
             } else {
-                deleteAllMutableEvent.postValue(Event(false))
+                completion(false)
             }
         }
     }
@@ -81,7 +94,7 @@ class FavoritesManager @Inject constructor(private val favoritesDao: FavoritesDa
     fun undoDeleteAll() {
         GlobalScope.launch {
             deletedFavorites.forEach { photo ->
-                favoritesDao.insert(photo)
+                invertFavorite(photo)
             }
 
             deletedFavorites = emptyList()
@@ -92,44 +105,48 @@ class FavoritesManager @Inject constructor(private val favoritesDao: FavoritesDa
         deletedFavorites = emptyList()
     }
 
+    /**
+     * Used to get [photo]'s isFavorite flag. If [photo] is contained in [favorites] map
+     * then this function returns overridden local result from the map, if not, the initial one.
+     */
     fun isFavorite(photo: Photo?): Boolean {
-        return favorites[photo] ?: photo?.isFavoritePhoto() ?: false
+        return favorites[photo] ?: photo?.favorite ?: false
     }
 
     fun populateFavorite(photos: List<UnsplashPhoto>): List<UnsplashPhoto> {
         photos.forEach {
-            it.setIsFavorite(isFavoritePhoto(it))
+            it.favorite = isFavoritePhoto(it)
         }
         return photos
     }
 
     fun populateFavorite(photo: UnsplashPhoto): UnsplashPhoto {
-        photo.setIsFavorite(isFavoritePhoto(photo))
+        photo.favorite = isFavoritePhoto(photo)
         return photo
     }
 
     fun populateFavorite(response: UnsplashSearchResponse): UnsplashSearchResponse {
         response.results.forEach {
-            it.setIsFavorite(isFavoritePhoto(it))
+            it.favorite = isFavoritePhoto(it)
         }
         return response
     }
 
     fun populateFavorite(response: PexelsCuratedPhotosResponse): PexelsCuratedPhotosResponse {
         response.photos.forEach {
-            it.setIsFavorite(isFavoritePhoto(it))
+            it.favorite = isFavoritePhoto(it)
         }
         return response
     }
 
     fun populateFavorite(photo: PexelsPhoto): PexelsPhoto {
-        photo.setIsFavorite(isFavoritePhoto(photo))
+        photo.favorite = isFavoritePhoto(photo)
         return photo
     }
 
     fun populateFavorite(response: PexelsSearchResponse): PexelsSearchResponse {
         response.photos.forEach {
-            it.setIsFavorite(isFavoritePhoto(it))
+            it.favorite = isFavoritePhoto(it)
         }
         return response
     }

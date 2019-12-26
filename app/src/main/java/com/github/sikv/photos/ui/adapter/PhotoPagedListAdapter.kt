@@ -7,7 +7,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.manager.FavoritesManager
+import com.github.sikv.photos.data.FavoritesRepository
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class PhotoPagedListAdapter(
     }
 
     @Inject
-    lateinit var favoritesManager: FavoritesManager
+    lateinit var favoritesRepository: FavoritesRepository
 
     init {
         App.instance.appComponent.inject(this)
@@ -48,7 +48,7 @@ class PhotoPagedListAdapter(
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val photo = getItem(position)
-        val favorite = favoritesManager.isFavorite(photo)
+        val favorite = favoritesRepository.isFavorite(photo)
 
         holder.bind(photo, favorite, clickCallback, longClickCallback, favoriteClickCallback)
     }

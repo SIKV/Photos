@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class PexelsPhoto(
+class PexelsPhoto(
         @SerializedName("url")
         val url: String,
 
@@ -12,25 +12,11 @@ data class PexelsPhoto(
         val photographer: String,
 
         @SerializedName("src")
-        val src: PexelsSrc,
-
-        private var favorite: Boolean = false
-) : Photo {
+        val src: PexelsSrc
+) : Photo() {
 
     companion object {
         const val SOURCE = "Pexels"
-    }
-
-    override fun equals(other: Any?): Boolean {
-        return if (other !is Photo) {
-            false
-        } else {
-            this.getPhotoId() == other.getPhotoId()
-        }
-    }
-
-    override fun hashCode(): Int {
-        return getPhotoId().hashCode()
     }
 
     override fun getPhotoId(): String {
@@ -71,13 +57,5 @@ data class PexelsPhoto(
 
     override fun getSourceUrl(): String {
         return url
-    }
-
-    override fun isFavoritePhoto(): Boolean {
-        return favorite
-    }
-
-    override fun setIsFavorite(favorite: Boolean) {
-        this.favorite = favorite
     }
 }

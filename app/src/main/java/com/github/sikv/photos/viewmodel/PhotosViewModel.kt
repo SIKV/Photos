@@ -12,14 +12,14 @@ import com.github.sikv.photos.data.DataSourceState
 import com.github.sikv.photos.data.PhotoSource
 import com.github.sikv.photos.data.PhotosDataSource
 import com.github.sikv.photos.data.PhotosDataSourceFactory
-import com.github.sikv.photos.manager.FavoritesManager
+import com.github.sikv.photos.data.FavoritesRepository
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.Event
 import com.github.sikv.photos.util.VoidEvent
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
-class PhotosViewModel : ViewModel(), FavoritesManager.Callback {
+class PhotosViewModel : ViewModel(), FavoritesRepository.Callback {
 
     companion object {
         const val INITIAL_LOAD_SIZE = 10
@@ -27,7 +27,7 @@ class PhotosViewModel : ViewModel(), FavoritesManager.Callback {
     }
 
     @Inject
-    lateinit var favoritesManager: FavoritesManager
+    lateinit var favoritesRepository: FavoritesRepository
 
     private val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
@@ -50,13 +50,13 @@ class PhotosViewModel : ViewModel(), FavoritesManager.Callback {
     init {
         App.instance.appComponent.inject(this)
 
-        favoritesManager.subscribe(this)
+        favoritesRepository.subscribe(this)
     }
 
     override fun onCleared() {
         super.onCleared()
 
-        favoritesManager.unsubscribe(this)
+        favoritesRepository.unsubscribe(this)
     }
 
     override fun onFavoriteChanged(photo: Photo, favorite: Boolean) {
@@ -68,7 +68,7 @@ class PhotosViewModel : ViewModel(), FavoritesManager.Callback {
     }
 
     fun invertFavorite(photo: Photo) {
-        favoritesManager.invertFavorite(photo)
+        favoritesRepository.invertFavorite(photo)
     }
 
     fun getState(photoSource: PhotoSource): LiveData<DataSourceState>? {
