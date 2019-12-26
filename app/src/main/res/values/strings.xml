@@ -37,7 +37,7 @@
     <string name="no_results_found">NO RESULTS FOUND</string>
     <string name="can_not_find_any_photos_matching">WE CAN\'T FIND ANY PHOTOS MATCHING YOUR SEARCH</string>
     <string name="loading_error">LOADING ERROR</string>
-    <string name="delete">Delete</string>
+    <string name="delete_all">Delete All</string>
     <string name="photos">Photos</string>
     <string name="list">List</string>
     <string name="grid">Grid</string>

@@ -5,16 +5,15 @@
     <item android:id="@+id/itemViewList"
         android:title="@string/list"
         android:icon="@drawable/ic_view_list_24dp"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
     <item android:id="@+id/itemViewGrid"
         android:title="@string/grid"
         android:icon="@drawable/ic_view_grid_24dp"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/itemDelete"
-        android:title="@string/delete"
-        android:icon="@drawable/ic_delete_24dp"
-        app:showAsAction="always"/>
+    <item android:id="@+id/itemDeleteAll"
+        android:title="@string/delete_all"
+        android:icon="@drawable/ic_delete_24dp" />
 
 </menu>

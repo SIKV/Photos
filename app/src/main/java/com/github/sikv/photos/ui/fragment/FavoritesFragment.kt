@@ -80,7 +80,7 @@ class FavoritesFragment : BaseFragment() {
                         listOf(
                                 R.id.itemViewList,
                                 R.id.itemViewGrid,
-                                R.id.itemDelete),
+                                R.id.itemDeleteAll),
                         listOf(
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {

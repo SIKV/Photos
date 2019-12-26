@@ -42,7 +42,7 @@
     </style>
 
     <style name="Toolbar">
-        <item name="colorControlNormal">@android:color/white</item>
+        <item name="colorControlNormal">@color/colorIcon</item>
     </style>
 
     <style name="ToolbarTitle">
