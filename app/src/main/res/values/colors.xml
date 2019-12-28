@@ -18,4 +18,6 @@
     <color name="colorSearchBackground">#A3EEEEEE</color>
     <color name="colorBottomSheetClose">#DDDDDD</color>
     <color name="colorPhotoOverlayContent">#BBBBBB</color>
+    <color name="colorWarningIcon">#FFEB3B</color>
+
 </resources>

@@ -20,7 +20,6 @@ import com.github.sikv.photos.viewmodel.FavoritesViewModelFactory
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favorites.*
-import kotlinx.android.synthetic.main.layout_scrollable_toolbar.*
 
 class FavoritesFragment : BaseFragment() {
 
@@ -56,7 +55,7 @@ class FavoritesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbarTitleText.setText(R.string.favorites)
+        ViewUtils.setToolbarTitle(this, R.string.favorites)
 
         favoritesRecycler.adapter = photoAdapter
 
@@ -139,6 +138,14 @@ class FavoritesFragment : BaseFragment() {
                             }
                         })
                         .show()
+            }
+        })
+
+        viewModel.localStorageWaringVisibilityLiveData.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                ViewUtils.showToolbarSubtitle(this, R.string.local_storage, R.drawable.ic_warning_16dp)
+            } else {
+                ViewUtils.hideToolbarSubtitle(this)
             }
         })
     }
