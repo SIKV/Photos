@@ -56,7 +56,7 @@ class SettingsFragment : BaseFragment() {
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             return when (preference?.key) {
                 getString(R.string._pref_login) -> {
-                    viewModel.login()
+                    showFragment(LoginFragment.newInstance())
                     true
                 }
 

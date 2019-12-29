@@ -28,6 +28,7 @@
     <string name="cn_set_wallpaper_close_or_cancel_icon">Set wallpaper close or cancel icon</string>
     <string name="cn_set_wallpaper_status_icon">Set wallpaper status icon</string>
     <string name="cn_photographer_image">Photographer image</string>
+    <string name="cn_cloud_image">Cloud image</string>
 
     <string name="transition_photo">Transition Photo</string>
     <string name="photo_by_s_on_s">Photo by %s on %s</string>
@@ -62,7 +63,10 @@
     <string name="local_storage">Local Storage</string>
     <string name="login">Login</string>
     <string name="login_pref_summary">to be able to save your favorites and sync with other devices.</string>
+    <string name="login_summary">Login to be able to save your favorites and sync with other devices.</string>
     <string name="logout">Log Out</string>
     <string name="app_version">App Version</string>
+    <string name="google">Google</string>
+    <string name="facebook">Facebook</string>
 
 </resources>

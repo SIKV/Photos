@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="bgRoundButtonRadius">32dp</dimen>
-    <dimen name="bgRoundButtonStrokeWidth">2dp</dimen>
+    <dimen name="roundButtonRadius">32dp</dimen>
+    <dimen name="roundButtonStrokeWidth">2dp</dimen>
     <dimen name="photoCornerRadius">0dp</dimen>
     <dimen name="photoContentMarginX">12dp</dimen>
     <dimen name="recyclerPaddingTop">4dp</dimen>
@@ -10,4 +10,5 @@
     <dimen name="bottomSheetSideMargin">16dp</dimen>
     <dimen name="searchCornerRadius">12dp</dimen>
     <dimen name="searchMargins">6dp</dimen>
+    <dimen name="loginCenterSpacingY">36dp</dimen>
 </resources>

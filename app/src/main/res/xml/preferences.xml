@@ -14,42 +14,35 @@
         <Preference
             android:key="@string/_pref_logout"
             android:title="@string/logout"
-            app:iconSpaceReserved="false"
             app:isPreferenceVisible="false"
             tools:isPreferenceVisible="true" />
 
         <PreferenceCategory
-            android:title="@string/appearance"
-            app:iconSpaceReserved="false">
+            android:title="@string/appearance">
 
                 <SwitchPreference
                     android:key="@string/_pref_dark_theme"
                     android:title="@string/dark_theme"
-                    android:defaultValue="true"
-                    app:iconSpaceReserved="false" />
+                    android:defaultValue="true" />
 
         </PreferenceCategory>
 
         <PreferenceCategory
             android:title="@string/help"
-            app:iconSpaceReserved="false"
             app:allowDividerAbove="false">
 
                 <Preference
                     android:key="@string/_pref_report_problem"
-                    android:title="@string/report_problem"
-                    app:iconSpaceReserved="false" />
+                    android:title="@string/report_problem" />
 
                 <Preference
                     android:key="@string/_pref_send_feedback"
-                    android:title="@string/send_feedback"
-                    app:iconSpaceReserved="false" />
+                    android:title="@string/send_feedback" />
 
         </PreferenceCategory>
 
         <Preference
             android:key="@string/_pref_app_version"
-            android:title="@string/app_version"
-            app:iconSpaceReserved="false" />
+            android:title="@string/app_version" />
 
 </PreferenceScreen>

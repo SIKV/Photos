@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.sikv.photos.R
-import kotlinx.android.synthetic.main.layout_scrollable_toolbar.*
+import com.github.sikv.photos.util.ViewUtils
 
 class FeedbackFragment : BaseFragment() {
 
@@ -47,19 +47,14 @@ class FeedbackFragment : BaseFragment() {
 
         mode = arguments?.getInt(KEY_MODE) ?: 0
 
-        when (mode) {
-            MODE_REPORT_PROBLEM -> {
-                toolbarTitleText.setText(R.string.report_problem)
-            }
+        val title = when (mode) {
+            MODE_REPORT_PROBLEM -> R.string.report_problem
+            MODE_SEND_FEEDBACK -> R.string.send_feedback
 
-            MODE_SEND_FEEDBACK -> {
-                toolbarTitleText.setText(R.string.send_feedback)
-            }
+            else -> 0
         }
 
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_24dp)
-
-        toolbar.setNavigationOnClickListener {
+        ViewUtils.setToolbarTitleWithBackButton(this, title) {
             activity?.onBackPressed()
         }
     }

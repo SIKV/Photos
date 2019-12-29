@@ -55,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/authorText"
         android:text="@string/share"
-        style="@style/RoundButton" />
+        style="@style/RoundOutlineButton" />
 
     <Button
         android:id="@+id/setWallpaperButton"
@@ -64,6 +64,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/shareButton"
         android:text="@string/set_wallpaper"
-        style="@style/RoundButton" />
+        style="@style/RoundOutlineButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

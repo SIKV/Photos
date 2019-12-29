@@ -12,6 +12,7 @@
     <color name="colorSourceText">@color/colorText</color>
     <color name="colorOverlay">#AA000000</color>
     <color name="colorRipple">#353535</color>
+    <color name="colorRippleLight">#BCBCBC</color>
     <color name="colorNavigationIcon">#555555</color>
     <color name="colorPlaceholder">#EEEEEE</color>
     <color name="colorHint">#9E9E9E</color>

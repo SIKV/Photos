@@ -1,6 +1,5 @@
 package com.github.sikv.photos.viewmodel
 
-import android.os.Build
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,10 +41,6 @@ class PreferenceViewModel: ViewModel(), AccountManager.Callback {
 
     override fun onLoginStatusChanged(status: LoginStatus) {
         loginStatusChangedMutableLiveData.postValue(status)
-    }
-
-    fun login() {
-        accountManager.login()
     }
 
     fun logout() {
