@@ -10,6 +10,7 @@
     <string name="_pref_dark_theme">PreferenceDarkTheme</string>
     <string name="_pref_report_problem">PreferenceReportProblem</string>
     <string name="_pref_send_feedback">PreferenceSendFeedback</string>
+    <string name="_pref_app_version">PreferenceAppVersion</string>
 
     <!-- -->
 
@@ -62,5 +63,6 @@
     <string name="login">Login</string>
     <string name="login_pref_summary">to be able to save your favorites and sync with other devices.</string>
     <string name="logout">Log Out</string>
+    <string name="app_version">App Version</string>
 
 </resources>

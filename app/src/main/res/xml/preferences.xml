@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
         <Preference
+            android:key="@string/_pref_login"
             android:icon="@drawable/ic_cloud_24dp"
             android:title="@string/login"
             android:summary="@string/login_pref_summary"
-            android:key="@string/_pref_login"
             app:isPreferenceVisible="false"
             tools:isPreferenceVisible="true" />
 
         <Preference
-            android:title="@string/logout"
             android:key="@string/_pref_logout"
+            android:title="@string/logout"
             app:iconSpaceReserved="false"
             app:isPreferenceVisible="false"
             tools:isPreferenceVisible="true" />
@@ -24,8 +24,8 @@
 
                 <SwitchPreference
                     android:key="@string/_pref_dark_theme"
-                    android:defaultValue="true"
                     android:title="@string/dark_theme"
+                    android:defaultValue="true"
                     app:iconSpaceReserved="false" />
 
         </PreferenceCategory>
@@ -36,15 +36,20 @@
             app:allowDividerAbove="false">
 
                 <Preference
-                    android:title="@string/report_problem"
                     android:key="@string/_pref_report_problem"
+                    android:title="@string/report_problem"
                     app:iconSpaceReserved="false" />
 
                 <Preference
-                    android:title="@string/send_feedback"
                     android:key="@string/_pref_send_feedback"
+                    android:title="@string/send_feedback"
                     app:iconSpaceReserved="false" />
 
         </PreferenceCategory>
+
+        <Preference
+            android:key="@string/_pref_app_version"
+            android:title="@string/app_version"
+            app:iconSpaceReserved="false" />
 
 </PreferenceScreen>

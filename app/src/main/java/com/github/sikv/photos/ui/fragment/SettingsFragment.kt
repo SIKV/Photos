@@ -91,6 +91,12 @@ class SettingsFragment : BaseFragment() {
                 findPreference<Preference>(getString(R.string._pref_login))?.isVisible = it == LoginStatus.LOGGED_OUT
                 findPreference<Preference>(getString(R.string._pref_logout))?.isVisible = it == LoginStatus.LOGGED_IN
             })
+
+            viewModel.showAppVersionEvent.observe(viewLifecycleOwner, Observer {
+                it.getContentIfNotHandled()?.let { appVersion ->
+                    findPreference<Preference>(getString(R.string._pref_app_version))?.summary = appVersion
+                }
+            })
         }
 
         private fun showFragment(fragment: Fragment) {
