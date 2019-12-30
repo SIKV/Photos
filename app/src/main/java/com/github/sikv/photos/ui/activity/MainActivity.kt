@@ -27,7 +27,6 @@ class MainActivity : BaseActivity() {
 
         private const val PHOTOS_ITEM_ID = R.id.photos
         private const val SEARCH_ITEM_ID = R.id.search
-        private const val SETTINGS_ITEM_ID = R.id.settings
     }
 
     private val viewModel: MainViewModel by lazy {

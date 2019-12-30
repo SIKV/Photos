@@ -11,7 +11,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        App.instance?.messageLiveData?.observe(this, Observer {
+        App.instance.messageLiveData.observe(this, Observer {
             it?.getContentIfNotHandled()?.let { message ->
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             }
