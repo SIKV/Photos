@@ -14,7 +14,9 @@ import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.util.LoginStatus
 import com.github.sikv.photos.util.ViewUtils
+import com.github.sikv.photos.util.defaultStyle
 import com.github.sikv.photos.viewmodel.PreferenceViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class SettingsFragment : BaseFragment() {
 
@@ -44,6 +46,8 @@ class SettingsFragment : BaseFragment() {
             ViewModelProviders.of(this).get(PreferenceViewModel::class.java)
         }
 
+        private var signingInSnackbar: Snackbar? = null
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences, rootKey)
 
@@ -64,7 +68,7 @@ class SettingsFragment : BaseFragment() {
 
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             return when (preference?.key) {
-                getString(R.string._pref_login) -> {
+                getString(R.string._pref_sign_in) -> {
                     LoginDialogFragment.newInstance(View.OnClickListener {
                         viewModel.signInWithGoogle(this)
                     }).show(fragmentManager)
@@ -72,7 +76,7 @@ class SettingsFragment : BaseFragment() {
                     true
                 }
 
-                getString(R.string._pref_logout) -> {
+                getString(R.string._pref_sign_out) -> {
                     viewModel.signOut()
                     true
                 }
@@ -101,6 +105,17 @@ class SettingsFragment : BaseFragment() {
         private fun observe() {
             viewModel.loginStatusChangedLiveData.observe(viewLifecycleOwner, Observer {
                 handleVisibility(it)
+
+                if (it == LoginStatus.SIGNING_IN) {
+                    view?.let { view ->
+                        signingInSnackbar = Snackbar.make(view, R.string.signing_in, Snackbar.LENGTH_INDEFINITE)
+                                .defaultStyle()
+
+                        signingInSnackbar?.show()
+                    }
+                } else {
+                    signingInSnackbar?.dismiss()
+                }
             })
 
             viewModel.showAppVersionEvent.observe(viewLifecycleOwner, Observer {
@@ -111,8 +126,8 @@ class SettingsFragment : BaseFragment() {
         }
 
         private fun handleVisibility(loginStatus: LoginStatus) {
-            findPreference<Preference>(getString(R.string._pref_login))?.isVisible = loginStatus == LoginStatus.SIGNED_OUT
-            findPreference<Preference>(getString(R.string._pref_logout))?.isVisible = loginStatus == LoginStatus.SIGNED_IN
+            findPreference<Preference>(getString(R.string._pref_sign_in))?.isVisible = loginStatus == LoginStatus.SIGNED_OUT
+            findPreference<Preference>(getString(R.string._pref_sign_out))?.isVisible = loginStatus == LoginStatus.SIGNED_IN
         }
 
         private fun showFragment(fragment: Fragment) {

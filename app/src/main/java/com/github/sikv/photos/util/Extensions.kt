@@ -7,6 +7,7 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.github.sikv.photos.R
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,6 +36,13 @@ fun Snackbar.setTextColor(@ColorRes color: Int): Snackbar {
 
 fun Snackbar.setBackgroundColor(@ColorRes color: Int): Snackbar {
     this.view.setBackgroundColor(ContextCompat.getColor(context, color))
+    return this
+}
+
+fun Snackbar.defaultStyle(): Snackbar {
+    setTextColor(R.color.colorText)
+    setBackgroundColor(R.color.colorPrimaryDark)
+
     return this
 }
 

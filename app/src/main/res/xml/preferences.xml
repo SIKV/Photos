@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
         <Preference
-            android:key="@string/_pref_login"
+            android:key="@string/_pref_sign_in"
             android:icon="@drawable/ic_cloud_24dp"
-            android:title="@string/login"
+            android:title="@string/sign_in"
             android:summary="@string/login_pref_summary"
             app:isPreferenceVisible="false"
             tools:isPreferenceVisible="true" />
 
         <Preference
-            android:key="@string/_pref_logout"
-            android:title="@string/logout"
+            android:key="@string/_pref_sign_out"
+            android:title="@string/sign_out"
             app:isPreferenceVisible="false"
             tools:isPreferenceVisible="true" />
 

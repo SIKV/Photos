@@ -127,8 +127,7 @@ class FavoritesFragment : BaseFragment() {
         viewModel.deleteAllEvent.observe(viewLifecycleOwner, Observer { deleteEvent ->
             if (deleteEvent.getContentIfNotHandled() == true) {
                 Snackbar.make(rootLayout, R.string.deleted, Snackbar.LENGTH_LONG)
-                        .setTextColor(R.color.colorText)
-                        .setBackgroundColor(R.color.colorPrimaryDark)
+                        .defaultStyle()
                         .setAction(R.string.undo) {
                             viewModel.undoDeleteAll()
                         }

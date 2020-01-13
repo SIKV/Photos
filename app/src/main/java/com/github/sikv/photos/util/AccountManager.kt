@@ -63,6 +63,8 @@ class AccountManager @Inject constructor(context: Context) {
 
     fun signInWithGoogle(fragment: Fragment) {
         fragment.startActivityForResult(googleSignInClient.signInIntent, RC_GOOGLE_SIGN_IN)
+
+        loginStatus = LoginStatus.SIGNING_IN
     }
 
     fun handleSignInResult(requestCode: Int, resultCode: Int, data: Intent?) {
