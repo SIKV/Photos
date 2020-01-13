@@ -10,5 +10,4 @@
     <dimen name="bottomSheetSideMargin">16dp</dimen>
     <dimen name="searchCornerRadius">12dp</dimen>
     <dimen name="searchMargins">6dp</dimen>
-    <dimen name="loginCenterSpacingY">36dp</dimen>
 </resources>

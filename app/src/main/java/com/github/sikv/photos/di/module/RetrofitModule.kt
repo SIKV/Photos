@@ -26,6 +26,7 @@ class RetrofitModule {
     }
 
     @Provides
+    // TODO Should be singleton?
     fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY

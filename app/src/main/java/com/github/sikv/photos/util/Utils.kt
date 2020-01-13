@@ -2,19 +2,20 @@ package com.github.sikv.photos.util
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.net.Uri
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import kotlin.math.atan2
 import kotlin.math.sqrt
@@ -49,7 +50,7 @@ object Utils {
 
             val startIndexOfLink = textView.text.toString().indexOf(str)
 
-            spannableString.setSpan(android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+            spannableString.setSpan(StyleSpan(Typeface.BOLD),
                     startIndexOfLink, startIndexOfLink + str.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
             spannableString.setSpan(UnderlineSpan(),
@@ -58,6 +59,21 @@ object Utils {
 
         textView.movementMethod = LinkMovementMethod.getInstance()
         textView.setText(spannableString, TextView.BufferType.SPANNABLE)
+    }
+
+    fun makeBold(button: Button, bold: Array<String>) {
+        val spannableString = SpannableString(button.text)
+
+        for (i in bold.indices) {
+            val str = bold[i]
+
+            val startIndexOfLink = button.text.toString().indexOf(str)
+
+            spannableString.setSpan(StyleSpan(Typeface.BOLD),
+                    startIndexOfLink, startIndexOfLink + str.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        button.setText(spannableString, TextView.BufferType.SPANNABLE)
     }
 
     fun navigationBarHeight(context: Context): Int {
@@ -80,23 +96,9 @@ object Utils {
         intent.launchUrl(context, Uri.parse(url))
     }
 
-    fun showSoftInput(context: Context, view: View) {
-        val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(view, 0)
-    }
-
     fun hideSoftInput(context: Context, view: View) {
         val inputMethodManager = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    fun dp2px(dp: Int): Int {
-        App.instance?.let { app ->
-            return Math.round(dp * (app.resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT))
-
-        }
-
-        return 0
     }
 
     fun calculateP(x: Double, y: Double, z: Double,

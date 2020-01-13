@@ -11,7 +11,7 @@
 
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorIcon" />
+            <solid android:color="#5085EB" />
             <corners android:radius="@dimen/roundButtonRadius" />
         </shape>
     </item>

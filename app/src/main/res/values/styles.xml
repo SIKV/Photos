@@ -86,10 +86,10 @@
     </style>
 
     <style name="LoginButton">
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:textSize">18sp</item>
-        <item name="android:background">@drawable/bg_login_button</item>
     </style>
 
     <style name="BottomSheetButton">

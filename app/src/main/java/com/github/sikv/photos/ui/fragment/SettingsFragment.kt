@@ -1,5 +1,6 @@
 package com.github.sikv.photos.ui.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -43,25 +44,36 @@ class SettingsFragment : BaseFragment() {
             ViewModelProviders.of(this).get(PreferenceViewModel::class.java)
         }
 
+        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+            setPreferencesFromResource(R.xml.preferences, rootKey)
+
+            handleVisibility(viewModel.accountManager.loginStatus)
+        }
+
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
             observe()
         }
 
-        override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.preferences, rootKey)
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+
+            viewModel.handleSignInResult(requestCode, resultCode, data)
         }
 
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             return when (preference?.key) {
                 getString(R.string._pref_login) -> {
-                    showFragment(LoginFragment.newInstance())
+                    LoginDialogFragment.newInstance(View.OnClickListener {
+                        viewModel.signInWithGoogle(this)
+                    }).show(fragmentManager)
+
                     true
                 }
 
                 getString(R.string._pref_logout) -> {
-                    viewModel.logout()
+                    viewModel.signOut()
                     true
                 }
 
@@ -88,8 +100,7 @@ class SettingsFragment : BaseFragment() {
 
         private fun observe() {
             viewModel.loginStatusChangedLiveData.observe(viewLifecycleOwner, Observer {
-                findPreference<Preference>(getString(R.string._pref_login))?.isVisible = it == LoginStatus.LOGGED_OUT
-                findPreference<Preference>(getString(R.string._pref_logout))?.isVisible = it == LoginStatus.LOGGED_IN
+                handleVisibility(it)
             })
 
             viewModel.showAppVersionEvent.observe(viewLifecycleOwner, Observer {
@@ -97,6 +108,11 @@ class SettingsFragment : BaseFragment() {
                     findPreference<Preference>(getString(R.string._pref_app_version))?.summary = appVersion
                 }
             })
+        }
+
+        private fun handleVisibility(loginStatus: LoginStatus) {
+            findPreference<Preference>(getString(R.string._pref_login))?.isVisible = loginStatus == LoginStatus.SIGNED_OUT
+            findPreference<Preference>(getString(R.string._pref_logout))?.isVisible = loginStatus == LoginStatus.SIGNED_IN
         }
 
         private fun showFragment(fragment: Fragment) {

@@ -1,6 +1,7 @@
 package com.github.sikv.photos.util
 
 enum class LoginStatus {
-    LOGGED_IN,
-    LOGGED_OUT
+    NOT_SET,
+    SIGNED_IN,
+    SIGNED_OUT
 }

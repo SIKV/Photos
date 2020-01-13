@@ -37,7 +37,7 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
         accountManager.subscribe(this)
 
         // If a user is not logged in show Local Storage warning
-        localStorageWaringVisibilityMutableLiveData.postValue(accountManager.loginStatus == LoginStatus.LOGGED_OUT)
+        localStorageWaringVisibilityMutableLiveData.postValue(accountManager.loginStatus == LoginStatus.SIGNED_OUT)
     }
 
     override fun onCleared() {
@@ -48,12 +48,12 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
 
     override fun onLoginStatusChanged(status: LoginStatus) {
         when (status) {
-            LoginStatus.LOGGED_IN -> {
+            LoginStatus.SIGNED_IN -> {
                 // Hide Local Storage warning when a user has been logged in
                 localStorageWaringVisibilityMutableLiveData.postValue(false)
             }
 
-            LoginStatus.LOGGED_OUT -> {
+            LoginStatus.SIGNED_OUT -> {
                 // Show Local Storage warning when a user has been logged out
                 localStorageWaringVisibilityMutableLiveData.postValue(true)
             }

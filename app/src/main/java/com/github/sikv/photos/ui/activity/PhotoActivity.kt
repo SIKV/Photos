@@ -175,12 +175,12 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         Utils.makeClickable(authorText, arrayOf(authorName, source),
                 arrayOf(
                         object : ClickableSpan() {
-                            override fun onClick(view: View?) {
+                            override fun onClick(view: View) {
                                 viewModel.openAuthorUrl()
                             }
                         },
                         object : ClickableSpan() {
-                            override fun onClick(view: View?) {
+                            override fun onClick(view: View) {
                                 viewModel.openPhotoSource()
                             }
                         }

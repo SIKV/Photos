@@ -13,7 +13,6 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.util.Event
 import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.util.PhotoManager
 import kotlinx.coroutines.*
@@ -125,9 +124,7 @@ class DownloadPhotoService : Service() {
     }
 
     private fun postMessage(message: String) {
-        if (App.instance.messageLiveData.hasActiveObservers()) {
-            App.instance.messageLiveData.postValue(Event(message))
-        }
+        App.instance.postMessage(message)
     }
 
     private fun updateDownloadPhotoState(state: DownloadPhotoState) {

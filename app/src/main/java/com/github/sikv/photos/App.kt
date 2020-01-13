@@ -6,12 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.preference.PreferenceManager
-import com.github.sikv.photos.util.Event
 import com.github.sikv.photos.di.component.AppComponent
 import com.github.sikv.photos.di.component.DaggerAppComponent
 import com.github.sikv.photos.di.component.DaggerNetworkComponent
 import com.github.sikv.photos.di.component.NetworkComponent
 import com.github.sikv.photos.util.DownloadPhotoState
+import com.github.sikv.photos.util.Event
 import com.github.sikv.photos.util.SetWallpaperState
 
 class App : Application() {
@@ -29,7 +29,8 @@ class App : Application() {
         DaggerNetworkComponent.factory().create(applicationContext)
     }
 
-    val messageLiveData = MutableLiveData<Event<String>>()
+    private val messageMutableEvent = MutableLiveData<Event<String>>()
+    val messageEvent: LiveData<Event<String>> = messageMutableEvent
 
     private val downloadPhotoStateMutableLiveData = MutableLiveData<DownloadPhotoState>()
     private val setWallpaperStateMutableLiveData = MutableLiveData<SetWallpaperState>()
@@ -71,5 +72,13 @@ class App : Application() {
         val nightModeEnabled = preferenceManager.getBoolean(getString(R.string._pref_dark_theme), true)
 
         AppCompatDelegate.setDefaultNightMode(if (nightModeEnabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+    }
+
+    fun postMessage(message: String?) {
+        if (messageMutableEvent.hasActiveObservers()) {
+            message?.let {
+                messageMutableEvent.postValue(Event(it))
+            }
+        }
     }
 }
