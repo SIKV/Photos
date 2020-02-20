@@ -61,6 +61,10 @@ class AccountManager @Inject constructor(context: Context) {
         subscribers.remove(callback)
     }
 
+    fun isSignedIn(): Boolean {
+        return loginStatus == LoginStatus.SIGNED_IN
+    }
+
     fun signInWithGoogle(fragment: Fragment) {
         fragment.startActivityForResult(googleSignInClient.signInIntent, RC_GOOGLE_SIGN_IN)
 

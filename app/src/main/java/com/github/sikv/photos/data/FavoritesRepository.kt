@@ -5,13 +5,21 @@ import androidx.lifecycle.Transformations
 import com.github.sikv.photos.database.FavoritePhotoEntity
 import com.github.sikv.photos.database.FavoritesDao
 import com.github.sikv.photos.model.*
+import com.github.sikv.photos.util.AccountManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FavoritesRepository @Inject constructor(private val favoritesDao: FavoritesDao) {
+class FavoritesRepository @Inject constructor(
+        private val accountManager: AccountManager,
+        private val favoritesDao: FavoritesDao
+) {
+
+    companion object {
+        private const val FAVORITES_COLLECTION = "Favorites"
+    }
 
     interface Callback {
         fun onFavoriteChanged(photo: Photo, favorite: Boolean)
@@ -153,5 +161,9 @@ class FavoritesRepository @Inject constructor(private val favoritesDao: Favorite
             it.favorite = isFavoriteFromDatabase(it)
         }
         return response
+    }
+
+    fun sync() {
+        // TODO Implement
     }
 }
