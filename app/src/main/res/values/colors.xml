@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="launcherBackground">#1D2533</color>
+
     <color name="colorNavigationBar">@color/colorPrimaryDark</color>
     <color name="colorBackground">#FEFEFE</color>
     <color name="colorTitleText">@color/colorAccent</color>
@@ -20,5 +22,4 @@
     <color name="colorBottomSheetClose">#DDDDDD</color>
     <color name="colorPhotoOverlayContent">#BBBBBB</color>
     <color name="colorWarningIcon">#FFEB3B</color>
-
 </resources>
