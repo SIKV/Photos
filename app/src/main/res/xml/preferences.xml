@@ -22,6 +22,7 @@
 
                 <SwitchPreference
                     android:key="@string/_pref_dark_theme"
+                    android:icon="@drawable/ic_brush_24dp"
                     android:title="@string/dark_theme"
                     android:defaultValue="true" />
 
@@ -33,16 +34,19 @@
 
                 <Preference
                     android:key="@string/_pref_report_problem"
+                    android:icon="@drawable/ic_bug_report_24dp"
                     android:title="@string/report_problem" />
 
                 <Preference
                     android:key="@string/_pref_send_feedback"
+                    android:icon="@drawable/ic_feedback_24dp"
                     android:title="@string/send_feedback" />
 
         </PreferenceCategory>
 
         <Preference
             android:key="@string/_pref_app_version"
+            android:icon="@drawable/ic_info_24dp"
             android:title="@string/app_version" />
 
 </PreferenceScreen>
