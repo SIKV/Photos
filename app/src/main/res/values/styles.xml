@@ -34,11 +34,6 @@
         <item name="android:background">@drawable/bg_bottom_sheet</item>
     </style>
 
-    <style name="PhotoPreviewPopupAnimation">
-        <item name="android:windowEnterAnimation">@anim/zoom_in</item>
-        <item name="android:windowExitAnimation">@anim/zoom_out</item>
-    </style>
-
     <style name="Toolbar">
         <item name="colorControlNormal">@color/colorIcon</item>
     </style>
