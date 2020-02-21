@@ -1,11 +1,15 @@
 package com.github.sikv.photos.util
 
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.github.sikv.photos.R
 
 object ViewUtils {
@@ -42,5 +46,20 @@ object ViewUtils {
     fun hideToolbarSubtitle(fragment: Fragment) {
         val subtitleTextView = fragment.view?.findViewById<TextView>(R.id.toolbarSubtitleText)
         subtitleTextView?.visibility = View.GONE
+    }
+
+    fun favoriteAnimation(view: View) {
+        val favoriteAnimationDuration = 200L
+
+        val scaleAnimation = ScaleAnimation(0f, 1f, 0f, 1f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f)
+
+        scaleAnimation.duration = favoriteAnimationDuration
+        view.startAnimation(scaleAnimation)
+    }
+
+    fun disableChangeAnimations(recyclerView: RecyclerView) {
+        (recyclerView.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
     }
 }

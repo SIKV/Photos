@@ -14,6 +14,7 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
+import com.github.sikv.photos.util.ViewUtils
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_single_search.*
@@ -58,6 +59,7 @@ class SingleSearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         photosRecycler.adapter = photoAdapter
+        ViewUtils.disableChangeAnimations(photosRecycler)
 
         observe()
     }

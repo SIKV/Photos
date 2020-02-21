@@ -18,8 +18,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.ScaleAnimation
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
@@ -28,6 +26,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.DownloadPhotoState
 import com.github.sikv.photos.util.Utils
+import com.github.sikv.photos.util.ViewUtils
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
 import kotlinx.android.synthetic.main.activity_photo.*
@@ -35,8 +34,6 @@ import kotlinx.android.synthetic.main.activity_photo.*
 class PhotoActivity : BaseActivity(), SensorEventListener {
 
     companion object {
-        private const val FAVORITE_ANIMATION_DURATION = 200L
-
         private const val KEY_PHOTO = "key_photo"
 
         fun startActivity(activity: Activity, transitionView: View, photo: Photo) {
@@ -123,20 +120,11 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         return super.onPrepareOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.itemFavorite -> {
                 viewModel.invertFavorite()
-
-                val itemView = findViewById<View>(R.id.itemFavorite)
-
-                val scaleAnimation = ScaleAnimation(0f, 1f, 0f, 1f,
-                        Animation.RELATIVE_TO_SELF, 0.5f,
-                        Animation.RELATIVE_TO_SELF, 0.5f)
-
-                scaleAnimation.duration = FAVORITE_ANIMATION_DURATION
-                itemView.startAnimation(scaleAnimation)
-
+                ViewUtils.favoriteAnimation(findViewById<View>(R.id.itemFavorite))
                 true
             }
             else -> {
@@ -197,7 +185,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
     private fun updateFavoriteMenuItemIcon(favorite: Boolean) {
         favoriteMenuItemIcon = if (favorite) {
-            R.drawable.ic_favorite_white_24dp
+            R.drawable.ic_favorite_red_24dp
         } else {
             R.drawable.ic_favorite_border_white_24dp
         }

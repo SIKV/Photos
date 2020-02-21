@@ -17,10 +17,7 @@ import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
-import com.github.sikv.photos.util.SPAN_COUNT_GRID
-import com.github.sikv.photos.util.SPAN_COUNT_LIST
-import com.github.sikv.photos.util.scrollToTop
-import com.github.sikv.photos.util.setVisibilityAnimated
+import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.fragment_photos.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
@@ -77,6 +74,7 @@ class PhotosFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         photosRecycler.adapter = photoAdapter
+        ViewUtils.disableChangeAnimations(photosRecycler)
 
         createPhotoSourceDialog()
         setListeners()

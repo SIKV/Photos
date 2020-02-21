@@ -3,7 +3,6 @@
     <dimen name="roundButtonRadius">32dp</dimen>
     <dimen name="roundButtonStrokeWidth">2dp</dimen>
     <dimen name="photoCornerRadius">0dp</dimen>
-    <dimen name="photoContentMarginX">12dp</dimen>
     <dimen name="recyclerPaddingTop">4dp</dimen>
     <dimen name="appBarElevation">16dp</dimen>
     <dimen name="bottomSheetCornerRadius">10dp</dimen>

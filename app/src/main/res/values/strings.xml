@@ -59,7 +59,6 @@
     <string name="photo_downloading_canceled">Photo downloading has been canceled</string>
     <string name="canceling">Canceling…</string>
     <string name="photo_ready">Photo is ready</string>
-    <string name="on_s">on %s</string>
     <string name="local_storage">Local Storage</string>
     <string name="sign_in">Sign In</string>
     <string name="login_pref_summary">to be able to save your favorites and sync with other devices.</string>
