@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,6 +18,21 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/shape_bottom_sheet_close" />
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        tools:text="Title"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:textColor="@color/colorText"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <!-- Populated dynamically -->
 

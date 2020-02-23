@@ -64,7 +64,6 @@
     <string name="login_pref_summary">to be able to save your favorites and sync with other devices.</string>
     <string name="sign_out">Sign Out</string>
     <string name="app_version">App Version</string>
-    <string name="sing_in_with_google">Sign in with Google</string>
     <string name="google">Google</string>
     <string name="signing_in">Signing in, please wait…</string>
     <string name="submit">Submit</string>
