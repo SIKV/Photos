@@ -34,6 +34,7 @@ class SettingsFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         ViewUtils.setToolbarTitle(this, R.string.settings)
+        ViewUtils.disableScrollableToolbar(this)
     }
 
     /**

@@ -11,11 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.github.sikv.photos.R
+import com.google.android.material.appbar.AppBarLayout
 
 object ViewUtils {
 
     fun setToolbarTitle(fragment: Fragment, @StringRes title: Int) {
         fragment.view?.findViewById<TextView>(R.id.toolbarTitleText)?.setText(title)
+    }
+
+    fun disableScrollableToolbar(fragment: Fragment) {
+        (fragment.view?.findViewById<Toolbar>(R.id.toolbar)?.layoutParams as? AppBarLayout.LayoutParams)?.scrollFlags = 0
     }
 
     fun setToolbarTitleWithBackButton(fragment: Fragment, @StringRes title: Int, navigationOnClickListener: () -> Unit) {

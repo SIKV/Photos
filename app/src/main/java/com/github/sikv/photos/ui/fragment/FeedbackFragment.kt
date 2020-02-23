@@ -1,11 +1,17 @@
 package com.github.sikv.photos.ui.fragment
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.github.sikv.photos.R
+import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
+import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.ViewUtils
+import kotlinx.android.synthetic.main.fragment_feedback.*
 
 class FeedbackFragment : BaseFragment() {
 
@@ -14,6 +20,8 @@ class FeedbackFragment : BaseFragment() {
         private const val MODE_SEND_FEEDBACK = 2
 
         private const val KEY_MODE = "key_mode"
+
+        private const val DESCRIPTION_MAX_LENGTH = 500
 
         fun newReportProblemFragment(): FeedbackFragment {
             val args = Bundle()
@@ -47,6 +55,29 @@ class FeedbackFragment : BaseFragment() {
 
         mode = arguments?.getInt(KEY_MODE) ?: 0
 
+        init(mode)
+    }
+
+    override fun onCreateToolbar(): FragmentToolbar? {
+        return FragmentToolbar.Builder()
+                .withId(R.id.toolbar)
+                .withMenu(R.menu.menu_feedback)
+                .withMenuItems(
+                        listOf(
+                                R.id.itemSubmit
+                        ),
+                        listOf(
+                                object : MenuItem.OnMenuItemClickListener {
+                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                                        // TODO Implement
+                                        return true
+                                    }
+                                }
+                        )
+                ).build()
+    }
+
+    private fun init(mode: Int) {
         val title = when (mode) {
             MODE_REPORT_PROBLEM -> R.string.report_problem
             MODE_SEND_FEEDBACK -> R.string.send_feedback
@@ -55,7 +86,35 @@ class FeedbackFragment : BaseFragment() {
         }
 
         ViewUtils.setToolbarTitleWithBackButton(this, title) {
+            Utils.hideSoftInput(context, descriptionEdit)
             activity?.onBackPressed()
         }
+
+        Utils.showSoftInput(context, descriptionEdit)
+
+        when (mode) {
+            MODE_REPORT_PROBLEM -> {
+                descriptionEdit.setHint(R.string.what_went_wrong)
+            }
+            MODE_SEND_FEEDBACK -> {
+                descriptionEdit.setHint(R.string.what_to_improve)
+            }
+        }
+
+        descriptionEdit.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                updateDescriptionLimitText(s?.length)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+        })
+
+        updateDescriptionLimitText(0)
+    }
+
+    private fun updateDescriptionLimitText(length: Int?) {
+        limitText.text = getString(R.string.d_delimiter_d, length, DESCRIPTION_MAX_LENGTH)
     }
 }

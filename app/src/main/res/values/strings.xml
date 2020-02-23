@@ -67,5 +67,8 @@
     <string name="sing_in_with_google">Sign in with Google</string>
     <string name="google">Google</string>
     <string name="signing_in">Signing in, please wait…</string>
-
+    <string name="submit">Submit</string>
+    <string name="what_to_improve">What would you like us to improve?</string>
+    <string name="what_went_wrong">What went wrong?</string>
+    <string name="d_delimiter_d">%d/%d</string>
 </resources>
