@@ -8,10 +8,10 @@
 
     <color name="colorNavigationBar">@color/colorPrimaryDark</color>
     <color name="colorBackground">#FEFEFE</color>
-    <color name="colorTitleText">@color/colorAccent</color>
+    <color name="colorTitleText">#555555</color>
     <color name="colorText">#555555</color>
     <color name="colorIcon">#555555</color>
-    <color name="colorSourceText">@color/colorText</color>
+    <color name="colorSourceText">@color/colorAccent</color>
     <color name="colorOverlay">#AA000000</color>
     <color name="colorRipple">#353535</color>
     <color name="colorRippleLight">#BCBCBC</color>
@@ -20,6 +20,6 @@
     <color name="colorHint">#9E9E9E</color>
     <color name="colorSearchBackground">#A3EEEEEE</color>
     <color name="colorBottomSheetClose">#DDDDDD</color>
-    <color name="colorWarningIcon">#FFEB3B</color>
+    <color name="colorWarningIcon">#FFC107</color>
     <color name="colorRed">#EF4141</color>
 </resources>

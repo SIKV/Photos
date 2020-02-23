@@ -7,9 +7,9 @@
     <color name="colorTitleText">#FFFFFF</color>
     <color name="colorText">#FFFFFF</color>
     <color name="colorIcon">#EEEEEE</color>
-    <color name="colorSourceText">@color/colorAccent</color>
     <color name="colorNavigationIcon">#FFFFFF</color>
     <color name="colorSearchBackground">#151A24</color>
     <color name="colorPlaceholder">#1D2533</color>
     <color name="colorBottomSheetClose">#151A24</color>
+    <color name="colorWarningIcon">#FFEB3B</color>
 </resources>
