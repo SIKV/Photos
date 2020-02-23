@@ -70,10 +70,7 @@ class SettingsFragment : BaseFragment() {
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             return when (preference?.key) {
                 getString(R.string._pref_sign_in) -> {
-                    LoginDialogFragment.newInstance(View.OnClickListener {
-                        viewModel.signInWithGoogle(this)
-                    }).show(fragmentManager)
-
+                    viewModel.signInWithGoogle(this)
                     true
                 }
 

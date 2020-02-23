@@ -6,13 +6,14 @@
         <Preference
             android:key="@string/_pref_sign_in"
             android:icon="@drawable/ic_cloud_24dp"
-            android:title="@string/sign_in"
-            android:summary="@string/login_pref_summary"
+            android:title="@string/sign_in_with_google"
+            android:summary="@string/sign_in_pref_summary"
             app:isPreferenceVisible="false"
             tools:isPreferenceVisible="true" />
 
         <Preference
             android:key="@string/_pref_sign_out"
+            android:icon="@drawable/ic_sign_out_24dp"
             android:title="@string/sign_out"
             app:isPreferenceVisible="false"
             tools:isPreferenceVisible="true" />

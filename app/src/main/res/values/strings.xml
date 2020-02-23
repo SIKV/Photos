@@ -60,11 +60,10 @@
     <string name="canceling">Canceling…</string>
     <string name="photo_ready">Photo is ready</string>
     <string name="local_storage">Local Storage</string>
-    <string name="sign_in">Sign In</string>
-    <string name="login_pref_summary">to be able to save your favorites and sync with other devices.</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_in_pref_summary">to be able to sync your favorites with other devices.</string>
     <string name="sign_out">Sign Out</string>
     <string name="app_version">App Version</string>
-    <string name="google">Google</string>
     <string name="signing_in">Signing in, please wait…</string>
     <string name="submit">Submit</string>
     <string name="what_to_improve">What would you like us to improve?</string>
