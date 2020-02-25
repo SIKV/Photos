@@ -27,6 +27,16 @@ object ViewUtils {
         setToolbarTitleWithButton(fragment, title, R.drawable.ic_arrow_back_24dp, navigationOnClickListener)
     }
 
+    fun showToolbarBackButton(fragment: Fragment, navigationOnClickListener: () -> Unit) {
+        fragment.view?.findViewById<Toolbar>(R.id.toolbar)?.run {
+            setNavigationIcon(R.drawable.ic_arrow_back_24dp)
+
+            setNavigationOnClickListener {
+                navigationOnClickListener()
+            }
+        }
+    }
+
     private fun setToolbarTitleWithButton(fragment: Fragment, @StringRes title: Int, @DrawableRes navigationIcon: Int, navigationOnClickListener: () -> Unit) {
         val toolbar = fragment.view?.findViewById<Toolbar>(R.id.toolbar)
         val toolbarTitleTextView = fragment.view?.findViewById<TextView>(R.id.toolbarTitleText)
@@ -54,17 +64,55 @@ object ViewUtils {
     }
 
     fun favoriteAnimation(view: View) {
-        val favoriteAnimationDuration = 200L
+        view.startAnimation(getScaleAnimation(0F, 1.1F, 0F, 1.1F))
+    }
 
-        val scaleAnimation = ScaleAnimation(0f, 1f, 0f, 1f,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f)
+    fun changeVisibilityWithAnimation(view: View, visibility: Int) {
+        val duration = 100L
 
-        scaleAnimation.duration = favoriteAnimationDuration
-        view.startAnimation(scaleAnimation)
+        if (visibility == View.VISIBLE) {
+            val animation = getScaleAnimation(0F, 1.1F, 0F, 1.1F, duration = duration)
+
+            animation.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {
+                    view.visibility = View.VISIBLE
+                }
+
+                override fun onAnimationRepeat(animation: Animation?) { }
+
+                override fun onAnimationEnd(animation: Animation?) { }
+            })
+
+            view.startAnimation(animation)
+
+        } else {
+            val animation = getScaleAnimation(1F, 0F, 1F, 0F, duration = duration)
+
+            animation.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) { }
+
+                override fun onAnimationRepeat(animation: Animation?) { }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    view.visibility = View.INVISIBLE
+                }
+            })
+
+            view.startAnimation(animation)
+        }
     }
 
     fun disableChangeAnimations(recyclerView: RecyclerView) {
         (recyclerView.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+    }
+
+    private fun getScaleAnimation(fromX: Float, toX: Float, fromY: Float, toY: Float, duration: Long = 200): ScaleAnimation {
+        val scaleAnimation = ScaleAnimation(fromX, toX, fromY, toY,
+                Animation.RELATIVE_TO_SELF, 0.5F,
+                Animation.RELATIVE_TO_SELF, 0.5F)
+
+        scaleAnimation.duration = duration
+
+        return scaleAnimation
     }
 }

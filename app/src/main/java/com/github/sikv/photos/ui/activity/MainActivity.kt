@@ -35,7 +35,7 @@ class MainActivity : BaseActivity() {
 
     private val fragments = listOf(
             PhotosFragment(),
-            SearchFragment(),
+            SearchDashboardFragment(),
             FavoritesFragment(),
             SettingsFragment()
     )

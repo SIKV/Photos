@@ -23,6 +23,7 @@
     <string name="cn_favorite_icon">Favorite icon</string>
     <string name="cn_loading_error_icon">Loading error icon</string>
     <string name="cn_clear_button">Clear button</string>
+    <string name="cn_voice_input_button">Voice input button</string>
     <string name="cn_item_icon">Item icon</string>
     <string name="cn_navigate_next_icon">Navigate next icon</string>
     <string name="cn_set_wallpaper_close_or_cancel_icon">Set wallpaper close or cancel icon</string>
