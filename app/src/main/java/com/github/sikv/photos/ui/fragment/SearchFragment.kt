@@ -22,6 +22,20 @@ class SearchFragment : BaseFragment() {
 
     companion object {
         private const val KEY_LAST_SEARCH_TEXT = "key_last_search_text"
+        private const val EXTRA_SEARCH_TEXT = "extra_search_text"
+
+        fun newInstance(searchText: String? = null): SearchFragment {
+            val fragment = SearchFragment()
+
+            searchText?.let {
+                val args = Bundle()
+                args.putString(EXTRA_SEARCH_TEXT, it)
+
+                fragment.arguments = args
+            }
+
+            return fragment
+        }
     }
 
     private lateinit var viewPagerAdapter: SearchViewPagerAdapter
@@ -39,7 +53,13 @@ class SearchFragment : BaseFragment() {
             activity?.onBackPressed()
         }
 
-        initViewPager()
+        initViewPager {
+            arguments?.getString(EXTRA_SEARCH_TEXT)?.let { searchText ->
+                searchEdit.append(searchText)
+                searchPhotos(searchText)
+            }
+        }
+
         setListeners()
 
         changeClearButtonVisibility(false, withAnimation = false)
@@ -66,11 +86,11 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun searchPhotos(text: String) {
+        Utils.hideSoftInput(context, searchEdit)
+
         lastSearchText = text
 
         viewPagerAdapter.searchPhotos(viewPager, text)
-
-        tabLayout.visibility = View.VISIBLE
     }
 
     private fun changeClearButtonVisibility(visible: Boolean, withAnimation: Boolean = true) {
@@ -85,24 +105,24 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    private fun initViewPager() {
+    private fun initViewPager(after: () -> Unit) {
         viewPagerAdapter = SearchViewPagerAdapter(childFragmentManager)
 
         viewPager.adapter = viewPagerAdapter
 
         tabLayout.setupWithViewPager(viewPager)
+
+        viewPager.post {
+            after()
+        }
     }
 
     private fun setListeners() {
-        searchEdit.setOnEditorActionListener { textView, actionId, _ ->
+        searchEdit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                Utils.hideSoftInput(context!!, searchEdit)
-                searchEdit.clearFocus()
-
-                searchPhotos(textView.text.toString())
+                searchPhotos(searchEdit.text.toString())
                 return@setOnEditorActionListener true
             }
-
             return@setOnEditorActionListener false
         }
 
@@ -120,6 +140,7 @@ class SearchFragment : BaseFragment() {
 
         searchClearButton.setOnClickListener {
             searchEdit.text.clear()
+            Utils.showSoftInput(context, searchEdit)
         }
     }
 
