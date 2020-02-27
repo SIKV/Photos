@@ -27,7 +27,10 @@ class SearchDashboardFragment : BaseFragment() {
         setListeners()
 
         val tagList = listOf("Tag 1", "Tag 2", "Tag 3", "Tag 4", "Tag 5")
-        tagsRecycler.adapter = TagAdapter(tagList)
+
+        tagsRecycler.adapter = TagAdapter(tagList) { tag ->
+            showSearchFragment(searchText = tag)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

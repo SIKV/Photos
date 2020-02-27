@@ -64,7 +64,11 @@ class SearchFragment : BaseFragment() {
 
         changeClearButtonVisibility(false, withAnimation = false)
 
-        Utils.showSoftInput(context, searchEdit)
+        val showKeyboard = arguments?.getString(EXTRA_SEARCH_TEXT) == null
+
+        if (showKeyboard) {
+            Utils.showSoftInput(context, searchEdit)
+        }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

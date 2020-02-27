@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#FFFFFF</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorAccentA25">#25FF4081</color>
+
     <color name="launcherBackground">#1D2533</color>
 
     <color name="colorNavigationBar">@color/colorPrimaryDark</color>

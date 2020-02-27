@@ -1,12 +1,18 @@
 package com.github.sikv.photos.ui.adapter.viewholder
 
 import android.view.View
+import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_tag.view.*
 
 class TagViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(tag: String) {
-        itemView.tagText.text = tag
+    fun bind(tag: String, clickCallback: (String) -> Unit) {
+        (itemView as? Button)?.apply {
+            text = tag
+
+            setOnClickListener {
+                clickCallback(tag)
+            }
+        }
     }
 }
