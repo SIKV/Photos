@@ -4,15 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sikv.photos.R
+import com.github.sikv.photos.model.SearchTag
 import com.github.sikv.photos.ui.adapter.viewholder.TagViewHolder
 
 class TagAdapter(
-        private val tags: List<String>,
-        private val clickCallback: (String) -> Unit
+        private val tags: List<SearchTag>,
+        private val clickCallback: (SearchTag) -> Unit
 ) : RecyclerView.Adapter<TagViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TagViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_tag, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_search_tag, parent, false)
         return TagViewHolder(view)
     }
 

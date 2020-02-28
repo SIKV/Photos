@@ -25,6 +25,7 @@ interface AppComponent {
     fun inject(viewModel: MainViewModel)
     fun inject(viewModel: PhotosViewModel)
     fun inject(viewModel: SearchViewModel)
+    fun inject(viewModel: SearchDashboardViewModel)
     fun inject(viewModel: PhotoViewModel)
     fun inject(viewModel: FavoritesViewModel)
     fun inject(viewModel: PreferenceViewModel)

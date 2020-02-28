@@ -46,7 +46,7 @@ class AccountManager @Inject constructor(context: Context) {
     )
 
     init {
-        loginStatus = if (auth.currentUser != null) {
+        loginStatus = if (isSignedIn()) {
             LoginStatus.SIGNED_IN
         } else {
             LoginStatus.SIGNED_OUT
@@ -61,8 +61,29 @@ class AccountManager @Inject constructor(context: Context) {
         subscribers.remove(callback)
     }
 
-    fun isSignedIn(): Boolean {
-        return loginStatus == LoginStatus.SIGNED_IN
+    private fun isSignedIn(): Boolean {
+        return auth.currentUser != null && auth.currentUser?.isAnonymous == false
+    }
+
+    private fun isSignedInAnonymously(): Boolean {
+        return auth.currentUser != null && auth.currentUser?.isAnonymous == true
+    }
+
+    fun signInAnonymously(doAfter: () -> Unit) {
+        if (isSignedIn() || isSignedInAnonymously() ) {
+            Utils.log(javaClass,"signInAnonymously(): already singed in")
+            doAfter()
+        } else {
+            auth.signInAnonymously()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Utils.log(javaClass,"signInAnonymously(): singed in anonymously")
+                            doAfter()
+                        }
+                    }.addOnFailureListener {
+                        Utils.log(javaClass,"signInAnonymously(): error: ${it.localizedMessage}")
+                    }
+        }
     }
 
     fun signInWithGoogle(fragment: Fragment) {
@@ -100,10 +121,8 @@ class AccountManager @Inject constructor(context: Context) {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         loginStatus = LoginStatus.SIGNED_IN
-
                     } else {
                         loginStatus = LoginStatus.SIGNED_OUT
-
                         App.instance.postMessage("Error signing in...")
                     }
                 }

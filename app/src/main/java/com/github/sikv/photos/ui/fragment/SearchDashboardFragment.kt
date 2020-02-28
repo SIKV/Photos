@@ -7,14 +7,21 @@ import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.adapter.TagAdapter
+import com.github.sikv.photos.viewmodel.SearchDashboardViewModel
 import kotlinx.android.synthetic.main.fragment_search_dashboard.*
 
 class SearchDashboardFragment : BaseFragment() {
 
     companion object {
         private const val SPEECH_RECOGNIZER_REQUEST_CODE = 125
+    }
+
+    private val viewModel: SearchDashboardViewModel by lazy {
+        ViewModelProviders.of(this).get(SearchDashboardViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -24,13 +31,11 @@ class SearchDashboardFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        searchTagsRecycler.visibility = View.GONE
+
         setListeners()
 
-        val tagList = listOf("Tag 1", "Tag 2", "Tag 3", "Tag 4", "Tag 5")
-
-        tagsRecycler.adapter = TagAdapter(tagList) { tag ->
-            showSearchFragment(searchText = tag)
-        }
+        observe()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -43,6 +48,16 @@ class SearchDashboardFragment : BaseFragment() {
         }
 
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun observe() {
+        viewModel.searchTagsLiveData.observe(viewLifecycleOwner, Observer {
+            searchTagsRecycler.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+
+            searchTagsRecycler.adapter = TagAdapter(it) { tag ->
+                showSearchFragment(searchText = tag.text)
+            }
+        })
     }
 
     private fun showSearchFragment(searchText: String? = null) {

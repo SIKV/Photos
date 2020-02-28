@@ -10,6 +10,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -24,6 +25,10 @@ const val SPAN_COUNT_LIST = 1
 const val SPAN_COUNT_GRID = 2
 
 object Utils {
+
+    fun<T> log(clazz: Class<T>, text: String) {
+        Log.i(clazz.simpleName, text)
+    }
 
     fun makeClickable(textView: TextView, clickable: Array<String>, clickableSpans: Array<ClickableSpan>) {
         val spannableString = SpannableString(textView.text)
