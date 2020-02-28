@@ -30,6 +30,7 @@
     <string name="cn_set_wallpaper_status_icon">Set wallpaper status icon</string>
     <string name="cn_photographer_image">Photographer image</string>
     <string name="cn_cloud_image">Cloud image</string>
+    <string name="cn_selected_status_image">Selected status image</string>
 
     <string name="transition_photo">Transition Photo</string>
     <string name="photo_by_s_on_s">Photo by %s on %s</string>

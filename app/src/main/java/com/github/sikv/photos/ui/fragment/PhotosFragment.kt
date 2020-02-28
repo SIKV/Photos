@@ -64,8 +64,6 @@ class PhotosFragment : BaseFragment() {
             setMenuItemVisibility(R.id.itemViewGrid, field == SPAN_COUNT_LIST)
         }
 
-    private lateinit var photoSourceDialog: OptionsBottomSheetDialogFragment
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_photos, container, false)
     }
@@ -76,7 +74,6 @@ class PhotosFragment : BaseFragment() {
         photosRecycler.adapter = photoAdapter
         ViewUtils.disableChangeAnimations(photosRecycler)
 
-        createPhotoSourceDialog()
         setListeners()
 
         if (savedInstanceState != null) {
@@ -201,23 +198,23 @@ class PhotosFragment : BaseFragment() {
 
     private fun setListeners() {
         toolbarTitleLayout.setOnClickListener {
-            photoSourceDialog.show(childFragmentManager)
+            showPhotoSourceDialog()
         }
     }
 
-    private fun createPhotoSourceDialog() {
-        photoSourceDialog = OptionsBottomSheetDialogFragment.newInstance(
-                listOf(getString(R.string.unsplash), getString(R.string.pexels))) { index ->
+    private fun showPhotoSourceDialog() {
+        val options = listOf(getString(R.string.unsplash), getString(R.string.pexels))
+        val selectedOptionIndex = if (currentSource == PhotoSource.UNSPLASH) 0 else 1
+
+        val photoSourceDialog = OptionsBottomSheetDialogFragment.newInstance(
+                options , selectedOptionIndex) { index ->
 
             when (index) {
-                0 -> {
-                    currentSource = PhotoSource.UNSPLASH
-                }
-
-                1 -> {
-                    currentSource = PhotoSource.PEXELS
-                }
+                0 -> currentSource = PhotoSource.UNSPLASH
+                1 -> currentSource = PhotoSource.PEXELS
             }
         }
+
+        photoSourceDialog.show(childFragmentManager)
     }
 }

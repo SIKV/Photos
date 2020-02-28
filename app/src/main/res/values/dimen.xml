@@ -6,7 +6,6 @@
     <dimen name="recyclerPaddingTop">4dp</dimen>
     <dimen name="appBarElevation">16dp</dimen>
     <dimen name="bottomSheetCornerRadius">10dp</dimen>
-    <dimen name="bottomSheetSideMargin">16dp</dimen>
     <dimen name="searchCornerRadius">12dp</dimen>
     <dimen name="searchMargins">6dp</dimen>
 </resources>
