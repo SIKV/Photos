@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_search_dashboard.*
 class SearchDashboardFragment : BaseFragment() {
 
     companion object {
-        private const val SPEECH_RECOGNIZER_REQUEST_CODE = 125
+        private const val REQUEST_CODE_SPEECH_RECOGNIZER = 125
     }
 
     private val viewModel: SearchDashboardViewModel by lazy {
@@ -39,7 +39,7 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == SPEECH_RECOGNIZER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE_SPEECH_RECOGNIZER && resultCode == Activity.RESULT_OK) {
             val spokenText = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.let { results ->
                 results[0]
             }
@@ -61,10 +61,10 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private fun showSearchFragment(searchText: String? = null) {
-        fragmentManager?.beginTransaction()
-                ?.replace(R.id.searchContainer, SearchFragment.newInstance(searchText))
-                ?.addToBackStack(null)
-                ?.commit()
+        childFragmentManager.beginTransaction()
+                .replace(R.id.searchContainer, SearchFragment.newInstance(searchText))
+                .addToBackStack(null)
+                .commit()
     }
 
     private fun showSpeechRecognizer() {
@@ -72,7 +72,7 @@ class SearchDashboardFragment : BaseFragment() {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         }
 
-        startActivityForResult(intent, SPEECH_RECOGNIZER_REQUEST_CODE)
+        startActivityForResult(intent, REQUEST_CODE_SPEECH_RECOGNIZER)
     }
 
     private fun setListeners() {

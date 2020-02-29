@@ -21,8 +21,8 @@ import kotlinx.android.synthetic.main.fragment_search.*
 class SearchFragment : BaseFragment() {
 
     companion object {
-        private const val KEY_LAST_SEARCH_TEXT = "key_last_search_text"
         private const val EXTRA_SEARCH_TEXT = "extra_search_text"
+        private const val EXTRA_LAST_SEARCH_TEXT = "extra_last_search_text"
 
         fun newInstance(searchText: String? = null): SearchFragment {
             val fragment = SearchFragment()
@@ -54,9 +54,11 @@ class SearchFragment : BaseFragment() {
         }
 
         initViewPager {
-            arguments?.getString(EXTRA_SEARCH_TEXT)?.let { searchText ->
-                searchEdit.append(searchText)
-                searchPhotos(searchText)
+            if (savedInstanceState == null) {
+                arguments?.getString(EXTRA_SEARCH_TEXT)?.let { searchText ->
+                    searchEdit.append(searchText)
+                    searchPhotos(searchText)
+                }
             }
         }
 
@@ -71,11 +73,17 @@ class SearchFragment : BaseFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        Utils.hideSoftInput(context, searchEdit)
+
+        super.onDestroyView()
+    }
+
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
 
         if (savedInstanceState != null) {
-            savedInstanceState.getString(KEY_LAST_SEARCH_TEXT)?.let { text ->
+            savedInstanceState.getString(EXTRA_LAST_SEARCH_TEXT)?.let { text ->
                 searchPhotos(text)
             }
         }
@@ -85,7 +93,7 @@ class SearchFragment : BaseFragment() {
         super.onSaveInstanceState(outState)
 
         lastSearchText?.let { text ->
-            outState.putSerializable(KEY_LAST_SEARCH_TEXT, text)
+            outState.putSerializable(EXTRA_LAST_SEARCH_TEXT, text)
         }
     }
 
