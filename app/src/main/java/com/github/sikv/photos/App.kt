@@ -1,6 +1,8 @@
 package com.github.sikv.photos
 
 import android.app.Application
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,9 +12,9 @@ import com.github.sikv.photos.di.component.AppComponent
 import com.github.sikv.photos.di.component.DaggerAppComponent
 import com.github.sikv.photos.di.component.DaggerNetworkComponent
 import com.github.sikv.photos.di.component.NetworkComponent
-import com.github.sikv.photos.util.DownloadPhotoState
-import com.github.sikv.photos.util.Event
-import com.github.sikv.photos.util.SetWallpaperState
+import com.github.sikv.photos.enumeration.DownloadPhotoState
+import com.github.sikv.photos.enumeration.SetWallpaperState
+import com.github.sikv.photos.event.Event
 
 class App : Application() {
 
@@ -56,6 +58,10 @@ class App : Application() {
         instance = this
 
         updateTheme()
+    }
+
+    fun getPrivatePreferences(): SharedPreferences {
+        return getSharedPreferences("Preferences", Context.MODE_PRIVATE)
     }
 
     fun postDownloadPhotoStateLiveData(state: DownloadPhotoState) {

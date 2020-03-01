@@ -5,12 +5,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.github.sikv.photos.App
-import com.github.sikv.photos.data.FavoritesRepository
+import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.database.FavoritePhotoEntity
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.AccountManager
-import com.github.sikv.photos.util.Event
-import com.github.sikv.photos.util.LoginStatus
+import com.github.sikv.photos.event.Event
+import com.github.sikv.photos.enumeration.LoginStatus
 import javax.inject.Inject
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application), AccountManager.Callback {

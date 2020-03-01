@@ -91,6 +91,15 @@
             android:layout_height="match_parent"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/suggestedPhotosRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/recyclerPaddingTop"
+                android:paddingBottom="@dimen/recyclerPaddingTop"
+                android:clipToPadding="false"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager" />
+
         </FrameLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

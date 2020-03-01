@@ -7,7 +7,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.data.FavoritesRepository
+import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import javax.inject.Inject

@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PositionalDataSource
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.enumeration.DataSourceState
+import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.util.subscribeAsync
 
 class SearchPhotosDataSource(

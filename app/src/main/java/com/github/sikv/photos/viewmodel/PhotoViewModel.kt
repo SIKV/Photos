@@ -14,7 +14,9 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
-import com.github.sikv.photos.data.FavoritesRepository
+import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.enumeration.DownloadPhotoState
+import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
@@ -27,9 +29,6 @@ class PhotoViewModel(
         application: Application,
         private var photo: Photo
 ) : AndroidViewModel(application), FavoritesRepository.Callback {
-
-    @Inject
-    lateinit var photoManager: PhotoManager
 
     @Inject
     lateinit var favoritesRepository: FavoritesRepository
@@ -157,8 +156,8 @@ class PhotoViewModel(
     }
 
     fun setWallpaper() {
-        photoManager.getSavedPhotoUri(getApplication())?.let { uri ->
-            photoManager.startSetWallpaper(getApplication(), uri)
+        getApplication<Application>().getSavedPhotoUri()?.let { uri ->
+            getApplication<Application>().startSetWallpaperActivity(uri)
         } ?: run {
 
             // TODO Handle
@@ -190,6 +189,6 @@ class PhotoViewModel(
     }
 
     fun setWallpaper(activity: Activity) {
-        photoManager.downloadPhoto(activity, photo.getLargeUrl())
+        activity.downloadPhoto(photo.getLargeUrl())
     }
 }

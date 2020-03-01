@@ -7,8 +7,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.fragment.*
-import com.github.sikv.photos.util.DownloadPhotoState
-import com.github.sikv.photos.util.SetWallpaperState
+import com.github.sikv.photos.enumeration.DownloadPhotoState
+import com.github.sikv.photos.enumeration.SetWallpaperState
 import com.github.sikv.photos.util.customTag
 import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*

@@ -22,7 +22,6 @@ interface AppComponent {
     }
 
     fun inject(service: DownloadPhotoService)
-    fun inject(viewModel: MainViewModel)
     fun inject(viewModel: PhotosViewModel)
     fun inject(viewModel: SearchViewModel)
     fun inject(viewModel: SearchDashboardViewModel)

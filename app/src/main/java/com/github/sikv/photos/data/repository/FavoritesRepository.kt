@@ -1,4 +1,4 @@
-package com.github.sikv.photos.data
+package com.github.sikv.photos.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
@@ -16,10 +16,6 @@ class FavoritesRepository @Inject constructor(
         private val accountManager: AccountManager,
         private val favoritesDao: FavoritesDao
 ) {
-
-    companion object {
-        private const val FAVORITES_COLLECTION = "Favorites"
-    }
 
     interface Callback {
         fun onFavoriteChanged(photo: Photo, favorite: Boolean)

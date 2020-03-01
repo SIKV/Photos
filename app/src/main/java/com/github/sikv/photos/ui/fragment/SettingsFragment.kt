@@ -12,7 +12,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.util.LoginStatus
+import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.util.ViewUtils
 import com.github.sikv.photos.util.defaultStyle
 import com.github.sikv.photos.viewmodel.PreferenceViewModel

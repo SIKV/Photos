@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import com.github.sikv.photos.App
 import com.github.sikv.photos.BuildConfig
 import com.github.sikv.photos.util.AccountManager
-import com.github.sikv.photos.util.Event
-import com.github.sikv.photos.util.LoginStatus
+import com.github.sikv.photos.event.Event
+import com.github.sikv.photos.enumeration.LoginStatus
 import javax.inject.Inject
 
 class PreferenceViewModel: ViewModel(), AccountManager.Callback {

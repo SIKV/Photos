@@ -3,25 +3,20 @@ package com.github.sikv.photos.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.github.sikv.photos.App
-import com.github.sikv.photos.util.DownloadPhotoState
-import com.github.sikv.photos.util.PhotoManager
-import javax.inject.Inject
+import com.github.sikv.photos.enumeration.DownloadPhotoState
+import com.github.sikv.photos.util.cancelPhotoDownloading
+import com.github.sikv.photos.util.getSavedPhotoUri
+import com.github.sikv.photos.util.startSetWallpaperActivity
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
-
-    @Inject
-    lateinit var photoManager: PhotoManager
-
-    init {
-        App.instance.appComponent.inject(this)
-    }
 
     val downloadPhotoStateLiveData = App.instance.downloadPhotoStateLiveData
     val setWallpaperStateLiveData = App.instance.setWallpaperStateLiveData
 
     fun setWallpaper() {
-        photoManager.getSavedPhotoUri(getApplication())?.let { uri ->
-            photoManager.startSetWallpaper(getApplication(), uri)
+        getApplication<Application>().getSavedPhotoUri()?.let { uri ->
+            getApplication<Application>().startSetWallpaperActivity(uri)
+
         } ?: run {
 
             // TODO Handle
@@ -31,7 +26,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun cancelSetWallpaper() {
         when (downloadPhotoStateLiveData.value) {
             DownloadPhotoState.DOWNLOADING_PHOTO -> {
-                photoManager.cancelDownloading(getApplication())
+                getApplication<Application>().cancelPhotoDownloading()
             }
 
             else -> {

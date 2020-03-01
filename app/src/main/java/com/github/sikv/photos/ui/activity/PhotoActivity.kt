@@ -24,7 +24,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.util.DownloadPhotoState
+import com.github.sikv.photos.enumeration.DownloadPhotoState
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.ViewUtils
 import com.github.sikv.photos.viewmodel.PhotoViewModel

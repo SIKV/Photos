@@ -8,13 +8,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SearchTagsRepository @Inject constructor(
+class SearchTagRepository @Inject constructor(
         private val accountManager: AccountManager
 ) {
 
     companion object {
         private const val COLLECTION_SEARCH_TAGS = "SearchTags"
-
         private const val FIELD_TAGS = "tags"
     }
 

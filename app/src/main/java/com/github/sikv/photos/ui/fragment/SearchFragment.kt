@@ -13,7 +13,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.data.PhotoSource
+import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.ViewUtils
 import kotlinx.android.synthetic.main.fragment_search.*

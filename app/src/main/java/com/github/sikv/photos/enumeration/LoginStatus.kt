@@ -1,4 +1,4 @@
-package com.github.sikv.photos.util
+package com.github.sikv.photos.enumeration
 
 enum class LoginStatus {
     NOT_SET,

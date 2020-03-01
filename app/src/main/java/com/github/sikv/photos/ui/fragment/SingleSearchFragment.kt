@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
-import com.github.sikv.photos.data.DataSourceState
-import com.github.sikv.photos.data.PhotoSource
+import com.github.sikv.photos.enumeration.DataSourceState
+import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter

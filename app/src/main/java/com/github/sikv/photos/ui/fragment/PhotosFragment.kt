@@ -10,8 +10,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
 import com.github.sikv.photos.R
-import com.github.sikv.photos.data.DataSourceState
-import com.github.sikv.photos.data.PhotoSource
+import com.github.sikv.photos.enumeration.DataSourceState
+import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter

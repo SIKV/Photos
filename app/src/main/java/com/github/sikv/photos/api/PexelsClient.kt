@@ -1,6 +1,6 @@
 package com.github.sikv.photos.api
 
-import com.github.sikv.photos.data.FavoritesRepository
+import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.model.PexelsCuratedPhotosResponse
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.PexelsSearchResponse

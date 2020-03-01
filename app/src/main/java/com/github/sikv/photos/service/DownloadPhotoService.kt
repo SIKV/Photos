@@ -13,8 +13,9 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.util.DownloadPhotoState
-import com.github.sikv.photos.util.PhotoManager
+import com.github.sikv.photos.enumeration.DownloadPhotoState
+import com.github.sikv.photos.util.savePhotoInFile
+import com.github.sikv.photos.util.savePhotoUri
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
@@ -24,13 +25,13 @@ class DownloadPhotoService : Service() {
         private const val ACTION_DOWNLOAD_PHOTO = "action_download_photo"
         private const val ACTION_CANCEL = "action_cancel"
 
-        private const val KEY_PHOTO_URL = "key_photo_url"
+        private const val EXTRA_PHOTO_URL = "extra_photo_url"
 
         fun startServiceActionDownload(context: Context, photoUrl: String) {
             val intent = Intent(context, DownloadPhotoService::class.java)
 
             intent.action = ACTION_DOWNLOAD_PHOTO
-            intent.putExtra(KEY_PHOTO_URL, photoUrl)
+            intent.putExtra(EXTRA_PHOTO_URL, photoUrl)
 
             context.startService(intent)
         }
@@ -47,9 +48,6 @@ class DownloadPhotoService : Service() {
     private lateinit var job: Job
 
     @Inject
-    lateinit var photoManager: PhotoManager
-
-    @Inject
     lateinit var glide: RequestManager
 
     init {
@@ -63,7 +61,7 @@ class DownloadPhotoService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
             ACTION_DOWNLOAD_PHOTO -> {
-                downloadAndSavePhoto(intent.getStringExtra(KEY_PHOTO_URL))
+                downloadAndSavePhoto(intent.getStringExtra(EXTRA_PHOTO_URL))
             }
 
             ACTION_CANCEL -> {
@@ -86,7 +84,7 @@ class DownloadPhotoService : Service() {
         }
     }
 
-    private fun downloadAndSavePhoto(photoUrl: String) {
+    private fun downloadAndSavePhoto(photoUrl: String?) {
         postMessage(getString(R.string.downloading_photo))
         updateDownloadPhotoState(DownloadPhotoState.DOWNLOADING_PHOTO)
 
@@ -96,7 +94,7 @@ class DownloadPhotoService : Service() {
                     override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
                         job = CoroutineScope(Dispatchers.Main).launch{
                             savePhoto(bitmap)?.let { uri ->
-                                photoManager.savePhotoUri(this@DownloadPhotoService, uri)
+                                this@DownloadPhotoService.savePhotoUri(uri)
 
                                 postMessage(getString(R.string.photo_ready))
                                 updateDownloadPhotoState(DownloadPhotoState.PHOTO_READY)
@@ -119,7 +117,7 @@ class DownloadPhotoService : Service() {
 
     private suspend fun savePhoto(photo: Bitmap): Uri? {
         return withContext(Dispatchers.IO) {
-            photoManager.savePhoto(this@DownloadPhotoService, photo)
+            this@DownloadPhotoService.savePhotoInFile(photo)
         }
     }
 

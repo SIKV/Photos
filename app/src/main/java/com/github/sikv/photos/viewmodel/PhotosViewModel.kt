@@ -8,14 +8,14 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
-import com.github.sikv.photos.data.DataSourceState
-import com.github.sikv.photos.data.PhotoSource
+import com.github.sikv.photos.enumeration.DataSourceState
+import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.data.PhotosDataSource
 import com.github.sikv.photos.data.PhotosDataSourceFactory
-import com.github.sikv.photos.data.FavoritesRepository
+import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.util.Event
-import com.github.sikv.photos.util.VoidEvent
+import com.github.sikv.photos.event.Event
+import com.github.sikv.photos.event.VoidEvent
 import java.util.concurrent.Executors
 import javax.inject.Inject
 

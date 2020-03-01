@@ -58,6 +58,10 @@ class SearchDashboardFragment : BaseFragment() {
                 showSearchFragment(searchText = tag.text)
             }
         })
+
+        viewModel.suggestedPhotosLiveData.observe(viewLifecycleOwner, Observer {
+            // TODO Implement
+        })
     }
 
     private fun showSearchFragment(searchText: String? = null) {

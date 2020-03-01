@@ -18,6 +18,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="label" />
+
         <activity android:name=".ui.activity.MainActivity"
             android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme">

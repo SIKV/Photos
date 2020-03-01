@@ -86,6 +86,10 @@ dependencies {
     // Firestore
     implementation 'com.google.firebase:firebase-firestore:21.3.1'
 
+    // ML Kit
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.1'
+    implementation 'com.google.firebase:firebase-ml-vision-image-label-model:19.0.0'
+
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'

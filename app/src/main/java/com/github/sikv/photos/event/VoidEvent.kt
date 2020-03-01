@@ -1,4 +1,4 @@
-package com.github.sikv.photos.util
+package com.github.sikv.photos.event
 
 /**
  * Used as a wrapper to send an event without data.
