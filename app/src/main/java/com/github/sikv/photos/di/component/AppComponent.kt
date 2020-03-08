@@ -4,6 +4,7 @@ import android.content.Context
 import com.github.sikv.photos.di.module.GlideModule
 import com.github.sikv.photos.di.module.RoomModule
 import com.github.sikv.photos.service.DownloadPhotoService
+import com.github.sikv.photos.ui.adapter.PhotoGridViewHolder
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
@@ -29,6 +30,7 @@ interface AppComponent {
     fun inject(viewModel: FavoritesViewModel)
     fun inject(viewModel: PreferenceViewModel)
     fun inject(viewHolder: PhotoViewHolder)
+    fun inject(viewHolder: PhotoGridViewHolder)
     fun inject(adapter: PhotoPagedListAdapter)
     fun inject(adapter: PhotoListAdapter)
 }

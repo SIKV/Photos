@@ -8,6 +8,12 @@ class UnsplashPhoto(
         @SerializedName("id")
         val id: String,
 
+        @SerializedName("width")
+        val width: Int,
+
+        @SerializedName("height")
+        val height: Int,
+
         @SerializedName("description")
         val description: String?,
 
@@ -29,6 +35,14 @@ class UnsplashPhoto(
         return id
     }
 
+    override fun getPhotoWidth(): Int {
+        return width
+    }
+
+    override fun getPhotoHeight(): Int {
+        return height
+    }
+
     override fun getLargeUrl(): String {
         return urls.full
     }
@@ -38,6 +52,10 @@ class UnsplashPhoto(
     }
 
     override fun getSmallUrl(): String {
+        return urls.small
+    }
+
+    override fun getThumbnailUrl(): String {
         return urls.regular
     }
 

@@ -24,6 +24,8 @@ import kotlin.math.sqrt
 const val SPAN_COUNT_LIST = 1
 const val SPAN_COUNT_GRID = 2
 
+const val PHOTO_TRANSITION_DURATION = 500
+
 object Utils {
 
     fun<T> log(clazz: Class<T>, text: String) {

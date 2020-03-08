@@ -9,8 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sikv.photos.R
+import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.ui.activity.PhotoActivity
+import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
 import com.github.sikv.photos.ui.adapter.TagAdapter
+import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.viewmodel.SearchDashboardViewModel
 import kotlinx.android.synthetic.main.fragment_search_dashboard.*
 
@@ -50,6 +55,14 @@ class SearchDashboardFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
+    private fun onPhotoClick(photo: Photo, view: View) {
+        PhotoActivity.startActivity(activity, view, photo)
+    }
+
+    private fun onPhotoLongClick(photo: Photo, view: View) {
+        PhotoPreviewPopup.show(activity, rootLayout, photo)
+    }
+
     private fun observe() {
         viewModel.searchTagsLiveData.observe(viewLifecycleOwner, Observer {
             searchTagsRecycler.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
@@ -60,7 +73,12 @@ class SearchDashboardFragment : BaseFragment() {
         })
 
         viewModel.suggestedPhotosLiveData.observe(viewLifecycleOwner, Observer {
-            // TODO Implement
+            val adapter = PhotoGridAdapter.create(it, ::onPhotoClick, ::onPhotoLongClick)
+
+            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            suggestedPhotosRecycler.layoutManager = layoutManager
+
+            suggestedPhotosRecycler.adapter = adapter
         })
     }
 

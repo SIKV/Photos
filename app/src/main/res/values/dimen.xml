@@ -8,4 +8,6 @@
     <dimen name="bottomSheetCornerRadius">10dp</dimen>
     <dimen name="searchCornerRadius">12dp</dimen>
     <dimen name="searchMargins">6dp</dimen>
+
+    <dimen name="photoGridSpacing">2.5dp</dimen>
 </resources>

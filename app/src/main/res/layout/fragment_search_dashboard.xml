@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -97,8 +98,7 @@
                 android:layout_height="match_parent"
                 android:paddingTop="@dimen/recyclerPaddingTop"
                 android:paddingBottom="@dimen/recyclerPaddingTop"
-                android:clipToPadding="false"
-                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager" />
+                android:clipToPadding="false" />
 
         </FrameLayout>
 

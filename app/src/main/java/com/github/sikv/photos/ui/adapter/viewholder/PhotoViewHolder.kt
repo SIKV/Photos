@@ -7,15 +7,12 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
 import com.github.sikv.photos.util.ViewUtils
 import kotlinx.android.synthetic.main.item_photo.view.*
 import javax.inject.Inject
 
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    companion object {
-        private const val TRANSITION_DURATION = 500
-    }
 
     @Inject
     lateinit var glide: RequestManager
@@ -39,8 +36,8 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.favoriteButton.visibility = View.VISIBLE
 
         photo?.let {
-            glide.load(photo.getSmallUrl())
-                    .transition(DrawableTransitionOptions.withCrossFade(TRANSITION_DURATION))
+            glide.load(photo.getThumbnailUrl())
+                    .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
                     .into(itemView.photoImage)
 
             itemView.favoriteButton.setImageResource(if (favorite) R.drawable.ic_favorite_red_24dp else R.drawable.ic_favorite_border_white_24dp)

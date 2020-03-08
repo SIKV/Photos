@@ -150,11 +150,11 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private fun onPhotoClick(photo: Photo, view: View) {
-        PhotoActivity.startActivity(activity!!, view, photo)
+        PhotoActivity.startActivity(activity, view, photo)
     }
 
     private fun onPhotoLongClick(photo: Photo, view: View) {
-        PhotoPreviewPopup.show(activity!!, rootLayout, photo)
+        PhotoPreviewPopup.show(activity, rootLayout, photo)
     }
 
     private fun onPhotoFavoriteClick(photo: Photo) {

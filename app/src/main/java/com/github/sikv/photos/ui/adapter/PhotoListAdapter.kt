@@ -3,7 +3,6 @@ package com.github.sikv.photos.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
@@ -16,17 +15,7 @@ class PhotoListAdapter(
         private val clickCallback: (Photo, View) -> Unit,
         private val longClickCallback: ((Photo, View) -> Unit)? = null,
         private val favoriteClickCallback: ((Photo) -> Unit)? = null
-) : ListAdapter<Photo, PhotoViewHolder>(COMPARATOR) {
-
-    companion object {
-        val COMPARATOR = object : DiffUtil.ItemCallback<Photo>() {
-            override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean =
-                    oldItem.getPhotoId() == newItem.getPhotoId()
-
-            override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean =
-                    oldItem == newItem
-        }
-    }
+) : ListAdapter<Photo, PhotoViewHolder>(Photo.COMPARATOR) {
 
     @Inject
     lateinit var favoritesRepository: FavoritesRepository

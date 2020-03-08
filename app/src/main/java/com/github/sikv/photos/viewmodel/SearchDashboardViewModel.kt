@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sikv.photos.App
+import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.repository.SearchTagRepository
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.SearchTag
+import com.github.sikv.photos.util.subscribeAsync
 import java.util.*
 import javax.inject.Inject
 
@@ -37,6 +39,12 @@ class SearchDashboardViewModel : ViewModel() {
     }
 
     private fun loadSuggestions() {
-        // TODO Implement
+        // TODO For testing purposes only
+        ApiClient.INSTANCE.searchPhotos("Nature", 0, 50)
+                .subscribeAsync({
+                    suggestedPhotosMutableLiveData.postValue(it)
+                }, {
+
+                })
     }
 }

@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
@@ -16,17 +15,7 @@ class PhotoPagedListAdapter(
         private val clickCallback: (Photo, View) -> Unit,
         private val longClickCallback: ((Photo, View) -> Unit)? = null,
         private val favoriteClickCallback: ((Photo) -> Unit)? = null
-) : PagedListAdapter<Photo, PhotoViewHolder>(COMPARATOR) {
-
-    companion object {
-        val COMPARATOR = object : DiffUtil.ItemCallback<Photo>() {
-            override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean =
-                    oldItem.getPhotoId() == newItem.getPhotoId()
-
-            override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean =
-                    oldItem == newItem
-        }
-    }
+) : PagedListAdapter<Photo, PhotoViewHolder>(Photo.COMPARATOR) {
 
     @Inject
     lateinit var favoritesRepository: FavoritesRepository

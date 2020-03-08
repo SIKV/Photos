@@ -8,6 +8,12 @@ class PexelsPhoto(
         @SerializedName("url")
         val url: String,
 
+        @SerializedName("width")
+        val width: Int,
+
+        @SerializedName("height")
+        val height: Int,
+
         @SerializedName("photographer")
         val photographer: String,
 
@@ -23,15 +29,27 @@ class PexelsPhoto(
         return url.substring(url.substring(0, url.length - 1).lastIndexOf("-") + 1, url.lastIndexOf("/"))
     }
 
+    override fun getPhotoWidth(): Int {
+        return width
+    }
+
+    override fun getPhotoHeight(): Int {
+        return height
+    }
+
     override fun getLargeUrl(): String {
         return src.large2x
     }
 
     override fun getNormalUrl(): String {
-        return src.large
+        return src.medium
     }
 
     override fun getSmallUrl(): String {
+        return src.small
+    }
+
+    override fun getThumbnailUrl(): String {
         return src.large
     }
 

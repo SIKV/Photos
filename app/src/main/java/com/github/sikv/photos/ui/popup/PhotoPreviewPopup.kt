@@ -13,12 +13,16 @@ import kotlinx.android.synthetic.main.popup_photo_preview.view.*
 
 object PhotoPreviewPopup {
 
-    fun show(activity: Activity, rootLayout: ViewGroup, photo: Photo) {
+    fun show(activity: Activity?, rootLayout: ViewGroup, photo: Photo) {
+        if (activity == null) {
+            return
+        }
+
         var photoPopupPreview: PopupWindow? = null
         val layout = activity.layoutInflater.inflate(R.layout.popup_photo_preview, rootLayout, false)
 
         Glide.with(activity)
-                .load(photo.getSmallUrl())
+                .load(photo.getThumbnailUrl())
                 .into(layout.photoPreviewImage)
 
         layout.photoPreviewImage.animation = AnimationUtils.loadAnimation(activity, R.anim.zoom_in)

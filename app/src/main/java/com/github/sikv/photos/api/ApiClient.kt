@@ -29,7 +29,7 @@ class ApiClient private constructor() {
         val pexelsSearch = pexelsClient.searchPhotos(query, page, limit)
 
         return Single.zip(unsplashSearch, pexelsSearch, BiFunction<UnsplashSearchResponse, PexelsSearchResponse, List<Photo>> { unsplashPhotos, pexelsPhotos ->
-            unsplashPhotos.results + pexelsPhotos.photos
+            (unsplashPhotos.results + pexelsPhotos.photos).shuffled()
         })
     }
 }

@@ -23,8 +23,8 @@ import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
-import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.enumeration.DownloadPhotoState
+import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.ViewUtils
 import com.github.sikv.photos.viewmodel.PhotoViewModel
@@ -36,16 +36,18 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     companion object {
         private const val KEY_PHOTO = "key_photo"
 
-        fun startActivity(activity: Activity, transitionView: View, photo: Photo) {
-            val intent = Intent(activity, PhotoActivity::class.java)
-            intent.putExtra(KEY_PHOTO, photo)
+        fun startActivity(activity: Activity?, transitionView: View, photo: Photo) {
+            activity?.let {
+                val intent = Intent(activity, PhotoActivity::class.java)
+                intent.putExtra(KEY_PHOTO, photo)
 
-            val transitionName = activity.getString(R.string.transition_photo)
+                val transitionName = activity.getString(R.string.transition_photo)
 
-            val options = ActivityOptionsCompat
-                    .makeSceneTransitionAnimation(activity, transitionView, transitionName)
+                val options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(activity, transitionView, transitionName)
 
-            ActivityCompat.startActivity(activity, intent, options.toBundle())
+                ActivityCompat.startActivity(activity, intent, options.toBundle())
+            }
         }
     }
 
