@@ -3,13 +3,16 @@ package com.github.sikv.photos.ui.adapter.viewholder
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
+import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.ViewUtils
-import kotlinx.android.synthetic.main.item_photo.view.*
+import kotlinx.android.synthetic.main.item_photo_full.view.*
 import javax.inject.Inject
 
 class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -21,41 +24,110 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         App.instance.appComponent.inject(this)
     }
 
-    fun bind(photo: Photo?,
+    fun bind(itemLayoutType: PhotoItemLayoutType,
+             photo: Photo?,
              favorite: Boolean,
              clickCallback: (Photo, View) -> Unit,
              longClickCallback: ((Photo, View) -> Unit)? = null,
              favoriteClickCallback: ((Photo) -> Unit)? = null) {
 
-        itemView.photoImage.setImageDrawable(null)
+        if (itemLayoutType == PhotoItemLayoutType.MIN) {
+            bindMin(photo, clickCallback, longClickCallback)
+            return
+        }
 
-        itemView.setOnClickListener(null)
-        itemView.favoriteButton.setOnClickListener(null)
+        loadPhotos(photo)
 
-        itemView.overlayLayout.visibility = View.VISIBLE
+        itemView.photographerNameText.text = photo?.getPhotoPhotographerName()
+        itemView.sourceText.text = photo?.getPhotoSource()
+
         itemView.favoriteButton.visibility = View.VISIBLE
+        itemView.favoriteButton.setImageResource(if (favorite) R.drawable.ic_favorite_red_24dp else R.drawable.ic_favorite_border_24dp)
+
+        showCreatedAtDate(photo)
+        showDescription(photo)
 
         photo?.let {
-            glide.load(photo.getThumbnailUrl())
-                    .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
-                    .into(itemView.photoImage)
-
-            itemView.favoriteButton.setImageResource(if (favorite) R.drawable.ic_favorite_red_24dp else R.drawable.ic_favorite_border_white_24dp)
-
-            itemView.setOnClickListener { view ->
-                clickCallback.invoke(photo, view)
+            itemView.photoImage.setOnClickListener { view ->
+                clickCallback.invoke(it, view)
             }
 
-            itemView.setOnLongClickListener { view ->
-                longClickCallback?.invoke(photo, view)
+            itemView.photoImage.setOnLongClickListener { view ->
+                longClickCallback?.invoke(it, view)
                 return@setOnLongClickListener true
             }
 
-            itemView.favoriteButton.setOnClickListener {
-                favoriteClickCallback?.invoke(photo)
-
+            itemView.favoriteButton.setOnClickListener { _ ->
+                favoriteClickCallback?.invoke(it)
                 ViewUtils.favoriteAnimation(itemView.favoriteButton)
             }
+        } ?: run {
+            itemView.photoImage.setOnClickListener(null)
+            itemView.photoImage.setOnLongClickListener(null)
+            itemView.favoriteButton.setOnClickListener(null)
+        }
+    }
+
+    private fun bindMin(photo: Photo?,
+                        clickCallback: (Photo, View) -> Unit,
+                        longClickCallback: ((Photo, View) -> Unit)? = null) {
+
+        itemView.photoImage.setImageDrawable(null)
+
+        photo?.let {
+            glide.load(it.getThumbnailUrl())
+                    .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
+                    .into(itemView.photoImage)
+        }
+
+        photo?.let {
+            itemView.photoImage.setOnClickListener { view ->
+                clickCallback.invoke(it, view)
+            }
+
+            itemView.photoImage.setOnLongClickListener { view ->
+                longClickCallback?.invoke(it, view)
+                return@setOnLongClickListener true
+            }
+
+        } ?: run {
+            itemView.photoImage.setOnClickListener(null)
+            itemView.photoImage.setOnLongClickListener(null)
+        }
+    }
+
+    private fun loadPhotos(photo: Photo?) {
+        itemView.photoImage.setImageDrawable(null)
+        itemView.photographerImage.setImageDrawable(null)
+
+        photo?.let {
+            glide.load(it.getThumbnailUrl())
+                    .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
+                    .into(itemView.photoImage)
+
+            glide.load(it.getPhotoPhotographerImageUrl())
+                    .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
+                    .transform(CircleCrop())
+                    .placeholder(R.drawable.ic_account_circle_24dp)
+                    .into(itemView.photographerImage)
+        }
+    }
+
+    private fun showCreatedAtDate(photo: Photo?) {
+        photo?.getPhotoCreatedAt()?.let { createdAt ->
+            itemView.createdAtText.visibility = View.VISIBLE
+            itemView.createdAtText.text = Utils.formatCreatedAtDate(createdAt)
+        } ?: run {
+            itemView.createdAtText.visibility = View.GONE
+        }
+    }
+
+    private fun showDescription(photo: Photo?) {
+        photo?.getPhotoDescription()?.let { description ->
+            itemView.descriptionText.visibility = View.VISIBLE
+            itemView.descriptionText.text = description
+        } ?: run {
+            itemView.descriptionText.visibility = View.GONE
         }
     }
 }

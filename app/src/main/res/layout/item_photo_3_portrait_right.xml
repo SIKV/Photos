@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/photoGridSpacing">
+    android:layout_marginBottom="@dimen/photoItemGridSpacing">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/horizontalGuideline"
@@ -23,7 +23,7 @@
         android:id="@+id/photoBigImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="@dimen/photoGridSpacing"
+        android:layout_marginStart="@dimen/photoItemGridSpacing"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/verticalGuideline"
@@ -37,7 +37,7 @@
         android:id="@+id/photo2Image"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/photoGridSpacing"
+        android:layout_marginBottom="@dimen/photoItemGridSpacing"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/horizontalGuideline"
         app:layout_constraintStart_toStartOf="parent"

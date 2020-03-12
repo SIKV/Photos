@@ -23,15 +23,17 @@ abstract class Photo : Parcelable {
     open fun getPhotoId(): String = ""
     open fun getPhotoWidth(): Int = 0
     open fun getPhotoHeight(): Int = 0
+    open fun getPhotoCreatedAt(): Long? = null
+    open fun getPhotoDescription(): String? = null
     open fun getLargeUrl(): String = ""
     open fun getNormalUrl(): String = ""
     open fun getSmallUrl(): String = ""
     open fun getThumbnailUrl(): String = ""
     open fun getShareUrl(): String = ""
-    open fun getPhotographerName(): String = ""
-    open fun getPhotographerImageUrl(): String? = null
-    open fun getPhotographerUrl(): String? = null
-    open fun getSource(): String = ""
+    open fun getPhotoPhotographerName(): String = ""
+    open fun getPhotoPhotographerImageUrl(): String? = null
+    open fun getPhotoPhotographerUrl(): String? = null
+    open fun getPhotoSource(): String = ""
     open fun getSourceUrl(): String = ""
     open fun isLocalPhoto(): Boolean = false
 

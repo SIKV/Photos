@@ -101,7 +101,7 @@ class PhotoViewModel(
                         }
                     })
 
-            when (photo.getSource()) {
+            when (photo.getPhotoSource()) {
                 UnsplashPhoto.SOURCE -> {
                     ApiClient.INSTANCE.unsplashClient.getPhoto(photo.getPhotoId())
                             .subscribeAsync({
@@ -179,7 +179,7 @@ class PhotoViewModel(
     }
 
     fun openAuthorUrl() {
-        photo.getPhotographerUrl()?.let {
+        photo.getPhotoPhotographerUrl()?.let {
             Utils.openUrl(getApplication(), it)
         }
     }

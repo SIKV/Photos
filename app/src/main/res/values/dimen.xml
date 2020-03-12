@@ -2,12 +2,14 @@
 <resources>
     <dimen name="roundButtonRadius">32dp</dimen>
     <dimen name="roundButtonStrokeWidth">2dp</dimen>
-    <dimen name="photoCornerRadius">0dp</dimen>
-    <dimen name="recyclerPaddingTop">4dp</dimen>
     <dimen name="appBarElevation">16dp</dimen>
     <dimen name="bottomSheetCornerRadius">10dp</dimen>
-    <dimen name="searchCornerRadius">12dp</dimen>
-    <dimen name="searchMargins">6dp</dimen>
 
-    <dimen name="photoGridSpacing">2.5dp</dimen>
+    <dimen name="photoGridRecyclerVerticalPadding">2.5dp</dimen>
+    <dimen name="photoRecyclerVerticalPadding">16dp</dimen>
+    <dimen name="photoItemGridSpacing">2.5dp</dimen>
+    <dimen name="photoItemFullContentHorizontalMargin">12dp</dimen>
+    <dimen name="photoItemFullBottomMargin">32dp</dimen>
+    <dimen name="photoItemMinBottomMargin">3dp</dimen>
+    <dimen name="photoItemMinHorizontalMargin">1.5dp</dimen>
 </resources>

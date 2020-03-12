@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
-import androidx.recyclerview.widget.GridLayoutManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
+import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
@@ -58,7 +58,10 @@ class PhotosFragment : BaseFragment() {
         set(value) {
             field = value
 
-            setRecyclerLayoutManager(value)
+            val itemLayoutType = PhotoItemLayoutType.findBySpanCount(field)
+
+            photoAdapter.setItemLayoutType(itemLayoutType)
+            photosRecycler.setItemLayoutType(itemLayoutType)
 
             setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)
             setMenuItemVisibility(R.id.itemViewGrid, field == SPAN_COUNT_LIST)
@@ -190,10 +193,6 @@ class PhotosFragment : BaseFragment() {
 
     private fun onPhotoFavoriteClick(photo: Photo) {
         viewModel.invertFavorite(photo)
-    }
-
-    private fun setRecyclerLayoutManager(spanCount: Int) {
-        photosRecycler.layoutManager = GridLayoutManager(context, spanCount)
     }
 
     private fun setListeners() {

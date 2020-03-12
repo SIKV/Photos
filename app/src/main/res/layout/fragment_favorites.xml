@@ -25,10 +25,9 @@
             android:id="@+id/favoritesRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/recyclerPaddingTop"
-            android:paddingBottom="@dimen/recyclerPaddingTop"
+            android:paddingVertical="@dimen/photoRecyclerVerticalPadding"
             android:clipToPadding="false"
-            tools:listitem="@layout/item_photo" />
+            tools:listitem="@layout/item_photo_full" />
 
         <FrameLayout
             android:id="@+id/listEmptyLayout"

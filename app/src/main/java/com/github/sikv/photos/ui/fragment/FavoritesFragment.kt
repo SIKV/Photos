@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.GridLayoutManager
 import com.github.sikv.photos.R
+import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
@@ -24,6 +24,8 @@ import kotlinx.android.synthetic.main.fragment_favorites.*
 class FavoritesFragment : BaseFragment() {
 
     companion object {
+        private const val DEFAULT_SPAN_COUNT = SPAN_COUNT_GRID
+
         private const val KEY_CURRENT_SPAN_COUNT = "key_current_span_count"
     }
 
@@ -38,11 +40,14 @@ class FavoritesFragment : BaseFragment() {
 
     private var photoAdapter = PhotoListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
 
-    private var currentSpanCount: Int = SPAN_COUNT_LIST
+    private var currentSpanCount: Int = DEFAULT_SPAN_COUNT
         set(value) {
             field = value
 
-            setRecyclerLayoutManager(value)
+            val itemLayoutType = PhotoItemLayoutType.findBySpanCount(field)
+
+            photoAdapter.setItemLayoutType(itemLayoutType)
+            favoritesRecycler.setItemLayoutType(itemLayoutType)
 
             setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)
             setMenuItemVisibility(R.id.itemViewGrid, field == SPAN_COUNT_LIST)
@@ -63,9 +68,9 @@ class FavoritesFragment : BaseFragment() {
         favoritesRecycler.itemAnimator?.removeDuration = 0
 
         if (savedInstanceState != null) {
-            currentSpanCount = savedInstanceState.getInt(KEY_CURRENT_SPAN_COUNT, SPAN_COUNT_LIST)
+            currentSpanCount = savedInstanceState.getInt(KEY_CURRENT_SPAN_COUNT, DEFAULT_SPAN_COUNT)
         } else {
-            currentSpanCount = SPAN_COUNT_LIST
+            currentSpanCount = DEFAULT_SPAN_COUNT
         }
 
         observe()
@@ -159,9 +164,5 @@ class FavoritesFragment : BaseFragment() {
 
     private fun onPhotoFavoriteClick(photo: Photo) {
         viewModel.invertFavorite(photo)
-    }
-
-    private fun setRecyclerLayoutManager(spanCount: Int) {
-        favoritesRecycler.layoutManager = GridLayoutManager(context, spanCount)
     }
 }

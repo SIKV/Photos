@@ -18,9 +18,14 @@
     <string name="pexels">Pexels</string>
 
     <string name="cn_photo">Photo</string>
+    <string name="cn_photographer_photo">Photographer photo</string>
     <string name="cn_photo_preview">Photo preview</string>
     <string name="cn_search_icon">Search icon</string>
     <string name="cn_favorite_icon">Favorite icon</string>
+    <string name="cn_favorite_button">Favorite button</string>
+    <string name="cn_options_button">Options button</string>
+    <string name="cn_share_button">Share button</string>
+    <string name="cn_download_button">Download button</string>
     <string name="cn_loading_error_icon">Loading error icon</string>
     <string name="cn_clear_button">Clear button</string>
     <string name="cn_voice_input_button">Voice input button</string>

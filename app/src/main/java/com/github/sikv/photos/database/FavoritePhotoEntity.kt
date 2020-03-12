@@ -12,20 +12,28 @@ class FavoritePhotoEntity(
         var id: String,
         var width: Int,
         var height: Int,
+        var createdAt: Long?,
+        var description: String?,
         var thumbUrl: String,
-        var photographer: String,
-        var originalSource: String
+        var photographerName: String,
+        var photographerImageUrl: String?,
+        var photographerUrl: String?,
+        var source: String
 ) : Photo() {
 
     companion object {
         fun fromPhoto(photo: Photo): FavoritePhotoEntity {
             return FavoritePhotoEntity(
-                    photo.getPhotoId(),
-                    photo.getPhotoWidth(),
-                    photo.getPhotoHeight(),
-                    photo.getThumbnailUrl(),
-                    photo.getPhotographerName(),
-                    photo.getSource()
+                    id = photo.getPhotoId(),
+                    width = photo.getPhotoWidth(),
+                    height = photo.getPhotoHeight(),
+                    createdAt = photo.getPhotoCreatedAt(),
+                    description = photo.getPhotoDescription(),
+                    thumbUrl = photo.getThumbnailUrl(),
+                    photographerName = photo.getPhotoPhotographerName(),
+                    photographerImageUrl = photo.getPhotoPhotographerImageUrl(),
+                    photographerUrl = photo.getPhotoPhotographerUrl(),
+                    source = photo.getPhotoSource()
             )
         }
     }
@@ -42,16 +50,32 @@ class FavoritePhotoEntity(
         return height
     }
 
+    override fun getPhotoCreatedAt(): Long? {
+        return createdAt
+    }
+
+    override fun getPhotoDescription(): String? {
+        return description
+    }
+
     override fun getThumbnailUrl(): String {
         return thumbUrl
     }
 
-    override fun getPhotographerName(): String {
-        return photographer
+    override fun getPhotoPhotographerName(): String {
+        return photographerName
     }
 
-    override fun getSource(): String {
-        return originalSource
+    override fun getPhotoPhotographerImageUrl(): String? {
+        return photographerImageUrl
+    }
+
+    override fun getPhotoPhotographerUrl(): String? {
+        return photographerUrl
+    }
+
+    override fun getPhotoSource(): String {
+        return source
     }
 
     override fun isLocalPhoto(): Boolean {

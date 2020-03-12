@@ -8,11 +8,10 @@
     android:background="@color/colorPrimary"
     tools:targetApi="lollipop">
 
-    <com.github.sikv.photos.ui.custom.RoundedImageView
+    <ImageView
         android:id="@+id/photoImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:radius="@dimen/photoCornerRadius"
         android:scaleType="centerCrop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -57,19 +57,19 @@ class PexelsPhoto(
         return url
     }
 
-    override fun getPhotographerName(): String {
+    override fun getPhotoPhotographerName(): String {
         return photographer
     }
 
-    override fun getPhotographerImageUrl(): String? {
+    override fun getPhotoPhotographerImageUrl(): String? {
         return null
     }
 
-    override fun getPhotographerUrl(): String? {
+    override fun getPhotoPhotographerUrl(): String? {
         return null
     }
 
-    override fun getSource(): String {
+    override fun getPhotoSource(): String {
         return SOURCE
     }
 

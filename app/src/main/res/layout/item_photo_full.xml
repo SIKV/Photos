@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/photoItemFullBottomMargin">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/photoItemFullContentHorizontalMargin"
+        android:layout_marginEnd="@dimen/photoItemFullContentHorizontalMargin"
+        android:layout_marginBottom="12dp">
+
+        <ImageView
+            android:id="@+id/photographerImage"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/cn_photographer_photo"
+            tools:background="@color/colorIcon" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/photographerImage">
+
+            <TextView
+                android:id="@+id/photographerNameText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Photographer Name"
+                android:textColor="@color/colorText"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/sourceText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Source"
+                android:textColor="@color/colorText"
+                android:textSize="11sp"
+                tools:ignore="SmallSp" />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/optionsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/cn_options_button"
+            android:src="@drawable/ic_more_vert_24dp"
+            style="@style/CircleImageButton" />
+
+    </RelativeLayout>
+
+    <com.github.sikv.photos.ui.custom.SquareImageView
+        android:id="@+id/photoImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/cn_photo"
+        android:foreground="?selectableItemBackgroundBorderless"
+        android:background="@color/colorPlaceholder" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="@dimen/photoItemFullContentHorizontalMargin"
+        android:layout_marginEnd="@dimen/photoItemFullContentHorizontalMargin"
+        android:layout_marginBottom="8dp">
+
+        <ImageButton
+            android:id="@+id/favoriteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/cn_favorite_button"
+            android:src="@drawable/ic_favorite_border_24dp"
+            style="@style/CircleImageButton" />
+
+        <ImageButton
+            android:id="@+id/shareButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingBottom="3dp"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/favoriteButton"
+            android:contentDescription="@string/cn_share_button"
+            android:src="@drawable/ic_share_24dp"
+            style="@style/CircleImageButton" />
+
+        <ImageButton
+            android:id="@+id/downloadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/cn_download_button"
+            android:src="@drawable/ic_file_download_24dp"
+            style="@style/CircleImageButton" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/descriptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/photoItemFullContentHorizontalMargin"
+        android:layout_marginEnd="@dimen/photoItemFullContentHorizontalMargin"
+        android:layout_marginBottom="6dp"
+        tools:text="Description"
+        android:textSize="13sp"
+        android:textColor="@color/colorText"
+        android:maxLines="2"
+        android:ellipsize="marquee" />
+
+    <TextView
+        android:id="@+id/createdAtText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/photoItemFullContentHorizontalMargin"
+        tools:text="March 11, 2020"
+        android:textSize="11sp"
+        android:textColor="@color/colorText"
+        android:alpha="0.5"
+        tools:ignore="SmallSp" />
+
+</LinearLayout>

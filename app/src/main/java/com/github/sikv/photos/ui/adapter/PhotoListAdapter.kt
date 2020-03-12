@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.github.sikv.photos.App
-import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import javax.inject.Inject
@@ -20,12 +20,18 @@ class PhotoListAdapter(
     @Inject
     lateinit var favoritesRepository: FavoritesRepository
 
+    private var itemLayoutType = PhotoItemLayoutType.FULL
+
     init {
         App.instance.appComponent.inject(this)
     }
 
+    fun setItemLayoutType(itemLayoutType: PhotoItemLayoutType) {
+        this.itemLayoutType = itemLayoutType
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(itemLayoutType.layout, parent, false)
         return PhotoViewHolder(view)
     }
 
@@ -33,6 +39,6 @@ class PhotoListAdapter(
         val photo = getItem(position)
         val favorite = favoritesRepository.isFavorite(photo)
 
-        holder.bind(photo, favorite, clickCallback, longClickCallback, favoriteClickCallback)
+        holder.bind(itemLayoutType, photo, favorite, clickCallback, longClickCallback, favoriteClickCallback)
     }
 }

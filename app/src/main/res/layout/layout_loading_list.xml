@@ -7,14 +7,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="@dimen/recyclerPaddingTop"
-        android:paddingBottom="@dimen/recyclerPaddingTop"
+        android:paddingVertical="@dimen/photoRecyclerVerticalPadding"
         android:visibility="gone"
         tools:visibility="visible">
 
-        <include layout="@layout/item_photo" />
-        <include layout="@layout/item_photo" />
-        <include layout="@layout/item_photo" />
+        <include layout="@layout/item_photo_full" />
+        <include layout="@layout/item_photo_full" />
+        <include layout="@layout/item_photo_full" />
 
     </LinearLayout>
 

@@ -2,6 +2,8 @@ package com.github.sikv.photos.model
 
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Parcelize
 class UnsplashPhoto(
@@ -14,8 +16,11 @@ class UnsplashPhoto(
         @SerializedName("height")
         val height: Int,
 
+        @SerializedName("created_at")
+        val createdAt: String,
+
         @SerializedName("description")
-        val description: String?,
+        val description: String,
 
         @SerializedName("user")
         val user: UnsplashUser,
@@ -43,6 +48,18 @@ class UnsplashPhoto(
         return height
     }
 
+    override fun getPhotoCreatedAt(): Long? {
+        return try {
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).parse(createdAt)?.time
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    override fun getPhotoDescription(): String? {
+        return description
+    }
+
     override fun getLargeUrl(): String {
         return urls.full
     }
@@ -63,19 +80,19 @@ class UnsplashPhoto(
         return links.html
     }
 
-    override fun getPhotographerName(): String {
+    override fun getPhotoPhotographerName(): String {
         return user.name
     }
 
-    override fun getPhotographerImageUrl(): String? {
+    override fun getPhotoPhotographerImageUrl(): String? {
         return user.profileImage?.medium
     }
 
-    override fun getPhotographerUrl(): String? {
+    override fun getPhotoPhotographerUrl(): String? {
         return user.portfolioUrl
     }
 
-    override fun getSource(): String {
+    override fun getPhotoSource(): String {
         return SOURCE
     }
 

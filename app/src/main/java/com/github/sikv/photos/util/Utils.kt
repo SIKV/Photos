@@ -17,12 +17,14 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import com.github.sikv.photos.R
+import java.text.DateFormat
+import java.util.*
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
+
 const val SPAN_COUNT_LIST = 1
-const val SPAN_COUNT_GRID = 2
+const val SPAN_COUNT_GRID = 3
 
 const val PHOTO_TRANSITION_DURATION = 500
 
@@ -95,7 +97,7 @@ object Utils {
 
     fun openUrl(context: Context, url: String) {
         val builder = CustomTabsIntent.Builder()
-        builder.setToolbarColor(ContextCompat.getColor(context, R.color.colorPrimary))
+        builder.setToolbarColor(ContextCompat.getColor(context, com.github.sikv.photos.R.color.colorPrimary))
 
         val intent = builder.build()
         intent.intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -111,6 +113,10 @@ object Utils {
     fun hideSoftInput(context: Context?, view: View) {
         val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun formatCreatedAtDate(date: Long): String {
+        return DateFormat.getDateInstance().format(Date(date))
     }
 
     fun calculateP(x: Double, y: Double, z: Double,

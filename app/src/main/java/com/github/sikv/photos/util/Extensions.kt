@@ -6,8 +6,10 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sikv.photos.R
+import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.google.android.material.snackbar.Snackbar
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -71,4 +73,12 @@ fun View.setVisibilityAnimated(newVisibility: Int, duration: Long = 500L) {
 
 fun RecyclerView.scrollToTop() {
     this.smoothScrollToPosition(0)
+}
+
+fun RecyclerView.setItemLayoutType(itemLayoutType: PhotoItemLayoutType) {
+    layoutManager = GridLayoutManager(context, itemLayoutType.spanCount)
+    setPadding(0, itemLayoutType.recyclerVerticalPadding, 0, itemLayoutType.recyclerVerticalPadding)
+
+    // Invalidate view holders
+    adapter = adapter
 }

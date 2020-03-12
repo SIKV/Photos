@@ -2,9 +2,9 @@ package com.github.sikv.photos.ui.custom
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.cardview.widget.CardView
+import androidx.appcompat.widget.AppCompatImageView
 
-class SquareCardView(context: Context, attrs: AttributeSet?) : CardView(context, attrs) {
+class SquareImageView(context: Context, attrs: AttributeSet?) : AppCompatImageView(context, attrs) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, widthMeasureSpec)
