@@ -10,6 +10,8 @@
     <string name="_pref_dark_theme">PreferenceDarkTheme</string>
     <string name="_pref_report_problem">PreferenceReportProblem</string>
     <string name="_pref_send_feedback">PreferenceSendFeedback</string>
+    <string name="_pref_rate_app">PreferenceRateApp</string>
+    <string name="_pref_open_source_licences">PreferenceOpenSourceLicences</string>
     <string name="_pref_app_version">PreferenceAppVersion</string>
 
     <!-- -->
@@ -58,8 +60,10 @@
     <string name="appearance">Appearance</string>
     <string name="dark_theme">Dark Theme</string>
     <string name="help">Help</string>
+    <string name="about">About</string>
     <string name="report_problem">Report a Problem</string>
     <string name="send_feedback">Send Feedback</string>
+    <string name="rate_app">Rate this App</string>
     <string name="cancel">Cancel</string>
     <string name="downloading_photo">Downloading photo…</string>
     <string name="error_downloading_photo">Error downloading photo</string>
@@ -68,9 +72,10 @@
     <string name="photo_ready">Photo is ready</string>
     <string name="local_storage">Local Storage</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="sign_in_pref_summary">to be able to sync your favorites with other devices.</string>
+    <string name="sign_in_pref_summary">to sync your favorites with other devices.</string>
     <string name="sign_out">Sign Out</string>
     <string name="app_version">App Version</string>
+    <string name="open_source_licences">Open Source Licences</string>
     <string name="signing_in">Signing in, please wait…</string>
     <string name="submit">Submit</string>
     <string name="what_to_improve">What would you like us to improve?</string>
