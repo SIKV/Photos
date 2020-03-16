@@ -7,6 +7,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
@@ -27,12 +28,10 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(itemLayoutType: PhotoItemLayoutType,
              photo: Photo?,
              favorite: Boolean,
-             clickCallback: (Photo, View) -> Unit,
-             longClickCallback: ((Photo, View) -> Unit)? = null,
-             favoriteClickCallback: ((Photo) -> Unit)? = null) {
+             clickCallback: (PhotoItemClickSource, Photo, View) -> Unit) {
 
         if (itemLayoutType == PhotoItemLayoutType.MIN) {
-            bindMin(photo, clickCallback, longClickCallback)
+            bindMin(photo, clickCallback)
             return
         }
 
@@ -49,16 +48,16 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         photo?.let {
             itemView.photoImage.setOnClickListener { view ->
-                clickCallback.invoke(it, view)
+                clickCallback.invoke(PhotoItemClickSource.CLICK, it, view)
             }
 
             itemView.photoImage.setOnLongClickListener { view ->
-                longClickCallback?.invoke(it, view)
+                clickCallback.invoke(PhotoItemClickSource.LONG_CLICK, it, view)
                 return@setOnLongClickListener true
             }
 
-            itemView.favoriteButton.setOnClickListener { _ ->
-                favoriteClickCallback?.invoke(it)
+            itemView.favoriteButton.setOnClickListener { view ->
+                clickCallback.invoke(PhotoItemClickSource.FAVORITE, it, view)
                 ViewUtils.favoriteAnimation(itemView.favoriteButton)
             }
         } ?: run {
@@ -68,10 +67,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    private fun bindMin(photo: Photo?,
-                        clickCallback: (Photo, View) -> Unit,
-                        longClickCallback: ((Photo, View) -> Unit)? = null) {
-
+    private fun bindMin(photo: Photo?, clickCallback: (PhotoItemClickSource, Photo, View) -> Unit) {
         itemView.photoImage.setImageDrawable(null)
 
         photo?.let {
@@ -82,11 +78,11 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         photo?.let {
             itemView.photoImage.setOnClickListener { view ->
-                clickCallback.invoke(it, view)
+                clickCallback.invoke(PhotoItemClickSource.CLICK, it, view)
             }
 
             itemView.photoImage.setOnLongClickListener { view ->
-                longClickCallback?.invoke(it, view)
+                clickCallback.invoke(PhotoItemClickSource.LONG_CLICK, it, view)
                 return@setOnLongClickListener true
             }
 

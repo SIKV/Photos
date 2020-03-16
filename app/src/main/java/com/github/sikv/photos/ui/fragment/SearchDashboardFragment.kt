@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sikv.photos.R
+import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
@@ -55,12 +56,18 @@ class SearchDashboardFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    private fun onPhotoClick(photo: Photo, view: View) {
-        PhotoActivity.startActivity(activity, view, photo)
-    }
+    private fun onPhotoClick(clickSource: PhotoItemClickSource, photo: Photo, view: View) {
+        when (clickSource) {
+            PhotoItemClickSource.CLICK -> {
+                PhotoActivity.startActivity(activity, view, photo)
+            }
 
-    private fun onPhotoLongClick(photo: Photo, view: View) {
-        PhotoPreviewPopup.show(activity, rootLayout, photo)
+            PhotoItemClickSource.LONG_CLICK -> {
+                PhotoPreviewPopup.show(activity, rootLayout, photo)
+            }
+
+            else -> { }
+        }
     }
 
     private fun observe() {
@@ -73,7 +80,7 @@ class SearchDashboardFragment : BaseFragment() {
         })
 
         viewModel.suggestedPhotosLiveData.observe(viewLifecycleOwner, Observer {
-            val adapter = PhotoGridAdapter.create(it, ::onPhotoClick, ::onPhotoLongClick)
+            val adapter = PhotoGridAdapter.create(it, ::onPhotoClick)
 
             val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             suggestedPhotosRecycler.layoutManager = layoutManager

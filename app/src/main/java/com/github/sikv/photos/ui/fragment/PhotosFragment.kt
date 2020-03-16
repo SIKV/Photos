@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
+import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
@@ -34,7 +35,7 @@ class PhotosFragment : BaseFragment() {
         ViewModelProviders.of(this).get(PhotosViewModel::class.java)
     }
 
-    private val photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
+    private val photoAdapter = PhotoPagedListAdapter(::onPhotoClick)
 
     private var currentSource: PhotoSource = PhotoSource.UNSPLASH
         set(value) {
@@ -183,16 +184,22 @@ class PhotosFragment : BaseFragment() {
         })
     }
 
-    private fun onPhotoClick(photo: Photo, view: View) {
-        PhotoActivity.startActivity(activity!!, view, photo)
-    }
+    private fun onPhotoClick(clickSource: PhotoItemClickSource, photo: Photo, view: View) {
+        when (clickSource) {
+            PhotoItemClickSource.CLICK -> {
+                PhotoActivity.startActivity(activity, view, photo)
+            }
 
-    private fun onPhotoLongClick(photo: Photo, view: View) {
-        PhotoPreviewPopup.show(activity!!, rootLayout, photo)
-    }
+            PhotoItemClickSource.LONG_CLICK -> {
+                PhotoPreviewPopup.show(activity, rootLayout, photo)
+            }
 
-    private fun onPhotoFavoriteClick(photo: Photo) {
-        viewModel.invertFavorite(photo)
+            PhotoItemClickSource.FAVORITE -> {
+                viewModel.invertFavorite(photo)
+            }
+
+            else -> { }
+        }
     }
 
     private fun setListeners() {

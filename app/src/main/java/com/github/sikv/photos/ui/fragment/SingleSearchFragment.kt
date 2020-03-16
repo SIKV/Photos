@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
+import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
@@ -43,7 +44,7 @@ class SingleSearchFragment : Fragment() {
     }
 
     private lateinit var photoSource: PhotoSource
-    private val photoAdapter = PhotoPagedListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
+    private val photoAdapter = PhotoPagedListAdapter(::onPhotoClick)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,15 +121,21 @@ class SingleSearchFragment : Fragment() {
         })
     }
 
-    private fun onPhotoClick(photo: Photo, view: View) {
-        PhotoActivity.startActivity(activity!!, view, photo)
-    }
+    private fun onPhotoClick(clickSource: PhotoItemClickSource, photo: Photo, view: View) {
+        when (clickSource) {
+            PhotoItemClickSource.CLICK -> {
+                PhotoActivity.startActivity(activity, view, photo)
+            }
 
-    private fun onPhotoLongClick(photo: Photo, view: View) {
-        PhotoPreviewPopup.show(activity!!, rootLayout, photo)
-    }
+            PhotoItemClickSource.LONG_CLICK -> {
+                PhotoPreviewPopup.show(activity, rootLayout, photo)
+            }
 
-    private fun onPhotoFavoriteClick(photo: Photo) {
-        viewModel.invertFavorite(photo)
+            PhotoItemClickSource.FAVORITE -> {
+                viewModel.invertFavorite(photo)
+            }
+
+            else -> { }
+        }
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
+import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
@@ -38,7 +39,7 @@ class FavoritesFragment : BaseFragment() {
                 .get(FavoritesViewModel::class.java)
     }
 
-    private var photoAdapter = PhotoListAdapter(::onPhotoClick, ::onPhotoLongClick, ::onPhotoFavoriteClick)
+    private var photoAdapter = PhotoListAdapter(::onPhotoClick)
 
     private var currentSpanCount: Int = DEFAULT_SPAN_COUNT
         set(value) {
@@ -154,15 +155,21 @@ class FavoritesFragment : BaseFragment() {
         })
     }
 
-    private fun onPhotoClick(photo: Photo, view: View) {
-        PhotoActivity.startActivity(activity, view, photo)
-    }
+    private fun onPhotoClick(clickSource: PhotoItemClickSource, photo: Photo, view: View) {
+        when (clickSource) {
+            PhotoItemClickSource.CLICK -> {
+                PhotoActivity.startActivity(activity, view, photo)
+            }
 
-    private fun onPhotoLongClick(photo: Photo, view: View) {
-        PhotoPreviewPopup.show(activity, rootLayout, photo)
-    }
+            PhotoItemClickSource.LONG_CLICK -> {
+                PhotoPreviewPopup.show(activity, rootLayout, photo)
+            }
 
-    private fun onPhotoFavoriteClick(photo: Photo) {
-        viewModel.invertFavorite(photo)
+            PhotoItemClickSource.FAVORITE -> {
+                viewModel.invertFavorite(photo)
+            }
+
+            else -> { }
+        }
     }
 }

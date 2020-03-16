@@ -6,15 +6,14 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import com.github.sikv.photos.App
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import javax.inject.Inject
 
 class PhotoPagedListAdapter(
-        private val clickCallback: (Photo, View) -> Unit,
-        private val longClickCallback: ((Photo, View) -> Unit)? = null,
-        private val favoriteClickCallback: ((Photo) -> Unit)? = null
+        private val clickCallback: (PhotoItemClickSource, Photo, View) -> Unit
 ) : PagedListAdapter<Photo, PhotoViewHolder>(Photo.COMPARATOR) {
 
     @Inject
@@ -45,6 +44,6 @@ class PhotoPagedListAdapter(
         val photo = getItem(position)
         val favorite = favoritesRepository.isFavorite(photo)
 
-        holder.bind(itemLayoutType, photo, favorite, clickCallback, longClickCallback, favoriteClickCallback)
+        holder.bind(itemLayoutType, photo, favorite, clickCallback)
     }
 }

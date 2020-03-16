@@ -10,6 +10,7 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
 import javax.inject.Inject
@@ -21,16 +22,13 @@ data class PhotoGridItem(
 )
 
 class PhotoGridAdapter(
-        private val clickCallback: (Photo, View) -> Unit,
-        private val longClickCallback: ((Photo, View) -> Unit)? = null
+        private val clickCallback: (PhotoItemClickSource, Photo, View) -> Unit
 ) : RecyclerView.Adapter<PhotoGridViewHolder>() {
 
     private var items: List<PhotoGridItem> = emptyList()
 
     companion object {
-        fun create(photos: List<Photo>,
-                   clickCallback: (Photo, View) -> Unit,
-                   longClickCallback: ((Photo, View) -> Unit)? = null): PhotoGridAdapter {
+        fun create(photos: List<Photo>, clickCallback: (PhotoItemClickSource, Photo, View) -> Unit): PhotoGridAdapter {
 
             val items: MutableList<PhotoGridItem> = mutableListOf()
 
@@ -57,7 +55,7 @@ class PhotoGridAdapter(
                 items.add(item)
             }
 
-            val adapter = PhotoGridAdapter(clickCallback, longClickCallback)
+            val adapter = PhotoGridAdapter(clickCallback)
             adapter.items = items
 
             return adapter
@@ -78,7 +76,7 @@ class PhotoGridAdapter(
     }
 
     override fun onBindViewHolder(holder: PhotoGridViewHolder, position: Int) {
-        holder.bind(items[position], clickCallback, longClickCallback)
+        holder.bind(items[position], clickCallback)
     }
 }
 
@@ -91,9 +89,7 @@ class PhotoGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         App.instance.appComponent.inject(this)
     }
 
-    fun bind(item: PhotoGridItem,
-             clickCallback: (Photo, View) -> Unit,
-             longClickCallback: ((Photo, View) -> Unit)? = null) {
+    fun bind(item: PhotoGridItem, clickCallback: (PhotoItemClickSource, Photo, View) -> Unit) {
 
         item.items.forEach { pair ->
             val imageView = itemView.findViewById<ImageView>(pair.second)
@@ -108,11 +104,11 @@ class PhotoGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                         .into(imageView)
 
                 imageView.setOnClickListener { view ->
-                    clickCallback.invoke(photo, view)
+                    clickCallback.invoke(PhotoItemClickSource.CLICK, photo, view)
                 }
 
                 imageView.setOnLongClickListener { view ->
-                    longClickCallback?.invoke(photo, view)
+                    clickCallback.invoke(PhotoItemClickSource.LONG_CLICK, photo, view)
                     return@setOnLongClickListener true
                 }
 
