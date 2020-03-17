@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
@@ -16,6 +16,7 @@ import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.util.ViewUtils
 import com.github.sikv.photos.util.defaultStyle
 import com.github.sikv.photos.viewmodel.PreferenceViewModel
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.snackbar.Snackbar
 
 class SettingsFragment : BaseFragment() {
@@ -44,7 +45,7 @@ class SettingsFragment : BaseFragment() {
     internal class PreferenceFragment : PreferenceFragmentCompat() {
 
         private val viewModel: PreferenceViewModel by lazy {
-            ViewModelProviders.of(this).get(PreferenceViewModel::class.java)
+            ViewModelProvider(this).get(PreferenceViewModel::class.java)
         }
 
         private var signingInSnackbar: Snackbar? = null
@@ -84,13 +85,19 @@ class SettingsFragment : BaseFragment() {
                     true
                 }
 
+                getString(R.string._pref_send_feedback) -> {
+                    showFragment(FeedbackFragment.newSendFeedbackFragment())
+                    return true
+                }
+
                 getString(R.string._pref_report_problem) -> {
                     showFragment(FeedbackFragment.newReportProblemFragment())
                     return true
                 }
 
-                getString(R.string._pref_send_feedback) -> {
-                    showFragment(FeedbackFragment.newSendFeedbackFragment())
+                getString(R.string._pref_open_source_licences) -> {
+                    startActivity(Intent(context, OssLicensesMenuActivity::class.java))
+                    OssLicensesMenuActivity.setActivityTitle(context?.getString(R.string.open_source_licences) ?: "")
                     return true
                 }
 

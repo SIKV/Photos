@@ -33,11 +33,13 @@
 
             <meta-data android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
-
         </activity>
 
         <activity android:name=".ui.activity.PhotoActivity"
             android:theme="@style/AppTheme.Translucent" />
+
+        <activity android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme.OssLicenses" />
 
         <service android:name=".service.DownloadPhotoService" />
 
