@@ -7,9 +7,8 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.IBinder
-import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
-import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
@@ -88,9 +87,9 @@ class DownloadPhotoService : Service() {
         postMessage(getString(R.string.downloading_photo))
         updateDownloadPhotoState(DownloadPhotoState.DOWNLOADING_PHOTO)
 
-        Glide.with(this).asBitmap()
+        glide.asBitmap()
                 .load(photoUrl)
-                .into(object : SimpleTarget<Bitmap>() {
+                .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
                         job = CoroutineScope(Dispatchers.Main).launch{
                             savePhoto(bitmap)?.let { uri ->
@@ -112,6 +111,8 @@ class DownloadPhotoService : Service() {
                         postMessage(getString(R.string.error_downloading_photo))
                         updateDownloadPhotoState(DownloadPhotoState.ERROR_DOWNLOADING_PHOTO)
                     }
+
+                    override fun onLoadCleared(placeholder: Drawable?) { }
                 })
     }
 

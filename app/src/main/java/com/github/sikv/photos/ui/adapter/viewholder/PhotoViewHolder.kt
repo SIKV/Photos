@@ -71,7 +71,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.photoImage.setImageDrawable(null)
 
         photo?.let {
-            glide.load(it.getThumbnailUrl())
+            glide.load(it.getPhotoPreviewUrl())
                     .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
                     .into(itemView.photoImage)
         }
@@ -97,7 +97,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         itemView.photographerImage.setImageDrawable(null)
 
         photo?.let {
-            glide.load(it.getThumbnailUrl())
+            glide.load(it.getPhotoPreviewUrl())
                     .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
                     .into(itemView.photoImage)
 

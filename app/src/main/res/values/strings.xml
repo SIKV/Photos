@@ -70,7 +70,6 @@
     <string name="photo_downloading_canceled">Photo downloading has been canceled</string>
     <string name="canceling">Canceling…</string>
     <string name="photo_ready">Photo is ready</string>
-    <string name="local_storage">Local Storage</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in_pref_summary">to sync your favorites with other devices.</string>
     <string name="sign_out">Sign Out</string>

@@ -11,7 +11,5 @@
     <color name="colorNavigationIconActive">#FFFFFF</color>
     <color name="colorPlaceholder">#252525</color>
     <color name="colorBottomSheetClose">#252525</color>
-    <color name="colorWarningIcon">#FFEB3B</color>
     <color name="colorTagStroke">#359E9E9E</color>
-
 </resources>

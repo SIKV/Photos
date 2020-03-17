@@ -23,7 +23,6 @@
     <color name="colorPlaceholder">#EEEEEE</color>
     <color name="colorHint">#9E9E9E</color>
     <color name="colorBottomSheetClose">#DDDDDD</color>
-    <color name="colorWarningIcon">#FFEB3B</color>
     <color name="colorRed">#EF4141</color>
     <color name="colorTagStroke">#30000000</color>
 </resources>

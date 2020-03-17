@@ -22,7 +22,7 @@ object PhotoPreviewPopup {
         val layout = activity.layoutInflater.inflate(R.layout.popup_photo_preview, rootLayout, false)
 
         Glide.with(activity)
-                .load(photo.getThumbnailUrl())
+                .load(photo.getPhotoPreviewUrl())
                 .into(layout.photoPreviewImage)
 
         layout.photoPreviewImage.animation = AnimationUtils.loadAnimation(activity, R.anim.zoom_in)

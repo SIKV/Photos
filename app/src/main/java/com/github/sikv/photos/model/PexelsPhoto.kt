@@ -37,20 +37,16 @@ class PexelsPhoto(
         return height
     }
 
-    override fun getLargeUrl(): String {
-        return src.large2x
-    }
-
-    override fun getNormalUrl(): String {
-        return src.medium
-    }
-
-    override fun getSmallUrl(): String {
-        return src.small
-    }
-
-    override fun getThumbnailUrl(): String {
+    override fun getPhotoPreviewUrl(): String {
         return src.large
+    }
+
+    override fun getPhotoFullPreviewUrl(): String {
+        return src.large
+    }
+
+    override fun getPhotoWallpaperUrl(): String {
+        return src.large2x
     }
 
     override fun getShareUrl(): String {

@@ -99,7 +99,7 @@ class PhotoGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             imageView.setImageDrawable(null)
 
             pair.first?.let { photo ->
-                glide.load(photo.getThumbnailUrl())
+                glide.load(photo.getPhotoPreviewUrl())
                         .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
                         .into(imageView)
 

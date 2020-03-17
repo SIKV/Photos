@@ -1,6 +1,7 @@
 package com.github.sikv.photos.api
 
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.model.UnsplashSearchResponse
 import io.reactivex.Single
@@ -16,7 +17,7 @@ class UnsplashClient @Inject constructor(
             unsplashApi.getPhotos(page, perPage, "latest")
                     .map(favoritesRepository::populateFavorite)
 
-    fun getPhoto(id: String): Single<UnsplashPhoto> =
+    fun getPhoto(id: String): Single<Photo> =
             unsplashApi.getPhoto(id)
                     .map(favoritesRepository::populateFavorite)
 

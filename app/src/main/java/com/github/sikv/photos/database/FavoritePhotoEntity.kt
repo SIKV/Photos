@@ -14,7 +14,7 @@ class FavoritePhotoEntity(
         var height: Int,
         var createdAt: Long?,
         var description: String?,
-        var thumbUrl: String,
+        var previewUrl: String,
         var photographerName: String,
         var photographerImageUrl: String?,
         var photographerUrl: String?,
@@ -29,7 +29,7 @@ class FavoritePhotoEntity(
                     height = photo.getPhotoHeight(),
                     createdAt = photo.getPhotoCreatedAt(),
                     description = photo.getPhotoDescription(),
-                    thumbUrl = photo.getThumbnailUrl(),
+                    previewUrl = photo.getPhotoPreviewUrl(),
                     photographerName = photo.getPhotoPhotographerName(),
                     photographerImageUrl = photo.getPhotoPhotographerImageUrl(),
                     photographerUrl = photo.getPhotoPhotographerUrl(),
@@ -58,8 +58,8 @@ class FavoritePhotoEntity(
         return description
     }
 
-    override fun getThumbnailUrl(): String {
-        return thumbUrl
+    override fun getPhotoPreviewUrl(): String {
+        return previewUrl
     }
 
     override fun getPhotoPhotographerName(): String {

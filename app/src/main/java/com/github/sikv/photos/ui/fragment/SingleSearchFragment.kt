@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
 import com.github.sikv.photos.enumeration.PhotoItemClickSource
@@ -40,7 +40,7 @@ class SingleSearchFragment : Fragment() {
     }
 
     private val viewModel: SearchViewModel by lazy {
-        ViewModelProviders.of(this).get(SearchViewModel::class.java)
+        ViewModelProvider(this).get(SearchViewModel::class.java)
     }
 
     private lateinit var photoSource: PhotoSource

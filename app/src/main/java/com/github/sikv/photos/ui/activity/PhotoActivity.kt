@@ -21,7 +21,7 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DownloadPhotoState
 import com.github.sikv.photos.model.Photo
@@ -56,8 +56,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
         val viewModelFactory = PhotoViewModelFactory(application, photo)
 
-        ViewModelProviders.of(this, viewModelFactory)
-                .get(PhotoViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory).get(PhotoViewModel::class.java)
     }
 
     // Parallax Effect
@@ -82,24 +81,23 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         setListeners()
         adjustMargins()
 
-        observePhotoLoading()
         observe()
     }
 
     override fun onResume() {
         super.onResume()
 
-        startParallax()
+//        startParallax()
     }
 
     override fun onPause() {
         super.onPause()
 
-        stopParallax()
+//        stopParallax()
     }
 
     override fun onBackPressed() {
-        stopParallax()
+//        stopParallax()
 
         super.onBackPressed()
     }
@@ -154,7 +152,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         }
     }
 
-    private fun showPhoto(photo: Photo) {
+    private fun showPhotoInfo(photo: Photo) {
         val authorName = photo.getPhotoPhotographerName()
         val source = photo.getPhotoSource()
 
@@ -177,14 +175,6 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
                 ))
     }
 
-    private fun observePhotoLoading() {
-        viewModel.loadPhoto().observe(this, Observer {
-            it?.getContentIfNotHandled()?.let {
-                photoImageView.setImageBitmap(it)
-            }
-        })
-    }
-
     private fun updateFavoriteMenuItemIcon(favorite: Boolean) {
         favoriteMenuItemIcon = if (favorite) {
             R.drawable.ic_favorite_red_24dp
@@ -196,9 +186,15 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     private fun observe() {
-        viewModel.photoReadyEvent.observe(this, Observer {
+        viewModel.showPhotoInfoEvent.observe(this, Observer {
             it?.getContentIfNotHandled()?.let { photo ->
-                showPhoto(photo)
+                showPhotoInfo(photo)
+            }
+        })
+
+        viewModel.showPhotoEvent.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let { photo ->
+                photoImageView.setImageBitmap(photo)
             }
         })
 

@@ -6,7 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
@@ -35,8 +35,7 @@ class FavoritesFragment : BaseFragment() {
 
         val viewModelFactory = FavoritesViewModelFactory(application)
 
-        ViewModelProviders.of(this, viewModelFactory)
-                .get(FavoritesViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory).get(FavoritesViewModel::class.java)
     }
 
     private var photoAdapter = PhotoListAdapter(::onPhotoClick)
@@ -143,14 +142,6 @@ class FavoritesFragment : BaseFragment() {
                             }
                         })
                         .show()
-            }
-        })
-
-        viewModel.localStorageWaringVisibilityLiveData.observe(viewLifecycleOwner, Observer {
-            if (it) {
-                ViewUtils.showToolbarSubtitle(this, R.string.local_storage, R.drawable.ic_warning_16dp)
-            } else {
-                ViewUtils.hideToolbarSubtitle(this)
             }
         })
     }

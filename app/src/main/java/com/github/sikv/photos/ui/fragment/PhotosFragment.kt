@@ -6,7 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
@@ -32,7 +32,7 @@ class PhotosFragment : BaseFragment() {
     }
 
     private val viewModel: PhotosViewModel by lazy {
-        ViewModelProviders.of(this).get(PhotosViewModel::class.java)
+        ViewModelProvider(this).get(PhotosViewModel::class.java)
     }
 
     private val photoAdapter = PhotoPagedListAdapter(::onPhotoClick)

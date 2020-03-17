@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoItemClickSource
@@ -27,7 +27,7 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private val viewModel: SearchDashboardViewModel by lazy {
-        ViewModelProviders.of(this).get(SearchDashboardViewModel::class.java)
+        ViewModelProvider(this).get(SearchDashboardViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

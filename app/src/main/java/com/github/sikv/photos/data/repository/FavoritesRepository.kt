@@ -121,16 +121,16 @@ class FavoritesRepository @Inject constructor(
         return favoritesDao.getById(photo.getPhotoId()) != null
     }
 
+    fun populateFavorite(photo: Photo): Photo {
+        photo.favorite = isFavoriteFromDatabase(photo)
+        return photo
+    }
+
     fun populateFavorite(photos: List<UnsplashPhoto>): List<UnsplashPhoto> {
         photos.forEach {
             it.favorite = isFavoriteFromDatabase(it)
         }
         return photos
-    }
-
-    fun populateFavorite(photo: UnsplashPhoto): UnsplashPhoto {
-        photo.favorite = isFavoriteFromDatabase(photo)
-        return photo
     }
 
     fun populateFavorite(response: UnsplashSearchResponse): UnsplashSearchResponse {
@@ -145,11 +145,6 @@ class FavoritesRepository @Inject constructor(
             it.favorite = isFavoriteFromDatabase(it)
         }
         return response
-    }
-
-    fun populateFavorite(photo: PexelsPhoto): PexelsPhoto {
-        photo.favorite = isFavoriteFromDatabase(photo)
-        return photo
     }
 
     fun populateFavorite(response: PexelsSearchResponse): PexelsSearchResponse {

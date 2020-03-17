@@ -20,7 +20,7 @@ class UnsplashPhoto(
         val createdAt: String,
 
         @SerializedName("description")
-        val description: String,
+        val description: String?,
 
         @SerializedName("user")
         val user: UnsplashUser,
@@ -60,20 +60,16 @@ class UnsplashPhoto(
         return description
     }
 
-    override fun getLargeUrl(): String {
+    override fun getPhotoPreviewUrl(): String {
+        return urls.regular
+    }
+
+    override fun getPhotoFullPreviewUrl(): String {
+        return urls.regular
+    }
+
+    override fun getPhotoWallpaperUrl(): String {
         return urls.full
-    }
-
-    override fun getNormalUrl(): String {
-        return urls.regular
-    }
-
-    override fun getSmallUrl(): String {
-        return urls.small
-    }
-
-    override fun getThumbnailUrl(): String {
-        return urls.regular
     }
 
     override fun getShareUrl(): String {
