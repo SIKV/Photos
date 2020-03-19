@@ -6,9 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.github.sikv.photos.R
-import com.github.sikv.photos.ui.fragment.*
 import com.github.sikv.photos.enumeration.DownloadPhotoState
 import com.github.sikv.photos.enumeration.SetWallpaperState
+import com.github.sikv.photos.ui.fragment.*
 import com.github.sikv.photos.util.customTag
 import com.github.sikv.photos.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -96,7 +96,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun observe() {
-        viewModel.downloadPhotoStateLiveData.observe(this, Observer { state ->
+        viewModel.downloadPhotoStateChangedLiveData.observe(this, Observer { state ->
             when (state) {
                 DownloadPhotoState.DOWNLOADING_PHOTO -> {
                     setWallpaperInProgressLayout.visibility = View.VISIBLE
@@ -148,13 +148,17 @@ class MainActivity : BaseActivity() {
             }
         })
 
-        viewModel.setWallpaperStateLiveData.observe(this, Observer { state ->
-            when (state) {
-                SetWallpaperState.SUCCESS, SetWallpaperState.FAILURE -> {
-                    setWallpaperInProgressLayout.visibility = View.GONE
-                }
+        viewModel.setWallpaperStateChangedEvent.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { state ->
+                when (state) {
+                    SetWallpaperState.SUCCESS, SetWallpaperState.FAILURE -> {
+                        setWallpaperInProgressLayout.visibility = View.GONE
 
-                else -> { }
+                        if (state == SetWallpaperState.FAILURE) {
+                            postMessage(R.string.error_setting_wallpaper)
+                        }
+                    }
+                }
             }
         })
     }

@@ -127,6 +127,6 @@ class DownloadPhotoService : Service() {
     }
 
     private fun updateDownloadPhotoState(state: DownloadPhotoState) {
-        App.instance.postDownloadPhotoStateLiveData(state)
+        App.instance.postDownloadPhotoState(state)
     }
 }

@@ -24,6 +24,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DownloadPhotoState
+import com.github.sikv.photos.enumeration.SetWallpaperState
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.ViewUtils
@@ -212,13 +213,25 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
             setWallpaperButton.visibility = if (downloading) View.GONE else View.VISIBLE
         })
 
-        viewModel.downloadPhotoStateLiveData.observe(this, Observer { state ->
+        viewModel.downloadPhotoStateChangedLiveData.observe(this, Observer { state ->
             when (state) {
                 DownloadPhotoState.PHOTO_READY -> {
                     viewModel.setWallpaper()
                 }
 
                 else -> { }
+            }
+        })
+
+        viewModel.setWallpaperStateChangedEvent.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { state ->
+                when (state) {
+                    SetWallpaperState.FAILURE -> {
+                        postMessage(R.string.error_setting_wallpaper)
+                    }
+
+                    else -> { }
+                }
             }
         })
     }

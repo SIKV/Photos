@@ -50,11 +50,12 @@ class PhotoViewModel(
     private val favoriteChangedMutableLiveData = MutableLiveData<Boolean>()
     val favoriteChangedLiveData: LiveData<Boolean> = favoriteChangedMutableLiveData
 
-    val downloadPhotoInProgressLiveData: LiveData<Boolean> = Transformations.map(App.instance.downloadPhotoStateLiveData) { state ->
+    val downloadPhotoInProgressLiveData: LiveData<Boolean> = Transformations.map(App.instance.downloadPhotoStateChangedLiveData) { state ->
         state == DownloadPhotoState.DOWNLOADING_PHOTO
     }
 
-    val downloadPhotoStateLiveData = App.instance.downloadPhotoStateLiveData
+    val downloadPhotoStateChangedLiveData = App.instance.downloadPhotoStateChangedLiveData
+    val setWallpaperStateChangedEvent = App.instance.setWallpaperStateChangedEvent
 
     init {
         App.instance.appComponent.inject(this)

@@ -34,15 +34,14 @@ class App : Application() {
     private val messageMutableEvent = MutableLiveData<Event<String>>()
     val messageEvent: LiveData<Event<String>> = messageMutableEvent
 
-    private val downloadPhotoStateMutableLiveData = MutableLiveData<DownloadPhotoState>()
-    private val setWallpaperStateMutableLiveData = MutableLiveData<SetWallpaperState>()
+    private val downloadPhotoStateChangedMutableLiveData = MutableLiveData<DownloadPhotoState>()
 
-    val downloadPhotoStateLiveData: LiveData<DownloadPhotoState> = Transformations.map(downloadPhotoStateMutableLiveData) { state ->
+    val downloadPhotoStateChangedLiveData: LiveData<DownloadPhotoState> = Transformations.map(downloadPhotoStateChangedMutableLiveData) { state ->
         when (state) {
             // PHOTO_READY and ERROR_DOWNLOADING_PHOTO states should be handled only once.
             // For example, if PhotoActivity handled it then it SHOULD NOT be handled by MainActivity and vice versa.
             DownloadPhotoState.PHOTO_READY, DownloadPhotoState.ERROR_DOWNLOADING_PHOTO -> {
-                downloadPhotoStateMutableLiveData.value = null
+                downloadPhotoStateChangedMutableLiveData.value = null
                 state
             }
 
@@ -50,7 +49,8 @@ class App : Application() {
         }
     }
 
-    val setWallpaperStateLiveData: LiveData<SetWallpaperState> = setWallpaperStateMutableLiveData
+    private val setWallpaperStateChangedMutableEvent = MutableLiveData<Event<SetWallpaperState>>()
+    val setWallpaperStateChangedEvent: LiveData<Event<SetWallpaperState>> = setWallpaperStateChangedMutableEvent
 
     override fun onCreate() {
         super.onCreate()
@@ -64,12 +64,12 @@ class App : Application() {
         return getSharedPreferences("Preferences", Context.MODE_PRIVATE)
     }
 
-    fun postDownloadPhotoStateLiveData(state: DownloadPhotoState) {
-        downloadPhotoStateMutableLiveData.postValue(state)
+    fun postDownloadPhotoState(state: DownloadPhotoState) {
+        downloadPhotoStateChangedMutableLiveData.postValue(state)
     }
 
-    fun postSetWallpaperStateLiveData(state: SetWallpaperState) {
-        setWallpaperStateMutableLiveData.postValue(state)
+    fun postSetWallpaperState(state: SetWallpaperState) {
+        setWallpaperStateChangedMutableEvent.postValue(Event(state))
     }
 
     fun updateTheme() {

@@ -32,10 +32,10 @@ fun Context.startSetWallpaperActivity(photoUri: Uri) {
 
         startActivity(intent)
 
-        App.instance.postSetWallpaperStateLiveData(SetWallpaperState.SUCCESS)
+        App.instance.postSetWallpaperState(SetWallpaperState.SUCCESS)
 
     } catch (e: IllegalArgumentException) {
-        App.instance.postSetWallpaperStateLiveData(SetWallpaperState.FAILURE)
+        App.instance.postSetWallpaperState(SetWallpaperState.FAILURE)
     }
 }
 

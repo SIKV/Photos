@@ -2,6 +2,7 @@ package com.github.sikv.photos.ui.activity
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.github.sikv.photos.App
@@ -16,5 +17,9 @@ abstract class BaseActivity : AppCompatActivity() {
                 Toast.makeText(this, message, Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    fun postMessage(@StringRes message: Int) {
+        App.instance.postMessage(getString(message))
     }
 }

@@ -10,27 +10,25 @@ import com.github.sikv.photos.util.startSetWallpaperActivity
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
-    val downloadPhotoStateLiveData = App.instance.downloadPhotoStateLiveData
-    val setWallpaperStateLiveData = App.instance.setWallpaperStateLiveData
+    val downloadPhotoStateChangedLiveData = App.instance.downloadPhotoStateChangedLiveData
+    val setWallpaperStateChangedEvent = App.instance.setWallpaperStateChangedEvent
 
     fun setWallpaper() {
         getApplication<Application>().getSavedPhotoUri()?.let { uri ->
             getApplication<Application>().startSetWallpaperActivity(uri)
-
         } ?: run {
-
             // TODO Handle
         }
     }
 
     fun cancelSetWallpaper() {
-        when (downloadPhotoStateLiveData.value) {
+        when (downloadPhotoStateChangedLiveData.value) {
             DownloadPhotoState.DOWNLOADING_PHOTO -> {
                 getApplication<Application>().cancelPhotoDownloading()
             }
 
             else -> {
-                App.instance.postDownloadPhotoStateLiveData(DownloadPhotoState.CANCELED)
+                App.instance.postDownloadPhotoState(DownloadPhotoState.CANCELED)
             }
         }
     }
