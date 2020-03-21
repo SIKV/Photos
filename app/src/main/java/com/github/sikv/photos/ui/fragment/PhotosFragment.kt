@@ -14,6 +14,7 @@ import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.ui.activity.BaseActivity
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
@@ -196,6 +197,12 @@ class PhotosFragment : BaseFragment() {
 
             PhotoItemClickSource.FAVORITE -> {
                 viewModel.invertFavorite(photo)
+            }
+
+            PhotoItemClickSource.DOWNLOAD -> {
+                (activity as? BaseActivity)?.requestWriteExternalStoragePermission {
+                    context?.downloadPhotoAndSaveToPictures(photo.getPhotoWallpaperUrl())
+                }
             }
 
             else -> { }

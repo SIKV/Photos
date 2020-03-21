@@ -81,4 +81,6 @@
     <string name="what_to_improve">What would you like us to improve?</string>
     <string name="what_went_wrong">What went wrong?</string>
     <string name="d_delimiter_d">%d/%d</string>
+    <string name="grant_storage_permission_description">Please grant Storage permission to be able to download a photo.</string>
+    <string name="open_settings">Open Settings</string>
 </resources>

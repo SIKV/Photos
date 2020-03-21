@@ -1,10 +1,14 @@
 package com.github.sikv.photos.util
 
+import android.app.DownloadManager
 import android.app.WallpaperManager
+import android.app.WallpaperManager.ACTION_CROP_AND_SET_WALLPAPER
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Environment
 import androidx.core.content.FileProvider
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
@@ -14,6 +18,23 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 
 private const val KEY_PHOTO_URI = "key_photo_uri"
+
+fun Context.downloadPhotoAndSaveToPictures(photoUrl: String) {
+    val request = DownloadManager.Request(Uri.parse(photoUrl))
+
+    val filename = System.currentTimeMillis().toString() + ".jpeg"
+
+    request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+            .setAllowedOverRoaming(false)
+            .setTitle(getString(R.string.app_name))
+            .setDescription(getString(R.string.downloading_photo))
+            .setMimeType("image/jpeg")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, File.separator + filename)
+
+    val downloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as? DownloadManager
+    downloadManager?.enqueue(request)
+}
 
 fun Context.downloadPhoto(photoUrl: String) {
     DownloadPhotoService.startServiceActionDownload(this, photoUrl)
@@ -31,11 +52,20 @@ fun Context.startSetWallpaperActivity(photoUri: Uri) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         startActivity(intent)
-
         App.instance.postSetWallpaperState(SetWallpaperState.SUCCESS)
 
     } catch (e: IllegalArgumentException) {
-        App.instance.postSetWallpaperState(SetWallpaperState.FAILURE)
+        try {
+            val intent = Intent(ACTION_CROP_AND_SET_WALLPAPER, photoUri)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            startActivity(intent)
+            App.instance.postSetWallpaperState(SetWallpaperState.SUCCESS)
+
+        } catch (e: ActivityNotFoundException) {
+            App.instance.postSetWallpaperState(SetWallpaperState.FAILURE)
+        }
     }
 }
 
@@ -45,7 +75,7 @@ fun Context.savePhotoInFile(bitmap: Bitmap): Uri? {
 
     val byteArray = byteArrayOutputStream.toByteArray()
 
-    val filename = "photo.png"
+    val filename = "photo.jpeg"
     val file = File(filesDir, filename)
 
     file.writeBytes(byteArray)

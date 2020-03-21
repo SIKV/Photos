@@ -60,6 +60,11 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 clickCallback.invoke(PhotoItemClickSource.FAVORITE, it, view)
                 ViewUtils.favoriteAnimation(itemView.favoriteButton)
             }
+
+            itemView.downloadButton.setOnClickListener { view ->
+                clickCallback.invoke(PhotoItemClickSource.DOWNLOAD, it, view)
+            }
+
         } ?: run {
             itemView.photoImage.setOnClickListener(null)
             itemView.photoImage.setOnLongClickListener(null)
