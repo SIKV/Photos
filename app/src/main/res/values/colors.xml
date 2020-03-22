@@ -19,7 +19,7 @@
     <color name="colorNavigationIconActive">#000000</color>
     <color name="colorClearButton">#AAAAAA</color>
     <color name="colorSourceText">@color/colorAccent</color>
-    <color name="colorOverlay">#AA000000</color>
+    <color name="colorOverlay">#BB000000</color>
     <color name="colorRipple">#353535</color>
     <color name="colorRippleLight">#BCBCBC</color>
     <color name="colorPlaceholder">#EEEEEE</color>

@@ -63,7 +63,7 @@ class SearchDashboardFragment : BaseFragment() {
             }
 
             PhotoItemClickSource.LONG_CLICK -> {
-                PhotoPreviewPopup.show(activity, rootLayout, photo)
+                PhotoPreviewPopup().show(activity, rootLayout, photo)
             }
 
             else -> { }

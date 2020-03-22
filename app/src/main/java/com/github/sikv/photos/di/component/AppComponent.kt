@@ -8,6 +8,7 @@ import com.github.sikv.photos.ui.adapter.PhotoGridViewHolder
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
+import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.viewmodel.*
 import dagger.BindsInstance
 import dagger.Component
@@ -33,4 +34,5 @@ interface AppComponent {
     fun inject(viewHolder: PhotoGridViewHolder)
     fun inject(adapter: PhotoPagedListAdapter)
     fun inject(adapter: PhotoListAdapter)
+    fun inject(popup: PhotoPreviewPopup)
 }
