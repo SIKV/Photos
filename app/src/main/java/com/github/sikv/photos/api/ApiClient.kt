@@ -24,9 +24,11 @@ class ApiClient private constructor() {
         App.instance.networkComponent.inject(this)
     }
 
-    fun searchPhotos(query: String, page: Int, limit: Int): Single<List<Photo>> {
-        val unsplashSearch = unsplashClient.searchPhotos(query, page, limit)
-        val pexelsSearch = pexelsClient.searchPhotos(query, page, limit)
+    fun searchPhotos(query: String, limit: Int): Single<List<Photo>> {
+        val limitForEachSource = limit / 2
+
+        val unsplashSearch = unsplashClient.searchPhotos(query, 0, limitForEachSource)
+        val pexelsSearch = pexelsClient.searchPhotos(query, 0, limitForEachSource)
 
         return Single.zip(unsplashSearch, pexelsSearch, BiFunction<UnsplashSearchResponse, PexelsSearchResponse, List<Photo>> { unsplashPhotos, pexelsPhotos ->
             (unsplashPhotos.results + pexelsPhotos.photos).shuffled()

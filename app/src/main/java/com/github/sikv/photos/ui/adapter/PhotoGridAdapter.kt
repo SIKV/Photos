@@ -13,6 +13,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
+import kotlinx.android.synthetic.main.item_load_more.view.*
 import javax.inject.Inject
 
 data class PhotoGridItem(
@@ -22,61 +23,84 @@ data class PhotoGridItem(
 )
 
 class PhotoGridAdapter(
-        private val clickCallback: (PhotoItemClickSource, Photo, View) -> Unit
-) : RecyclerView.Adapter<PhotoGridViewHolder>() {
-
-    private var items: List<PhotoGridItem> = emptyList()
+        private val clickCallback: (PhotoItemClickSource, Photo, View) -> Unit,
+        private val loadMoreCallback: () -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
-        fun create(photos: List<Photo>, clickCallback: (PhotoItemClickSource, Photo, View) -> Unit): PhotoGridAdapter {
+        private const val ITEM_VIEW_TYPE_LOAD_MORE = R.layout.item_load_more
+    }
 
-            val items: MutableList<PhotoGridItem> = mutableListOf()
+    private var items: MutableList<PhotoGridItem> = mutableListOf()
 
-            val layouts = listOf(
-                    R.layout.item_photo_3_portrait_right,
-                    R.layout.item_photo_3_landscape_bottom,
-                    R.layout.item_photo_3_portrait_left,
-                    R.layout.item_photo_3_landscape_bottom
-            )
+    private var showLoadMoreOption: Boolean = false
+    private var loadingMoreInProgress: Boolean = false
 
-            var layoutIndex = 0
+    fun addItems(photos: List<Photo>, showLoadMoreOption: Boolean = true) {
+        val items: MutableList<PhotoGridItem> = mutableListOf()
 
-            for (i in photos.indices step 3) {
-                if (layoutIndex >= layouts.size) {
-                    layoutIndex = 0
-                }
+        val layouts = listOf(
+                R.layout.item_photo_3_portrait_right,
+                R.layout.item_photo_3_landscape_bottom,
+                R.layout.item_photo_3_portrait_left,
+                R.layout.item_photo_3_landscape_bottom
+        )
 
-                val item = PhotoGridItem(layout = layouts[layoutIndex++])
+        var layoutIndex = 0
 
-                item.items.add(Pair(photos.getOrNull(i), R.id.photoBigImage))
-                item.items.add(Pair(photos.getOrNull(i + 1), R.id.photo2Image))
-                item.items.add(Pair(photos.getOrNull(i + 2), R.id.photo3Image))
-
-                items.add(item)
+        for (i in photos.indices step 3) {
+            if (layoutIndex >= layouts.size) {
+                layoutIndex = 0
             }
 
-            val adapter = PhotoGridAdapter(clickCallback)
-            adapter.items = items
+            val item = PhotoGridItem(layout = layouts[layoutIndex++])
 
-            return adapter
+            item.items.add(Pair(photos.getOrNull(i), R.id.photoBigImage))
+            item.items.add(Pair(photos.getOrNull(i + 1), R.id.photo2Image))
+            item.items.add(Pair(photos.getOrNull(i + 2), R.id.photo3Image))
+
+            items.add(item)
         }
+
+        this.items.addAll(items)
+
+        this.showLoadMoreOption = showLoadMoreOption
+        this.loadingMoreInProgress = false
+
+        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return items.size + if (showLoadMoreOption) 1 else 0
     }
 
     override fun getItemViewType(position: Int): Int {
-        return items[position].layout
+        return if (showLoadMoreOption && position >= items.size) {
+            ITEM_VIEW_TYPE_LOAD_MORE
+        } else {
+            items[position].layout
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoGridViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
-        return PhotoGridViewHolder(view)
+
+        return if (viewType == ITEM_VIEW_TYPE_LOAD_MORE) {
+            LoadMoreViewHolder(view)
+        } else {
+            PhotoGridViewHolder(view)
+        }
     }
 
-    override fun onBindViewHolder(holder: PhotoGridViewHolder, position: Int) {
-        holder.bind(items[position], clickCallback)
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is LoadMoreViewHolder) {
+            holder.bind(loadingMoreInProgress) {
+                loadingMoreInProgress = true
+                loadMoreCallback()
+            }
+        } else if (holder is PhotoGridViewHolder) {
+            holder.bind(items[position], clickCallback)
+        }
     }
 }
 
@@ -90,7 +114,6 @@ class PhotoGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun bind(item: PhotoGridItem, clickCallback: (PhotoItemClickSource, Photo, View) -> Unit) {
-
         item.items.forEach { pair ->
             val imageView = itemView.findViewById<ImageView>(pair.second)
 
@@ -115,6 +138,21 @@ class PhotoGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             } ?: run {
                 imageView.visibility = View.INVISIBLE
             }
+        }
+    }
+}
+
+class LoadMoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    fun bind(loadingMoreInProgress: Boolean, loadMoreCallback: () -> Unit) {
+        itemView.loadMoreButton.visibility = if (loadingMoreInProgress) View.GONE else View.VISIBLE
+        itemView.progressBar.visibility = if (loadingMoreInProgress) View.VISIBLE else View.GONE
+
+        itemView.loadMoreButton.setOnClickListener { view ->
+            itemView.progressBar.visibility = View.VISIBLE
+            view.visibility = View.GONE
+
+            loadMoreCallback()
         }
     }
 }

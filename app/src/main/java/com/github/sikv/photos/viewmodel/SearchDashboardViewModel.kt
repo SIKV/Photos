@@ -6,28 +6,56 @@ import androidx.lifecycle.ViewModel
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.repository.SearchTagRepository
+import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.SearchTag
+import com.github.sikv.photos.recommendation.Recommender
 import com.github.sikv.photos.util.subscribeAsync
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
 class SearchDashboardViewModel : ViewModel() {
 
+    companion object {
+        private const val RECOMMENDATIONS_LIMIT = 18
+    }
+
     @Inject
     lateinit var searchTagRepository: SearchTagRepository
+
+    @Inject
+    lateinit var recommender: Recommender
 
     private val searchTagsMutableLiveData = MutableLiveData<List<SearchTag>>()
     val searchTagsLiveData: LiveData<List<SearchTag>> = searchTagsMutableLiveData
 
-    private val suggestedPhotosMutableLiveData = MutableLiveData<List<Photo>>()
-    val suggestedPhotosLiveData: LiveData<List<Photo>> = suggestedPhotosMutableLiveData
+    private val recommendedPhotosLoadedMutableEvent= MutableLiveData<Event<Pair<List<Photo>, Boolean>>>()
+    /**
+     * Returns a list of recommended photos and a flag if more are available.
+     */
+    val recommendedPhotosLoadedEvent: LiveData<Event<Pair<List<Photo>, Boolean>>> = recommendedPhotosLoadedMutableEvent
 
     init {
         App.instance.appComponent.inject(this)
 
         loadSearchTags()
-        loadSuggestions()
+    }
+
+    fun loadRecommendations() {
+        recommender.reset()
+
+        GlobalScope.launch(Dispatchers.Main) {
+            loadRecommendationsAsync()
+        }
+    }
+
+    fun loadMoreRecommendations() {
+        GlobalScope.launch(Dispatchers.Main) {
+            loadRecommendationsAsync()
+        }
     }
 
     private fun loadSearchTags() {
@@ -38,13 +66,21 @@ class SearchDashboardViewModel : ViewModel() {
         }
     }
 
-    private fun loadSuggestions() {
-        // TODO For testing purposes only
-        ApiClient.INSTANCE.searchPhotos("Nature", 0, 50)
-                .subscribeAsync({
-                    suggestedPhotosMutableLiveData.postValue(it)
-                }, {
+    private suspend fun loadRecommendationsAsync() {
+        val recommendation = recommender.getNextRecommendation()
 
-                })
+        val query = recommendation.first
+        val moreAvailable = recommendation.second
+
+        if (query != null) {
+            ApiClient.INSTANCE.searchPhotos(query, RECOMMENDATIONS_LIMIT)
+                    .subscribeAsync({
+                        recommendedPhotosLoadedMutableEvent.postValue(Event(Pair(it, moreAvailable)))
+                    }, {
+                        recommendedPhotosLoadedMutableEvent.postValue(Event(Pair(emptyList(), false)))
+                    })
+        } else {
+            recommendedPhotosLoadedMutableEvent.postValue(Event(Pair(emptyList(), moreAvailable)))
+        }
     }
 }

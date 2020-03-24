@@ -30,6 +30,8 @@ class SearchDashboardFragment : BaseFragment() {
         ViewModelProvider(this).get(SearchDashboardViewModel::class.java)
     }
 
+    private lateinit var recommendedPhotosAdapter: PhotoGridAdapter
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_search_dashboard, container, false)
     }
@@ -39,9 +41,12 @@ class SearchDashboardFragment : BaseFragment() {
 
         searchTagsRecycler.visibility = View.GONE
 
+        init()
         setListeners()
 
         observe()
+
+        viewModel.loadRecommendations()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -79,13 +84,13 @@ class SearchDashboardFragment : BaseFragment() {
             }
         })
 
-        viewModel.suggestedPhotosLiveData.observe(viewLifecycleOwner, Observer {
-            val adapter = PhotoGridAdapter.create(it, ::onPhotoClick)
+        viewModel.recommendedPhotosLoadedEvent.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let { recommended ->
+                val photos = recommended.first
+                val moreAvailable = recommended.second
 
-            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            suggestedPhotosRecycler.layoutManager = layoutManager
-
-            suggestedPhotosRecycler.adapter = adapter
+                recommendedPhotosAdapter.addItems(photos, showLoadMoreOption = moreAvailable)
+            }
         })
     }
 
@@ -116,5 +121,16 @@ class SearchDashboardFragment : BaseFragment() {
         voiceSearchButton.setOnClickListener {
             showSpeechRecognizer()
         }
+    }
+
+    private fun init() {
+        recommendedPhotosAdapter = PhotoGridAdapter(::onPhotoClick) {
+            viewModel.loadMoreRecommendations()
+        }
+
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        recommendedPhotosRecycler.layoutManager = layoutManager
+        recommendedPhotosRecycler.adapter = recommendedPhotosAdapter
     }
 }
