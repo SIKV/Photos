@@ -23,6 +23,7 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.util.*
 import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -60,7 +61,7 @@ class PhotoViewModel(
     init {
         App.instance.appComponent.inject(this)
 
-        GlobalScope.launch {
+        GlobalScope.launch(Dispatchers.IO) {
             /** Don't use FavoritesRepository.isFavorite(Photo) here because that method is using Photo.favorite flag.
              * Photo.favorite flag will be always false after using parcelable. */
             favoriteInitMutableEvent.postValue(Event(favoritesRepository.isFavoriteFromDatabase(photo)))

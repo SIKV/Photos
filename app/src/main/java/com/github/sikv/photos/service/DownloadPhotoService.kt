@@ -91,7 +91,7 @@ class DownloadPhotoService : Service() {
                 .load(photoUrl)
                 .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                        job = CoroutineScope(Dispatchers.Main).launch{
+                        job = CoroutineScope(Dispatchers.Main).launch {
                             savePhoto(bitmap)?.let { uri ->
                                 this@DownloadPhotoService.savePhotoUri(uri)
 

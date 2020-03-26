@@ -3,6 +3,7 @@ package com.github.sikv.photos.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.repository.SearchTagRepository
@@ -11,8 +12,6 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.SearchTag
 import com.github.sikv.photos.recommendation.Recommender
 import com.github.sikv.photos.util.subscribeAsync
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -47,13 +46,13 @@ class SearchDashboardViewModel : ViewModel() {
     fun loadRecommendations() {
         recommender.reset()
 
-        GlobalScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             loadRecommendationsAsync()
         }
     }
 
     fun loadMoreRecommendations() {
-        GlobalScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             loadRecommendationsAsync()
         }
     }
