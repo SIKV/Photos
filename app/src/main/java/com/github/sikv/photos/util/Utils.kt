@@ -1,27 +1,10 @@
 package com.github.sikv.photos.util
 
-import android.content.Context
-import android.content.Intent
-import android.graphics.Typeface
-import android.net.Uri
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
-import android.text.style.StyleSpan
-import android.text.style.UnderlineSpan
 import android.util.Log
-import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.TextView
-import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContextCompat
 import java.text.DateFormat
 import java.util.*
 import kotlin.math.atan2
 import kotlin.math.sqrt
-
 
 const val SPAN_COUNT_LIST = 1
 const val SPAN_COUNT_GRID = 3
@@ -32,87 +15,6 @@ object Utils {
 
     fun<T> log(clazz: Class<T>, text: String) {
         Log.i(clazz.simpleName, text)
-    }
-
-    fun makeClickable(textView: TextView, clickable: Array<String>, clickableSpans: Array<ClickableSpan>) {
-        val spannableString = SpannableString(textView.text)
-
-        for (i in clickable.indices) {
-            val clickableSpan = clickableSpans[i]
-            val str = clickable[i]
-
-            val startIndexOfLink = textView.text.toString().indexOf(str)
-
-            spannableString.setSpan(clickableSpan, startIndexOfLink, startIndexOfLink + str.length,
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-
-        textView.movementMethod = LinkMovementMethod.getInstance()
-        textView.setText(spannableString, TextView.BufferType.SPANNABLE)
-    }
-
-    fun makeUnderlineBold(textView: TextView, bold: Array<String>) {
-        val spannableString = SpannableString(textView.text)
-
-        for (i in bold.indices) {
-            val str = bold[i]
-
-            val startIndexOfLink = textView.text.toString().indexOf(str)
-
-            spannableString.setSpan(StyleSpan(Typeface.BOLD),
-                    startIndexOfLink, startIndexOfLink + str.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-
-            spannableString.setSpan(UnderlineSpan(),
-                    startIndexOfLink, startIndexOfLink + str.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-
-        textView.movementMethod = LinkMovementMethod.getInstance()
-        textView.setText(spannableString, TextView.BufferType.SPANNABLE)
-    }
-
-    fun makeBold(button: Button, bold: Array<String>) {
-        val spannableString = SpannableString(button.text)
-
-        for (i in bold.indices) {
-            val str = bold[i]
-
-            val startIndexOfLink = button.text.toString().indexOf(str)
-
-            spannableString.setSpan(StyleSpan(Typeface.BOLD),
-                    startIndexOfLink, startIndexOfLink + str.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-
-        button.setText(spannableString, TextView.BufferType.SPANNABLE)
-    }
-
-    fun navigationBarHeight(context: Context): Int {
-        val resourceId = context.resources.getIdentifier("navigation_bar_height", "dimen", "android")
-
-        return if (resourceId > 0) {
-            context.resources.getDimensionPixelSize(resourceId)
-        } else {
-            0
-        }
-    }
-
-    fun openUrl(context: Context, url: String) {
-        val builder = CustomTabsIntent.Builder()
-        builder.setToolbarColor(ContextCompat.getColor(context, com.github.sikv.photos.R.color.colorPrimary))
-
-        val intent = builder.build()
-        intent.intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-
-        intent.launchUrl(context, Uri.parse(url))
-    }
-
-    fun showSoftInput(context: Context?, view: View) {
-        val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(view, 0)
-    }
-
-    fun hideSoftInput(context: Context?, view: View) {
-        val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun formatCreatedAtDate(date: Long): String {

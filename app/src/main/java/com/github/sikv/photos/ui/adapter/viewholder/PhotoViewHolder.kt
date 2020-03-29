@@ -12,7 +12,7 @@ import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
 import com.github.sikv.photos.util.Utils
-import com.github.sikv.photos.util.ViewUtils
+import com.github.sikv.photos.util.favoriteAnimation
 import kotlinx.android.synthetic.main.item_photo_full.view.*
 import javax.inject.Inject
 
@@ -58,7 +58,7 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             itemView.favoriteButton.setOnClickListener { view ->
                 clickCallback.invoke(PhotoItemClickSource.FAVORITE, it, view)
-                ViewUtils.favoriteAnimation(itemView.favoriteButton)
+                itemView.favoriteButton.favoriteAnimation()
             }
 
             itemView.downloadButton.setOnClickListener { view ->

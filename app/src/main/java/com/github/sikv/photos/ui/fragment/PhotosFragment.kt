@@ -77,7 +77,7 @@ class PhotosFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         photosRecycler.adapter = photoAdapter
-        ViewUtils.disableChangeAnimations(photosRecycler)
+        photosRecycler.disableChangeAnimations()
 
         setListeners()
 

@@ -3,6 +3,7 @@ package com.github.sikv.photos.ui.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +46,13 @@ class SearchDashboardFragment : BaseFragment() {
         setListeners()
 
         observe()
+
+        // TODO Test
+        pullRefreshLayout.onRefresh = {
+            Handler().postDelayed({
+                pullRefreshLayout.finishRefreshing()
+            }, 1000)
+        }
 
         viewModel.loadRecommendations()
     }

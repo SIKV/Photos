@@ -2,6 +2,7 @@ package com.github.sikv.photos.viewmodel
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -183,12 +184,12 @@ class PhotoViewModel(
 
     fun openAuthorUrl() {
         photo.getPhotoPhotographerUrl()?.let {
-            Utils.openUrl(getApplication(), it)
+            (getApplication() as? Context)?.openUrl(it)
         }
     }
 
     fun openPhotoSource() {
-        Utils.openUrl(getApplication(), photo.getSourceUrl())
+        (getApplication() as? Context)?.openUrl(photo.getSourceUrl())
     }
 
     fun setWallpaper(activity: Activity) {

@@ -9,8 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
-import com.github.sikv.photos.util.Utils
-import com.github.sikv.photos.util.ViewUtils
+import com.github.sikv.photos.util.hideSoftInput
+import com.github.sikv.photos.util.setToolbarTitleWithBackButton
+import com.github.sikv.photos.util.showSoftInput
 import kotlinx.android.synthetic.main.fragment_feedback.*
 
 class FeedbackFragment : BaseFragment() {
@@ -85,12 +86,12 @@ class FeedbackFragment : BaseFragment() {
             else -> 0
         }
 
-        ViewUtils.setToolbarTitleWithBackButton(this, title) {
-            Utils.hideSoftInput(context, descriptionEdit)
+        setToolbarTitleWithBackButton(title) {
+            context?.hideSoftInput(descriptionEdit)
             activity?.onBackPressed()
         }
 
-        Utils.showSoftInput(context, descriptionEdit)
+        context?.showSoftInput(descriptionEdit)
 
         when (mode) {
             MODE_REPORT_PROBLEM -> {

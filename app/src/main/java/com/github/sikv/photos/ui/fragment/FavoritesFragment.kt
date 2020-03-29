@@ -60,7 +60,7 @@ class FavoritesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ViewUtils.setToolbarTitle(this, R.string.favorites)
+        setToolbarTitle(R.string.favorites)
 
         favoritesRecycler.adapter = photoAdapter
 

@@ -92,12 +92,19 @@
             android:layout_height="match_parent"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recommendedPhotosRecycler"
+            <com.github.sikv.photos.ui.custom.PullRefreshLayout
+                android:id="@+id/pullRefreshLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingVertical="@dimen/photoGridRecyclerVerticalPadding"
-                android:clipToPadding="false" />
+                android:layout_height="match_parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recommendedPhotosRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingVertical="@dimen/photoGridRecyclerVerticalPadding"
+                    android:clipToPadding="false" />
+
+            </com.github.sikv.photos.ui.custom.PullRefreshLayout>
 
         </FrameLayout>
 

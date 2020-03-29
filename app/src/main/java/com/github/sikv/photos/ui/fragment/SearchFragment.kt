@@ -14,8 +14,10 @@ import androidx.viewpager.widget.ViewPager
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoSource
-import com.github.sikv.photos.util.Utils
-import com.github.sikv.photos.util.ViewUtils
+import com.github.sikv.photos.util.changeVisibilityWithAnimation
+import com.github.sikv.photos.util.hideSoftInput
+import com.github.sikv.photos.util.showSoftInput
+import com.github.sikv.photos.util.showToolbarBackButton
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : BaseFragment() {
@@ -49,7 +51,7 @@ class SearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ViewUtils.showToolbarBackButton(this) {
+        showToolbarBackButton {
             activity?.onBackPressed()
         }
 
@@ -69,12 +71,12 @@ class SearchFragment : BaseFragment() {
         val showKeyboard = arguments?.getString(EXTRA_SEARCH_TEXT) == null
 
         if (showKeyboard) {
-            Utils.showSoftInput(context, searchEdit)
+            context?.showSoftInput(searchEdit)
         }
     }
 
     override fun onDestroyView() {
-        Utils.hideSoftInput(context, searchEdit)
+        context?.hideSoftInput(searchEdit)
 
         super.onDestroyView()
     }
@@ -98,7 +100,7 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun searchPhotos(text: String) {
-        Utils.hideSoftInput(context, searchEdit)
+        context?.hideSoftInput(searchEdit)
 
         lastSearchText = text
 
@@ -110,7 +112,7 @@ class SearchFragment : BaseFragment() {
 
         if (searchClearButton.visibility != newVisibility) {
             if (withAnimation) {
-                ViewUtils.changeVisibilityWithAnimation(searchClearButton, newVisibility)
+                searchClearButton.changeVisibilityWithAnimation(newVisibility)
             } else {
                 searchClearButton.visibility = newVisibility
             }
@@ -152,7 +154,7 @@ class SearchFragment : BaseFragment() {
 
         searchClearButton.setOnClickListener {
             searchEdit.text.clear()
-            Utils.showSoftInput(context, searchEdit)
+            context?.showSoftInput(searchEdit)
         }
     }
 

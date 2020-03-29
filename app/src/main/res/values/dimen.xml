@@ -12,4 +12,6 @@
     <dimen name="photoItemFullBottomMargin">32dp</dimen>
     <dimen name="photoItemMinBottomMargin">3dp</dimen>
     <dimen name="photoItemMinHorizontalMargin">1.5dp</dimen>
+
+    <dimen name="progressBarStrokeWidth">2dp</dimen>
 </resources>

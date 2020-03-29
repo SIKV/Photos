@@ -26,8 +26,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DownloadPhotoState
 import com.github.sikv.photos.enumeration.SetWallpaperState
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.util.Utils
-import com.github.sikv.photos.util.ViewUtils
+import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
 import kotlinx.android.synthetic.main.activity_photo.*
@@ -125,7 +124,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         return when (item.itemId) {
             R.id.itemFavorite -> {
                 viewModel.invertFavorite()
-                ViewUtils.favoriteAnimation(findViewById<View>(R.id.itemFavorite))
+                findViewById<View>(R.id.itemFavorite).favoriteAnimation()
                 true
             }
             else -> {
@@ -159,9 +158,9 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
         authorText.text = String.format(getString(R.string.photo_by_s_on_s), authorName, source)
 
-        Utils.makeUnderlineBold(authorText, arrayOf(authorName, source))
+        authorText.makeUnderlineBold(arrayOf(authorName, source))
 
-        Utils.makeClickable(authorText, arrayOf(authorName, source),
+        authorText.makeClickable(arrayOf(authorName, source),
                 arrayOf(
                         object : ClickableSpan() {
                             override fun onClick(view: View) {
@@ -273,7 +272,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         val photoAuthorTextLayoutParams = authorText.layoutParams
 
         if (photoAuthorTextLayoutParams is ViewGroup.MarginLayoutParams) {
-            photoAuthorTextLayoutParams.bottomMargin += Utils.navigationBarHeight(this)
+            photoAuthorTextLayoutParams.bottomMargin += navigationBarHeight()
         }
     }
 

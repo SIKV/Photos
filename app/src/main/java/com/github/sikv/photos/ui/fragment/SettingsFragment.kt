@@ -13,8 +13,9 @@ import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.LoginStatus
-import com.github.sikv.photos.util.ViewUtils
 import com.github.sikv.photos.util.defaultStyle
+import com.github.sikv.photos.util.disableScrollableToolbar
+import com.github.sikv.photos.util.setToolbarTitle
 import com.github.sikv.photos.viewmodel.PreferenceViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.snackbar.Snackbar
@@ -34,8 +35,8 @@ class SettingsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ViewUtils.setToolbarTitle(this, R.string.settings)
-        ViewUtils.disableScrollableToolbar(this)
+        setToolbarTitle(R.string.settings)
+        disableScrollableToolbar()
     }
 
     /**
