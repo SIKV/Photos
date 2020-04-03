@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
-import com.github.sikv.photos.util.hideSoftInput
 import com.github.sikv.photos.util.setToolbarTitleWithBackButton
 import com.github.sikv.photos.util.showSoftInput
 import kotlinx.android.synthetic.main.fragment_feedback.*
@@ -56,6 +55,19 @@ class FeedbackFragment : BaseFragment() {
 
         mode = arguments?.getInt(KEY_MODE) ?: 0
 
+        val title = when (mode) {
+            MODE_REPORT_PROBLEM -> R.string.report_problem
+            MODE_SEND_FEEDBACK -> R.string.send_feedback
+
+            else -> 0
+        }
+
+        setToolbarTitleWithBackButton(title) {
+            navigation?.backPressed()
+        }
+
+        context?.showSoftInput(descriptionEdit)
+
         init(mode)
     }
 
@@ -79,20 +91,6 @@ class FeedbackFragment : BaseFragment() {
     }
 
     private fun init(mode: Int) {
-        val title = when (mode) {
-            MODE_REPORT_PROBLEM -> R.string.report_problem
-            MODE_SEND_FEEDBACK -> R.string.send_feedback
-
-            else -> 0
-        }
-
-        setToolbarTitleWithBackButton(title) {
-            context?.hideSoftInput(descriptionEdit)
-            activity?.onBackPressed()
-        }
-
-        context?.showSoftInput(descriptionEdit)
-
         when (mode) {
             MODE_REPORT_PROBLEM -> {
                 descriptionEdit.setHint(R.string.what_went_wrong)

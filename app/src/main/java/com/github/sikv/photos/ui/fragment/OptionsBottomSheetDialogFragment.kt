@@ -32,8 +32,6 @@ class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private var onItemSelected: ((Int) -> Unit)? = null
 
-    override fun getTheme(): Int = R.style.BottomSheetTheme
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.layout_bottom_sheet, container, false)
 
@@ -49,9 +47,9 @@ class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     optionLayout.optionText.text = optionText
 
                     if (index == selectedOptionIndex) {
-                        optionLayout.optionSelectedImage.setImageResource(R.drawable.ic_button_checked_accent_24dp)
+                        optionLayout.optionSelectedImage.setImageResource(R.drawable.ic_check_secondary_24dp)
                     } else {
-                        optionLayout.optionSelectedImage.setImageResource(R.drawable.ic_button_unchecked_24dp)
+                        optionLayout.optionSelectedImage.setImageDrawable(null)
                     }
 
                     optionLayout.setOnClickListener {

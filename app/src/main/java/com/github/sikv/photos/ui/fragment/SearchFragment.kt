@@ -52,7 +52,7 @@ class SearchFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         showToolbarBackButton {
-            activity?.onBackPressed()
+            navigation?.backPressed()
         }
 
         initViewPager {

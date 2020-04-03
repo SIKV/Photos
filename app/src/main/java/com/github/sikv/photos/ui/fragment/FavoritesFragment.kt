@@ -132,7 +132,6 @@ class FavoritesFragment : BaseFragment() {
         viewModel.deleteAllEvent.observe(viewLifecycleOwner, Observer { deleteEvent ->
             if (deleteEvent.getContentIfNotHandled() == true) {
                 Snackbar.make(rootLayout, R.string.deleted, Snackbar.LENGTH_LONG)
-                        .defaultStyle()
                         .setAction(R.string.undo) {
                             viewModel.undoDeleteAll()
                         }

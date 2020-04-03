@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimaryDark">#F3F3F3</color>
     <color name="colorPrimary">#FFFFFF</color>
-    <color name="colorPrimaryDark">@color/colorPrimary</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimaryVariant">#FFFFFF</color>
+    <color name="colorOnPrimary">#000000</color>
+    <color name="colorSecondary">#FF8A65</color>
+    <color name="colorSecondaryVariant">#FF8A65</color>
+    <color name="colorOnSecondary">#FFFFFF</color>
+    <color name="colorError">#EF4141</color>
+    <color name="colorOnError">#FFFFFF</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnSurface">#101010</color>
+    <color name="colorBackground">#FEFEFE</color>
+    <color name="colorOnBackground">#000000</color>
 
-    <color name="colorAccentA25">#25FF4081</color>
+    <color name="colorNavigationIcon">#80000000</color>
+    <color name="colorNavigationIconActive">#000000</color>
 
     <color name="launcherBackground">#181818</color>
 
-    <color name="colorNavigationBar">@color/colorPrimaryDark</color>
-    <color name="colorDarkBar">#181818</color>
-
-    <color name="colorBackground">#FEFEFE</color>
     <color name="colorTitleText">#353535</color>
     <color name="colorText">#353535</color>
     <color name="colorIcon">#353535</color>
-    <color name="colorNavigationIcon">#80000000</color>
-    <color name="colorNavigationIconActive">#000000</color>
     <color name="colorClearButton">#AAAAAA</color>
-    <color name="colorSourceText">@color/colorAccent</color>
     <color name="colorOverlay">#BB000000</color>
     <color name="colorRipple">#353535</color>
     <color name="colorRippleLight">#BCBCBC</color>
     <color name="colorPlaceholder">#EEEEEE</color>
     <color name="colorHint">#9E9E9E</color>
-    <color name="colorBottomSheetClose">#DDDDDD</color>
     <color name="colorRed">#EF4141</color>
-    <color name="colorTagStroke">#30000000</color>
+    <color name="colorChipBackground">#F3F3F3</color>
 </resources>

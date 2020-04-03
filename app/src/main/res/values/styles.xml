@@ -1,47 +1,82 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
-        <item name="colorPrimary">@color/colorPrimary</item>
+    <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/colorDarkBar</item>
-        <item name="android:navigationBarColor">@color/colorDarkBar</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="android:colorBackground">@color/colorBackground</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
+
+        <item name="colorControlNormal">@color/colorIcon</item>
+
+        <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
+
+        <item name="toolbarStyle">@style/ToolbarStyle</item>
+        <item name="bottomNavigationStyle">@style/BottomNavigationStyle</item>
+        <item name="tabStyle">@style/TabStyle</item>
+        <item name="chipStyle">@style/ChipStyle</item>
     </style>
 
-    <style name="AppTheme.OssLicenses" parent="Theme.AppCompat.DayNight">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/colorDarkBar</item>
-        <item name="android:navigationBarColor">@color/colorDarkBar</item>
+    <style name="AppTheme" parent="BaseTheme">
+        <item name="android:statusBarColor">@android:color/black</item>
     </style>
 
     <style name="AppTheme.Translucent" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="colorControlNormal">@android:color/white</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+
+        <item name="colorControlNormal">@android:color/white</item>
+
+        <item name="toolbarStyle">@style/TransparentToolbarStyle</item>
     </style>
 
     <style name="AppTheme.Span" parent="AppTheme">
         <item name="colorAccent">@android:color/white</item>
     </style>
 
-    <style name="NavigationTheme" parent="AppTheme">
-        <item name="colorPrimary">@color/colorNavigationIconActive</item>
-        <item name="android:textColorSecondary">@color/colorNavigationIcon</item>
+    <style name="AppTheme.OssLicenses" parent="AppTheme">
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
     </style>
 
-    <style name="BottomSheetTheme" parent="@style/Theme.Design.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorPrimary">?colorSecondary</item>
     </style>
 
-    <style name="BottomSheetStyle">
-        <item name="android:background">@drawable/bg_bottom_sheet</item>
+    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:elevation">0dp</item>
     </style>
 
-    <style name="Toolbar">
-        <item name="colorControlNormal">@color/colorIcon</item>
+    <style name="TransparentToolbarStyle" parent="ToolbarStyle">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="BottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="itemBackground">?colorPrimary</item>
+        <item name="itemIconTint">@drawable/selector_bottom_navigation_item</item>
+    </style>
+
+    <style name="TabStyle" parent="Widget.MaterialComponents.TabLayout.Colored">
+        <item name="tabMode">fixed</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabSelectedTextColor">?colorSecondary</item>
+        <item name="tabIndicatorFullWidth">false</item>
+        <item name="tabIndicator">@drawable/tab_indicator</item>
+        <item name="tabIndicatorColor">?colorSecondary</item>
+    </style>
+
+    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Action">
+        <item name="chipSurfaceColor">@android:color/transparent</item>
+        <item name="chipBackgroundColor">@color/colorChipBackground</item>
     </style>
 
     <style name="ToolbarTitle">
@@ -58,14 +93,19 @@
         <item name="android:textSize">10sp</item>
         <item name="android:textAllCaps">true</item>
     </style>
-    
-    <style name="TabBarTextAppearance" parent="TextAppearance.Design.Tab">
+
+    <style name="RoundOutlineButton">
+        <item name="android:layout_width">192dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:fontFamily">sans-serif-black</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@drawable/bg_round_outline_button</item>
     </style>
 
     <style name="FlatButton">
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="colorControlHighlight">?colorSecondary</item>
         <item name="colorAccent">@color/colorText</item>
     </style>
 
@@ -75,14 +115,5 @@
 
     <style name="CircleImageButton">
         <item name="android:background">?android:selectableItemBackgroundBorderless</item>
-    </style>
-
-    <style name="RoundOutlineButton">
-        <item name="android:layout_width">192dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:background">@drawable/bg_round_outline_button</item>
     </style>
 </resources>

@@ -5,13 +5,13 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -62,7 +62,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun showPermissionNotGrantedDialog(@StringRes messageId: Int) {
-        AlertDialog.Builder(this)
+        MaterialAlertDialogBuilder(this)
                 .setTitle(R.string.app_name)
                 .setMessage(messageId)
                 .setPositiveButton(R.string.open_settings) { _, _ ->

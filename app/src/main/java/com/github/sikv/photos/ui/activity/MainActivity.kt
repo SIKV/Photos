@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DownloadPhotoState
 import com.github.sikv.photos.enumeration.SetWallpaperState
@@ -30,14 +30,14 @@ class MainActivity : BaseActivity() {
     }
 
     private val viewModel: MainViewModel by lazy {
-        ViewModelProviders.of(this).get(MainViewModel::class.java)
+        ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
     private val fragments = listOf(
-            PhotosFragment(),
-            SearchDashboardFragment(),
-            FavoritesFragment(),
-            SettingsFragment()
+            PhotosRootFragment(),
+            SearchRootFragment(),
+            FavoritesRootFragment(),
+            SettingsRootFragment()
     )
 
     private lateinit var activeFragment: Fragment
@@ -67,24 +67,15 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        for (fragment in supportFragmentManager.fragments) {
-            if (fragment.isVisible) {
-                val childFragment = fragment.childFragmentManager
-
-                if (childFragment.backStackEntryCount > 0) {
-                    childFragment.popBackStack()
-                    return
-                }
-            }
+        if ((activeFragment as? RootFragment)?.provideNavigation()?.backPressed() == false) {
+            super.onBackPressed()
         }
-
-        super.onBackPressed()
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
 
-        supportFragmentManager.findFragmentByTag(savedInstanceState?.getString(KEY_FRAGMENT_TAG))?.let { fragment ->
+        supportFragmentManager.findFragmentByTag(savedInstanceState.getString(KEY_FRAGMENT_TAG))?.let { fragment ->
             activeFragment = fragment
         }
     }
@@ -187,20 +178,10 @@ class MainActivity : BaseActivity() {
         }
 
         bottomNavigationView.setOnNavigationItemReselectedListener { menuItem ->
-            val fragment = supportFragmentManager.fragments[getFragmentIndexByItemId(menuItem.itemId)] as BaseFragment
+            val fragment = supportFragmentManager.fragments[getFragmentIndexByItemId(menuItem.itemId)] as RootFragment
 
-            if (!fragment.isAdded) {
-                return@setOnNavigationItemReselectedListener
-            }
-
-            val childFragment = fragment.childFragmentManager
-
-            if (childFragment.backStackEntryCount > 0) {
-                for (i in childFragment.backStackEntryCount downTo 1) {
-                    childFragment.popBackStack()
-                }
-            } else {
-                fragment.onScrollToTop()
+            if (fragment.isAdded) {
+                (fragment.provideNavigation().backToRoot() as? BaseFragment)?.onScrollToTop()
             }
         }
     }

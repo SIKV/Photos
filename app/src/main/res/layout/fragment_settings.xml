@@ -7,8 +7,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        android:elevation="@dimen/appBarElevation">
+        app:layout_constraintTop_toTopOf="parent">
 
         <include layout="@layout/layout_scrollable_toolbar" />
 
@@ -25,11 +24,5 @@
             android:layout_height="match_parent" />
 
     </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/settingsFragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="@dimen/appBarElevation" />  <!-- Elevation is needed to show this view above the toolbar -->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

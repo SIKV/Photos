@@ -11,10 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_margin="24dp"
-        app:cardElevation="0dp"
-        app:cardCornerRadius="8dp"
-        app:strokeWidth="1dp"
-        app:strokeColor="@color/colorAccent">
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp">
 
         <ImageView
             android:id="@+id/photoPreviewImage"

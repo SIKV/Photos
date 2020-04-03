@@ -2,8 +2,6 @@
 <resources>
     <dimen name="roundButtonRadius">32dp</dimen>
     <dimen name="roundButtonStrokeWidth">2dp</dimen>
-    <dimen name="appBarElevation">16dp</dimen>
-    <dimen name="bottomSheetCornerRadius">10dp</dimen>
 
     <dimen name="photoGridRecyclerVerticalPadding">2.5dp</dimen>
     <dimen name="photoRecyclerVerticalPadding">16dp</dimen>

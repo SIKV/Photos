@@ -11,14 +11,10 @@ import android.text.style.UnderlineSpan
 import android.view.View
 import android.view.animation.Animation
 import android.widget.TextView
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
-import com.google.android.material.snackbar.Snackbar
 
 /**
  * View
@@ -102,27 +98,6 @@ fun RecyclerView.setItemLayoutType(itemLayoutType: PhotoItemLayoutType) {
 
     // Invalidate view holders
     adapter = adapter
-}
-
-/**
- * Snackbar
- */
-fun Snackbar.setTextColorRes(@ColorRes color: Int): Snackbar {
-    this.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-            .setTextColor(ContextCompat.getColor(context, color))
-    return this
-}
-
-fun Snackbar.setBackgroundColor(@ColorRes color: Int): Snackbar {
-    this.view.setBackgroundColor(ContextCompat.getColor(context, color))
-    return this
-}
-
-fun Snackbar.defaultStyle(): Snackbar {
-    setTextColorRes(R.color.colorText)
-    setBackgroundColor(R.color.colorPrimaryDark)
-
-    return this
 }
 
 /**

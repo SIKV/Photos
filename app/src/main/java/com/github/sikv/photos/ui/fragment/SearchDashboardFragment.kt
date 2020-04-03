@@ -103,10 +103,7 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private fun showSearchFragment(searchText: String? = null) {
-        childFragmentManager.beginTransaction()
-                .replace(R.id.searchContainer, SearchFragment.newInstance(searchText))
-                .addToBackStack(null)
-                .commit()
+        navigation?.addFragment(SearchFragment.newInstance(searchText))
     }
 
     private fun showSpeechRecognizer() {

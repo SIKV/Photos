@@ -10,10 +10,9 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
-        app:layout_constraintTop_toTopOf="parent"
-        android:elevation="@dimen/appBarElevation">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
                     tools:text="SOURCE"
-                    android:textColor="@color/colorSourceText"
+                    android:textColor="@color/colorSecondary"
                     style="@style/ToolbarTitle" />
 
                 <TextView
@@ -55,7 +54,7 @@
 
             </LinearLayout>
 
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.MaterialToolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
