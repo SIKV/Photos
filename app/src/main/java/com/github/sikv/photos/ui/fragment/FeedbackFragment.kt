@@ -44,6 +44,8 @@ class FeedbackFragment : BaseFragment() {
         }
     }
 
+    override val overrideBackground: Boolean = true
+
     private var mode: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

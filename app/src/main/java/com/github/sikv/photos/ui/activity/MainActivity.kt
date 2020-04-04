@@ -27,6 +27,8 @@ class MainActivity : BaseActivity() {
 
         private const val PHOTOS_ITEM_ID = R.id.photos
         private const val SEARCH_ITEM_ID = R.id.search
+
+        private const val INITIAL_FRAGMENT_ID = PHOTOS_ITEM_ID
     }
 
     private val viewModel: MainViewModel by lazy {
@@ -60,15 +62,18 @@ class MainActivity : BaseActivity() {
         }
 
         setNavigationListener()
-
         setWallpaperSetListeners()
-
         observe()
     }
 
     override fun onBackPressed() {
         if ((activeFragment as? RootFragment)?.provideNavigation()?.backPressed() == false) {
-            super.onBackPressed()
+
+            if (bottomNavigationView.selectedItemId != INITIAL_FRAGMENT_ID) {
+                bottomNavigationView.selectedItemId = INITIAL_FRAGMENT_ID
+            } else {
+                super.onBackPressed()
+            }
         }
     }
 

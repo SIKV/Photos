@@ -103,7 +103,7 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private fun showSearchFragment(searchText: String? = null) {
-        navigation?.addFragment(SearchFragment.newInstance(searchText))
+        navigation?.addFragment(SearchFragment.newInstance(searchText), withAnimation = false)
     }
 
     private fun showSpeechRecognizer() {

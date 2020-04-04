@@ -40,6 +40,8 @@ class SearchFragment : BaseFragment() {
         }
     }
 
+    override val overrideBackground: Boolean = true
+
     private lateinit var viewPagerAdapter: SearchViewPagerAdapter
 
     private var lastSearchText: String? = null
@@ -73,12 +75,6 @@ class SearchFragment : BaseFragment() {
         if (showKeyboard) {
             context?.showSoftInput(searchEdit)
         }
-    }
-
-    override fun onDestroyView() {
-        context?.hideSoftInput(searchEdit)
-
-        super.onDestroyView()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

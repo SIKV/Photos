@@ -19,7 +19,9 @@ abstract class RootFragment : Fragment(), NavigationProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        provideNavigation().addFragment(provideRootFragment())
+        if (savedInstanceState == null) {
+            provideNavigation().addFragment(provideRootFragment(), withAnimation = false)
+        }
     }
 
     override fun provideNavigation(): Navigation {

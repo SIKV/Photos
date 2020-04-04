@@ -1,5 +1,6 @@
 package com.github.sikv.photos.util
 
+import android.app.Activity
 import android.app.DownloadManager
 import android.app.WallpaperManager
 import android.app.WallpaperManager.ACTION_CROP_AND_SET_WALLPAPER
@@ -31,6 +32,11 @@ fun Context.showSoftInput(view: View) {
 fun Context.hideSoftInput(view: View) {
     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun Activity.hideSoftInput() {
+    val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 }
 
 fun Context.navigationBarHeight(): Int {
