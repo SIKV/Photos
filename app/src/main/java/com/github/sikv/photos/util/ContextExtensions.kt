@@ -17,12 +17,10 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.SetWallpaperState
-import com.github.sikv.photos.service.DownloadPhotoService
+import com.github.sikv.photos.enumeration.SetWallpaperResultState
+import com.github.sikv.photos.event.Event
 import java.io.ByteArrayOutputStream
 import java.io.File
-
-private const val KEY_PHOTO_URI = "key_photo_uri"
 
 fun Context.showSoftInput(view: View) {
     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -76,14 +74,6 @@ fun Context.downloadPhotoAndSaveToPictures(photoUrl: String) {
     downloadManager?.enqueue(request)
 }
 
-fun Context.downloadPhoto(photoUrl: String) {
-    DownloadPhotoService.startServiceActionDownload(this, photoUrl)
-}
-
-fun Context.cancelPhotoDownloading() {
-    DownloadPhotoService.startServiceActionCancel(this)
-}
-
 fun Context.startSetWallpaperActivity(photoUri: Uri) {
     val wallpaperManager = WallpaperManager.getInstance(this)
 
@@ -92,7 +82,7 @@ fun Context.startSetWallpaperActivity(photoUri: Uri) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         startActivity(intent)
-        App.instance.postSetWallpaperState(SetWallpaperState.SUCCESS)
+        App.instance.postSetWallpaperResultStateEvent(Event(SetWallpaperResultState.SUCCESS))
 
     } catch (e: IllegalArgumentException) {
         try {
@@ -101,10 +91,10 @@ fun Context.startSetWallpaperActivity(photoUri: Uri) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
             startActivity(intent)
-            App.instance.postSetWallpaperState(SetWallpaperState.SUCCESS)
+            App.instance.postSetWallpaperResultStateEvent(Event(SetWallpaperResultState.SUCCESS))
 
         } catch (e: ActivityNotFoundException) {
-            App.instance.postSetWallpaperState(SetWallpaperState.FAILURE)
+            App.instance.postSetWallpaperResultStateEvent(Event(SetWallpaperResultState.FAILURE))
         }
     }
 }
@@ -121,20 +111,4 @@ fun Context.savePhotoInFile(bitmap: Bitmap): Uri? {
     file.writeBytes(byteArray)
 
     return FileProvider.getUriForFile(this, getString(R.string._file_provider), file)
-}
-
-fun Context.getSavedPhotoUri(): Uri? {
-    App.instance.getPrivatePreferences().getString(KEY_PHOTO_URI, null)?.let { uriStr ->
-        return Uri.parse(uriStr)
-    } ?: run {
-        return null
-    }
-}
-
-fun Context.savePhotoUri(uri: Uri) {
-    val editor = App.instance.getPrivatePreferences()
-            .edit()
-
-    editor.putString(KEY_PHOTO_URI, uri.toString())
-    editor.apply()
 }

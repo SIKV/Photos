@@ -12,6 +12,8 @@
     <string name="_pref_open_source_licences">PreferenceOpenSourceLicences</string>
     <string name="_pref_app_version">PreferenceAppVersion</string>
 
+    <string name="_transition_photo">Transition Photo</string>
+
     <string name="unsplash">Unsplash</string>
     <string name="pexels">Pexels</string>
 
@@ -29,14 +31,11 @@
     <string name="cn_voice_input_button">Voice input button</string>
     <string name="cn_item_icon">Item icon</string>
     <string name="cn_navigate_next_icon">Navigate next icon</string>
-    <string name="cn_set_wallpaper_close_or_cancel_icon">Set wallpaper close or cancel icon</string>
-    <string name="cn_set_wallpaper_status_icon">Set wallpaper status icon</string>
     <string name="cn_photographer_image">Photographer image</string>
     <string name="cn_cloud_image">Cloud image</string>
     <string name="cn_item_selected_image">Item selected image</string>
     <string name="cn_load_more_button">Load more button</string>
 
-    <string name="transition_photo">Transition Photo</string>
     <string name="photo_by_s_on_s">Photo by %s on %s</string>
     <string name="share">Share</string>
     <string name="set_wallpaper">Set Wallpaper</string>
@@ -66,7 +65,7 @@
     <string name="error_downloading_photo">Error downloading photo</string>
     <string name="error_setting_wallpaper">Error setting wallpaper</string>
     <string name="photo_downloading_canceled">Photo downloading has been canceled</string>
-    <string name="canceling">Canceling…</string>
+    <string name="canceled">Canceled</string>
     <string name="photo_ready">Photo is ready</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in_pref_summary">to sync your favorites with other devices.</string>

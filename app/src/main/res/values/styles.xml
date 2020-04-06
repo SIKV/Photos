@@ -30,9 +30,11 @@
 
     <style name="AppTheme.Translucent" parent="AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
 
         <item name="colorControlNormal">@android:color/white</item>
 
@@ -81,7 +83,7 @@
 
     <style name="ToolbarTitle">
         <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textColor">@color/colorTitleText</item>
+        <item name="android:textColor">@color/colorText</item>
         <item name="android:textSize">20sp</item>
     </style>
 
@@ -89,7 +91,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:drawablePadding">6dp</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textColor">@color/colorTitleText</item>
+        <item name="android:textColor">@color/colorText</item>
         <item name="android:textSize">10sp</item>
         <item name="android:textAllCaps">true</item>
     </style>
@@ -97,16 +99,10 @@
     <style name="RoundOutlineButton">
         <item name="android:layout_width">192dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColor">@drawable/selector_round_outline_button</item>
         <item name="android:fontFamily">sans-serif-black</item>
         <item name="android:textSize">18sp</item>
         <item name="android:background">@drawable/bg_round_outline_button</item>
-    </style>
-
-    <style name="FlatButton">
-        <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Borderless.Colored</item>
-        <item name="colorControlHighlight">?colorSecondary</item>
-        <item name="colorAccent">@color/colorText</item>
     </style>
 
     <style name="ImageButton">

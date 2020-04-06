@@ -1,28 +1,29 @@
 package com.github.sikv.photos.viewmodel
 
-import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.enumeration.DownloadPhotoState
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.DummyPhoto
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
-import com.github.sikv.photos.util.*
+import com.github.sikv.photos.service.DownloadPhotoService
+import com.github.sikv.photos.util.openUrl
+import com.github.sikv.photos.util.startSetWallpaperActivity
+import com.github.sikv.photos.util.subscribeAsync
 import io.reactivex.Single
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -52,12 +53,8 @@ class PhotoViewModel(
     private val favoriteChangedMutableLiveData = MutableLiveData<Boolean>()
     val favoriteChangedLiveData: LiveData<Boolean> = favoriteChangedMutableLiveData
 
-    val downloadPhotoInProgressLiveData: LiveData<Boolean> = Transformations.map(App.instance.downloadPhotoStateChangedLiveData) { state ->
-        state == DownloadPhotoState.DOWNLOADING_PHOTO
-    }
-
-    val downloadPhotoStateChangedLiveData = App.instance.downloadPhotoStateChangedLiveData
-    val setWallpaperStateChangedEvent = App.instance.setWallpaperStateChangedEvent
+    val downloadPhotoStateEvent = DownloadPhotoService.stateEvent
+    val setWallpaperResultStateEvent = App.instance.setWallpaperResultStateEvent
 
     init {
         App.instance.appComponent.inject(this)
@@ -159,12 +156,22 @@ class PhotoViewModel(
         })
     }
 
-    fun setWallpaper() {
-        getApplication<Application>().getSavedPhotoUri()?.let { uri ->
-            getApplication<Application>().startSetWallpaperActivity(uri)
-        } ?: run {
+    fun setWallpaperFromUri(uri: Uri) {
+        getApplication<Application>().startSetWallpaperActivity(uri)
+    }
 
-            // TODO Handle
+    fun downloadPhoto() {
+        getApplication<Application>().let {
+            DownloadPhotoService.startService(it,
+                    action = DownloadPhotoService.ACTION_DOWNLOAD,
+                    photoUrl = photo.getPhotoWallpaperUrl()
+            )
+        }
+    }
+
+    fun cancelPhotoDownloading() {
+        getApplication<Application>().let {
+            DownloadPhotoService.startService(it, action = DownloadPhotoService.ACTION_CANCEL)
         }
     }
 
@@ -190,9 +197,5 @@ class PhotoViewModel(
 
     fun openPhotoSource() {
         (getApplication() as? Context)?.openUrl(photo.getSourceUrl())
-    }
-
-    fun setWallpaper(activity: Activity) {
-        activity.downloadPhoto(photo.getPhotoWallpaperUrl())
     }
 }

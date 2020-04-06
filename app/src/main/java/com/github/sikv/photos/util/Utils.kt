@@ -1,6 +1,5 @@
 package com.github.sikv.photos.util
 
-import android.util.Log
 import java.text.DateFormat
 import java.util.*
 import kotlin.math.atan2
@@ -12,10 +11,6 @@ const val SPAN_COUNT_GRID = 3
 const val PHOTO_TRANSITION_DURATION = 500
 
 object Utils {
-
-    fun<T> log(clazz: Class<T>, text: String) {
-        Log.i(clazz.simpleName, text)
-    }
 
     fun formatCreatedAtDate(date: Long): String {
         return DateFormat.getDateInstance().format(Date(date))

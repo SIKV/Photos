@@ -2,14 +2,10 @@ package com.github.sikv.photos.ui.activity
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Bundle
-import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
@@ -20,20 +16,6 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private var doAfterWriteExternalStorageGranted: (() -> Unit)? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        App.instance.messageEvent.observe(this, Observer {
-            it?.getContentIfNotHandled()?.let { message ->
-                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-            }
-        })
-    }
-
-    fun postMessage(@StringRes messageId: Int) {
-        App.instance.postMessage(getString(messageId))
-    }
 
     fun requestWriteExternalStoragePermission(doAfter: () -> Unit) {
         this.doAfterWriteExternalStorageGranted = doAfter

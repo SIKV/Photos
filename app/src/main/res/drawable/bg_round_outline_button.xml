@@ -20,7 +20,7 @@
             <corners android:radius="@dimen/roundButtonRadius" />
             <stroke
                 android:width="@dimen/roundButtonStrokeWidth"
-                android:color="@android:color/white" />
+                android:color="@drawable/selector_round_outline_button" />
         </shape>
     </item>
 

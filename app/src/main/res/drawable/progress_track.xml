@@ -3,7 +3,7 @@
     android:shape="oval">
 
     <stroke android:color="@color/colorSecondary"
-        android:dashWidth="35dp"
-        android:dashGap="20dp"
+        android:dashWidth="8dp"
+        android:dashGap="8dp"
         android:width="@dimen/progressBarStrokeWidth" />
 </shape>

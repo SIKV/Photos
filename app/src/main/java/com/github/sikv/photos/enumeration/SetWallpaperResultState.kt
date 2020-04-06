@@ -1,6 +1,6 @@
 package com.github.sikv.photos.enumeration
 
-enum class SetWallpaperState {
+enum class SetWallpaperResultState {
     SUCCESS,
     FAILURE
 }

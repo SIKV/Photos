@@ -3,12 +3,12 @@ package com.github.sikv.photos.ui.activity
 import android.animation.LayoutTransition
 import android.annotation.TargetApi
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.style.ClickableSpan
@@ -18,41 +18,46 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DownloadPhotoState
-import com.github.sikv.photos.enumeration.SetWallpaperState
+import com.github.sikv.photos.enumeration.SetWallpaperResultState
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_photo.*
 
 class PhotoActivity : BaseActivity(), SensorEventListener {
 
     companion object {
-        private const val KEY_PHOTO = "key_photo"
+        private const val TRANSITION_ANIMATION_DURATION = 250L
+        private const val EXTRA_PHOTO = "photo"
 
         fun startActivity(activity: Activity?, transitionView: View, photo: Photo) {
             activity?.let {
                 val intent = Intent(activity, PhotoActivity::class.java)
-                intent.putExtra(KEY_PHOTO, photo)
+                intent.putExtra(EXTRA_PHOTO, photo)
 
-                val transitionName = activity.getString(R.string.transition_photo)
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+                    val transitionName = activity.getString(R.string._transition_photo)
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, transitionView, transitionName)
 
-                val options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(activity, transitionView, transitionName)
-
-                ActivityCompat.startActivity(activity, intent, options.toBundle())
+                    ActivityCompat.startActivity(activity, intent, options.toBundle())
+                } else {
+                    activity.startActivity(intent)
+                }
             }
         }
     }
 
     private val viewModel: PhotoViewModel by lazy {
-        val photo: Photo = intent.getParcelableExtra(KEY_PHOTO)
+        val photo: Photo = intent.getParcelableExtra(EXTRA_PHOTO)!!
 
         val viewModelFactory = PhotoViewModelFactory(application, photo)
 
@@ -68,16 +73,25 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
     private var favoriteMenuItemIcon: Int? = null
 
+    private lateinit var downloadingPhotoSnackbar: Snackbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_photo)
+
         tweakTransitions()
 
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        gravitySensor = sensorManager?.getDefaultSensor(Sensor.TYPE_GRAVITY)
+        setSupportActionBar(toolbar)
 
-        init()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+//        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+//        gravitySensor = sensorManager?.getDefaultSensor(Sensor.TYPE_GRAVITY)
+
+        createDownloadingPhotoSnackbar()
         setListeners()
         adjustMargins()
 
@@ -97,8 +111,6 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     override fun onBackPressed() {
-//        stopParallax()
-
         super.onBackPressed()
     }
 
@@ -127,6 +139,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
                 findViewById<View>(R.id.itemFavorite).favoriteAnimation()
                 true
             }
+
             else -> {
                 super.onOptionsItemSelected(item)
             }
@@ -208,25 +221,48 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
             updateFavoriteMenuItemIcon(it)
         })
 
-        viewModel.downloadPhotoInProgressLiveData.observe(this, Observer { downloading ->
-            setWallpaperButton.visibility = if (downloading) View.GONE else View.VISIBLE
-        })
-
-        viewModel.downloadPhotoStateChangedLiveData.observe(this, Observer { state ->
-            when (state) {
-                DownloadPhotoState.PHOTO_READY -> {
-                    viewModel.setWallpaper()
+        viewModel.downloadPhotoStateEvent.observe(this, Observer { stateWithDataEvent ->
+            stateWithDataEvent.getContentIfNotHandled()?.let { stateWithData ->
+                if (stateWithData.state != DownloadPhotoState.DOWNLOADING_PHOTO && stateWithData.state != DownloadPhotoState.CANCELING) {
+                    downloadingPhotoSnackbar.dismiss()
+                    setWallpaperButton.isEnabled = true
                 }
 
-                else -> { }
+                when (stateWithData.state) {
+                    DownloadPhotoState.DOWNLOADING_PHOTO -> {
+                        setWallpaperButton.isEnabled = false
+
+                        downloadingPhotoSnackbar.show()
+                    }
+
+                    DownloadPhotoState.PHOTO_READY -> {
+                        (stateWithData.data as? Uri)?.let { uri ->
+                            viewModel.setWallpaperFromUri(uri)
+                        } ?: run {
+                            // TODO Show error
+                        }
+                    }
+
+                    DownloadPhotoState.ERROR_DOWNLOADING_PHOTO -> {
+                        showMessage(R.string.error_downloading_photo)
+                    }
+
+                    DownloadPhotoState.CANCELING -> {
+                        // TODO Handle
+                    }
+
+                    DownloadPhotoState.CANCELED -> {
+                        showMessage(R.string.canceled)
+                    }
+                }
             }
         })
 
-        viewModel.setWallpaperStateChangedEvent.observe(this, Observer {
-            it.getContentIfNotHandled()?.let { state ->
+        viewModel.setWallpaperResultStateEvent.observe(this, Observer { event ->
+            event.getContentIfNotHandled()?.let { state ->
                 when (state) {
-                    SetWallpaperState.FAILURE -> {
-                        postMessage(R.string.error_setting_wallpaper)
+                    SetWallpaperResultState.FAILURE -> {
+                        showMessage(R.string.error_setting_wallpaper)
                     }
 
                     else -> { }
@@ -235,24 +271,21 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         })
     }
 
-    private fun init() {
-        setSupportActionBar(toolbar)
+    private fun createDownloadingPhotoSnackbar() {
+        downloadingPhotoSnackbar = Snackbar.make(contentLayout, R.string.downloading_photo, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.cancel) {
+                    viewModel.cancelPhotoDownloading()
+                }
+    }
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        photoImageView.post {
-            val extraOutOfScreen = 250
-
-            photoImageView.layoutParams.width = photoImageView.measuredWidth + extraOutOfScreen
-            photoImageView.layoutParams.height = photoImageView.measuredHeight + extraOutOfScreen
-        }
+    private fun showMessage(@StringRes stringId: Int) {
+        Snackbar.make(contentLayout, stringId, Snackbar.LENGTH_SHORT)
+                .show()
     }
 
     private fun setListeners() {
         setWallpaperButton.setOnClickListener {
-            viewModel.setWallpaper(this@PhotoActivity)
+            viewModel.downloadPhoto()
         }
 
         shareButton.setOnClickListener {
@@ -269,27 +302,32 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     private fun adjustMargins() {
-        val photoAuthorTextLayoutParams = authorText.layoutParams
-
-        if (photoAuthorTextLayoutParams is ViewGroup.MarginLayoutParams) {
-            photoAuthorTextLayoutParams.bottomMargin += navigationBarHeight()
+        // TODO Refactor
+        (contentLayout.layoutParams as? ViewGroup.MarginLayoutParams)?.let {
+            it.bottomMargin += navigationBarHeight()
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private fun tweakTransitions() {
-        val duration = 220L
-
         val changeBounds = ChangeBounds()
-        changeBounds.duration = duration
+        changeBounds.duration = TRANSITION_ANIMATION_DURATION
 
         window.sharedElementEnterTransition = changeBounds
 
         window.sharedElementEnterTransition.addListener(object : Transition.TransitionListener {
-            override fun onTransitionStart(transition: Transition?) { }
+            override fun onTransitionStart(transition: Transition?) {
+                toolbar.visibility = View.INVISIBLE
+                contentLayout.visibility = View.INVISIBLE
+                overlayView.visibility = View.INVISIBLE
+            }
 
             override fun onTransitionEnd(transition: Transition?) {
                 rootLayout.layoutTransition = LayoutTransition()
+
+                toolbar.visibility = View.VISIBLE
+                contentLayout.visibility = View.VISIBLE
+                overlayView.visibility = View.VISIBLE
             }
 
             override fun onTransitionResume(transition: Transition?) { }

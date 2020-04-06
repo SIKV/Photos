@@ -3,7 +3,6 @@ package com.github.sikv.photos.util
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -72,17 +71,13 @@ class AccountManager @Inject constructor(context: Context) {
 
     fun signInAnonymously(doAfter: () -> Unit) {
         if (isSignedIn() || isSignedInAnonymously() ) {
-            Utils.log(javaClass,"signInAnonymously(): already singed in")
             doAfter()
         } else {
             auth.signInAnonymously()
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            Utils.log(javaClass,"signInAnonymously(): singed in anonymously")
                             doAfter()
                         }
-                    }.addOnFailureListener {
-                        Utils.log(javaClass,"signInAnonymously(): error: ${it.localizedMessage}")
                     }
         }
     }
@@ -104,7 +99,7 @@ class AccountManager @Inject constructor(context: Context) {
             } catch (e: ApiException) {
                 loginStatus = LoginStatus.SIGNED_OUT
 
-                App.instance.postMessage("Error signing in... " + e.localizedMessage)
+                // TODO Error signing in
             }
         }
     }
@@ -124,7 +119,8 @@ class AccountManager @Inject constructor(context: Context) {
                         loginStatus = LoginStatus.SIGNED_IN
                     } else {
                         loginStatus = LoginStatus.SIGNED_OUT
-                        App.instance.postMessage("Error signing in...")
+
+                        // TODO Error signing in
                     }
                 }
     }

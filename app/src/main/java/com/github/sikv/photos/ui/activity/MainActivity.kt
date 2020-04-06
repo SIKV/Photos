@@ -1,13 +1,9 @@
 package com.github.sikv.photos.ui.activity
 
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.DownloadPhotoState
-import com.github.sikv.photos.enumeration.SetWallpaperState
 import com.github.sikv.photos.ui.fragment.*
 import com.github.sikv.photos.util.customTag
 import com.github.sikv.photos.viewmodel.MainViewModel
@@ -62,8 +58,6 @@ class MainActivity : BaseActivity() {
         }
 
         setNavigationListener()
-        setWallpaperSetListeners()
-        observe()
     }
 
     override fun onBackPressed() {
@@ -89,74 +83,6 @@ class MainActivity : BaseActivity() {
         super.onSaveInstanceState(outState)
 
         outState.putString(KEY_FRAGMENT_TAG, activeFragment.customTag())
-    }
-
-    private fun observe() {
-        viewModel.downloadPhotoStateChangedLiveData.observe(this, Observer { state ->
-            when (state) {
-                DownloadPhotoState.DOWNLOADING_PHOTO -> {
-                    setWallpaperInProgressLayout.visibility = View.VISIBLE
-                    setWallpaperDownloadingLayout.visibility = View.VISIBLE
-                    setWallpaperStatusLayout.visibility = View.GONE
-                    setWallpaperButton.visibility = View.GONE
-                    setWallpaperCancelButton.visibility = View.VISIBLE
-
-                    setWallpaperInProgressText.setText(R.string.downloading_photo)
-                }
-
-                DownloadPhotoState.PHOTO_READY -> {
-                    setWallpaperInProgressLayout.visibility = View.VISIBLE
-                    setWallpaperDownloadingLayout.visibility = View.GONE
-                    setWallpaperStatusLayout.visibility = View.VISIBLE
-                    setWallpaperButton.visibility = View.VISIBLE
-                    setWallpaperCancelButton.visibility = View.VISIBLE
-
-                    setWallpaperStatusImage.setImageResource(R.drawable.ic_check_green_24dp)
-                    setWallpaperStatusText.setText(R.string.photo_ready)
-                }
-
-                DownloadPhotoState.ERROR_DOWNLOADING_PHOTO -> {
-                    setWallpaperInProgressLayout.visibility = View.VISIBLE
-                    setWallpaperDownloadingLayout.visibility = View.GONE
-                    setWallpaperStatusLayout.visibility = View.VISIBLE
-                    setWallpaperButton.visibility = View.GONE
-                    setWallpaperCancelButton.visibility = View.VISIBLE
-
-                    setWallpaperStatusImage.setImageResource(R.drawable.ic_close_red_24dp)
-                    setWallpaperStatusText.setText(R.string.error_downloading_photo)
-                }
-
-                DownloadPhotoState.CANCELING -> {
-                    setWallpaperInProgressLayout.visibility = View.VISIBLE
-                    setWallpaperDownloadingLayout.visibility = View.VISIBLE
-                    setWallpaperStatusLayout.visibility = View.GONE
-                    setWallpaperButton.visibility = View.GONE
-                    setWallpaperCancelButton.visibility = View.GONE
-
-                    setWallpaperInProgressText.setText(R.string.canceling)
-                }
-
-                DownloadPhotoState.CANCELED -> {
-                    setWallpaperInProgressLayout.visibility = View.GONE
-                }
-
-                else -> { }
-            }
-        })
-
-        viewModel.setWallpaperStateChangedEvent.observe(this, Observer {
-            it.getContentIfNotHandled()?.let { state ->
-                when (state) {
-                    SetWallpaperState.SUCCESS, SetWallpaperState.FAILURE -> {
-                        setWallpaperInProgressLayout.visibility = View.GONE
-
-                        if (state == SetWallpaperState.FAILURE) {
-                            postMessage(R.string.error_setting_wallpaper)
-                        }
-                    }
-                }
-            }
-        })
     }
 
     private fun setupBottomNavigation(initialFragmentIndex: Int, initialItemId: Int) {
@@ -199,16 +125,6 @@ class MainActivity : BaseActivity() {
             R.id.settings -> SETTINGS_FRAGMENT_INDEX
 
             else -> -1
-        }
-    }
-
-    private fun setWallpaperSetListeners() {
-        setWallpaperButton.setOnClickListener {
-            viewModel.setWallpaper()
-        }
-
-        setWallpaperCancelButton.setOnClickListener {
-            viewModel.cancelSetWallpaper()
         }
     }
 

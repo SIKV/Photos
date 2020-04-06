@@ -19,15 +19,17 @@
 
     <color name="launcherBackground">#181818</color>
 
-    <color name="colorTitleText">#353535</color>
     <color name="colorText">#353535</color>
     <color name="colorIcon">#353535</color>
     <color name="colorClearButton">#AAAAAA</color>
-    <color name="colorOverlay">#BB000000</color>
+    <color name="colorOverlay">#AA000000</color>
     <color name="colorRipple">#353535</color>
     <color name="colorRippleLight">#BCBCBC</color>
     <color name="colorPlaceholder">#EEEEEE</color>
     <color name="colorHint">#9E9E9E</color>
     <color name="colorRed">#EF4141</color>
     <color name="colorChipBackground">#F3F3F3</color>
+
+    <color name="colorRoundOutlineButton">@android:color/white</color>
+    <color name="colorRoundOutlineButtonDisabled">#AAAAAA</color>
 </resources>
