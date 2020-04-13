@@ -2,11 +2,14 @@ package com.github.sikv.photos.ui.activity
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.fragment.*
 import com.github.sikv.photos.util.customTag
 import com.github.sikv.photos.viewmodel.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -58,6 +61,8 @@ class MainActivity : BaseActivity() {
         }
 
         setNavigationListener()
+
+        observeGlobalMessageEvent()
     }
 
     override fun onBackPressed() {
@@ -83,6 +88,16 @@ class MainActivity : BaseActivity() {
         super.onSaveInstanceState(outState)
 
         outState.putString(KEY_FRAGMENT_TAG, activeFragment.customTag())
+    }
+
+    private fun observeGlobalMessageEvent() {
+        App.instance.globalMessageEvent.observe(this, Observer { event ->
+            event.getContentIfNotHandled()?.let { message ->
+                Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT)
+                        .setAnchorView(bottomNavigationView)
+                        .show()
+            }
+        })
     }
 
     private fun setupBottomNavigation(initialFragmentIndex: Int, initialItemId: Int) {

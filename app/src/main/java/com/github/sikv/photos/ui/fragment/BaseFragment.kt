@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbarManager
@@ -61,5 +62,9 @@ abstract class BaseFragment : Fragment() {
 
     protected fun setMenuItemVisibility(menuItem: Int, visible: Boolean) {
         fragmentToolbarManager?.setMenuItemVisibility(menuItem, visible)
+    }
+
+    protected fun postGlobalMessage(message: String) {
+        App.instance.postGlobalMessage(message)
     }
 }

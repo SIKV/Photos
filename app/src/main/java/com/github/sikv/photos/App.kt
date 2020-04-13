@@ -29,6 +29,9 @@ class App : Application() {
         DaggerNetworkComponent.factory().create(applicationContext)
     }
 
+    private val globalMessageMutableEvent = MutableLiveData<Event<String>>()
+    val globalMessageEvent: LiveData<Event<String>> = globalMessageMutableEvent
+
     private val setWallpaperResultStateMutableEvent = MutableLiveData<Event<SetWallpaperResultState>>()
     val setWallpaperResultStateEvent: LiveData<Event<SetWallpaperResultState>> = setWallpaperResultStateMutableEvent
 
@@ -42,6 +45,10 @@ class App : Application() {
 
     fun getPrivatePreferences(): SharedPreferences {
         return getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+    }
+
+    fun postGlobalMessage(message: String) {
+        globalMessageMutableEvent.postValue(Event(message))
     }
 
     fun postSetWallpaperResultStateEvent(state: Event<SetWallpaperResultState>) {

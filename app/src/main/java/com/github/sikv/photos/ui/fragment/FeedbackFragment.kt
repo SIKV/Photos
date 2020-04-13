@@ -1,41 +1,29 @@
 package com.github.sikv.photos.ui.fragment
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
+import com.github.sikv.photos.enumeration.FeedbackMode
+import com.github.sikv.photos.enumeration.RequestStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
-import com.github.sikv.photos.util.setToolbarTitleWithBackButton
-import com.github.sikv.photos.util.showSoftInput
+import com.github.sikv.photos.util.*
+import com.github.sikv.photos.viewmodel.FeedbackViewModel
+import com.github.sikv.photos.viewmodel.FeedbackViewModelFactory
 import kotlinx.android.synthetic.main.fragment_feedback.*
 
 class FeedbackFragment : BaseFragment() {
 
     companion object {
-        private const val MODE_REPORT_PROBLEM = 1
-        private const val MODE_SEND_FEEDBACK = 2
+        private const val KEY_MODE = "mode"
 
-        private const val KEY_MODE = "key_mode"
-
-        private const val DESCRIPTION_MAX_LENGTH = 500
-
-        fun newReportProblemFragment(): FeedbackFragment {
+        fun newInstance(mode: FeedbackMode): FeedbackFragment {
             val args = Bundle()
-            args.putInt(KEY_MODE, MODE_REPORT_PROBLEM)
-
-            val fragment = FeedbackFragment()
-            fragment.arguments = args
-
-            return fragment
-        }
-
-        fun newSendFeedbackFragment(): FeedbackFragment {
-            val args = Bundle()
-            args.putInt(KEY_MODE, MODE_SEND_FEEDBACK)
+            args.putSerializable(KEY_MODE, mode)
 
             val fragment = FeedbackFragment()
             fragment.arguments = args
@@ -44,9 +32,16 @@ class FeedbackFragment : BaseFragment() {
         }
     }
 
+    private val viewModel by lazy {
+        val mode: FeedbackMode = arguments?.getSerializable(KEY_MODE) as FeedbackMode
+
+        val viewModelFactory = FeedbackViewModelFactory(requireActivity().application, mode)
+        ViewModelProvider(this, viewModelFactory).get(FeedbackViewModel::class.java)
+    }
+
     override val overrideBackground: Boolean = true
 
-    private var mode: Int = 0
+    private var sendMenuItem: MenuItem? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_feedback, container, false)
@@ -55,22 +50,15 @@ class FeedbackFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mode = arguments?.getInt(KEY_MODE) ?: 0
-
-        val title = when (mode) {
-            MODE_REPORT_PROBLEM -> R.string.report_problem
-            MODE_SEND_FEEDBACK -> R.string.send_feedback
-
-            else -> 0
-        }
-
-        setToolbarTitleWithBackButton(title) {
+        setToolbarTitleWithBackButton(null) {
             navigation?.backPressed()
         }
 
         context?.showSoftInput(descriptionEdit)
 
-        init(mode)
+        observe()
+
+        descriptionEdit.resetErrorWhenTextChanged(descriptionInputLayout)
     }
 
     override fun onCreateToolbar(): FragmentToolbar? {
@@ -84,7 +72,13 @@ class FeedbackFragment : BaseFragment() {
                         listOf(
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        // TODO Implement
+                                        sendMenuItem = menuItem
+
+                                        viewModel.send(
+                                                email = emailEdit.text.toString(),
+                                                description = descriptionEdit.text.toString()
+                                        )
+
                                         return true
                                     }
                                 }
@@ -92,30 +86,43 @@ class FeedbackFragment : BaseFragment() {
                 ).build()
     }
 
-    private fun init(mode: Int) {
-        when (mode) {
-            MODE_REPORT_PROBLEM -> {
-                descriptionEdit.setHint(R.string.what_went_wrong)
+    private fun observe() {
+        viewModel.showTitleEvent.observe(viewLifecycleOwner, Observer { event ->
+            event?.getContentIfNotHandled()?.let { title ->
+                setToolbarTitle(title)
             }
-            MODE_SEND_FEEDBACK -> {
-                descriptionEdit.setHint(R.string.what_to_improve)
-            }
-        }
-
-        descriptionEdit.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                updateDescriptionLimitText(s?.length)
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
         })
 
-        updateDescriptionLimitText(0)
-    }
+        viewModel.showDescriptionHintEvent.observe(viewLifecycleOwner, Observer { event ->
+            event?.getContentIfNotHandled()?.let { hint ->
+                descriptionInputLayout.hint = hint
+            }
+        })
 
-    private fun updateDescriptionLimitText(length: Int?) {
-        limitText.text = getString(R.string.d_delimiter_d, length, DESCRIPTION_MAX_LENGTH)
+        viewModel.sendFeedbackStatusEvent.observe(viewLifecycleOwner, Observer { event ->
+            event?.getContentIfNotHandled()?.let { requestStatus ->
+                when (requestStatus) {
+                    is RequestStatus.InProgress -> {
+                        sendMenuItem?.setActionView(R.layout.layout_action_progress)
+                    }
+
+                    is RequestStatus.Done -> {
+                        sendMenuItem?.actionView = null
+
+                        postGlobalMessage(requestStatus.message)
+
+                        if (requestStatus.success) {
+                            navigation?.backPressed()
+                        } else {
+                            activity?.hideSoftInput()
+                        }
+                    }
+
+                    is RequestStatus.ValidationError -> {
+                        descriptionInputLayout.error = requestStatus.message
+                    }
+                }
+            }
+        })
     }
 }

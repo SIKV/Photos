@@ -15,6 +15,7 @@
         <item name="colorOnBackground">@color/colorOnBackground</item>
 
         <item name="colorControlNormal">@color/colorIcon</item>
+        <item name="android:colorControlActivated">?colorSecondary</item>
 
         <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
 
@@ -22,6 +23,7 @@
         <item name="bottomNavigationStyle">@style/BottomNavigationStyle</item>
         <item name="tabStyle">@style/TabStyle</item>
         <item name="chipStyle">@style/ChipStyle</item>
+        <item name="textInputStyle">@style/TextInputStyle</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme">
@@ -79,6 +81,12 @@
     <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Action">
         <item name="chipSurfaceColor">@android:color/transparent</item>
         <item name="chipBackgroundColor">@color/colorChipBackground</item>
+    </style>
+
+    <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@drawable/selector_text_input_box_stroke</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+        <item name="hintTextColor">?colorSecondary</item>
     </style>
 
     <style name="ToolbarTitle">

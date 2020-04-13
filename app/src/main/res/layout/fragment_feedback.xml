@@ -28,31 +28,48 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp" />
 
-    <EditText
-        android:id="@+id/descriptionEdit"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/emailInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
+        android:hint="@string/enter_your_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/emailEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:maxLength="@integer/feedbackEmailMaxLength" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/descriptionInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:paddingBottom="20dp"
-        android:inputType="textCapSentences|textMultiLine"
-        android:textSize="16sp"
-        android:hint="@string/d_delimiter_d"
-        android:importantForAutofill="no">
+        app:layout_constraintTop_toBottomOf="@id/emailInputLayout"
+        app:layout_constraintStart_toEndOf="@id/startGuideline"
+        app:layout_constraintEnd_toStartOf="@id/endGuideline"
+        app:counterEnabled="true"
+        app:counterMaxLength="@integer/feedbackDescriptionMaxLength">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/descriptionEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top"
+            android:inputType="textCapSentences|textMultiLine"
+            android:minLines="5"
+            android:maxLines="10"
+            android:maxLength="@integer/feedbackDescriptionMaxLength" />
 
         <requestFocus />
 
-    </EditText>
-
-    <TextView
-        android:id="@+id/limitText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/descriptionEdit"
-        app:layout_constraintEnd_toStartOf="@id/endGuideline"
-        android:textSize="12sp"
-        android:text="@string/d_delimiter_d" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

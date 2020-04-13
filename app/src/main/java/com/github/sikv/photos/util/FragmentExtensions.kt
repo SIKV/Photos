@@ -17,11 +17,15 @@ fun Fragment.setToolbarTitle(@StringRes title: Int) {
     view?.findViewById<TextView>(R.id.toolbarTitleText)?.setText(title)
 }
 
+fun Fragment.setToolbarTitle(title: String) {
+    view?.findViewById<TextView>(R.id.toolbarTitleText)?.text = title
+}
+
 fun Fragment.disableScrollableToolbar() {
     (view?.findViewById<Toolbar>(R.id.toolbar)?.layoutParams as? AppBarLayout.LayoutParams)?.scrollFlags = 0
 }
 
-fun Fragment.setToolbarTitleWithBackButton(@StringRes title: Int, navigationOnClickListener: () -> Unit) {
+fun Fragment.setToolbarTitleWithBackButton(@StringRes title: Int?, navigationOnClickListener: () -> Unit) {
     setToolbarTitleWithButton(this, title, R.drawable.ic_arrow_back_24dp, navigationOnClickListener)
 }
 
@@ -49,11 +53,14 @@ fun Fragment.hideToolbarSubtitle() {
     subtitleTextView?.visibility = View.GONE
 }
 
-private fun setToolbarTitleWithButton(fragment: Fragment, @StringRes title: Int, @DrawableRes navigationIcon: Int, navigationOnClickListener: () -> Unit) {
+private fun setToolbarTitleWithButton(fragment: Fragment, @StringRes title: Int?, @DrawableRes navigationIcon: Int, navigationOnClickListener: () -> Unit) {
     val toolbar = fragment.view?.findViewById<Toolbar>(R.id.toolbar)
     val toolbarTitleTextView = fragment.view?.findViewById<TextView>(R.id.toolbarTitleText)
 
-    toolbarTitleTextView?.setText(title)
+    title?.let {
+        toolbarTitleTextView?.setText(it)
+    }
+
     toolbar?.setNavigationIcon(navigationIcon)
 
     toolbar?.setNavigationOnClickListener {

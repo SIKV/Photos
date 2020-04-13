@@ -1,5 +1,6 @@
 package com.github.sikv.photos.util
 
+import com.github.sikv.photos.App
 import java.text.DateFormat
 import java.util.*
 import kotlin.math.atan2
@@ -14,6 +15,27 @@ object Utils {
 
     fun formatCreatedAtDate(date: Long): String {
         return DateFormat.getDateInstance().format(Date(date))
+    }
+
+    fun getCurrentDateAndTime(): String {
+        return Calendar.getInstance().time.toString()
+    }
+
+    fun getSessionId(): String {
+        val keySessionId = "sessionId"
+
+        App.instance.getPrivatePreferences().getString(keySessionId, null)?.let { sessionId ->
+            return sessionId
+        } ?: run {
+            val sessionId = UUID.randomUUID().toString()
+
+            App.instance.getPrivatePreferences()
+                    .edit()
+                    .putString(keySessionId, sessionId)
+                    .apply()
+
+            return sessionId
+        }
     }
 
     fun calculateP(x: Double, y: Double, z: Double,

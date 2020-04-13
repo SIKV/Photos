@@ -2,8 +2,10 @@ package com.github.sikv.photos.util
 
 import android.animation.Animator
 import android.graphics.Typeface
+import android.text.Editable
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.StyleSpan
@@ -15,6 +17,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 /**
  * View
@@ -137,4 +141,19 @@ fun TextView.makeUnderlineBold(bold: Array<String>) {
 
     movementMethod = LinkMovementMethod.getInstance()
     setText(spannableString, TextView.BufferType.SPANNABLE)
+}
+
+/**
+ * TextInputEditText
+ */
+fun TextInputEditText.resetErrorWhenTextChanged(parent: TextInputLayout) {
+    addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) { }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            parent.error = null
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) { }
+    })
 }

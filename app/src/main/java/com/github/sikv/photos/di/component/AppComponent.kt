@@ -30,6 +30,7 @@ interface AppComponent {
     fun inject(viewModel: PhotoViewModel)
     fun inject(viewModel: FavoritesViewModel)
     fun inject(viewModel: PreferenceViewModel)
+    fun inject(viewModel: FeedbackViewModel)
     fun inject(viewHolder: PhotoViewHolder)
     fun inject(viewHolder: PhotoGridViewHolder)
     fun inject(adapter: PhotoPagedListAdapter)

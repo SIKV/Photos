@@ -10,6 +10,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.github.sikv.photos.enumeration.FeedbackMode
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.viewmodel.PreferenceViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -59,12 +60,12 @@ class PreferenceFragment : PreferenceFragmentCompat() {
             }
 
             getString(R.string._pref_send_feedback) -> {
-                showFragment(FeedbackFragment.newSendFeedbackFragment())
+                showFragment(FeedbackFragment.newInstance(FeedbackMode.SEND_FEEDBACK))
                 return true
             }
 
             getString(R.string._pref_report_problem) -> {
-                showFragment(FeedbackFragment.newReportProblemFragment())
+                showFragment(FeedbackFragment.newInstance(FeedbackMode.REPORT_PROBLEM))
                 return true
             }
 

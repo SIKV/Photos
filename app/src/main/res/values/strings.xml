@@ -59,6 +59,10 @@
     <string name="about">About</string>
     <string name="report_problem">Report a Problem</string>
     <string name="send_feedback">Send Feedback</string>
+    <string name="report_sent">Report has been sent</string>
+    <string name="error_sending_report">Error sending report</string>
+    <string name="feedback_sent">Feedback has been sent</string>
+    <string name="error_sending_feedback">Error sending feedback</string>
     <string name="rate_app">Rate this App</string>
     <string name="cancel">Cancel</string>
     <string name="downloading_photo">Downloading photo…</string>
@@ -74,9 +78,10 @@
     <string name="open_source_licences">Open Source Licences</string>
     <string name="signing_in">Signing in, please wait…</string>
     <string name="submit">Submit</string>
+    <string name="enter_your_email">Enter your email</string>
     <string name="what_to_improve">What would you like us to improve?</string>
     <string name="what_went_wrong">What went wrong?</string>
-    <string name="d_delimiter_d">%d/%d</string>
     <string name="grant_storage_permission_description">Please grant Storage permission to be able to download photos.</string>
     <string name="open_settings">Open Settings</string>
+    <string name="enter_some_text">Please enter some text here</string>
 </resources>
