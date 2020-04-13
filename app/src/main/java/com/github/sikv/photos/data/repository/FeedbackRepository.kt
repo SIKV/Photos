@@ -19,11 +19,10 @@ class FeedbackRepository @Inject constructor(
     @Suppress("UNCHECKED_CAST")
     fun sendFeedback(feedback: Feedback, completion: (Boolean) -> Unit) {
         accountManager.signInAnonymously {
-            val document = FirebaseFirestore.getInstance()
+            FirebaseFirestore.getInstance()
                     .collection(COLLECTION_FEEDBACK)
                     .document(Utils.getCurrentDateAndTime())
-
-            document.set(feedback)
+                    .set(feedback)
                     .addOnSuccessListener {
                         completion(true)
                     }.addOnFailureListener {
