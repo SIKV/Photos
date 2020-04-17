@@ -9,12 +9,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
-import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoSource
-import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.ui.activity.PhotoActivity
+import com.github.sikv.photos.ui.PhotoClickDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
-import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.util.disableChangeAnimations
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchViewModel
@@ -43,8 +40,14 @@ class SingleSearchFragment : Fragment() {
         ViewModelProvider(this).get(SearchViewModel::class.java)
     }
 
+    private val photoClickDispatcher by lazy {
+        PhotoClickDispatcher(this, R.id.rootLayout) { photo ->
+            viewModel.invertFavorite(photo)
+        }
+    }
+
     private lateinit var photoSource: PhotoSource
-    private val photoAdapter = PhotoPagedListAdapter(::onPhotoClick)
+    private val photoAdapter = PhotoPagedListAdapter(photoClickDispatcher::handlePhotoClick)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,23 +122,5 @@ class SingleSearchFragment : Fragment() {
                 else -> { }
             }
         })
-    }
-
-    private fun onPhotoClick(clickSource: PhotoItemClickSource, photo: Photo, view: View) {
-        when (clickSource) {
-            PhotoItemClickSource.CLICK -> {
-                PhotoActivity.startActivity(activity, view, photo)
-            }
-
-            PhotoItemClickSource.LONG_CLICK -> {
-                PhotoPreviewPopup().show(activity, rootLayout, photo)
-            }
-
-            PhotoItemClickSource.FAVORITE -> {
-                viewModel.invertFavorite(photo)
-            }
-
-            else -> { }
-        }
     }
 }

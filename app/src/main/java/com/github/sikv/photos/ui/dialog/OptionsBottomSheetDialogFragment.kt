@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.fragment
+package com.github.sikv.photos.ui.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,13 +16,16 @@ class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
         private const val KEY_OPTIONS = "key_options"
         private const val KEY_SELECTED_OPTION_INDEX = "key_selected_option_index"
 
-        fun newInstance(options: List<String>, selectedOptionIndex: Int, onItemSelected: (Int) -> Unit): OptionsBottomSheetDialogFragment {
+        fun newInstance(options: List<String>, selectedOptionIndex: Int?, onItemSelected: (Int) -> Unit): OptionsBottomSheetDialogFragment {
             val dialogFragment = OptionsBottomSheetDialogFragment()
             dialogFragment.onItemSelected = onItemSelected
 
             val args = Bundle()
             args.putStringArrayList(KEY_OPTIONS, ArrayList(options))
-            args.putInt(KEY_SELECTED_OPTION_INDEX, selectedOptionIndex)
+
+            selectedOptionIndex?.let {
+                args.putInt(KEY_SELECTED_OPTION_INDEX, it)
+            }
 
             dialogFragment.arguments = args
 
@@ -59,6 +62,8 @@ class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
                     layout.addView(optionLayout)
                 }
+
+                addCancelOption(layout)
             }
         }
 
@@ -67,5 +72,20 @@ class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     fun show(fragmentManager: FragmentManager) {
         show(fragmentManager, "")
+    }
+
+    private fun addCancelOption(layout: ViewGroup) {
+        val optionLayout = LayoutInflater.from(context).inflate(R.layout.item_option, null, false)
+
+        optionLayout.optionText.text = getString(R.string.cancel)
+        optionLayout.optionText.alpha = 0.5F
+
+        optionLayout.optionSelectedImage.setImageDrawable(null)
+
+        optionLayout.setOnClickListener {
+            dismiss()
+        }
+
+        layout.addView(optionLayout)
     }
 }

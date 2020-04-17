@@ -84,4 +84,5 @@
     <string name="grant_storage_permission_description">Please grant Storage permission to be able to download photos.</string>
     <string name="open_settings">Open Settings</string>
     <string name="enter_some_text">Please enter some text here</string>
+    <string name="copy_link">Copy Link</string>
 </resources>

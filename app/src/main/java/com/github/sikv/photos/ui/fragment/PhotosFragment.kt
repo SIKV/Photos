@@ -10,15 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.PagedList
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
-import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.ui.activity.BaseActivity
-import com.github.sikv.photos.ui.activity.PhotoActivity
+import com.github.sikv.photos.ui.PhotoClickDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
-import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
+import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialogFragment
 import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.fragment_photos.*
@@ -36,7 +34,13 @@ class PhotosFragment : BaseFragment() {
         ViewModelProvider(this).get(PhotosViewModel::class.java)
     }
 
-    private val photoAdapter = PhotoPagedListAdapter(::onPhotoClick)
+    private val photoClickDispatcher by lazy {
+        PhotoClickDispatcher(this, R.id.rootLayout) { photo ->
+            viewModel.invertFavorite(photo)
+        }
+    }
+
+    private val photoAdapter = PhotoPagedListAdapter(photoClickDispatcher::handlePhotoClick)
 
     private var currentSource: PhotoSource = PhotoSource.UNSPLASH
         set(value) {
@@ -183,30 +187,6 @@ class PhotosFragment : BaseFragment() {
                 else -> { }
             }
         })
-    }
-
-    private fun onPhotoClick(clickSource: PhotoItemClickSource, photo: Photo, view: View) {
-        when (clickSource) {
-            PhotoItemClickSource.CLICK -> {
-                PhotoActivity.startActivity(activity, view, photo)
-            }
-
-            PhotoItemClickSource.LONG_CLICK -> {
-                PhotoPreviewPopup().show(activity, rootLayout, photo)
-            }
-
-            PhotoItemClickSource.FAVORITE -> {
-                viewModel.invertFavorite(photo)
-            }
-
-            PhotoItemClickSource.DOWNLOAD -> {
-                (activity as? BaseActivity)?.requestWriteExternalStoragePermission {
-                    context?.downloadPhotoAndSaveToPictures(photo.getPhotoWallpaperUrl())
-                }
-            }
-
-            else -> { }
-        }
     }
 
     private fun setListeners() {
