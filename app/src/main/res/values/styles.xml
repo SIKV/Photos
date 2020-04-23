@@ -43,6 +43,11 @@
         <item name="toolbarStyle">@style/TransparentToolbarStyle</item>
     </style>
 
+    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+
     <style name="AppTheme.Span" parent="AppTheme">
         <item name="colorAccent">@android:color/white</item>
     </style>
