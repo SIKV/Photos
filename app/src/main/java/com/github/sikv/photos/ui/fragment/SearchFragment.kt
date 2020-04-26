@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -63,18 +64,14 @@ class SearchFragment : BaseFragment() {
                     searchEdit.append(searchText)
                     searchPhotos(searchText)
                 }
+
+                shownKeyboardIfNeeded()
             }
         }
 
         setListeners()
 
         changeClearButtonVisibility(false, withAnimation = false)
-
-        val showKeyboard = arguments?.getString(EXTRA_SEARCH_TEXT) == null
-
-        if (showKeyboard) {
-            context?.showSoftInput(searchEdit)
-        }
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -101,6 +98,27 @@ class SearchFragment : BaseFragment() {
         lastSearchText = text
 
         viewPagerAdapter.searchPhotos(viewPager, text)
+    }
+
+    private fun shownKeyboardIfNeeded() {
+        val showKeyboard = arguments?.getString(EXTRA_SEARCH_TEXT) == null
+        var keyboardShown = false
+
+        if (showKeyboard) {
+            if (!keyboardShown) {
+                keyboardShown = requireActivity().showSoftInput(searchEdit)
+            }
+
+            searchEdit.viewTreeObserver.addOnWindowFocusChangeListener(object : ViewTreeObserver.OnWindowFocusChangeListener {
+                override fun onWindowFocusChanged(hasFocus: Boolean) {
+                    if (hasFocus && !keyboardShown) {
+                        keyboardShown = requireActivity().showSoftInput(searchEdit)
+                    }
+
+                    searchEdit?.viewTreeObserver?.removeOnWindowFocusChangeListener(this)
+                }
+            })
+        }
     }
 
     private fun changeClearButtonVisibility(visible: Boolean, withAnimation: Boolean = true) {
@@ -149,7 +167,7 @@ class SearchFragment : BaseFragment() {
         })
 
         searchClearButton.setOnClickListener {
-            searchEdit.text.clear()
+            searchEdit.text?.clear()
             context?.showSoftInput(searchEdit)
         }
     }

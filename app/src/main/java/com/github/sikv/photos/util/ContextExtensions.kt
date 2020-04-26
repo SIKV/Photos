@@ -22,9 +22,9 @@ import com.github.sikv.photos.event.Event
 import java.io.ByteArrayOutputStream
 import java.io.File
 
-fun Context.showSoftInput(view: View) {
+fun Context.showSoftInput(view: View): Boolean {
     val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    inputMethodManager.showSoftInput(view, 0)
+    return inputMethodManager.showSoftInput(view, 0)
 }
 
 fun Context.hideSoftInput(view: View) {

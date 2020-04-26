@@ -12,6 +12,8 @@ import com.github.sikv.photos.ui.navigation.NavigationProvider
 
 abstract class RootFragment : Fragment(), NavigationProvider {
 
+    private var delayedFragment: Fragment? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_root, container, false)
     }
@@ -21,7 +23,16 @@ abstract class RootFragment : Fragment(), NavigationProvider {
 
         if (savedInstanceState == null) {
             provideNavigation().addFragment(provideRootFragment(), withAnimation = false)
+
+            delayedFragment?.let {
+                provideNavigation().addFragment(it, withAnimation = false)
+            }
         }
+    }
+
+    // TODO Used for 'Search' shortcut. Should be refactored.
+    fun addFragmentDelayed(fragment: Fragment) {
+        delayedFragment = fragment
     }
 
     override fun provideNavigation(): Navigation {
