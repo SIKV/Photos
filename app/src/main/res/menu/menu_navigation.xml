@@ -13,8 +13,8 @@
         android:title="@string/favorites"
         android:icon="@drawable/ic_nav_favorite_white_24dp" />
 
-    <item android:id="@+id/settings"
-        android:title="@string/settings"
-        android:icon="@drawable/ic_nav_settings_white_24dp" />
+    <item android:id="@+id/more"
+        android:title="@string/more"
+        android:icon="@drawable/ic_nav_more_white_24dp" />
 
 </menu>

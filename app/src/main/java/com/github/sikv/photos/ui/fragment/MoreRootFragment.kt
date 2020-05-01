@@ -2,9 +2,9 @@ package com.github.sikv.photos.ui.fragment
 
 import androidx.fragment.app.Fragment
 
-class SettingsRootFragment : RootFragment() {
+class MoreRootFragment : RootFragment() {
 
     override fun provideRootFragment(): Fragment {
-        return SettingsFragment()
+        return MoreFragment()
     }
 }

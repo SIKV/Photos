@@ -37,8 +37,8 @@ class MainActivity : BaseActivity() {
                     R.id.favorites
             ),
             FragmentInfo(
-                    SettingsRootFragment(),
-                    R.id.settings
+                    MoreRootFragment(),
+                    R.id.more
             )
     )
 

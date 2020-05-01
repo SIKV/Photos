@@ -10,21 +10,17 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.FeedbackMode
+import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.setToolbarTitle
-import com.github.sikv.photos.util.setToolbarTitleWithBackButton
 import com.github.sikv.photos.viewmodel.PreferenceViewModel
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import com.google.android.material.snackbar.Snackbar
 
-class SettingsFragment : BaseFragment() {
-
-    override val overrideBackground: Boolean = true
+class MoreFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_settings, container, false)
+        val view = inflater.inflate(R.layout.fragment_more, container, false)
 
         childFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, PreferenceFragment())
@@ -36,10 +32,7 @@ class SettingsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setToolbarTitleWithBackButton(R.string.settings) {
-            navigation?.backPressed()
-        }
-
+        setToolbarTitle(R.string.more)
         disableScrollableToolbar()
     }
 
@@ -53,8 +46,12 @@ class SettingsFragment : BaseFragment() {
             ViewModelProvider(this).get(PreferenceViewModel::class.java)
         }
 
+        private var signingInSnackbar: Snackbar? = null
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-            setPreferencesFromResource(R.xml.preferences, rootKey)
+            setPreferencesFromResource(R.xml.preferences_more, rootKey)
+
+            handleVisibility(viewModel.accountManager.loginStatus)
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,26 +60,26 @@ class SettingsFragment : BaseFragment() {
             observe()
         }
 
+        override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            super.onActivityResult(requestCode, resultCode, data)
+
+            viewModel.handleSignInResult(requestCode, resultCode, data)
+        }
+
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             return when (preference?.key) {
-                getString(R.string._pref_dark_theme) -> {
-                    App.instance.updateTheme()
+                getString(R.string._pref_sign_in) -> {
+                    viewModel.signInWithGoogle(this)
                     true
                 }
 
-                getString(R.string._pref_send_feedback) -> {
-                    showFragment(FeedbackFragment.newInstance(FeedbackMode.SEND_FEEDBACK))
-                    return true
+                getString(R.string._pref_sign_out) -> {
+                    viewModel.signOut()
+                    true
                 }
 
-                getString(R.string._pref_report_problem) -> {
-                    showFragment(FeedbackFragment.newInstance(FeedbackMode.REPORT_PROBLEM))
-                    return true
-                }
-
-                getString(R.string._pref_open_source_licences) -> {
-                    startActivity(Intent(context, OssLicensesMenuActivity::class.java))
-                    OssLicensesMenuActivity.setActivityTitle(context?.getString(R.string.open_source_licences) ?: "")
+                getString(R.string._pref_settings) -> {
+                    showFragment(SettingsFragment())
                     return true
                 }
 
@@ -93,11 +90,23 @@ class SettingsFragment : BaseFragment() {
         }
 
         private fun observe() {
-            viewModel.showAppVersionEvent.observe(viewLifecycleOwner, Observer {
-                it.getContentIfNotHandled()?.let { appVersion ->
-                    findPreference<Preference>(getString(R.string._pref_app_version))?.summary = appVersion
+            viewModel.loginStatusChangedLiveData.observe(viewLifecycleOwner, Observer {
+                handleVisibility(it)
+
+                if (it == LoginStatus.SIGNING_IN) {
+                    view?.let { view ->
+                        signingInSnackbar = Snackbar.make(view, R.string.signing_in, Snackbar.LENGTH_INDEFINITE)
+                        signingInSnackbar?.show()
+                    }
+                } else {
+                    signingInSnackbar?.dismiss()
                 }
             })
+        }
+
+        private fun handleVisibility(loginStatus: LoginStatus) {
+            findPreference<Preference>(getString(R.string._pref_sign_in))?.isVisible = loginStatus == LoginStatus.SIGNED_OUT
+            findPreference<Preference>(getString(R.string._pref_sign_out))?.isVisible = loginStatus == LoginStatus.SIGNED_IN
         }
 
         private fun showFragment(fragment: Fragment) {
