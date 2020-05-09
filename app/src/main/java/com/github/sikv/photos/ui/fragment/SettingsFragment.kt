@@ -2,6 +2,7 @@ package com.github.sikv.photos.ui.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +15,12 @@ import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.FeedbackMode
 import com.github.sikv.photos.util.disableScrollableToolbar
-import com.github.sikv.photos.util.setToolbarTitle
+import com.github.sikv.photos.util.makeClickable
+import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.util.setToolbarTitleWithBackButton
 import com.github.sikv.photos.viewmodel.PreferenceViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import kotlinx.android.synthetic.main.fragment_settings.*
 
 class SettingsFragment : BaseFragment() {
 
@@ -41,6 +44,43 @@ class SettingsFragment : BaseFragment() {
         }
 
         disableScrollableToolbar()
+
+        showIconsAttribution()
+    }
+
+    private fun showIconsAttribution() {
+        val thoseIcons = getString(R.string.those_icons)
+        val thoseIconsUrl = "https://www.flaticon.com/authors/those-icons"
+
+        val freepik = getString(R.string.freepik)
+        val freepikUrl = "https://www.flaticon.com/authors/freepik"
+
+        val flaticon = getString(R.string.flaticon)
+        val flaticonUrl = "https://www.flaticon.com"
+
+        iconsAttributionText.text = getString(R.string.icons_made_by_s_and_s_from_s,
+                thoseIcons, freepik, flaticon)
+
+        iconsAttributionText.makeClickable(arrayOf(
+                thoseIcons, freepik, flaticon),
+                arrayOf(
+                        object : ClickableSpan() {
+                            override fun onClick(view: View) {
+                                activity?.openUrl(thoseIconsUrl)
+                            }
+                        },
+                        object : ClickableSpan() {
+                            override fun onClick(view: View) {
+                                activity?.openUrl(freepikUrl)
+                            }
+                        },
+                        object : ClickableSpan() {
+                            override fun onClick(view: View) {
+                                activity?.openUrl(flaticonUrl)
+                            }
+                        }
+                )
+        )
     }
 
     /**

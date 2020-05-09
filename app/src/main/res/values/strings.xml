@@ -18,6 +18,10 @@
     <string name="unsplash">Unsplash</string>
     <string name="pexels">Pexels</string>
 
+    <string name="those_icons">Those Icons</string>
+    <string name="freepik">Freepik</string>
+    <string name="flaticon">www.flaticon.com</string>
+
     <string name="cn_photo">Photo</string>
     <string name="cn_app_icon">App icon</string>
     <string name="cn_photographer_photo">Photographer photo</string>
@@ -88,4 +92,6 @@
     <string name="open_settings">Open Settings</string>
     <string name="enter_some_text">Please enter some text here</string>
     <string name="copy_link">Copy Link</string>
+
+    <string name="icons_made_by_s_and_s_from_s">Icons made by %s and %s\nfrom %s</string>
 </resources>
