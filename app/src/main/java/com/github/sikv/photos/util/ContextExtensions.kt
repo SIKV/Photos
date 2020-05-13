@@ -10,6 +10,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
+import android.provider.Settings
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.browser.customtabs.CustomTabsIntent
@@ -111,4 +112,14 @@ fun Context.savePhotoInFile(bitmap: Bitmap): Uri? {
     file.writeBytes(byteArray)
 
     return FileProvider.getUriForFile(this, getString(R.string._file_provider), file)
+}
+
+fun Context.openAppSettings() {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+    val uri = Uri.fromParts("package", packageName, null)
+    intent.data = uri
+
+    startActivity(intent)
 }

@@ -7,12 +7,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.github.sikv.photos.R
+import com.github.sikv.photos.util.openAppSettings
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 abstract class BaseActivity : AppCompatActivity() {
 
     companion object {
-        private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 105
+        private const val RC_WRITE_EXTERNAL_STORAGE_PERMISSION = 105
     }
 
     private var doAfterWriteExternalStorageGranted: (() -> Unit)? = null
@@ -24,7 +25,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION)
+                    RC_WRITE_EXTERNAL_STORAGE_PERMISSION)
 
         } else {
             doAfterWriteExternalStorageGranted?.invoke()
@@ -33,7 +34,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION) {
+        if (requestCode == RC_WRITE_EXTERNAL_STORAGE_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 doAfterWriteExternalStorageGranted?.invoke()
                 doAfterWriteExternalStorageGranted = null
@@ -48,7 +49,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 .setTitle(R.string.app_name)
                 .setMessage(messageId)
                 .setPositiveButton(R.string.open_settings) { _, _ ->
-                    // TODO Implement
+                    openAppSettings()
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .create()
