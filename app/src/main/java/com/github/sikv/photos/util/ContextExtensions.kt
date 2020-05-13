@@ -4,9 +4,7 @@ import android.app.Activity
 import android.app.DownloadManager
 import android.app.WallpaperManager
 import android.app.WallpaperManager.ACTION_CROP_AND_SET_WALLPAPER
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
@@ -122,4 +120,11 @@ fun Context.openAppSettings() {
     intent.data = uri
 
     startActivity(intent)
+}
+
+fun Context.copyText(label: String, text: String) {
+    val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clipData = ClipData.newPlainText(label, text)
+
+    clipboardManager.setPrimaryClip(clipData)
 }

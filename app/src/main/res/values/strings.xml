@@ -94,4 +94,7 @@
     <string name="copy_link">Copy Link</string>
 
     <string name="icons_made_by_s_and_s_from_s">Icons made by %s and %s\nfrom %s</string>
+
+    <string name="photo_link">Photo link</string>
+    <string name="link_copied">Link copied</string>
 </resources>

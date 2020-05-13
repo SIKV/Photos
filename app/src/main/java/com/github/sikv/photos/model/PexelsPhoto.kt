@@ -45,11 +45,11 @@ class PexelsPhoto(
         return src.large
     }
 
-    override fun getPhotoWallpaperUrl(): String {
+    override fun getPhotoDownloadUrl(): String {
         return src.large2x
     }
 
-    override fun getShareUrl(): String {
+    override fun getPhotoShareUrl(): String {
         return url
     }
 

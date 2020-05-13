@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.model.Photo
@@ -12,6 +13,7 @@ import com.github.sikv.photos.ui.activity.BaseActivity
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialogFragment
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
+import com.github.sikv.photos.util.copyText
 import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 
 class PhotoClickDispatcher(
@@ -48,7 +50,7 @@ class PhotoClickDispatcher(
 
             PhotoItemClickSource.DOWNLOAD -> {
                 (getActivity() as? BaseActivity)?.requestWriteExternalStoragePermission {
-                    getActivity().downloadPhotoAndSaveToPictures(photo.getPhotoWallpaperUrl())
+                    getActivity().downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
                 }
             }
 
@@ -62,7 +64,11 @@ class PhotoClickDispatcher(
         val dialog = OptionsBottomSheetDialogFragment.newInstance(options, null) { index ->
             when (index) {
                 0 -> {
-                    // TODO Implement
+                    val label = getActivity().getString(R.string.photo_link)
+                    val text = photo.getPhotoShareUrl()
+
+                    getActivity().copyText(label, text)
+                    App.instance.postGlobalMessage(getActivity().getString(R.string.link_copied))
                 }
             }
         }

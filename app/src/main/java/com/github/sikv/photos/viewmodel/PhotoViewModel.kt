@@ -164,7 +164,7 @@ class PhotoViewModel(
         getApplication<Application>().let {
             DownloadPhotoService.startService(it,
                     action = DownloadPhotoService.ACTION_DOWNLOAD,
-                    photoUrl = photo.getPhotoWallpaperUrl()
+                    photoUrl = photo.getPhotoDownloadUrl()
             )
         }
     }
@@ -183,7 +183,7 @@ class PhotoViewModel(
         val shareIntent = Intent()
 
         shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_TEXT, photo.getShareUrl())
+        shareIntent.putExtra(Intent.EXTRA_TEXT, photo.getPhotoShareUrl())
         shareIntent.type = "text/plain"
 
         return shareIntent

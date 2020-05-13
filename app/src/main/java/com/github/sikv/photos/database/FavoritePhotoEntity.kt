@@ -14,7 +14,11 @@ class FavoritePhotoEntity(
         var height: Int,
         var createdAt: Long?,
         var description: String?,
+
         var previewUrl: String,
+        var downloadUrl: String,
+        var shareUrl: String,
+
         var photographerName: String,
         var photographerImageUrl: String?,
         var photographerUrl: String?,
@@ -30,6 +34,8 @@ class FavoritePhotoEntity(
                     createdAt = photo.getPhotoCreatedAt(),
                     description = photo.getPhotoDescription(),
                     previewUrl = photo.getPhotoPreviewUrl(),
+                    downloadUrl = photo.getPhotoDownloadUrl(),
+                    shareUrl = photo.getPhotoShareUrl(),
                     photographerName = photo.getPhotoPhotographerName(),
                     photographerImageUrl = photo.getPhotoPhotographerImageUrl(),
                     photographerUrl = photo.getPhotoPhotographerUrl(),
@@ -60,6 +66,14 @@ class FavoritePhotoEntity(
 
     override fun getPhotoPreviewUrl(): String {
         return previewUrl
+    }
+
+    override fun getPhotoDownloadUrl(): String {
+        return downloadUrl
+    }
+
+    override fun getPhotoShareUrl(): String {
+        return shareUrl
     }
 
     override fun getPhotoPhotographerName(): String {

@@ -25,10 +25,12 @@ abstract class Photo : Parcelable {
     open fun getPhotoHeight(): Int = 0
     open fun getPhotoCreatedAt(): Long? = null
     open fun getPhotoDescription(): String? = null
+
     open fun getPhotoPreviewUrl(): String = ""
     open fun getPhotoFullPreviewUrl(): String = ""
-    open fun getPhotoWallpaperUrl(): String = ""
-    open fun getShareUrl(): String = ""
+    open fun getPhotoDownloadUrl(): String = ""
+    open fun getPhotoShareUrl(): String = ""
+
     open fun getPhotoPhotographerName(): String = ""
     open fun getPhotoPhotographerImageUrl(): String? = null
     open fun getPhotoPhotographerUrl(): String? = null
