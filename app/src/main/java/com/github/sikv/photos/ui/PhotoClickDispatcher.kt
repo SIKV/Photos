@@ -51,6 +51,8 @@ class PhotoClickDispatcher(
             PhotoItemClickSource.DOWNLOAD -> {
                 (getActivity() as? BaseActivity)?.requestWriteExternalStoragePermission {
                     getActivity().downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
+
+                    App.instance.postGlobalMessage(getActivity().getString(R.string.downloading_photo))
                 }
             }
 

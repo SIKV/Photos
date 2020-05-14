@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.RuntimeBehaviour
+import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.FragmentInfo
 import com.github.sikv.photos.ui.fragment.*
 import com.github.sikv.photos.util.customTag
@@ -49,6 +50,14 @@ class MainActivity : BaseActivity() {
 
     private var shortcutManager: ShortcutManager? = null
 
+    private val globalMessageEventObserver = Observer<Event<String>> { event ->
+        event.getContentIfNotHandled()?.let { message ->
+            Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT)
+                    .setAnchorView(bottomNavigationView)
+                    .show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -75,8 +84,19 @@ class MainActivity : BaseActivity() {
             }
 
             setNavigationListener()
-            observeGlobalMessageEvent()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        App.instance.globalMessageEvent.observe(this, globalMessageEventObserver)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        App.instance.globalMessageEvent.removeObserver(globalMessageEventObserver)
     }
 
     override fun onBackPressed() {
@@ -87,16 +107,6 @@ class MainActivity : BaseActivity() {
                 super.onBackPressed()
             }
         }
-    }
-
-    private fun observeGlobalMessageEvent() {
-        App.instance.globalMessageEvent.observe(this, Observer { event ->
-            event.getContentIfNotHandled()?.let { message ->
-                Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT)
-                        .setAnchorView(bottomNavigationView)
-                        .show()
-            }
-        })
     }
 
     private fun setupBottomNavigation() {

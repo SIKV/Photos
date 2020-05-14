@@ -13,6 +13,7 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
+import com.github.sikv.photos.R
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.event.Event
@@ -21,6 +22,7 @@ import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
 import com.github.sikv.photos.service.DownloadPhotoService
+import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.util.startSetWallpaperActivity
 import com.github.sikv.photos.util.subscribeAsync
@@ -158,6 +160,14 @@ class PhotoViewModel(
 
     fun setWallpaperFromUri(uri: Uri) {
         getApplication<Application>().startSetWallpaperActivity(uri)
+    }
+
+    fun downloadPhotoAndSave() {
+        getApplication<Application>().apply {
+            applicationContext.downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
+
+            App.instance.postGlobalMessage(getString(R.string.downloading_photo))
+        }
     }
 
     fun downloadPhoto() {

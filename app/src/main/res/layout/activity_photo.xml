@@ -60,6 +60,12 @@
                 style="@style/RoundOutlineButton" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/downloadButton"
+                android:layout_marginBottom="24dp"
+                android:text="@string/download"
+                style="@style/RoundOutlineButton" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/shareButton"
                 android:layout_marginBottom="36dp"
                 android:text="@string/share"

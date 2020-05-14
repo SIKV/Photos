@@ -23,6 +23,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DownloadPhotoState
 import com.github.sikv.photos.enumeration.SetWallpaperResultState
@@ -96,6 +97,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         adjustMargins()
 
         observe()
+        observeGlobalMessageEvent()
     }
 
     override fun onResume() {
@@ -288,6 +290,12 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
             viewModel.downloadPhoto()
         }
 
+        downloadButton.setOnClickListener {
+            requestWriteExternalStoragePermission {
+                viewModel.downloadPhotoAndSave()
+            }
+        }
+
         shareButton.setOnClickListener {
             startActivity(viewModel.createShareIntent())
         }
@@ -299,6 +307,15 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
     private fun stopParallax() {
         sensorManager?.unregisterListener(this)
+    }
+
+    private fun observeGlobalMessageEvent() {
+        App.instance.globalMessageEvent.observe(this, Observer { event ->
+            event.getContentIfNotHandled()?.let { message ->
+                Snackbar.make(contentLayout, message, Snackbar.LENGTH_SHORT)
+                        .show()
+            }
+        })
     }
 
     private fun adjustMargins() {

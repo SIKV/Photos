@@ -72,6 +72,7 @@
     <string name="error_sending_feedback">Error sending feedback</string>
     <string name="rate_app">Rate this App</string>
     <string name="cancel">Cancel</string>
+    <string name="download">Download</string>
     <string name="downloading_photo">Downloading photo…</string>
     <string name="error_downloading_photo">Error downloading photo</string>
     <string name="error_setting_wallpaper">Error setting wallpaper</string>
