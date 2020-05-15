@@ -1,11 +1,16 @@
 package com.github.sikv.photos.config
 
+import com.github.sikv.photos.R
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 
 class RemoteConfigProvider : ConfigProvider {
 
     private val remoteConfig = Firebase.remoteConfig
+
+    init {
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+    }
 
     override fun fetch(doAfter: () -> Unit) {
         remoteConfig.fetch(0).addOnCompleteListener {
