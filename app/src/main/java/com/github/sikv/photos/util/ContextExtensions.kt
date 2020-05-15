@@ -36,16 +36,6 @@ fun Activity.hideSoftInput() {
     inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
 }
 
-fun Context.navigationBarHeight(): Int {
-    val resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-
-    return if (resourceId > 0) {
-        resources.getDimensionPixelSize(resourceId)
-    } else {
-        0
-    }
-}
-
 fun Context.openUrl(url: String) {
     val builder = CustomTabsIntent.Builder()
     builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))

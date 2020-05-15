@@ -17,10 +17,11 @@ import android.transition.Transition
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.App
@@ -28,7 +29,10 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DownloadPhotoState
 import com.github.sikv.photos.enumeration.SetWallpaperResultState
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.util.*
+import com.github.sikv.photos.util.Utils
+import com.github.sikv.photos.util.favoriteAnimation
+import com.github.sikv.photos.util.makeClickable
+import com.github.sikv.photos.util.makeUnderlineBold
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -94,7 +98,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
         createDownloadingPhotoSnackbar()
         setListeners()
-        adjustMargins()
+        setOnApplyWindowInsetsListeners()
 
         observe()
         observeGlobalMessageEvent()
@@ -274,14 +278,14 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     }
 
     private fun createDownloadingPhotoSnackbar() {
-        downloadingPhotoSnackbar = Snackbar.make(contentLayout, R.string.downloading_photo, Snackbar.LENGTH_INDEFINITE)
+        downloadingPhotoSnackbar = Snackbar.make(rootLayout, R.string.downloading_photo, Snackbar.LENGTH_INDEFINITE)
                 .setAction(R.string.cancel) {
                     viewModel.cancelPhotoDownloading()
                 }
     }
 
     private fun showMessage(@StringRes stringId: Int) {
-        Snackbar.make(contentLayout, stringId, Snackbar.LENGTH_SHORT)
+        Snackbar.make(rootLayout, stringId, Snackbar.LENGTH_SHORT)
                 .show()
     }
 
@@ -301,6 +305,18 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         }
     }
 
+    private fun setOnApplyWindowInsetsListeners() {
+        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { view, insets ->
+            view.updatePadding(top = insets.systemWindowInsetTop)
+            insets
+        }
+
+        ViewCompat.setOnApplyWindowInsetsListener(contentLayout) { view, insets ->
+            view.updatePadding(bottom = insets.systemWindowInsetBottom)
+            insets
+        }
+    }
+
     private fun startParallax() {
         sensorManager?.registerListener(this, gravitySensor, SensorManager.SENSOR_DELAY_FASTEST)
     }
@@ -312,17 +328,10 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
     private fun observeGlobalMessageEvent() {
         App.instance.globalMessageEvent.observe(this, Observer { event ->
             event.getContentIfNotHandled()?.let { message ->
-                Snackbar.make(contentLayout, message, Snackbar.LENGTH_SHORT)
+                Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT)
                         .show()
             }
         })
-    }
-
-    private fun adjustMargins() {
-        // TODO Refactor
-        (contentLayout.layoutParams as? ViewGroup.MarginLayoutParams)?.let {
-            it.bottomMargin += navigationBarHeight()
-        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
