@@ -52,14 +52,14 @@
     <string name="no_results_found">NO RESULTS FOUND</string>
     <string name="can_not_find_any_photos_matching">WE CAN\'T FIND ANY PHOTOS MATCHING YOUR SEARCH</string>
     <string name="loading_error">LOADING ERROR</string>
-    <string name="delete_all">Delete All</string>
+    <string name="unfavorite_all">Unfavorite all</string>
     <string name="photos">Photos</string>
     <string name="list">List</string>
     <string name="grid">Grid</string>
     <string name="search">Search</string>
     <string name="search_for_photos">Search for photos</string>
-    <string name="deleted">Deleted</string>
-    <string name="undo">UNDO</string>
+    <string name="unfavorited">Unfavorited</string>
+    <string name="undo">Undo </string>
     <string name="appearance">Appearance</string>
     <string name="dark_theme">Dark Theme</string>
     <string name="help">Help</string>
@@ -80,7 +80,7 @@
     <string name="canceled">Canceled</string>
     <string name="photo_ready">Photo is ready</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="sign_in_pref_summary">to sync your favorites with other devices.</string>
+    <string name="sign_in_pref_summary">to sync favorites with other devices</string>
     <string name="sign_out">Sign Out</string>
     <string name="app_version">App Version</string>
     <string name="open_source_licences">Open Source Licences</string>

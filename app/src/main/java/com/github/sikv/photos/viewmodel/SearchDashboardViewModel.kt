@@ -5,9 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.App
-import com.github.sikv.photos.RuntimeBehaviour
 import com.github.sikv.photos.api.ApiClient
-import com.github.sikv.photos.config.Config
 import com.github.sikv.photos.data.repository.SearchTagRepository
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.Photo
@@ -41,10 +39,6 @@ class SearchDashboardViewModel : ViewModel() {
 
     init {
         App.instance.appComponent.inject(this)
-
-        if (RuntimeBehaviour.getConfig(Config.SEARCH_TAGS_ENABLED)) {
-            loadSearchTags()
-        }
     }
 
     fun loadRecommendations() {

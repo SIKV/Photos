@@ -18,13 +18,9 @@
             app:isPreferenceVisible="false"
             tools:isPreferenceVisible="true" />
 
-        <PreferenceCategory>
-
-                <Preference
-                    android:key="@string/_pref_settings"
-                    android:icon="@drawable/ic_settings_24dp"
-                    android:title="@string/settings" />
-
-        </PreferenceCategory>
+        <Preference
+            android:key="@string/_pref_settings"
+            android:icon="@drawable/ic_settings_24dp"
+            android:title="@string/settings" />
 
 </PreferenceScreen>

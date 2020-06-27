@@ -11,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.R
+import com.github.sikv.photos.RuntimeBehaviour
+import com.github.sikv.photos.config.Config
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.setToolbarTitle
@@ -51,7 +53,12 @@ class MoreFragment : BaseFragment() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_more, rootKey)
 
-            handleVisibility(viewModel.accountManager.loginStatus)
+            if (RuntimeBehaviour.getConfig(Config.SIGN_IN_ENABLED)) {
+                handleSignInVisibility(viewModel.accountManager.loginStatus)
+            } else {
+                findPreference<Preference>(getString(R.string._pref_sign_in))?.isVisible = false
+                findPreference<Preference>(getString(R.string._pref_sign_out))?.isVisible = false
+            }
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,21 +97,23 @@ class MoreFragment : BaseFragment() {
         }
 
         private fun observe() {
-            viewModel.loginStatusChangedLiveData.observe(viewLifecycleOwner, Observer {
-                handleVisibility(it)
+            if (RuntimeBehaviour.getConfig(Config.SIGN_IN_ENABLED)) {
+                viewModel.loginStatusChangedLiveData.observe(viewLifecycleOwner, Observer {
+                    handleSignInVisibility(it)
 
-                if (it == LoginStatus.SIGNING_IN) {
-                    view?.let { view ->
-                        signingInSnackbar = Snackbar.make(view, R.string.signing_in, Snackbar.LENGTH_INDEFINITE)
-                        signingInSnackbar?.show()
+                    if (it == LoginStatus.SIGNING_IN) {
+                        view?.let { view ->
+                            signingInSnackbar = Snackbar.make(view, R.string.signing_in, Snackbar.LENGTH_INDEFINITE)
+                            signingInSnackbar?.show()
+                        }
+                    } else {
+                        signingInSnackbar?.dismiss()
                     }
-                } else {
-                    signingInSnackbar?.dismiss()
-                }
-            })
+                })
+            }
         }
 
-        private fun handleVisibility(loginStatus: LoginStatus) {
+        private fun handleSignInVisibility(loginStatus: LoginStatus) {
             findPreference<Preference>(getString(R.string._pref_sign_in))?.isVisible = loginStatus == LoginStatus.SIGNED_OUT
             findPreference<Preference>(getString(R.string._pref_sign_out))?.isVisible = loginStatus == LoginStatus.SIGNED_IN
         }

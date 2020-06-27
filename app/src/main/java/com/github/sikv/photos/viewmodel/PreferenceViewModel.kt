@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sikv.photos.App
 import com.github.sikv.photos.BuildConfig
-import com.github.sikv.photos.util.AccountManager
-import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.enumeration.LoginStatus
+import com.github.sikv.photos.event.Event
+import com.github.sikv.photos.util.AccountManager
 import javax.inject.Inject
 
 class PreferenceViewModel: ViewModel(), AccountManager.Callback {
@@ -30,7 +30,6 @@ class PreferenceViewModel: ViewModel(), AccountManager.Callback {
 
         loginStatusChangedMutableLiveData.postValue(accountManager.loginStatus)
 
-        // Show App Version
         val appVersion = BuildConfig.VERSION_NAME
         showAppVersionMutableEvent.postValue(Event(appVersion))
     }

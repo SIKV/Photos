@@ -9,20 +9,20 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 class FavoritePhotoEntity(
         @PrimaryKey
-        var id: String,
-        var width: Int,
-        var height: Int,
-        var createdAt: Long?,
-        var description: String?,
+        var id: String = "",
+        var width: Int = 0,
+        var height: Int = 0,
+        var createdAt: Long? = null,
+        var description: String? = null,
 
-        var previewUrl: String,
-        var downloadUrl: String,
-        var shareUrl: String,
+        var previewUrl: String = "",
+        var downloadUrl: String = "",
+        var shareUrl: String = "",
 
-        var photographerName: String,
-        var photographerImageUrl: String?,
-        var photographerUrl: String?,
-        var source: String
+        var photographerName: String = "",
+        var photographerImageUrl: String? = "",
+        var photographerUrl: String? = "",
+        var source: String = ""
 ) : Photo() {
 
     companion object {

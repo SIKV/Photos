@@ -12,8 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sikv.photos.R
-import com.github.sikv.photos.RuntimeBehaviour
-import com.github.sikv.photos.config.Config
 import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
@@ -54,10 +52,6 @@ class SearchDashboardFragment : BaseFragment() {
             Handler().postDelayed({
                 pullRefreshLayout.finishRefreshing()
             }, 1000)
-        }
-
-        if (RuntimeBehaviour.getConfig(Config.RECOMMENDED_PHOTOS_ENABLED)) {
-            viewModel.loadRecommendations()
         }
     }
 

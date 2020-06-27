@@ -153,8 +153,4 @@ class FavoritesRepository @Inject constructor(
         }
         return response
     }
-
-    fun sync() {
-        // TODO Implement
-    }
 }

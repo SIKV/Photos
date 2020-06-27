@@ -87,7 +87,7 @@ class FavoritesFragment : BaseFragment() {
                         listOf(
                                 R.id.itemViewList,
                                 R.id.itemViewGrid,
-                                R.id.itemDeleteAll),
+                                R.id.itemUnfavoriteAll),
                         listOf(
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
@@ -134,7 +134,7 @@ class FavoritesFragment : BaseFragment() {
 
         viewModel.deleteAllEvent.observe(viewLifecycleOwner, Observer { deleteEvent ->
             if (deleteEvent.getContentIfNotHandled() == true) {
-                Snackbar.make(rootLayout, R.string.deleted, Snackbar.LENGTH_LONG)
+                Snackbar.make(rootLayout, R.string.unfavorited, Snackbar.LENGTH_LONG)
                         .setAction(R.string.undo) {
                             viewModel.undoDeleteAll()
                         }
