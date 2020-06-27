@@ -6,18 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.github.sikv.photos.R
+import com.github.sikv.photos.util.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.android.synthetic.main.item_option.view.*
 import java.util.*
 
-class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
+class OptionsBottomSheetDialog : BottomSheetDialogFragment() {
 
     companion object {
         private const val KEY_OPTIONS = "key_options"
         private const val KEY_SELECTED_OPTION_INDEX = "key_selected_option_index"
 
-        fun newInstance(options: List<String>, selectedOptionIndex: Int?, onItemSelected: (Int) -> Unit): OptionsBottomSheetDialogFragment {
-            val dialogFragment = OptionsBottomSheetDialogFragment()
+        fun newInstance(options: List<String>, selectedOptionIndex: Int?, onItemSelected: (Int) -> Unit): OptionsBottomSheetDialog {
+            val dialogFragment = OptionsBottomSheetDialog()
             dialogFragment.onItemSelected = onItemSelected
 
             val args = Bundle()
@@ -63,7 +64,7 @@ class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
                     layout.addView(optionLayout)
                 }
 
-                addCancelOption(layout)
+                Utils.addCancelOption(context, layout, View.OnClickListener { dismiss() })
             }
         }
 
@@ -72,20 +73,5 @@ class OptionsBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     fun show(fragmentManager: FragmentManager) {
         show(fragmentManager, "")
-    }
-
-    private fun addCancelOption(layout: ViewGroup) {
-        val optionLayout = LayoutInflater.from(context).inflate(R.layout.item_option, null, false)
-
-        optionLayout.optionText.text = getString(R.string.cancel)
-        optionLayout.optionText.alpha = 0.5F
-
-        optionLayout.optionSelectedImage.setImageDrawable(null)
-
-        optionLayout.setOnClickListener {
-            dismiss()
-        }
-
-        layout.addView(optionLayout)
     }
 }

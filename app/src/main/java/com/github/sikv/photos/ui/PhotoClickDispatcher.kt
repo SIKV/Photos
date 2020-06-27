@@ -11,7 +11,8 @@ import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.BaseActivity
 import com.github.sikv.photos.ui.activity.PhotoActivity
-import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialogFragment
+import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
+import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.util.copyText
 import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
@@ -61,11 +62,20 @@ class PhotoClickDispatcher(
     }
 
     private fun showOptionsDialog(photo: Photo) {
-        val options = listOf(getActivity().getString(R.string.copy_link))
+        val options = listOf(
+                getActivity().getString(R.string.set_wallpaper),
+                getActivity().getString(R.string.copy_link)
+        )
 
-        val dialog = OptionsBottomSheetDialogFragment.newInstance(options, null) { index ->
+        val dialog = OptionsBottomSheetDialog.newInstance(options, null) { index ->
             when (index) {
+                // Set Wallpaper
                 0 -> {
+                    SetWallpaperDialog.newInstance(photo).show(fragment.childFragmentManager)
+                }
+
+                // Copy Link
+                1 -> {
                     val label = getActivity().getString(R.string.photo_link)
                     val text = photo.getPhotoShareUrl()
 

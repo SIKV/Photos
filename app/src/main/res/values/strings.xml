@@ -75,10 +75,9 @@
     <string name="download">Download</string>
     <string name="downloading_photo">Downloading photo…</string>
     <string name="error_downloading_photo">Error downloading photo</string>
+    <string name="setting_wallpaper">Setting wallpaper…</string>
     <string name="error_setting_wallpaper">Error setting wallpaper</string>
-    <string name="photo_downloading_canceled">Photo downloading has been canceled</string>
-    <string name="canceled">Canceled</string>
-    <string name="photo_ready">Photo is ready</string>
+    <string name="try_again">Try Again</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in_pref_summary">to sync favorites with other devices</string>
     <string name="sign_out">Sign Out</string>

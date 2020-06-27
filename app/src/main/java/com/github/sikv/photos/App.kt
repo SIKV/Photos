@@ -11,7 +11,6 @@ import com.github.sikv.photos.di.component.AppComponent
 import com.github.sikv.photos.di.component.DaggerAppComponent
 import com.github.sikv.photos.di.component.DaggerNetworkComponent
 import com.github.sikv.photos.di.component.NetworkComponent
-import com.github.sikv.photos.enumeration.SetWallpaperResultState
 import com.github.sikv.photos.event.Event
 
 class App : Application() {
@@ -32,9 +31,6 @@ class App : Application() {
     private val globalMessageMutableEvent = MutableLiveData<Event<String>>()
     val globalMessageEvent: LiveData<Event<String>> = globalMessageMutableEvent
 
-    private val setWallpaperResultStateMutableEvent = MutableLiveData<Event<SetWallpaperResultState>>()
-    val setWallpaperResultStateEvent: LiveData<Event<SetWallpaperResultState>> = setWallpaperResultStateMutableEvent
-
     override fun onCreate() {
         super.onCreate()
 
@@ -49,10 +45,6 @@ class App : Application() {
 
     fun postGlobalMessage(message: String) {
         globalMessageMutableEvent.postValue(Event(message))
-    }
-
-    fun postSetWallpaperResultStateEvent(state: Event<SetWallpaperResultState>) {
-        setWallpaperResultStateMutableEvent.postValue(state)
     }
 
     fun updateTheme() {

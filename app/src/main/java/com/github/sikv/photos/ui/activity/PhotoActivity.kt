@@ -8,7 +8,6 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.style.ClickableSpan
@@ -17,7 +16,6 @@ import android.transition.Transition
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.annotation.StringRes
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
@@ -26,8 +24,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.DownloadPhotoState
-import com.github.sikv.photos.enumeration.SetWallpaperResultState
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.favoriteAnimation
@@ -78,8 +74,6 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
     private var favoriteMenuItemIcon: Int? = null
 
-    private lateinit var downloadingPhotoSnackbar: Snackbar
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -96,7 +90,6 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 //        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
 //        gravitySensor = sensorManager?.getDefaultSensor(Sensor.TYPE_GRAVITY)
 
-        createDownloadingPhotoSnackbar()
         setListeners()
         setOnApplyWindowInsetsListeners()
 
@@ -226,72 +219,11 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         viewModel.favoriteChangedLiveData.observe(this, Observer {
             updateFavoriteMenuItemIcon(it)
         })
-
-        viewModel.downloadPhotoStateEvent.observe(this, Observer { stateWithDataEvent ->
-            stateWithDataEvent.getContentIfNotHandled()?.let { stateWithData ->
-                if (stateWithData.state != DownloadPhotoState.DOWNLOADING_PHOTO && stateWithData.state != DownloadPhotoState.CANCELING) {
-                    downloadingPhotoSnackbar.dismiss()
-                    setWallpaperButton.isEnabled = true
-                }
-
-                when (stateWithData.state) {
-                    DownloadPhotoState.DOWNLOADING_PHOTO -> {
-                        setWallpaperButton.isEnabled = false
-
-                        downloadingPhotoSnackbar.show()
-                    }
-
-                    DownloadPhotoState.PHOTO_READY -> {
-                        (stateWithData.data as? Uri)?.let { uri ->
-                            viewModel.setWallpaperFromUri(uri)
-                        } ?: run {
-                            // TODO Show error
-                        }
-                    }
-
-                    DownloadPhotoState.ERROR_DOWNLOADING_PHOTO -> {
-                        showMessage(R.string.error_downloading_photo)
-                    }
-
-                    DownloadPhotoState.CANCELING -> {
-                        // TODO Handle
-                    }
-
-                    DownloadPhotoState.CANCELED -> {
-                        showMessage(R.string.canceled)
-                    }
-                }
-            }
-        })
-
-        viewModel.setWallpaperResultStateEvent.observe(this, Observer { event ->
-            event.getContentIfNotHandled()?.let { state ->
-                when (state) {
-                    SetWallpaperResultState.FAILURE -> {
-                        showMessage(R.string.error_setting_wallpaper)
-                    }
-
-                    else -> { }
-                }
-            }
-        })
-    }
-
-    private fun createDownloadingPhotoSnackbar() {
-        downloadingPhotoSnackbar = Snackbar.make(rootLayout, R.string.downloading_photo, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.cancel) {
-                    viewModel.cancelPhotoDownloading()
-                }
-    }
-
-    private fun showMessage(@StringRes stringId: Int) {
-        Snackbar.make(rootLayout, stringId, Snackbar.LENGTH_SHORT)
-                .show()
     }
 
     private fun setListeners() {
         setWallpaperButton.setOnClickListener {
-            viewModel.downloadPhoto()
+            viewModel.setWallpaper(supportFragmentManager)
         }
 
         downloadButton.setOnClickListener {

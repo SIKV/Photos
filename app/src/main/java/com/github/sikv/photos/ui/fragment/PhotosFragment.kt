@@ -16,7 +16,7 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.PhotoClickDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
-import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialogFragment
+import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.fragment_photos.*
@@ -199,7 +199,7 @@ class PhotosFragment : BaseFragment() {
         val options = listOf(getString(R.string.unsplash), getString(R.string.pexels))
         val selectedOptionIndex = if (currentSource == PhotoSource.UNSPLASH) 0 else 1
 
-        val photoSourceDialog = OptionsBottomSheetDialogFragment.newInstance(
+        val photoSourceDialog = OptionsBottomSheetDialog.newInstance(
                 options , selectedOptionIndex) { index ->
 
             when (index) {

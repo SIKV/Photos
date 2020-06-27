@@ -3,7 +3,6 @@ package com.github.sikv.photos.di.component
 import android.content.Context
 import com.github.sikv.photos.di.module.GlideModule
 import com.github.sikv.photos.di.module.RoomModule
-import com.github.sikv.photos.service.DownloadPhotoService
 import com.github.sikv.photos.ui.adapter.PhotoGridViewHolder
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
@@ -23,11 +22,11 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
-    fun inject(service: DownloadPhotoService)
     fun inject(viewModel: PhotosViewModel)
     fun inject(viewModel: SearchViewModel)
     fun inject(viewModel: SearchDashboardViewModel)
     fun inject(viewModel: PhotoViewModel)
+    fun inject(viewModel: SetWallpaperViewModel)
     fun inject(viewModel: FavoritesViewModel)
     fun inject(viewModel: PreferenceViewModel)
     fun inject(viewModel: FeedbackViewModel)

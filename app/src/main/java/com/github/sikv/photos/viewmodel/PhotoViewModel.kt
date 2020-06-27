@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.net.Uri
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -21,10 +21,9 @@ import com.github.sikv.photos.model.DummyPhoto
 import com.github.sikv.photos.model.PexelsPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.UnsplashPhoto
-import com.github.sikv.photos.service.DownloadPhotoService
+import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
-import com.github.sikv.photos.util.startSetWallpaperActivity
 import com.github.sikv.photos.util.subscribeAsync
 import io.reactivex.Single
 import kotlinx.coroutines.Dispatchers
@@ -54,9 +53,6 @@ class PhotoViewModel(
 
     private val favoriteChangedMutableLiveData = MutableLiveData<Boolean>()
     val favoriteChangedLiveData: LiveData<Boolean> = favoriteChangedMutableLiveData
-
-    val downloadPhotoStateEvent = DownloadPhotoService.stateEvent
-    val setWallpaperResultStateEvent = App.instance.setWallpaperResultStateEvent
 
     init {
         App.instance.appComponent.inject(this)
@@ -158,8 +154,8 @@ class PhotoViewModel(
         })
     }
 
-    fun setWallpaperFromUri(uri: Uri) {
-        getApplication<Application>().startSetWallpaperActivity(uri)
+    fun setWallpaper(fragmentManager: FragmentManager) {
+        SetWallpaperDialog.newInstance(photo).show(fragmentManager)
     }
 
     fun downloadPhotoAndSave() {
@@ -167,21 +163,6 @@ class PhotoViewModel(
             applicationContext.downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
 
             App.instance.postGlobalMessage(getString(R.string.downloading_photo))
-        }
-    }
-
-    fun downloadPhoto() {
-        getApplication<Application>().let {
-            DownloadPhotoService.startService(it,
-                    action = DownloadPhotoService.ACTION_DOWNLOAD,
-                    photoUrl = photo.getPhotoDownloadUrl()
-            )
-        }
-    }
-
-    fun cancelPhotoDownloading() {
-        getApplication<Application>().let {
-            DownloadPhotoService.startService(it, action = DownloadPhotoService.ACTION_CANCEL)
         }
     }
 

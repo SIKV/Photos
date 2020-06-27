@@ -5,7 +5,6 @@ import android.app.DownloadManager
 import android.app.WallpaperManager
 import android.app.WallpaperManager.ACTION_CROP_AND_SET_WALLPAPER
 import android.content.*
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
 import android.provider.Settings
@@ -13,12 +12,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.SetWallpaperResultState
-import com.github.sikv.photos.event.Event
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 fun Context.showSoftInput(view: View): Boolean {
@@ -71,7 +66,6 @@ fun Context.startSetWallpaperActivity(photoUri: Uri) {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
         startActivity(intent)
-        App.instance.postSetWallpaperResultStateEvent(Event(SetWallpaperResultState.SUCCESS))
 
     } catch (e: IllegalArgumentException) {
         try {
@@ -80,26 +74,11 @@ fun Context.startSetWallpaperActivity(photoUri: Uri) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
             startActivity(intent)
-            App.instance.postSetWallpaperResultStateEvent(Event(SetWallpaperResultState.SUCCESS))
 
         } catch (e: ActivityNotFoundException) {
-            App.instance.postSetWallpaperResultStateEvent(Event(SetWallpaperResultState.FAILURE))
+            App.instance.postGlobalMessage(getString(R.string.error_setting_wallpaper))
         }
     }
-}
-
-fun Context.savePhotoInFile(bitmap: Bitmap): Uri? {
-    val byteArrayOutputStream = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-
-    val byteArray = byteArrayOutputStream.toByteArray()
-
-    val filename = "photo.jpeg"
-    val file = File(filesDir, filename)
-
-    file.writeBytes(byteArray)
-
-    return FileProvider.getUriForFile(this, getString(R.string._file_provider), file)
 }
 
 fun Context.openAppSettings() {
