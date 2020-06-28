@@ -36,8 +36,13 @@ class App : Application() {
 
         instance = this
 
+        System.loadLibrary("keys")
+
         updateTheme()
     }
+
+    external fun getUnsplashKey(): String?
+    external fun getPexelsKey(): String?
 
     fun getPrivatePreferences(): SharedPreferences {
         return getSharedPreferences("Preferences", Context.MODE_PRIVATE)

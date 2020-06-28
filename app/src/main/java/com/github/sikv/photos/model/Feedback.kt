@@ -1,10 +1,18 @@
 package com.github.sikv.photos.model
 
 import com.github.sikv.photos.enumeration.FeedbackMode
+import com.google.gson.annotations.SerializedName
 
 data class Feedback(
+        @SerializedName("sessionId")
         val sessionId: String,
+
+        @SerializedName("mode")
         val mode: FeedbackMode,
+
+        @SerializedName("email")
         val email: String?,
+
+        @SerializedName("description")
         val description: String
 )

@@ -32,7 +32,7 @@
         android:orientation="vertical"
         android:gravity="center"
         android:layout_gravity="bottom"
-        app:layout_behavior=".util.SnackbarBehavior">
+        app:layout_behavior="com.github.sikv.photos.util.SnackbarBehavior">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/setWallpaperButton"
