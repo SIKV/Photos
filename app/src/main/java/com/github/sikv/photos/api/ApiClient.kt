@@ -1,11 +1,9 @@
 package com.github.sikv.photos.api
 
 import com.github.sikv.photos.App
-import com.github.sikv.photos.model.PexelsSearchResponse
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.model.UnsplashSearchResponse
-import io.reactivex.Single
-import io.reactivex.functions.BiFunction
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ApiClient private constructor() {
@@ -24,14 +22,29 @@ class ApiClient private constructor() {
         App.instance.networkComponent.inject(this)
     }
 
-    fun searchPhotos(query: String, limit: Int): Single<List<Photo>> {
-        val limitForEachSource = limit / 2
+    suspend fun searchPhotos(query: String, limit: Int): List<Photo> {
+        return withContext(Dispatchers.IO) {
+            val limitForEachSource = limit / 2
 
-        val unsplashSearch = unsplashClient.searchPhotos(query, 0, limitForEachSource)
-        val pexelsSearch = pexelsClient.searchPhotos(query, 0, limitForEachSource)
+            val photos = mutableListOf<Photo>()
 
-        return Single.zip(unsplashSearch, pexelsSearch, BiFunction<UnsplashSearchResponse, PexelsSearchResponse, List<Photo>> { unsplashPhotos, pexelsPhotos ->
-            (unsplashPhotos.results + pexelsPhotos.photos).shuffled()
-        })
+            try {
+                val unsplashPhotos = unsplashClient.searchPhotos(query, 0, limitForEachSource)
+                        .blockingGet()
+
+                photos.addAll(unsplashPhotos.results)
+
+            } catch (e: Exception) { }
+
+            try {
+                val pexelsPhotos = pexelsClient.searchPhotos(query, 0, limitForEachSource)
+                        .blockingGet()
+
+                photos.addAll(pexelsPhotos.photos)
+
+            } catch (e: Exception) { }
+
+           photos.shuffled()
+        }
     }
 }

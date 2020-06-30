@@ -15,6 +15,7 @@
     <color name="colorText">#FFFFFF</color>
     <color name="colorIcon">#EEEEEE</color>
     <color name="colorPlaceholder">#252525</color>
+    <color name="colorNoFoundContainer">#353535</color>
     <color name="colorTextInputBoxStroke">#252525</color>
     <color name="colorChipBackground">#212121</color>
 </resources>

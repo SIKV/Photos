@@ -36,7 +36,7 @@ class PhotoGridAdapter(
     private var showLoadMoreOption: Boolean = false
     private var loadingMoreInProgress: Boolean = false
 
-    fun addItems(photos: List<Photo>, showLoadMoreOption: Boolean = true) {
+    fun addItems(photos: List<Photo>, showLoadMoreOption: Boolean) {
         val items: MutableList<PhotoGridItem> = mutableListOf()
 
         val layouts = listOf(
@@ -69,6 +69,12 @@ class PhotoGridAdapter(
 
         notifyDataSetChanged()
     }
+
+    fun clear() {
+        items.clear()
+    }
+
+    fun hasItems() = items.isNotEmpty()
 
     override fun getItemCount(): Int {
         return items.size + if (showLoadMoreOption) 1 else 0

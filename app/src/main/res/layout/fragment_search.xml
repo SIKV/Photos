@@ -34,7 +34,7 @@
                     android:imeOptions="actionSearch"
                     android:singleLine="true"
                     android:maxLength="64"
-                    android:textColorHint="@color/colorHint"
+                    android:textColorHint="@color/colorSearchDashboardSearchText"
                     android:textColor="@color/colorText"
                     android:textSize="16sp"
                     android:background="@null">

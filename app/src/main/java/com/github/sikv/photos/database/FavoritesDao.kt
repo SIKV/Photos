@@ -25,6 +25,9 @@ interface FavoritesDao {
     @Query("SELECT * FROM FavoritePhoto WHERE id=:id")
     fun getById(id: String): FavoritePhotoEntity?
 
+    @Query("SELECT * FROM FavoritePhoto ORDER BY RANDOM() LIMIT 1")
+    fun getRandom(): FavoritePhotoEntity?
+
     @Query("SELECT COUNT(*) FROM FavoritePhoto")
     fun getCount(): Int
 

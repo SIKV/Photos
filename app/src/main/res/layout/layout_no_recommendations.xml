@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/loadingErrorLayout"
+        android:id="@+id/noRecommendationsLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -13,14 +13,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="16dp"
         android:visibility="gone"
         tools:visibility="visible">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_error_outline_96dp"
-            android:contentDescription="@string/cn_loading_error_icon" />
+            android:src="@drawable/ic_broken_image_96dp"
+            android:contentDescription="@string/cn_image_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,7 +30,26 @@
             android:textSize="24sp"
             android:fontFamily="sans-serif-black"
             android:textColor="@color/colorNoFoundContainer"
-            android:text="@string/loading_error" />
+            android:text="@string/no_recommendations" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:textColor="@color/colorNoFoundContainer"
+            android:text="@string/no_recommendations_description" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/refreshRecommendationsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/refresh"
+            android:textColor="@color/colorSecondary"
+            app:rippleColor="@color/colorRippleLight"
+            style="@style/Widget.MaterialComponents.Button.TextButton" />
 
     </LinearLayout>
 

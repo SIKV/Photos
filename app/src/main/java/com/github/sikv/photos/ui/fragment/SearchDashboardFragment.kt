@@ -3,7 +3,6 @@ package com.github.sikv.photos.ui.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +17,10 @@ import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
 import com.github.sikv.photos.ui.adapter.TagAdapter
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
+import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchDashboardViewModel
 import kotlinx.android.synthetic.main.fragment_search_dashboard.*
+import kotlinx.android.synthetic.main.layout_no_recommendations.*
 
 class SearchDashboardFragment : BaseFragment() {
 
@@ -46,13 +47,6 @@ class SearchDashboardFragment : BaseFragment() {
         setListeners()
 
         observe()
-
-        // TODO Test
-        pullRefreshLayout.onRefresh = {
-            Handler().postDelayed({
-                pullRefreshLayout.finishRefreshing()
-            }, 1000)
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -90,12 +84,21 @@ class SearchDashboardFragment : BaseFragment() {
             }
         })
 
-        viewModel.recommendedPhotosLoadedEvent.observe(viewLifecycleOwner, Observer {
-            it.getContentIfNotHandled()?.let { recommended ->
-                val photos = recommended.first
-                val moreAvailable = recommended.second
+        viewModel.recommendedPhotosLoadedEvent.observe(viewLifecycleOwner, Observer { recommended ->
+            pullRefreshLayout.finishRefreshing()
 
-                recommendedPhotosAdapter.addItems(photos, showLoadMoreOption = moreAvailable)
+            if (recommended.reset) {
+                recommendedPhotosAdapter.clear()
+            }
+
+            if (recommended.photos.isEmpty() && !recommendedPhotosAdapter.hasItems()) {
+                recommendedPhotosRecycler.setVisibilityAnimated(View.GONE)
+                noRecommendationsLayout.setVisibilityAnimated(View.VISIBLE)
+            } else {
+                recommendedPhotosRecycler.setVisibilityAnimated(View.VISIBLE)
+                noRecommendationsLayout.setVisibilityAnimated(View.GONE)
+
+                recommendedPhotosAdapter.addItems(recommended.photos, showLoadMoreOption = recommended.moreAvailable)
             }
         })
     }
@@ -124,11 +127,19 @@ class SearchDashboardFragment : BaseFragment() {
         voiceSearchButton.setOnClickListener {
             showSpeechRecognizer()
         }
+
+        refreshRecommendationsButton.setOnClickListener {
+            viewModel.loadRecommendations(reset = true)
+        }
+
+        pullRefreshLayout.onRefresh = {
+            viewModel.loadRecommendations(reset = true)
+        }
     }
 
     private fun init() {
         recommendedPhotosAdapter = PhotoGridAdapter(::onPhotoClick) {
-            viewModel.loadMoreRecommendations()
+            viewModel.loadRecommendations()
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

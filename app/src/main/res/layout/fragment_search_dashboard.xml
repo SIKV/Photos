@@ -48,7 +48,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:gravity="center_vertical"
                     android:text="@string/search_for_photos"
-                    android:textColor="@color/colorHint"
+                    android:textColor="@color/colorSearchDashboardSearchText"
                     android:textSize="16sp"
                     android:background="@null" />
 
@@ -97,6 +97,8 @@
                 android:layout_height="match_parent"
                 android:paddingVertical="@dimen/photoGridRecyclerVerticalPadding"
                 android:clipToPadding="false" />
+
+            <include layout="@layout/layout_no_recommendations" />
 
         </com.github.sikv.photos.ui.custom.PullRefreshLayout>
 

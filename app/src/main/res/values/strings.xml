@@ -28,6 +28,7 @@
     <string name="cn_photo_preview">Photo preview</string>
     <string name="cn_search_icon">Search icon</string>
     <string name="cn_favorite_icon">Favorite icon</string>
+    <string name="cn_image_icon">Image icon</string>
     <string name="cn_favorite_button">Favorite button</string>
     <string name="cn_options_button">Options button</string>
     <string name="cn_share_button">Share button</string>
@@ -50,7 +51,6 @@
     <string name="more">More</string>
     <string name="settings">Settings</string>
     <string name="no_results_found">NO RESULTS FOUND</string>
-    <string name="can_not_find_any_photos_matching">WE CAN\'T FIND ANY PHOTOS MATCHING YOUR SEARCH</string>
     <string name="loading_error">LOADING ERROR</string>
     <string name="unfavorite_all">Unfavorite all</string>
     <string name="photos">Photos</string>
@@ -92,9 +92,10 @@
     <string name="open_settings">Open Settings</string>
     <string name="enter_some_text">Please enter some text here</string>
     <string name="copy_link">Copy Link</string>
-
     <string name="icons_made_by_s_and_s_from_s">Icons made by %s and %s\nfrom %s</string>
-
     <string name="photo_link">Photo link</string>
     <string name="link_copied">Link copied</string>
+    <string name="no_recommendations">NO RECOMMENDATIONS</string>
+    <string name="no_recommendations_description">Add some photos to your Favorites list to get recommendations</string>
+    <string name="refresh">Refresh</string>
 </resources>
