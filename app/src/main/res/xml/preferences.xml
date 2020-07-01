@@ -23,11 +23,6 @@
                     android:title="@string/send_feedback" />
 
                 <Preference
-                    android:key="@string/_pref_report_problem"
-                    android:icon="@drawable/ic_bug_report_24dp"
-                    android:title="@string/report_problem" />
-
-                <Preference
                     android:key="@string/_pref_rate_app"
                     android:icon="@drawable/ic_star_24dp"
                     android:title="@string/rate_app" />

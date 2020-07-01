@@ -45,6 +45,8 @@
             android:inputType="textEmailAddress"
             android:maxLength="@integer/feedbackEmailMaxLength" />
 
+        <requestFocus />
+
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -55,6 +57,7 @@
         app:layout_constraintTop_toBottomOf="@id/emailInputLayout"
         app:layout_constraintStart_toEndOf="@id/startGuideline"
         app:layout_constraintEnd_toStartOf="@id/endGuideline"
+        android:hint="@string/send_feedback_description"
         app:counterEnabled="true"
         app:counterMaxLength="@integer/feedbackDescriptionMaxLength">
 
@@ -67,8 +70,6 @@
             android:minLines="5"
             android:maxLines="10"
             android:maxLength="@integer/feedbackDescriptionMaxLength" />
-
-        <requestFocus />
 
     </com.google.android.material.textfield.TextInputLayout>
 

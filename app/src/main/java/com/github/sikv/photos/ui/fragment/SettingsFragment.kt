@@ -13,7 +13,6 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.FeedbackMode
 import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.makeClickable
 import com.github.sikv.photos.util.openUrl
@@ -111,12 +110,7 @@ class SettingsFragment : BaseFragment() {
                 }
 
                 getString(R.string._pref_send_feedback) -> {
-                    showFragment(FeedbackFragment.newInstance(FeedbackMode.SEND_FEEDBACK))
-                    return true
-                }
-
-                getString(R.string._pref_report_problem) -> {
-                    showFragment(FeedbackFragment.newInstance(FeedbackMode.REPORT_PROBLEM))
+                    showFragment(FeedbackFragment.newInstance())
                     return true
                 }
 

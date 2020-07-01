@@ -1,5 +1,6 @@
 package com.github.sikv.photos.util
 
+import android.util.Patterns
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -13,4 +14,9 @@ fun <T> Single<T>.subscribeAsync(onSubscribe: (T) -> Unit, onError: (Throwable) 
             }, {
                 onError(it)
             })
+}
+
+fun String?.isValidEmail(): Boolean {
+    val email = this
+    return !email.isNullOrBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }

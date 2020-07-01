@@ -8,35 +8,25 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.FeedbackMode
 import com.github.sikv.photos.enumeration.RequestStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
-import com.github.sikv.photos.util.*
+import com.github.sikv.photos.util.hideSoftInput
+import com.github.sikv.photos.util.resetErrorWhenTextChanged
+import com.github.sikv.photos.util.setToolbarTitleWithBackButton
+import com.github.sikv.photos.util.showSoftInput
 import com.github.sikv.photos.viewmodel.FeedbackViewModel
-import com.github.sikv.photos.viewmodel.FeedbackViewModelFactory
 import kotlinx.android.synthetic.main.fragment_feedback.*
 
 class FeedbackFragment : BaseFragment() {
 
     companion object {
-        private const val KEY_MODE = "mode"
-
-        fun newInstance(mode: FeedbackMode): FeedbackFragment {
-            val args = Bundle()
-            args.putSerializable(KEY_MODE, mode)
-
-            val fragment = FeedbackFragment()
-            fragment.arguments = args
-
-            return fragment
+        fun newInstance(): FeedbackFragment {
+            return FeedbackFragment()
         }
     }
 
     private val viewModel by lazy {
-        val mode: FeedbackMode = arguments?.getSerializable(KEY_MODE) as FeedbackMode
-
-        val viewModelFactory = FeedbackViewModelFactory(requireActivity().application, mode)
-        ViewModelProvider(this, viewModelFactory).get(FeedbackViewModel::class.java)
+        ViewModelProvider(this).get(FeedbackViewModel::class.java)
     }
 
     override val overrideBackground: Boolean = true
@@ -50,14 +40,15 @@ class FeedbackFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setToolbarTitleWithBackButton(null) {
+        setToolbarTitleWithBackButton(R.string.send_feedback) {
             navigation?.backPressed()
         }
 
-        context?.showSoftInput(descriptionEdit)
+        context?.showSoftInput(emailEdit)
 
         observe()
 
+        emailEdit.resetErrorWhenTextChanged(emailInputLayout)
         descriptionEdit.resetErrorWhenTextChanged(descriptionInputLayout)
     }
 
@@ -87,18 +78,6 @@ class FeedbackFragment : BaseFragment() {
     }
 
     private fun observe() {
-        viewModel.showTitleEvent.observe(viewLifecycleOwner, Observer { event ->
-            event?.getContentIfNotHandled()?.let { title ->
-                setToolbarTitle(title)
-            }
-        })
-
-        viewModel.showDescriptionHintEvent.observe(viewLifecycleOwner, Observer { event ->
-            event?.getContentIfNotHandled()?.let { hint ->
-                descriptionInputLayout.hint = hint
-            }
-        })
-
         viewModel.sendFeedbackStatusEvent.observe(viewLifecycleOwner, Observer { event ->
             event?.getContentIfNotHandled()?.let { requestStatus ->
                 when (requestStatus) {
@@ -119,7 +98,11 @@ class FeedbackFragment : BaseFragment() {
                     }
 
                     is RequestStatus.ValidationError -> {
-                        descriptionInputLayout.error = requestStatus.message
+                        when (requestStatus.invalidInputIndex) {
+                            1 -> emailInputLayout.error = requestStatus.message
+                            2 -> descriptionInputLayout.error = requestStatus.message
+                            else -> { }
+                        }
                     }
                 }
             }
