@@ -69,7 +69,7 @@ class UnsplashPhoto(
     }
 
     override fun getPhotoDownloadUrl(): String {
-        return urls.full
+        return links.download
     }
 
     override fun getPhotoShareUrl(): String {
