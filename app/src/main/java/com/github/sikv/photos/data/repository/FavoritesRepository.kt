@@ -2,10 +2,11 @@ package com.github.sikv.photos.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.sqlite.db.SimpleSQLiteQuery
 import com.github.sikv.photos.database.FavoritePhotoEntity
 import com.github.sikv.photos.database.FavoritesDao
+import com.github.sikv.photos.enumeration.SortBy
 import com.github.sikv.photos.model.*
-import com.github.sikv.photos.util.AccountManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,38 +14,45 @@ import javax.inject.Singleton
 
 @Singleton
 class FavoritesRepository @Inject constructor(
-        private val accountManager: AccountManager,
         private val favoritesDao: FavoritesDao
 ) {
 
-    interface Callback {
+    interface Listener {
         fun onFavoriteChanged(photo: Photo, favorite: Boolean)
         fun onFavoritesChanged()
     }
 
-    private val subscribers = mutableListOf<Callback>()
+    private val subscribers = mutableListOf<Listener>()
 
-    // This overrides default value for isFavorite flag for photos.
-    // Only if [Add to Favorites], [Remove from Favorites] or [Delete All Favorites] action has been occurred.
+    /**
+     * This overrides default value for isFavorite flag for photos.
+     * Only if [Add to Favorites], [Remove from Favorites] or [Delete All Favorites] action has been occurred.
+     */
     private val favorites = mutableMapOf<Photo, Boolean>()
 
-    val favoritesLiveData: LiveData<List<FavoritePhotoEntity>> = Transformations.map(favoritesDao.getAll()) {
-        it.forEach { photo ->
-            photo.favorite = true
+    fun subscribe(listener: Listener) {
+        subscribers.add(listener)
+    }
+
+    fun unsubscribe(listener: Listener) {
+        subscribers.remove(listener)
+    }
+
+    fun getFavoritesLiveData(sortBy: SortBy = SortBy.DATE_ADDED_NEWEST): LiveData<List<FavoritePhotoEntity>>  {
+        val query = when (sortBy) {
+            SortBy.DATE_ADDED_NEWEST ->
+                SimpleSQLiteQuery("SELECT * from FavoritePhoto WHERE markedAsDeleted=0 ORDER BY dateAdded DESC")
+            SortBy.DATE_ADDED_OLDEST ->
+                SimpleSQLiteQuery("SELECT * from FavoritePhoto WHERE markedAsDeleted=0 ORDER BY dateAdded ASC")
         }
 
-        it
-    }
+        return Transformations.map(favoritesDao.getPhotos(query)) {
+            it.forEach { photo ->
+                photo.favorite = true
+            }
 
-    // Needed to UNDO Delete All action.
-    private var deletedFavorites: List<FavoritePhotoEntity> = emptyList()
-
-    fun subscribe(callback: Callback) {
-        subscribers.add(callback)
-    }
-
-    fun unsubscribe(callback: Callback) {
-        subscribers.remove(callback)
+            it
+        }
     }
 
     /**
@@ -70,15 +78,13 @@ class FavoritesRepository @Inject constructor(
         }
     }
 
-    fun deleteAll(completion: (Boolean) -> Unit) {
+    fun markAllAsRemoved(completion: (Boolean) -> Unit) {
         GlobalScope.launch {
             val count = favoritesDao.getCount()
 
             if (count > 0) {
-                deletedFavorites = favoritesDao.getAllList()
-                favoritesDao.deleteAll()
+                favoritesDao.markAllAsDeleted()
 
-                // We can't just call favorites.clear() because in that case isFavorite() method will return
                 favorites.keys.forEach {
                     favorites[it] = false
                 }
@@ -88,25 +94,30 @@ class FavoritesRepository @Inject constructor(
                 }
 
                 completion(true)
-
             } else {
                 completion(false)
             }
         }
     }
 
-    fun undoDeleteAll() {
+    fun unmarkAllAsRemoved() {
         GlobalScope.launch {
-            deletedFavorites.forEach { photo ->
-                invertFavorite(photo)
+            favoritesDao.unmarkAllAsDeleted()
+
+            favorites.keys.forEach {
+                favorites[it] = true
             }
 
-            deletedFavorites = emptyList()
+            subscribers.forEach {
+                it.onFavoritesChanged()
+            }
         }
     }
 
-    fun deleteAllFinally() {
-        deletedFavorites = emptyList()
+    fun removeAll() {
+        GlobalScope.launch {
+            favoritesDao.deleteAll()
+        }
     }
 
     /**

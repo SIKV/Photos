@@ -19,7 +19,7 @@ import com.github.sikv.photos.event.VoidEvent
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
-class PhotosViewModel : ViewModel(), FavoritesRepository.Callback {
+class PhotosViewModel : ViewModel(), FavoritesRepository.Listener {
 
     companion object {
         const val INITIAL_LOAD_SIZE = 10

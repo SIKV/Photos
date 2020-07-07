@@ -22,7 +22,13 @@ class FavoritePhotoEntity(
         var photographerName: String = "",
         var photographerImageUrl: String? = "",
         var photographerUrl: String? = "",
-        var source: String = ""
+        var source: String = "",
+
+        // Sorting options
+        val dateAdded: Long = System.currentTimeMillis(),
+
+        // Remove/Undo operations
+        val markedAsDeleted: Boolean = false
 ) : Photo() {
 
     companion object {

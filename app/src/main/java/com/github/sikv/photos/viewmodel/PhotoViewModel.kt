@@ -34,7 +34,7 @@ import javax.inject.Inject
 class PhotoViewModel(
         application: Application,
         private var photo: Photo
-) : AndroidViewModel(application), FavoritesRepository.Callback {
+) : AndroidViewModel(application), FavoritesRepository.Listener {
 
     @Inject
     lateinit var favoritesRepository: FavoritesRepository

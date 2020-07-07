@@ -12,7 +12,10 @@
         android:icon="@drawable/ic_view_grid_24dp"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/itemUnfavoriteAll"
-        android:title="@string/unfavorite_all" />
+    <item android:id="@+id/itemSortBy"
+        android:title="@string/sort_by" />
+
+    <item android:id="@+id/itemRemoveAll"
+        android:title="@string/remove_all" />
 
 </menu>

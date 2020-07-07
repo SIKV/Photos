@@ -50,7 +50,7 @@ class FavoritesFragment : BaseFragment() {
             val itemLayoutType = PhotoItemLayoutType.findBySpanCount(field)
 
             photoAdapter.setItemLayoutType(itemLayoutType)
-            favoritesRecycler.setItemLayoutType(itemLayoutType)
+            photosRecycler.setItemLayoutType(itemLayoutType)
 
             setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)
             setMenuItemVisibility(R.id.itemViewGrid, field == SPAN_COUNT_LIST)
@@ -65,10 +65,10 @@ class FavoritesFragment : BaseFragment() {
 
         setToolbarTitle(R.string.favorites)
 
-        favoritesRecycler.adapter = photoAdapter
+        photosRecycler.adapter = photoAdapter
 
         // Default value is not working good. When a photo is removed animation is broken.
-        favoritesRecycler.itemAnimator?.removeDuration = 0
+        photosRecycler.itemAnimator?.removeDuration = 0
 
         if (savedInstanceState != null) {
             currentSpanCount = savedInstanceState.getInt(KEY_CURRENT_SPAN_COUNT, DEFAULT_SPAN_COUNT)
@@ -87,7 +87,8 @@ class FavoritesFragment : BaseFragment() {
                         listOf(
                                 R.id.itemViewList,
                                 R.id.itemViewGrid,
-                                R.id.itemUnfavoriteAll),
+                                R.id.itemSortBy,
+                                R.id.itemRemoveAll),
                         listOf(
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
@@ -105,7 +106,14 @@ class FavoritesFragment : BaseFragment() {
 
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        viewModel.deleteAll()
+                                        viewModel.createSortByDialog().show(childFragmentManager)
+                                        return true
+                                    }
+                                },
+
+                                object : MenuItem.OnMenuItemClickListener {
+                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                                        viewModel.markAllAsRemoved()
                                         return true
                                     }
                                 }
@@ -121,7 +129,7 @@ class FavoritesFragment : BaseFragment() {
     }
 
     override fun onScrollToTop() {
-        favoritesRecycler.scrollToTop()
+        photosRecycler.scrollToTop()
     }
 
     private fun observe() {
@@ -132,15 +140,15 @@ class FavoritesFragment : BaseFragment() {
             }
         })
 
-        viewModel.deleteAllEvent.observe(viewLifecycleOwner, Observer { deleteEvent ->
-            if (deleteEvent.getContentIfNotHandled() == true) {
-                Snackbar.make(rootLayout, R.string.unfavorited, Snackbar.LENGTH_LONG)
+        viewModel.removeAllResultEvent.observe(viewLifecycleOwner, Observer { event ->
+            if (event.getContentIfNotHandled() == true) {
+                Snackbar.make(rootLayout, R.string.removed, Snackbar.LENGTH_LONG)
                         .setAction(R.string.undo) {
-                            viewModel.undoDeleteAll()
+                            viewModel.unmarkAllAsRemoved()
                         }
                         .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                             override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                                viewModel.deleteAllFinally()
+                                viewModel.removeAllIfNotUndone()
                             }
                         })
                         .show()

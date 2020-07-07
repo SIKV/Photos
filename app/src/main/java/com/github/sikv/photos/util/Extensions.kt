@@ -1,6 +1,9 @@
 package com.github.sikv.photos.util
 
+import android.app.Application
 import android.util.Patterns
+import androidx.annotation.StringRes
+import androidx.lifecycle.AndroidViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -14,6 +17,10 @@ fun <T> Single<T>.subscribeAsync(onSubscribe: (T) -> Unit, onError: (Throwable) 
             }, {
                 onError(it)
             })
+}
+
+fun AndroidViewModel.getString(@StringRes id: Int): String {
+    return getApplication<Application>().resources.getString(id)
 }
 
 fun String?.isValidEmail(): Boolean {
