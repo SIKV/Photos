@@ -17,10 +17,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.event.Event
-import com.github.sikv.photos.model.DummyPhoto
-import com.github.sikv.photos.model.PexelsPhoto
-import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.model.UnsplashPhoto
+import com.github.sikv.photos.model.*
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
@@ -171,13 +168,7 @@ class PhotoViewModel(
     }
 
     fun createShareIntent(): Intent {
-        val shareIntent = Intent()
-
-        shareIntent.action = Intent.ACTION_SEND
-        shareIntent.putExtra(Intent.EXTRA_TEXT, photo.getPhotoShareUrl())
-        shareIntent.type = "text/plain"
-
-        return shareIntent
+        return photo.createShareIntent()
     }
 
     fun openAuthorUrl() {

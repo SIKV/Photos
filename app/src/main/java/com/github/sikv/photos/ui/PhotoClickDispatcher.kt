@@ -9,6 +9,7 @@ import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.createShareIntent
 import com.github.sikv.photos.ui.activity.BaseActivity
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
@@ -16,6 +17,7 @@ import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.util.copyText
 import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
+import com.github.sikv.photos.util.openUrl
 
 class PhotoClickDispatcher(
         private val fragment: Fragment,
@@ -28,15 +30,11 @@ class PhotoClickDispatcher(
     }
 
     private fun getRootLayout(): ViewGroup {
-        return fragment.view!!.findViewById(rootLayoutId)
+        return fragment.requireView().findViewById(rootLayoutId)
     }
 
     fun handlePhotoClick(clickSource: PhotoItemClickSource, photo: Photo, view: View) {
         when (clickSource) {
-            PhotoItemClickSource.OPTIONS -> {
-                showOptionsDialog(photo)
-            }
-
             PhotoItemClickSource.CLICK -> {
                 PhotoActivity.startActivity(getActivity(), view, photo)
             }
@@ -45,8 +43,24 @@ class PhotoClickDispatcher(
                 PhotoPreviewPopup().show(getActivity(), getRootLayout(), photo)
             }
 
+            PhotoItemClickSource.PHOTOGRAPHER -> {
+                photo.getPhotoPhotographerUrl()?.let { photographerUrl ->
+                    getActivity().openUrl(photographerUrl)
+                } ?: run {
+                    getActivity().openUrl(photo.getSourceUrl())
+                }
+            }
+
+            PhotoItemClickSource.OPTIONS -> {
+                showOptionsDialog(photo)
+            }
+
             PhotoItemClickSource.FAVORITE -> {
                 invertFavorite(photo)
+            }
+
+            PhotoItemClickSource.SHARE -> {
+                getActivity().startActivity(photo.createShareIntent())
             }
 
             PhotoItemClickSource.DOWNLOAD -> {
@@ -56,8 +70,6 @@ class PhotoClickDispatcher(
                     App.instance.postGlobalMessage(getActivity().getString(R.string.downloading_photo))
                 }
             }
-
-            else -> { }
         }
     }
 

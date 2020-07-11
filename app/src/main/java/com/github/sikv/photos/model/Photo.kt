@@ -1,7 +1,18 @@
 package com.github.sikv.photos.model
 
+import android.content.Intent
 import android.os.Parcelable
 import androidx.recyclerview.widget.DiffUtil
+
+fun Photo.createShareIntent(): Intent {
+    val intent = Intent()
+
+    intent.action = Intent.ACTION_SEND
+    intent.putExtra(Intent.EXTRA_TEXT, getPhotoShareUrl())
+    intent.type = "text/plain"
+
+    return intent
+}
 
 abstract class Photo : Parcelable {
 

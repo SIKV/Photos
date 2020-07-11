@@ -22,12 +22,14 @@
             tools:background="@color/colorIcon" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/photographerLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="12dp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/photographerImage">
+            android:layout_toEndOf="@id/photographerImage"
+            android:layout_toStartOf="@id/optionsButton">
 
             <TextView
                 android:id="@+id/photographerNameText"

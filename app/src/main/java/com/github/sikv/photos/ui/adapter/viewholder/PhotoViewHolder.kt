@@ -47,10 +47,6 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         showDescription(photo)
 
         photo?.let {
-            itemView.optionsButton.setOnClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.OPTIONS, it, view)
-            }
-
             itemView.photoImage.setOnClickListener { view ->
                 clickCallback.invoke(PhotoItemClickSource.CLICK, it, view)
             }
@@ -60,9 +56,25 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 return@setOnLongClickListener true
             }
 
+            itemView.photographerImage.setOnClickListener { view ->
+                clickCallback.invoke(PhotoItemClickSource.PHOTOGRAPHER, it, view)
+            }
+
+            itemView.photographerLayout.setOnClickListener { view ->
+                clickCallback.invoke(PhotoItemClickSource.PHOTOGRAPHER, it, view)
+            }
+
+            itemView.optionsButton.setOnClickListener { view ->
+                clickCallback.invoke(PhotoItemClickSource.OPTIONS, it, view)
+            }
+
             itemView.favoriteButton.setOnClickListener { view ->
                 clickCallback.invoke(PhotoItemClickSource.FAVORITE, it, view)
                 itemView.favoriteButton.favoriteAnimation()
+            }
+
+            itemView.shareButton.setOnClickListener { view ->
+                clickCallback.invoke(PhotoItemClickSource.SHARE, it, view)
             }
 
             itemView.downloadButton.setOnClickListener { view ->
