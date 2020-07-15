@@ -7,6 +7,10 @@ import com.github.sikv.photos.database.FavoritePhotoEntity
 import com.github.sikv.photos.database.FavoritesDao
 import com.github.sikv.photos.enumeration.SortBy
 import com.github.sikv.photos.model.*
+import com.github.sikv.photos.model.pexels.PexelsCuratedPhotosResponse
+import com.github.sikv.photos.model.pexels.PexelsSearchResponse
+import com.github.sikv.photos.model.unsplash.UnsplashPhoto
+import com.github.sikv.photos.model.unsplash.UnsplashSearchResponse
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject

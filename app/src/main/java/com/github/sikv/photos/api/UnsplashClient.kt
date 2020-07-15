@@ -2,8 +2,7 @@ package com.github.sikv.photos.api
 
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.model.UnsplashPhoto
-import com.github.sikv.photos.model.UnsplashSearchResponse
+import com.github.sikv.photos.model.unsplash.UnsplashSearchResponse
 import io.reactivex.Single
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,10 +11,6 @@ import javax.inject.Singleton
 class UnsplashClient @Inject constructor(
         private val unsplashApi: UnsplashApi,
         private val favoritesRepository: FavoritesRepository) {
-
-    fun getLatestPhotos(page: Int, perPage: Int): Single<List<UnsplashPhoto>> =
-            unsplashApi.getPhotos(page, perPage, "latest")
-                    .map(favoritesRepository::populateFavorite)
 
     fun getPhoto(id: String): Single<Photo> =
             unsplashApi.getPhoto(id)

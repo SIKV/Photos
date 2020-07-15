@@ -1,4 +1,4 @@
-package com.github.sikv.photos.model
+package com.github.sikv.photos.model.pexels
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

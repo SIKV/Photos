@@ -11,12 +11,10 @@ import androidx.paging.PagedList
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
-import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.PhotoClickDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
-import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import kotlinx.android.synthetic.main.fragment_photos.*
@@ -26,7 +24,6 @@ import kotlinx.android.synthetic.main.layout_loading_list.*
 class PhotosFragment : BaseFragment() {
 
     companion object {
-        private const val KEY_CURRENT_SOURCE = "key_current_source"
         private const val KEY_CURRENT_SPAN_COUNT = "key_current_span_count"
     }
 
@@ -41,24 +38,6 @@ class PhotosFragment : BaseFragment() {
     }
 
     private val photoAdapter = PhotoPagedListAdapter(photoClickDispatcher::handlePhotoClick)
-
-    private var currentSource: PhotoSource = PhotoSource.UNSPLASH
-        set(value) {
-            field = value
-
-            when (field) {
-                PhotoSource.UNSPLASH -> {
-                    toolbarSourceText.setText(R.string.unsplash)
-                }
-
-                PhotoSource.PEXELS -> {
-                    toolbarSourceText.setText(R.string.pexels)
-                }
-            }
-
-            observe()
-            observeLoadingState()
-        }
 
     private var currentSpanCount: Int = SPAN_COUNT_LIST
         set(value) {
@@ -80,22 +59,19 @@ class PhotosFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setToolbarTitle(R.string.app_name)
+
         photosRecycler.adapter = photoAdapter
         photosRecycler.disableChangeAnimations()
 
-        setListeners()
-
         if (savedInstanceState != null) {
-            savedInstanceState.getString(KEY_CURRENT_SOURCE)?.let { currentSourceName ->
-                currentSource = PhotoSource.valueOf(currentSourceName)
-            }
-
             currentSpanCount = savedInstanceState.getInt(KEY_CURRENT_SPAN_COUNT, SPAN_COUNT_LIST)
-
         } else {
-            currentSource = PhotoSource.UNSPLASH
             currentSpanCount = SPAN_COUNT_LIST
         }
+
+        observe()
+        observeLoadingState()
     }
 
     override fun onCreateToolbar(): FragmentToolbar? {
@@ -128,7 +104,6 @@ class PhotosFragment : BaseFragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
-        outState.putString(KEY_CURRENT_SOURCE, currentSource.name)
         outState.putInt(KEY_CURRENT_SPAN_COUNT, currentSpanCount)
     }
 
@@ -137,7 +112,7 @@ class PhotosFragment : BaseFragment() {
     }
 
     private fun observe() {
-        viewModel.getPhotos(currentSource)?.observe(viewLifecycleOwner, Observer<PagedList<Photo>> { pagedList ->
+        viewModel.getPexelsCuratedPhotos()?.observe(viewLifecycleOwner, Observer<PagedList<Photo>> { pagedList ->
             photoAdapter.submitList(pagedList)
         })
 
@@ -155,7 +130,7 @@ class PhotosFragment : BaseFragment() {
     }
 
     private fun observeLoadingState() {
-        viewModel.getLoadingState(currentSource)?.observe(viewLifecycleOwner, Observer { state ->
+        viewModel.getLoadingState()?.observe(viewLifecycleOwner, Observer { state ->
             when (state) {
                 DataSourceState.LOADING_INITIAL -> {
                     loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
@@ -187,27 +162,5 @@ class PhotosFragment : BaseFragment() {
                 else -> { }
             }
         })
-    }
-
-    private fun setListeners() {
-        toolbarTitleLayout.setOnClickListener {
-            showPhotoSourceDialog()
-        }
-    }
-
-    private fun showPhotoSourceDialog() {
-        val options = listOf(getString(R.string.unsplash), getString(R.string.pexels))
-        val selectedOptionIndex = if (currentSource == PhotoSource.UNSPLASH) 0 else 1
-
-        val photoSourceDialog = OptionsBottomSheetDialog.newInstance(
-                options , selectedOptionIndex) { index ->
-
-            when (index) {
-                0 -> currentSource = PhotoSource.UNSPLASH
-                1 -> currentSource = PhotoSource.PEXELS
-            }
-        }
-
-        photoSourceDialog.show(childFragmentManager)
     }
 }

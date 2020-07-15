@@ -12,9 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.enumeration.SearchSource
 import com.github.sikv.photos.util.changeVisibilityWithAnimation
 import com.github.sikv.photos.util.hideSoftInput
 import com.github.sikv.photos.util.showSoftInput
@@ -181,39 +180,15 @@ class SearchFragment : BaseFragment() {
     ) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
-            return when (position) {
-                0 -> {
-                    SingleSearchFragment.newInstance(PhotoSource.UNSPLASH)
-                }
-
-                1 -> {
-                    SingleSearchFragment.newInstance(PhotoSource.PEXELS)
-                }
-
-                else -> {
-                    Fragment()
-                }
-            }
+            return SingleSearchFragment.newInstance(SearchSource.values()[position].photoSource)
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
-            return when (position) {
-                0 -> {
-                    App.instance.getString(R.string.unsplash)
-                }
-
-                1 -> {
-                    App.instance.getString(R.string.pexels)
-                }
-
-                else -> {
-                    null
-                }
-            }
+            return SearchSource.values()[position].photoSource.title
         }
 
         override fun getCount(): Int {
-            return 2
+            return SearchSource.values().size
         }
 
         fun searchPhotos(viewPager: ViewPager, text: String) {

@@ -2,6 +2,7 @@ package com.github.sikv.photos.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
 import kotlinx.android.parcel.Parcelize
 
@@ -10,10 +11,6 @@ import kotlinx.android.parcel.Parcelize
 class FavoritePhotoEntity(
         @PrimaryKey
         var id: String = "",
-        var width: Int = 0,
-        var height: Int = 0,
-        var createdAt: Long? = null,
-        var description: String? = null,
 
         var previewUrl: String = "",
         var downloadUrl: String = "",
@@ -22,7 +19,8 @@ class FavoritePhotoEntity(
         var photographerName: String = "",
         var photographerImageUrl: String? = "",
         var photographerUrl: String? = "",
-        var source: String = "",
+
+        var source: PhotoSource = PhotoSource.UNSPECIFIED,
 
         // Sorting options
         val dateAdded: Long = System.currentTimeMillis(),
@@ -35,10 +33,6 @@ class FavoritePhotoEntity(
         fun fromPhoto(photo: Photo): FavoritePhotoEntity {
             return FavoritePhotoEntity(
                     id = photo.getPhotoId(),
-                    width = photo.getPhotoWidth(),
-                    height = photo.getPhotoHeight(),
-                    createdAt = photo.getPhotoCreatedAt(),
-                    description = photo.getPhotoDescription(),
                     previewUrl = photo.getPhotoPreviewUrl(),
                     downloadUrl = photo.getPhotoDownloadUrl(),
                     shareUrl = photo.getPhotoShareUrl(),
@@ -52,22 +46,6 @@ class FavoritePhotoEntity(
 
     override fun getPhotoId(): String {
         return id
-    }
-
-    override fun getPhotoWidth(): Int {
-        return width
-    }
-
-    override fun getPhotoHeight(): Int {
-        return height
-    }
-
-    override fun getPhotoCreatedAt(): Long? {
-        return createdAt
-    }
-
-    override fun getPhotoDescription(): String? {
-        return description
     }
 
     override fun getPhotoPreviewUrl(): String {
@@ -94,7 +72,7 @@ class FavoritePhotoEntity(
         return photographerUrl
     }
 
-    override fun getPhotoSource(): String {
+    override fun getPhotoSource(): PhotoSource {
         return source
     }
 

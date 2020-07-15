@@ -15,7 +15,6 @@ import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
-import com.github.sikv.photos.ui.adapter.TagAdapter
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchDashboardViewModel
@@ -40,8 +39,6 @@ class SearchDashboardFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        searchTagsRecycler.visibility = View.GONE
 
         init()
         setListeners()
@@ -76,14 +73,6 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private fun observe() {
-        viewModel.searchTagsLiveData.observe(viewLifecycleOwner, Observer {
-            searchTagsRecycler.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
-
-            searchTagsRecycler.adapter = TagAdapter(it) { tag ->
-                showSearchFragment(searchText = tag.text)
-            }
-        })
-
         viewModel.recommendedPhotosLoadedEvent.observe(viewLifecycleOwner, Observer { recommended ->
             pullRefreshLayout.finishRefreshing()
 

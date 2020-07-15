@@ -47,7 +47,7 @@ class PhotoClickDispatcher(
                 photo.getPhotoPhotographerUrl()?.let { photographerUrl ->
                     getActivity().openUrl(photographerUrl)
                 } ?: run {
-                    getActivity().openUrl(photo.getSourceUrl())
+                    getActivity().openUrl(photo.getPhotoShareUrl())
                 }
             }
 

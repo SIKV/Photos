@@ -1,8 +1,8 @@
 package com.github.sikv.photos.api
 
-import com.github.sikv.photos.model.PexelsCuratedPhotosResponse
-import com.github.sikv.photos.model.PexelsPhoto
-import com.github.sikv.photos.model.PexelsSearchResponse
+import com.github.sikv.photos.model.pexels.PexelsCuratedPhotosResponse
+import com.github.sikv.photos.model.pexels.PexelsPhoto
+import com.github.sikv.photos.model.pexels.PexelsSearchResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Path

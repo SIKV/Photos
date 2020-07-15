@@ -8,14 +8,14 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
+import com.github.sikv.photos.data.PexelsCuratedPhotosDataSource
+import com.github.sikv.photos.data.PexelsCuratedPhotosDataSourceFactory
+import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.enumeration.DataSourceState
 import com.github.sikv.photos.enumeration.PhotoSource
-import com.github.sikv.photos.data.PhotosDataSource
-import com.github.sikv.photos.data.PhotosDataSourceFactory
-import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.event.VoidEvent
+import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -35,10 +35,7 @@ class PhotosViewModel : ViewModel(), FavoritesRepository.Listener {
             .setPageSize(PAGE_SIZE)
             .build()
 
-    private var unsplashDataSourceFactory: PhotosDataSourceFactory? = null
-    private var pexelsDataSourceFactory: PhotosDataSourceFactory? = null
-
-    private var unsplashSearchLivePagedList: LiveData<PagedList<Photo>>? = null
+    private var pexelsDataSourceFactoryPexelsCurated: PexelsCuratedPhotosDataSourceFactory? = null
     private var pexelsSearchLivePagedList: LiveData<PagedList<Photo>>? = null
 
     private val favoriteChangedMutableEvent = MutableLiveData<Event<Photo>>()
@@ -71,49 +68,22 @@ class PhotosViewModel : ViewModel(), FavoritesRepository.Listener {
         favoritesRepository.invertFavorite(photo)
     }
 
-    fun getLoadingState(photoSource: PhotoSource): LiveData<DataSourceState>? {
-        when (photoSource) {
-            PhotoSource.UNSPLASH -> {
-                unsplashDataSourceFactory?.let {
-                    return Transformations.switchMap<PhotosDataSource, DataSourceState>(
-                            it.recentPhotosDataSourceLiveData, PhotosDataSource::state)
-                } ?: run {
-                    return null
-                }
-            }
-
-            PhotoSource.PEXELS -> {
-                pexelsDataSourceFactory?.let {
-                    return Transformations.switchMap<PhotosDataSource, DataSourceState>(
-                            it.recentPhotosDataSourceLiveData, PhotosDataSource::state)
-                } ?: run {
-                    return null
-                }
-            }
+    fun getLoadingState(): LiveData<DataSourceState>? {
+        pexelsDataSourceFactoryPexelsCurated?.let {
+            return Transformations.switchMap<PexelsCuratedPhotosDataSource, DataSourceState>(
+                    it.photosDataSourceLiveData, PexelsCuratedPhotosDataSource::state)
+        } ?: run {
+            return null
         }
     }
 
-    fun getPhotos(photoSource: PhotoSource): LiveData<PagedList<Photo>>? {
-        when (photoSource) {
-            PhotoSource.UNSPLASH -> {
-                unsplashDataSourceFactory = PhotosDataSourceFactory(ApiClient.INSTANCE, PhotoSource.UNSPLASH)
+    fun getPexelsCuratedPhotos(): LiveData<PagedList<Photo>>? {
+        pexelsDataSourceFactoryPexelsCurated = PexelsCuratedPhotosDataSourceFactory(ApiClient.INSTANCE.pexelsClient)
 
-                unsplashSearchLivePagedList = LivePagedListBuilder(unsplashDataSourceFactory!!, pagedListConfig)
-                        .setFetchExecutor(Executors.newSingleThreadExecutor())
-                        .build()
+        pexelsSearchLivePagedList = LivePagedListBuilder(pexelsDataSourceFactoryPexelsCurated!!, pagedListConfig)
+                .setFetchExecutor(Executors.newSingleThreadExecutor())
+                .build()
 
-                return unsplashSearchLivePagedList
-            }
-
-            PhotoSource.PEXELS -> {
-                pexelsDataSourceFactory = PhotosDataSourceFactory(ApiClient.INSTANCE, PhotoSource.PEXELS)
-
-                pexelsSearchLivePagedList = LivePagedListBuilder(pexelsDataSourceFactory!!, pagedListConfig)
-                        .setFetchExecutor(Executors.newSingleThreadExecutor())
-                        .build()
-
-                return pexelsSearchLivePagedList
-            }
-        }
+        return pexelsSearchLivePagedList
     }
 }

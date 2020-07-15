@@ -6,12 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.App
 import com.github.sikv.photos.api.ApiClient
-import com.github.sikv.photos.data.repository.SearchTagRepository
 import com.github.sikv.photos.recommendation.RecommendedPhotos
-import com.github.sikv.photos.model.SearchTag
 import com.github.sikv.photos.recommendation.Recommender
 import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
 
 class SearchDashboardViewModel : ViewModel() {
@@ -21,13 +18,7 @@ class SearchDashboardViewModel : ViewModel() {
     }
 
     @Inject
-    lateinit var searchTagRepository: SearchTagRepository
-
-    @Inject
     lateinit var recommender: Recommender
-
-    private val searchTagsMutableLiveData = MutableLiveData<List<SearchTag>>()
-    val searchTagsLiveData: LiveData<List<SearchTag>> = searchTagsMutableLiveData
 
     private val recommendedPhotosLoadedMutableEvent= MutableLiveData<RecommendedPhotos>()
     val recommendedPhotosLoadedEvent: LiveData<RecommendedPhotos> = recommendedPhotosLoadedMutableEvent
@@ -53,14 +44,6 @@ class SearchDashboardViewModel : ViewModel() {
             } else {
                 recommendedPhotosLoadedMutableEvent.postValue(RecommendedPhotos(emptyList(), recommendation.moreAvailable, reset))
             }
-        }
-    }
-
-    private fun loadSearchTags() {
-        val language = Locale.getDefault().language
-
-        searchTagRepository.getTags(language) { searchTags ->
-            searchTagsMutableLiveData.postValue(searchTags)
         }
     }
 }

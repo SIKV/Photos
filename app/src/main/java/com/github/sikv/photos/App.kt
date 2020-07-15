@@ -41,8 +41,8 @@ class App : Application() {
         updateTheme()
     }
 
-    external fun getUnsplashKey(): String?
     external fun getPexelsKey(): String?
+    external fun getUnsplashKey(): String?
 
     fun getPrivatePreferences(): SharedPreferences {
         return getSharedPreferences("Preferences", Context.MODE_PRIVATE)

@@ -11,7 +11,6 @@ import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
-import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.favoriteAnimation
 import kotlinx.android.synthetic.main.item_photo_full.view.*
 import javax.inject.Inject
@@ -38,13 +37,10 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         loadPhotos(photo)
 
         itemView.photographerNameText.text = photo?.getPhotoPhotographerName()
-        itemView.sourceText.text = photo?.getPhotoSource()
+        itemView.sourceText.text = photo?.getPhotoSource()?.title
 
         itemView.favoriteButton.visibility = View.VISIBLE
         itemView.favoriteButton.setImageResource(if (favorite) R.drawable.ic_favorite_red_24dp else R.drawable.ic_favorite_border_24dp)
-
-        showCreatedAtDate(photo)
-        showDescription(photo)
 
         photo?.let {
             itemView.photoImage.setOnClickListener { view ->
@@ -129,24 +125,6 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     .transform(CircleCrop())
                     .placeholder(R.drawable.ic_account_circle_24dp)
                     .into(itemView.photographerImage)
-        }
-    }
-
-    private fun showCreatedAtDate(photo: Photo?) {
-        photo?.getPhotoCreatedAt()?.let { createdAt ->
-            itemView.createdAtText.visibility = View.VISIBLE
-            itemView.createdAtText.text = Utils.formatCreatedAtDate(createdAt)
-        } ?: run {
-            itemView.createdAtText.visibility = View.GONE
-        }
-    }
-
-    private fun showDescription(photo: Photo?) {
-        photo?.getPhotoDescription()?.let { description ->
-            itemView.descriptionText.visibility = View.VISIBLE
-            itemView.descriptionText.text = description
-        } ?: run {
-            itemView.descriptionText.visibility = View.GONE
         }
     }
 }

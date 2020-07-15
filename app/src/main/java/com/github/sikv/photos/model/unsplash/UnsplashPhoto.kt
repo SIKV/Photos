@@ -1,9 +1,9 @@
-package com.github.sikv.photos.model
+package com.github.sikv.photos.model.unsplash
 
+import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.model.Photo
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Parcelize
 class UnsplashPhoto(
@@ -32,32 +32,8 @@ class UnsplashPhoto(
         val links: UnsplashLinks
 ) : Photo() {
 
-    companion object {
-        const val SOURCE = "Unsplash"
-    }
-
     override fun getPhotoId(): String {
         return id
-    }
-
-    override fun getPhotoWidth(): Int {
-        return width
-    }
-
-    override fun getPhotoHeight(): Int {
-        return height
-    }
-
-    override fun getPhotoCreatedAt(): Long? {
-        return try {
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).parse(createdAt)?.time
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    override fun getPhotoDescription(): String? {
-        return description
     }
 
     override fun getPhotoPreviewUrl(): String {
@@ -88,11 +64,7 @@ class UnsplashPhoto(
         return user.portfolioUrl
     }
 
-    override fun getPhotoSource(): String {
-        return SOURCE
-    }
-
-    override fun getSourceUrl(): String {
-        return links.html
+    override fun getPhotoSource(): PhotoSource {
+        return PhotoSource.UNSPLASH
     }
 }

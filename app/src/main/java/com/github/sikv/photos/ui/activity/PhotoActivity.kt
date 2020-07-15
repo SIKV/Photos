@@ -166,7 +166,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
 
     private fun showPhotoInfo(photo: Photo) {
         val authorName = photo.getPhotoPhotographerName()
-        val source = photo.getPhotoSource()
+        val source = photo.getPhotoSource().title
 
         authorText.text = String.format(getString(R.string.photo_by_s_on_s), authorName, source)
 

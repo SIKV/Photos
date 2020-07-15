@@ -1,8 +1,8 @@
 package com.github.sikv.photos.api
 
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.model.PexelsCuratedPhotosResponse
-import com.github.sikv.photos.model.PexelsSearchResponse
+import com.github.sikv.photos.model.pexels.PexelsCuratedPhotosResponse
+import com.github.sikv.photos.model.pexels.PexelsSearchResponse
 import com.github.sikv.photos.model.Photo
 import io.reactivex.Single
 import javax.inject.Inject

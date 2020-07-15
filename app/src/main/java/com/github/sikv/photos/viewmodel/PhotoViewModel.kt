@@ -16,8 +16,11 @@ import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.event.Event
-import com.github.sikv.photos.model.*
+import com.github.sikv.photos.model.DummyPhoto
+import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.createShareIntent
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
@@ -126,8 +129,8 @@ class PhotoViewModel(
                 })
 
         when (photo.getPhotoSource()) {
-            UnsplashPhoto.SOURCE -> ApiClient.INSTANCE.unsplashClient.getPhoto(photo.getPhotoId())
-            PexelsPhoto.SOURCE -> ApiClient.INSTANCE.pexelsClient.getPhoto(photo.getPhotoId())
+            PhotoSource.PEXELS -> ApiClient.INSTANCE.pexelsClient.getPhoto(photo.getPhotoId())
+            PhotoSource.UNSPLASH -> ApiClient.INSTANCE.unsplashClient.getPhoto(photo.getPhotoId())
 
             else -> Single.just(DummyPhoto())
 
@@ -178,6 +181,6 @@ class PhotoViewModel(
     }
 
     fun openPhotoSource() {
-        (getApplication() as? Context)?.openUrl(photo.getSourceUrl())
+        (getApplication() as? Context)?.openUrl(photo.getPhotoShareUrl())
     }
 }

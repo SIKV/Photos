@@ -1,5 +1,7 @@
-package com.github.sikv.photos.model
+package com.github.sikv.photos.model.pexels
 
+import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.model.Photo
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
@@ -17,24 +19,15 @@ class PexelsPhoto(
         @SerializedName("photographer")
         val photographer: String,
 
+        @SerializedName("photographer_url")
+        val photographerUrl: String,
+
         @SerializedName("src")
         val src: PexelsSrc
 ) : Photo() {
 
-    companion object {
-        const val SOURCE = "Pexels"
-    }
-
     override fun getPhotoId(): String {
         return url.substring(url.substring(0, url.length - 1).lastIndexOf("-") + 1, url.lastIndexOf("/"))
-    }
-
-    override fun getPhotoWidth(): Int {
-        return width
-    }
-
-    override fun getPhotoHeight(): Int {
-        return height
     }
 
     override fun getPhotoPreviewUrl(): String {
@@ -62,14 +55,10 @@ class PexelsPhoto(
     }
 
     override fun getPhotoPhotographerUrl(): String? {
-        return null
+        return photographerUrl
     }
 
-    override fun getPhotoSource(): String {
-        return SOURCE
-    }
-
-    override fun getSourceUrl(): String {
-        return url
+    override fun getPhotoSource(): PhotoSource {
+        return PhotoSource.PEXELS
     }
 }

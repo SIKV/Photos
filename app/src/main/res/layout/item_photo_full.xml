@@ -111,28 +111,4 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/descriptionText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/photoItemFullContentHorizontalMargin"
-        android:layout_marginEnd="@dimen/photoItemFullContentHorizontalMargin"
-        android:layout_marginBottom="6dp"
-        tools:text="Description"
-        android:textSize="13sp"
-        android:textColor="@color/colorText"
-        android:maxLines="2"
-        android:ellipsize="marquee" />
-
-    <TextView
-        android:id="@+id/createdAtText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/photoItemFullContentHorizontalMargin"
-        tools:text="March 11, 2020"
-        android:textSize="11sp"
-        android:textColor="@color/colorText"
-        android:alpha="0.5"
-        tools:ignore="SmallSp" />
-
 </LinearLayout>
