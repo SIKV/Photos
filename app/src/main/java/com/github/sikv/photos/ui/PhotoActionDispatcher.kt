@@ -2,16 +2,14 @@ package com.github.sikv.photos.ui
 
 import android.app.Activity
 import android.view.View
-import android.view.ViewGroup
-import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.createShareIntent
 import com.github.sikv.photos.ui.activity.BaseActivity
 import com.github.sikv.photos.ui.activity.PhotoActivity
+import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
@@ -19,31 +17,36 @@ import com.github.sikv.photos.util.copyText
 import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
 
-class PhotoClickDispatcher(
+class PhotoActionDispatcher(
         private val fragment: Fragment,
-        @IdRes private val rootLayoutId: Int,
         private val invertFavorite: (Photo) -> Unit
-) {
+) : OnPhotoActionListener {
+
+    private lateinit var photoPreviewPopup: PhotoPreviewPopup
 
     private fun getActivity(): Activity {
         return fragment.requireActivity()
     }
 
-    private fun getRootLayout(): ViewGroup {
-        return fragment.requireView().findViewById(rootLayoutId)
-    }
-
-    fun handlePhotoClick(clickSource: PhotoItemClickSource, photo: Photo, view: View) {
-        when (clickSource) {
-            PhotoItemClickSource.CLICK -> {
+    override fun onPhotoAction(action: OnPhotoActionListener.Action, photo: Photo, view: View) {
+        when (action) {
+            OnPhotoActionListener.Action.CLICK -> {
                 PhotoActivity.startActivity(getActivity(), view, photo)
             }
 
-            PhotoItemClickSource.LONG_CLICK -> {
-                PhotoPreviewPopup().show(getActivity(), getRootLayout(), photo)
+            OnPhotoActionListener.Action.HOLD -> {
+                if (!this::photoPreviewPopup.isInitialized) {
+                    photoPreviewPopup = PhotoPreviewPopup(getActivity())
+                }
+
+                photoPreviewPopup.show(view, photo)
             }
 
-            PhotoItemClickSource.PHOTOGRAPHER -> {
+            OnPhotoActionListener.Action.RELEASE -> {
+                photoPreviewPopup.dismiss()
+            }
+
+            OnPhotoActionListener.Action.PHOTOGRAPHER -> {
                 photo.getPhotoPhotographerUrl()?.let { photographerUrl ->
                     getActivity().openUrl(photographerUrl)
                 } ?: run {
@@ -51,19 +54,19 @@ class PhotoClickDispatcher(
                 }
             }
 
-            PhotoItemClickSource.OPTIONS -> {
+            OnPhotoActionListener.Action.OPTIONS -> {
                 showOptionsDialog(photo)
             }
 
-            PhotoItemClickSource.FAVORITE -> {
+            OnPhotoActionListener.Action.FAVORITE -> {
                 invertFavorite(photo)
             }
 
-            PhotoItemClickSource.SHARE -> {
+            OnPhotoActionListener.Action.SHARE -> {
                 getActivity().startActivity(photo.createShareIntent())
             }
 
-            PhotoItemClickSource.DOWNLOAD -> {
+            OnPhotoActionListener.Action.DOWNLOAD -> {
                 (getActivity() as? BaseActivity)?.requestWriteExternalStoragePermission {
                     getActivity().downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
 
@@ -71,6 +74,10 @@ class PhotoClickDispatcher(
                 }
             }
         }
+    }
+
+    override fun onPhotoActionParentRelease() {
+        photoPreviewPopup.dismiss()
     }
 
     private fun showOptionsDialog(photo: Photo) {

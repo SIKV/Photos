@@ -1,19 +1,20 @@
 package com.github.sikv.photos.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
+import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.github.sikv.photos.App
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import javax.inject.Inject
 
 class PhotoListAdapter(
-        private val clickCallback: (PhotoItemClickSource, Photo, View) -> Unit
+        private val listener: OnPhotoActionListener
 ) : ListAdapter<Photo, PhotoViewHolder>(Photo.COMPARATOR) {
 
     @Inject
@@ -23,6 +24,19 @@ class PhotoListAdapter(
 
     init {
         App.instance.appComponent.inject(this)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+
+        recyclerView.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                listener.onPhotoActionParentRelease()
+            }
+
+            return@setOnTouchListener false
+        }
     }
 
     fun setItemLayoutType(itemLayoutType: PhotoItemLayoutType) {
@@ -38,6 +52,6 @@ class PhotoListAdapter(
         val photo = getItem(position)
         val favorite = favoritesRepository.isFavorite(photo)
 
-        holder.bind(itemLayoutType, photo, favorite, clickCallback)
+        holder.bind(itemLayoutType, photo, favorite, listener)
     }
 }

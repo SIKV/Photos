@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
 import com.github.sikv.photos.enumeration.PhotoSource
-import com.github.sikv.photos.ui.PhotoClickDispatcher
+import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.util.disableChangeAnimations
 import com.github.sikv.photos.util.setVisibilityAnimated
@@ -40,14 +40,14 @@ class SingleSearchFragment : Fragment() {
         ViewModelProvider(this).get(SearchViewModel::class.java)
     }
 
-    private val photoClickDispatcher by lazy {
-        PhotoClickDispatcher(this, R.id.rootLayout) { photo ->
+    private val photoActionDispatcher by lazy {
+        PhotoActionDispatcher(this) { photo ->
             viewModel.invertFavorite(photo)
         }
     }
 
     private lateinit var photoSource: PhotoSource
-    private val photoAdapter = PhotoPagedListAdapter(photoClickDispatcher::handlePhotoClick)
+    private val photoAdapter = PhotoPagedListAdapter(photoActionDispatcher)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,20 +1,15 @@
 package com.github.sikv.photos.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
+import android.view.MotionEvent
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
-import kotlinx.android.synthetic.main.item_load_more.view.*
-import javax.inject.Inject
+import com.github.sikv.photos.ui.adapter.viewholder.LoadMoreViewHolder
+import com.github.sikv.photos.ui.adapter.viewholder.PhotoGridViewHolder
 
 data class PhotoGridItem(
         @LayoutRes
@@ -23,7 +18,7 @@ data class PhotoGridItem(
 )
 
 class PhotoGridAdapter(
-        private val clickCallback: (PhotoItemClickSource, Photo, View) -> Unit,
+        private val listener: OnPhotoActionListener,
         private val loadMoreCallback: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -35,6 +30,19 @@ class PhotoGridAdapter(
 
     private var showLoadMoreOption: Boolean = false
     private var loadingMoreInProgress: Boolean = false
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+
+        recyclerView.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                listener.onPhotoActionParentRelease()
+            }
+
+            return@setOnTouchListener false
+        }
+    }
 
     fun addItems(photos: List<Photo>, showLoadMoreOption: Boolean) {
         val items: MutableList<PhotoGridItem> = mutableListOf()
@@ -105,60 +113,7 @@ class PhotoGridAdapter(
                 loadMoreCallback()
             }
         } else if (holder is PhotoGridViewHolder) {
-            holder.bind(items[position], clickCallback)
-        }
-    }
-}
-
-class PhotoGridViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    @Inject
-    lateinit var glide: RequestManager
-
-    init {
-        App.instance.appComponent.inject(this)
-    }
-
-    fun bind(item: PhotoGridItem, clickCallback: (PhotoItemClickSource, Photo, View) -> Unit) {
-        item.items.forEach { pair ->
-            val imageView = itemView.findViewById<ImageView>(pair.second)
-
-            imageView.visibility = View.VISIBLE
-
-            imageView.setImageDrawable(null)
-
-            pair.first?.let { photo ->
-                glide.load(photo.getPhotoPreviewUrl())
-                        .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
-                        .into(imageView)
-
-                imageView.setOnClickListener { view ->
-                    clickCallback.invoke(PhotoItemClickSource.CLICK, photo, view)
-                }
-
-                imageView.setOnLongClickListener { view ->
-                    clickCallback.invoke(PhotoItemClickSource.LONG_CLICK, photo, view)
-                    return@setOnLongClickListener true
-                }
-
-            } ?: run {
-                imageView.visibility = View.INVISIBLE
-            }
-        }
-    }
-}
-
-class LoadMoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    fun bind(loadingMoreInProgress: Boolean, loadMoreCallback: () -> Unit) {
-        itemView.loadMoreButton.visibility = if (loadingMoreInProgress) View.GONE else View.VISIBLE
-        itemView.progressBar.visibility = if (loadingMoreInProgress) View.VISIBLE else View.GONE
-
-        itemView.loadMoreButton.setOnClickListener { view ->
-            itemView.progressBar.visibility = View.VISIBLE
-            view.visibility = View.GONE
-
-            loadMoreCallback()
+            holder.bind(items[position], listener)
         }
     }
 }

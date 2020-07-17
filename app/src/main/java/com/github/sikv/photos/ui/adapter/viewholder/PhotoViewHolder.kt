@@ -7,12 +7,10 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
-import com.github.sikv.photos.util.TextPlaceholder
-import com.github.sikv.photos.util.favoriteAnimation
+import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
+import com.github.sikv.photos.util.*
 import kotlinx.android.synthetic.main.item_photo_full.view.*
 import javax.inject.Inject
 
@@ -28,10 +26,10 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(itemLayoutType: PhotoItemLayoutType,
              photo: Photo?,
              favorite: Boolean,
-             clickCallback: (PhotoItemClickSource, Photo, View) -> Unit) {
+             listener: OnPhotoActionListener) {
 
         if (itemLayoutType == PhotoItemLayoutType.MIN) {
-            bindMin(photo, clickCallback)
+            bindMin(photo, listener)
             return
         }
 
@@ -45,49 +43,54 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         photo?.let {
             itemView.photoImage.setOnClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.CLICK, it, view)
+                listener.onPhotoAction(OnPhotoActionListener.Action.CLICK, photo, view)
             }
 
-            itemView.photoImage.setOnLongClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.LONG_CLICK, it, view)
-                return@setOnLongClickListener true
-            }
+            itemView.photoImage.setOnHoldReleaseListener(object : OnHoldReleaseListener() {
+                override fun onHold(view: View) {
+                    listener.onPhotoAction(OnPhotoActionListener.Action.HOLD, photo, view)
+                }
+
+                override fun onRelease(view: View) {
+                    listener.onPhotoAction(OnPhotoActionListener.Action.RELEASE, photo, view)
+                }
+            })
 
             itemView.photographerImage.setOnClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.PHOTOGRAPHER, it, view)
+                listener.onPhotoAction(OnPhotoActionListener.Action.PHOTOGRAPHER, photo, view)
             }
 
             itemView.photographerLayout.setOnClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.PHOTOGRAPHER, it, view)
+                listener.onPhotoAction(OnPhotoActionListener.Action.PHOTOGRAPHER, photo, view)
             }
 
             itemView.optionsButton.setOnClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.OPTIONS, it, view)
+                listener.onPhotoAction(OnPhotoActionListener.Action.OPTIONS, photo, view)
             }
 
             itemView.favoriteButton.setOnClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.FAVORITE, it, view)
+                listener.onPhotoAction(OnPhotoActionListener.Action.FAVORITE, photo, view)
                 itemView.favoriteButton.favoriteAnimation()
             }
 
             itemView.shareButton.setOnClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.SHARE, it, view)
+                listener.onPhotoAction(OnPhotoActionListener.Action.SHARE, photo, view)
             }
 
             itemView.downloadButton.setOnClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.DOWNLOAD, it, view)
+                listener.onPhotoAction(OnPhotoActionListener.Action.DOWNLOAD, photo, view)
             }
 
         } ?: run {
             itemView.optionsButton.setOnClickListener(null)
             itemView.photoImage.setOnClickListener(null)
-            itemView.photoImage.setOnLongClickListener(null)
+            itemView.photoImage.setOnHoldReleaseListener(null)
             itemView.favoriteButton.setOnClickListener(null)
             itemView.downloadButton.setOnClickListener(null)
         }
     }
 
-    private fun bindMin(photo: Photo?, clickCallback: (PhotoItemClickSource, Photo, View) -> Unit) {
+    private fun bindMin(photo: Photo?, listener: OnPhotoActionListener) {
         itemView.photoImage.setImageDrawable(null)
 
         photo?.let {
@@ -98,17 +101,22 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         photo?.let {
             itemView.photoImage.setOnClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.CLICK, it, view)
+                listener.onPhotoAction(OnPhotoActionListener.Action.CLICK, photo, view)
             }
 
-            itemView.photoImage.setOnLongClickListener { view ->
-                clickCallback.invoke(PhotoItemClickSource.LONG_CLICK, it, view)
-                return@setOnLongClickListener true
-            }
+            itemView.photoImage.setOnHoldReleaseListener(object : OnHoldReleaseListener() {
+                override fun onHold(view: View) {
+                    listener.onPhotoAction(OnPhotoActionListener.Action.HOLD, photo, view)
+                }
+
+                override fun onRelease(view: View) {
+                    listener.onPhotoAction(OnPhotoActionListener.Action.RELEASE, photo, view)
+                }
+            })
 
         } ?: run {
             itemView.photoImage.setOnClickListener(null)
-            itemView.photoImage.setOnLongClickListener(null)
+            itemView.photoImage.setOnHoldReleaseListener(null)
         }
     }
 

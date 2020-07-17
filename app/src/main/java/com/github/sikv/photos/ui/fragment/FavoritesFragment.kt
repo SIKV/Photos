@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
-import com.github.sikv.photos.ui.PhotoClickDispatcher
+import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.*
@@ -35,13 +35,13 @@ class FavoritesFragment : BaseFragment() {
         ViewModelProvider(this, viewModelFactory).get(FavoritesViewModel::class.java)
     }
 
-    private val photoClickDispatcher by lazy {
-        PhotoClickDispatcher(this, R.id.rootLayout) { photo ->
+    private val photoActionDispatcher by lazy {
+        PhotoActionDispatcher(this) { photo ->
             viewModel.invertFavorite(photo)
         }
     }
 
-    private var photoAdapter = PhotoListAdapter(photoClickDispatcher::handlePhotoClick)
+    private var photoAdapter = PhotoListAdapter(photoActionDispatcher)
 
     private var currentSpanCount: Int = DEFAULT_SPAN_COUNT
         set(value) {

@@ -3,9 +3,9 @@ package com.github.sikv.photos.di.component
 import android.content.Context
 import com.github.sikv.photos.di.module.GlideModule
 import com.github.sikv.photos.di.module.RoomModule
-import com.github.sikv.photos.ui.adapter.PhotoGridViewHolder
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
+import com.github.sikv.photos.ui.adapter.viewholder.PhotoGridViewHolder
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.viewmodel.*

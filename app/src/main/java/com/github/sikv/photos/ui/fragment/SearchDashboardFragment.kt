@@ -11,11 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.PhotoItemClickSource
-import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.ui.activity.PhotoActivity
+import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
-import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchDashboardViewModel
 import kotlinx.android.synthetic.main.fragment_search_dashboard.*
@@ -32,6 +29,12 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private lateinit var recommendedPhotosAdapter: PhotoGridAdapter
+
+    private val photoActionDispatcher by lazy {
+        PhotoActionDispatcher(this) {
+            // Don't need to handle [Favorite] action here.
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_search_dashboard, container, false)
@@ -56,20 +59,6 @@ class SearchDashboardFragment : BaseFragment() {
         }
 
         super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private fun onPhotoClick(clickSource: PhotoItemClickSource, photo: Photo, view: View) {
-        when (clickSource) {
-            PhotoItemClickSource.CLICK -> {
-                PhotoActivity.startActivity(activity, view, photo)
-            }
-
-            PhotoItemClickSource.LONG_CLICK -> {
-                PhotoPreviewPopup().show(activity, rootLayout, photo)
-            }
-
-            else -> { }
-        }
     }
 
     private fun observe() {
@@ -127,7 +116,7 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private fun init() {
-        recommendedPhotosAdapter = PhotoGridAdapter(::onPhotoClick) {
+        recommendedPhotosAdapter = PhotoGridAdapter(photoActionDispatcher) {
             viewModel.loadRecommendations()
         }
 

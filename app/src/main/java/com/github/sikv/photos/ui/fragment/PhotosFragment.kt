@@ -12,7 +12,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.ui.PhotoClickDispatcher
+import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.*
@@ -31,13 +31,13 @@ class PhotosFragment : BaseFragment() {
         ViewModelProvider(this).get(PhotosViewModel::class.java)
     }
 
-    private val photoClickDispatcher by lazy {
-        PhotoClickDispatcher(this, R.id.rootLayout) { photo ->
+    private val photoActionDispatcher by lazy {
+        PhotoActionDispatcher(this) { photo ->
             viewModel.invertFavorite(photo)
         }
     }
 
-    private val photoAdapter = PhotoPagedListAdapter(photoClickDispatcher::handlePhotoClick)
+    private val photoAdapter = PhotoPagedListAdapter(photoActionDispatcher)
 
     private var currentSpanCount: Int = SPAN_COUNT_LIST
         set(value) {

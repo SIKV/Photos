@@ -1,27 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/photoPreviewCard"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorOverlay">
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/photoPreviewCard"
+    <ImageView
+        android:id="@+id/photoPreviewImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="24dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="8dp">
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/cn_photo_preview" />
 
-        <ImageView
-            android:id="@+id/photoPreviewImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/cn_photo_preview" />
-
-    </com.google.android.material.card.MaterialCardView>
-
-</RelativeLayout>
+</com.google.android.material.card.MaterialCardView>
