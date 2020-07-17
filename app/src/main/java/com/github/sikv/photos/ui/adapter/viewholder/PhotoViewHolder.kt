@@ -11,6 +11,7 @@ import com.github.sikv.photos.enumeration.PhotoItemClickSource
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
+import com.github.sikv.photos.util.TextPlaceholder
 import com.github.sikv.photos.util.favoriteAnimation
 import kotlinx.android.synthetic.main.item_photo_full.view.*
 import javax.inject.Inject
@@ -120,11 +121,17 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
                     .into(itemView.photoImage)
 
-            glide.load(it.getPhotoPhotographerImageUrl())
-                    .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
-                    .transform(CircleCrop())
-                    .placeholder(R.drawable.ic_account_circle_24dp)
-                    .into(itemView.photographerImage)
+            TextPlaceholder.with(itemView.context)
+                    .textInitials(it.getPhotoPhotographerName())
+                    .textColor(R.color.colorSecondary)
+                    .generateDrawable { placeholder ->
+
+                        glide.load(it.getPhotoPhotographerImageUrl())
+                                .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
+                                .transform(CircleCrop())
+                                .placeholder(placeholder)
+                                .into(itemView.photographerImage)
+                    }
         }
     }
 }
