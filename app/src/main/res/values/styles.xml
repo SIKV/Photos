@@ -129,4 +129,8 @@
     <style name="CircleImageButton">
         <item name="android:background">?android:selectableItemBackgroundBorderless</item>
     </style>
+
+    <style name="CircleImageButtonNoBackground">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
 </resources>
