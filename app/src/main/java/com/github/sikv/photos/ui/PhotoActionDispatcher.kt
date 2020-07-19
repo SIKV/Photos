@@ -77,7 +77,9 @@ class PhotoActionDispatcher(
     }
 
     override fun onPhotoActionParentRelease() {
-        photoPreviewPopup.dismiss()
+        if (this::photoPreviewPopup.isInitialized && photoPreviewPopup.isShown()) {
+            photoPreviewPopup.dismiss()
+        }
     }
 
     private fun showOptionsDialog(photo: Photo) {

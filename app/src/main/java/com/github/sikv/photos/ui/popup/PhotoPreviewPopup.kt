@@ -78,6 +78,8 @@ class PhotoPreviewPopup(
                 })
     }
 
+    fun isShown(): Boolean = popupWindow?.isShowing ?: false
+
     fun dismiss() {
         val dismissAnimation = AnimationUtils.loadAnimation(context, R.anim.zoom_out)
 
