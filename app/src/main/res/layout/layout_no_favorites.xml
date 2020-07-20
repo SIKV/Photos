@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/noRecommendationsLayout"
+        android:id="@+id/noFavoritesLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -20,8 +20,8 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_broken_image_96dp"
-            android:contentDescription="@string/cn_image_icon" />
+            android:src="@drawable/ic_favorite_96dp"
+            android:contentDescription="@string/cn_favorite_icon" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
             android:textSize="24sp"
             android:fontFamily="sans-serif-black"
             android:textColor="@color/colorNotFoundContainer"
-            android:text="@string/no_recommendations" />
+            android:text="@string/no_favorites" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -39,17 +39,7 @@
             android:textSize="15sp"
             android:textAlignment="center"
             android:textColor="@color/colorNotFoundContainer"
-            android:text="@string/no_recommendations_description" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/refreshRecommendationsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/refresh"
-            android:textColor="@color/colorSecondary"
-            app:rippleColor="@color/colorRippleLight"
-            style="@style/Widget.MaterialComponents.Button.TextButton" />
+            android:text="@string/no_favorites_description" />
 
     </LinearLayout>
 

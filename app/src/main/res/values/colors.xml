@@ -26,7 +26,7 @@
     <color name="colorRipple">#353535</color>
     <color name="colorRippleLight">#BCBCBC</color>
     <color name="colorPlaceholder">#EEEEEE</color>
-    <color name="colorNoFoundContainer">#D2D2D2</color>
+    <color name="colorNotFoundContainer">#AAAAAA</color>
     <color name="colorTextInputBoxStroke">#DDDDDD</color>
     <color name="colorRed">#EF4141</color>
     <color name="colorChipBackground">#F3F3F3</color>

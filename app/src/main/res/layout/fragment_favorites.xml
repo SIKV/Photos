@@ -28,21 +28,7 @@
             android:clipToPadding="false"
             tools:listitem="@layout/item_photo_full" />
 
-        <FrameLayout
-            android:id="@+id/listEmptyLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_favorite_96dp"
-                android:contentDescription="@string/cn_favorite_icon" />
-
-        </FrameLayout>
+        <include layout="@layout/layout_no_favorites" />
 
     </FrameLayout>
 

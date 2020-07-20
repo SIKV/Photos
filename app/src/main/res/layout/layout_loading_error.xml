@@ -13,6 +13,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_margin="16dp"
         android:visibility="gone"
         tools:visibility="visible">
 
@@ -28,8 +29,17 @@
             android:layout_marginTop="24dp"
             android:textSize="24sp"
             android:fontFamily="sans-serif-black"
-            android:textColor="@color/colorNoFoundContainer"
+            android:textColor="@color/colorNotFoundContainer"
             android:text="@string/loading_error" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="15sp"
+            android:textAlignment="center"
+            android:textColor="@color/colorNotFoundContainer"
+            android:text="@string/loading_error_description" />
 
     </LinearLayout>
 

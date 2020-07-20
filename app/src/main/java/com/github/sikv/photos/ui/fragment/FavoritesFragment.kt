@@ -18,6 +18,7 @@ import com.github.sikv.photos.viewmodel.FavoritesViewModelFactory
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favorites.*
+import kotlinx.android.synthetic.main.layout_no_favorites.*
 
 class FavoritesFragment : BaseFragment() {
 
@@ -137,7 +138,7 @@ class FavoritesFragment : BaseFragment() {
         viewModel.favoritesLiveData.observe(viewLifecycleOwner, Observer {
             it?.let { photos ->
                 photoAdapter.submitList(photos)
-                listEmptyLayout.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
+                noFavoritesLayout.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
             }
         })
 
