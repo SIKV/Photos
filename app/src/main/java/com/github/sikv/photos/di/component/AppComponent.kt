@@ -28,7 +28,7 @@ interface AppComponent {
     fun inject(viewModel: PhotoViewModel)
     fun inject(viewModel: SetWallpaperViewModel)
     fun inject(viewModel: FavoritesViewModel)
-    fun inject(viewModel: PreferenceViewModel)
+    fun inject(viewModel: MoreViewModel)
     fun inject(viewModel: FeedbackViewModel)
     fun inject(viewHolder: PhotoViewHolder)
     fun inject(viewHolder: PhotoGridViewHolder)

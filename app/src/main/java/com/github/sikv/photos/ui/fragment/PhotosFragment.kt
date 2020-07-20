@@ -81,7 +81,8 @@ class PhotosFragment : BaseFragment() {
                 .withMenuItems(
                         listOf(
                                 R.id.itemViewList,
-                                R.id.itemViewGrid),
+                                R.id.itemViewGrid
+                        ),
                         listOf(
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {

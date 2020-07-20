@@ -1,8 +1,9 @@
 package com.github.sikv.photos.enumeration
 
-enum class LoginStatus {
-    NOT_SET,
-    SIGNING_IN,
-    SIGNED_IN,
-    SIGNED_OUT
+sealed class LoginStatus {
+    object NotSet : LoginStatus()
+    object SigningIn : LoginStatus()
+    class SignedIn(val signedInAs: String) : LoginStatus()
+    object SignInError : LoginStatus()
+    object SignedOut : LoginStatus()
 }

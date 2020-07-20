@@ -5,7 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.App
+import com.github.sikv.photos.RuntimeBehaviour
 import com.github.sikv.photos.api.ApiClient
+import com.github.sikv.photos.config.Config
 import com.github.sikv.photos.recommendation.RecommendedPhotos
 import com.github.sikv.photos.recommendation.Recommender
 import kotlinx.coroutines.launch
@@ -30,6 +32,10 @@ class SearchDashboardViewModel : ViewModel() {
     }
 
     fun loadRecommendations(reset: Boolean = false) {
+        if (!RuntimeBehaviour.getConfig(Config.RECOMMENDATIONS_ENABLED)) {
+            return
+        }
+
         if (reset) {
             recommender.reset()
         }

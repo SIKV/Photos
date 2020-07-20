@@ -8,6 +8,7 @@ import com.github.sikv.photos.enumeration.LoginStatus
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
@@ -27,7 +28,7 @@ class AccountManager @Inject constructor(context: Context) {
 
     private val subscribers = mutableListOf<Callback>()
 
-    var loginStatus = LoginStatus.NOT_SET
+    var loginStatus: LoginStatus = LoginStatus.NotSet
         private set(value) {
             field = value
 
@@ -47,9 +48,9 @@ class AccountManager @Inject constructor(context: Context) {
 
     init {
         loginStatus = if (isSignedIn()) {
-            LoginStatus.SIGNED_IN
+            LoginStatus.SignedIn(getSignedInEmail())
         } else {
-            LoginStatus.SIGNED_OUT
+            LoginStatus.SignedOut
         }
     }
 
@@ -85,7 +86,7 @@ class AccountManager @Inject constructor(context: Context) {
     fun signInWithGoogle(fragment: Fragment) {
         fragment.startActivityForResult(googleSignInClient.signInIntent, RC_GOOGLE_SIGN_IN)
 
-        loginStatus = LoginStatus.SIGNING_IN
+        loginStatus = LoginStatus.SigningIn
     }
 
     fun handleSignInResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -95,11 +96,12 @@ class AccountManager @Inject constructor(context: Context) {
             try {
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account)
-
             } catch (e: ApiException) {
-                loginStatus = LoginStatus.SIGNED_OUT
-
-                // TODO Error signing in
+                loginStatus = if (e.statusCode == GoogleSignInStatusCodes.SIGN_IN_CANCELLED) {
+                    LoginStatus.SignedOut
+                } else {
+                    LoginStatus.SignInError
+                }
             }
         }
     }
@@ -107,7 +109,7 @@ class AccountManager @Inject constructor(context: Context) {
     fun signOut() {
         auth.signOut()
 
-        loginStatus = LoginStatus.SIGNED_OUT
+        loginStatus = LoginStatus.SignedOut
     }
 
     private fun firebaseAuthWithGoogle(googleAccount: GoogleSignInAccount?) {
@@ -115,13 +117,15 @@ class AccountManager @Inject constructor(context: Context) {
 
         auth.signInWithCredential(credential)
                 .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        loginStatus = LoginStatus.SIGNED_IN
+                    loginStatus = if (task.isSuccessful) {
+                        LoginStatus.SignedIn(getSignedInEmail())
                     } else {
-                        loginStatus = LoginStatus.SIGNED_OUT
-
-                        // TODO Error signing in
+                        LoginStatus.SignInError
                     }
                 }
+    }
+
+    private fun getSignedInEmail(): String {
+        return auth.currentUser?.email ?: ""
     }
 }

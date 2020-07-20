@@ -6,32 +6,25 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sikv.photos.App
-import com.github.sikv.photos.BuildConfig
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.util.AccountManager
 import javax.inject.Inject
 
-class PreferenceViewModel: ViewModel(), AccountManager.Callback {
+class MoreViewModel: ViewModel(), AccountManager.Callback {
 
     @Inject
     lateinit var accountManager: AccountManager
 
-    private val loginStatusChangedMutableLiveData = MutableLiveData<LoginStatus>()
-    val loginStatusChangedLiveData: LiveData<LoginStatus> = loginStatusChangedMutableLiveData
-
-    private val showAppVersionMutableEvent = MutableLiveData<Event<String>>()
-    val showAppVersionEvent: LiveData<Event<String>> = showAppVersionMutableEvent
+    private val loginStatusChangedMutableEvent = MutableLiveData<Event<LoginStatus>>()
+    val loginStatusChangedEvent: LiveData<Event<LoginStatus>> = loginStatusChangedMutableEvent
 
     init {
         App.instance.appComponent.inject(this)
 
         accountManager.subscribe(this)
 
-        loginStatusChangedMutableLiveData.postValue(accountManager.loginStatus)
-
-        val appVersion = BuildConfig.VERSION_NAME
-        showAppVersionMutableEvent.postValue(Event(appVersion))
+        loginStatusChangedMutableEvent.value = Event(accountManager.loginStatus)
     }
 
     override fun onCleared() {
@@ -41,7 +34,7 @@ class PreferenceViewModel: ViewModel(), AccountManager.Callback {
     }
 
     override fun onLoginStatusChanged(status: LoginStatus) {
-        loginStatusChangedMutableLiveData.postValue(status)
+        loginStatusChangedMutableEvent.value = Event(status)
     }
 
     fun signInWithGoogle(fragment: Fragment) {

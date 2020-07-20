@@ -17,7 +17,7 @@ import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.makeClickable
 import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.util.setToolbarTitleWithBackButton
-import com.github.sikv.photos.viewmodel.PreferenceViewModel
+import com.github.sikv.photos.viewmodel.SettingsViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import kotlinx.android.synthetic.main.fragment_settings.*
 
@@ -88,8 +88,8 @@ class SettingsFragment : BaseFragment() {
 
     class PreferenceFragment : PreferenceFragmentCompat() {
 
-        private val viewModel: PreferenceViewModel by lazy {
-            ViewModelProvider(this).get(PreferenceViewModel::class.java)
+        private val viewModel: SettingsViewModel by lazy {
+            ViewModelProvider(this).get(SettingsViewModel::class.java)
         }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

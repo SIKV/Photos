@@ -5,7 +5,6 @@
 
     <string name="_pref_sign_in">PreferenceSignIn</string>
     <string name="_pref_sign_out">PreferenceSignOut</string>
-    <string name="_pref_settings">PreferenceSettings</string>
     <string name="_pref_dark_theme">PreferenceDarkTheme</string>
     <string name="_pref_send_feedback">PreferenceSendFeedback</string>
     <string name="_pref_rate_app">PreferenceRateApp</string>
@@ -72,11 +71,13 @@
     <string name="error_setting_wallpaper">Error setting wallpaper</string>
     <string name="try_again">Try Again</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="sign_in_pref_summary">to sync favorites with other devices</string>
+    <string name="sign_in_pref_summary">Sign in to save and sync favorites</string>
+    <string name="signed_in_as_s">Signed in as %s</string>
     <string name="sign_out">Sign Out</string>
     <string name="app_version">App Version</string>
     <string name="open_source_licences">Open Source Licences</string>
     <string name="signing_in">Signing in, please wait…</string>
+    <string name="error_signing_in">Error signing in</string>
     <string name="submit">Submit</string>
     <string name="enter_your_email">Enter your email</string>
     <string name="send_feedback_description">Leave app feedback or share your ideas</string>
