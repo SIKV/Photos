@@ -39,15 +39,15 @@ abstract class BaseActivity : AppCompatActivity() {
                 doAfterWriteExternalStorageGranted?.invoke()
                 doAfterWriteExternalStorageGranted = null
             } else {
-                showPermissionNotGrantedDialog(R.string.grant_storage_permission_description)
+                showPermissionNotGrantedDialog()
             }
         }
     }
 
-    private fun showPermissionNotGrantedDialog(@StringRes messageId: Int) {
+    private fun showPermissionNotGrantedDialog() {
         MaterialAlertDialogBuilder(this)
-                .setTitle(R.string.app_name)
-                .setMessage(messageId)
+                .setTitle(R.string.storage_permission)
+                .setMessage(R.string.storage_permission_description)
                 .setPositiveButton(R.string.open_settings) { _, _ ->
                     openAppSettings()
                 }
