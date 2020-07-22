@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -18,16 +19,11 @@ import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.event.Event
-import com.github.sikv.photos.model.DummyPhoto
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.createShareIntent
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
-import com.github.sikv.photos.util.subscribeAsync
-import io.reactivex.Single
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -57,10 +53,10 @@ class PhotoViewModel(
     init {
         App.instance.appComponent.inject(this)
 
-        GlobalScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             /** Don't use FavoritesRepository.isFavorite(Photo) here because that method is using Photo.favorite flag.
              * Photo.favorite flag will be always false after using parcelable. */
-            favoriteInitMutableEvent.postValue(Event(favoritesRepository.isFavoriteFromDatabase(photo)))
+            favoriteInitMutableEvent.value = Event(favoritesRepository.isFavoriteFromDatabase(photo))
         }
 
         favoritesRepository.subscribe(this)
@@ -128,30 +124,35 @@ class PhotoViewModel(
                     override fun onLoadCleared(placeholder: Drawable?) { }
                 })
 
-        when (photo.getPhotoSource()) {
-            PhotoSource.PEXELS -> ApiClient.INSTANCE.pexelsClient.getPhoto(photo.getPhotoId())
-            PhotoSource.UNSPLASH -> ApiClient.INSTANCE.unsplashClient.getPhoto(photo.getPhotoId())
+        viewModelScope.launch {
+            try {
+                when (photo.getPhotoSource()) {
+                    PhotoSource.PEXELS -> ApiClient.INSTANCE.pexelsClient.getPhoto(photo.getPhotoId())
+                    PhotoSource.UNSPLASH -> ApiClient.INSTANCE.unsplashClient.getPhoto(photo.getPhotoId())
+                    else -> null
+                }?.let { photo ->
+                    this@PhotoViewModel.photo = photo
 
-            else -> Single.just(DummyPhoto())
+                    glide.asBitmap()
+                            .load(photo.getPhotoFullPreviewUrl())
+                            .into(object : CustomTarget<Bitmap>() {
+                                override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                                    showPhotoMutableEvent.value = Event(bitmap)
+                                }
 
-        }.subscribeAsync({
-            this@PhotoViewModel.photo = it
+                                override fun onLoadCleared(placeholder: Drawable?) {}
+                            })
 
-            glide.asBitmap()
-                    .load(photo.getPhotoFullPreviewUrl())
-                    .into(object : CustomTarget<Bitmap>() {
-                        override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                            showPhotoMutableEvent.value = Event(bitmap)
-                        }
+                    showPhotoInfoMutableEvent.postValue(Event(photo))
 
-                        override fun onLoadCleared(placeholder: Drawable?) { }
-                    })
+                } ?: run {
+                    // TODO Error loading photo
+                }
 
-            showPhotoInfoMutableEvent.postValue(Event(it))
-
-        }, {
-            // TODO Handle error
-        })
+            } catch (e: Exception) {
+                // TODO Error loading photo
+            }
+        }
     }
 
     fun setWallpaper(fragmentManager: FragmentManager) {

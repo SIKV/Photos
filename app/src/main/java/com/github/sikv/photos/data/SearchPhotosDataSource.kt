@@ -3,10 +3,13 @@ package com.github.sikv.photos.data
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PositionalDataSource
 import com.github.sikv.photos.api.ApiClient
-import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.enumeration.DataSourceState
 import com.github.sikv.photos.enumeration.PhotoSource
-import com.github.sikv.photos.util.subscribeAsync
+import com.github.sikv.photos.model.Photo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class SearchPhotosDataSource(
         private val apiClient: ApiClient,
@@ -14,35 +17,41 @@ class SearchPhotosDataSource(
         private val searchQuery: String
 ) : PositionalDataSource<Photo>() {
 
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+
     var state: MutableLiveData<DataSourceState> = MutableLiveData()
         private set
 
     override fun loadInitial(params: LoadInitialParams, callback: LoadInitialCallback<Photo>) {
         updateState(DataSourceState.LOADING_INITIAL)
 
-        when (photoSource) {
-            PhotoSource.UNSPLASH -> {
-                apiClient.unsplashClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
-                        .subscribeAsync({
-                            val res = it.results
-                            callback.onResult(res,0, res.size)
+        scope.launch {
+            when (photoSource) {
+                PhotoSource.UNSPLASH -> {
+                    try {
+                        val result = apiClient.unsplashClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
 
-                            updateState(DataSourceState.INITIAL_LOADING_DONE)
-                        }, {
-                            updateState(DataSourceState.ERROR)
-                        })
-            }
+                        callback.onResult(result.results, 0, result.results.size)
+                        updateState(DataSourceState.INITIAL_LOADING_DONE)
 
-            PhotoSource.PEXELS -> {
-                apiClient.pexelsClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
-                        .subscribeAsync({
-                            val res = it.photos
-                            callback.onResult(res,0, res.size)
+                    } catch (e: Exception) {
+                        updateState(DataSourceState.ERROR)
+                    }
+                }
 
-                            updateState(DataSourceState.INITIAL_LOADING_DONE)
-                        }, {
-                            updateState(DataSourceState.ERROR)
-                        })
+                PhotoSource.PEXELS -> {
+                    try {
+                        val result = apiClient.pexelsClient.searchPhotos(searchQuery, params.requestedStartPosition, params.requestedLoadSize)
+
+                        callback.onResult(result.photos, 0, result.photos.size)
+                        updateState(DataSourceState.INITIAL_LOADING_DONE)
+
+                    } catch (e: Exception) {
+                        updateState(DataSourceState.ERROR)
+                    }
+                }
+
+                else -> updateState(DataSourceState.ERROR)
             }
         }
     }
@@ -50,27 +59,33 @@ class SearchPhotosDataSource(
     override fun loadRange(params: LoadRangeParams, callback: LoadRangeCallback<Photo>) {
         updateState(DataSourceState.LOADING_NEXT)
 
-        when (photoSource) {
-            PhotoSource.UNSPLASH -> {
-                apiClient.unsplashClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
-                        .subscribeAsync({
-                            callback.onResult(it.results)
+        scope.launch {
+            when (photoSource) {
+                PhotoSource.UNSPLASH -> {
+                    try {
+                        val result = apiClient.unsplashClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
 
-                            updateState(DataSourceState.NEXT_DONE)
-                        }, {
-                            updateState(DataSourceState.ERROR)
-                        })
-            }
+                        callback.onResult(result.results)
+                        updateState(DataSourceState.NEXT_DONE)
 
-            PhotoSource.PEXELS -> {
-                apiClient.pexelsClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
-                        .subscribeAsync({
-                            callback.onResult(it.photos)
+                    } catch (e: Exception) {
+                        updateState(DataSourceState.ERROR)
+                    }
+                }
 
-                            updateState(DataSourceState.NEXT_DONE)
-                        }, {
-                            updateState(DataSourceState.ERROR)
-                        })
+                PhotoSource.PEXELS -> {
+                    try {
+                        val result = apiClient.pexelsClient.searchPhotos(searchQuery, params.startPosition, params.loadSize)
+
+                        callback.onResult(result.photos)
+                        updateState(DataSourceState.NEXT_DONE)
+
+                    } catch (e: Exception) {
+                        updateState(DataSourceState.ERROR)
+                    }
+                }
+
+                else ->  updateState(DataSourceState.ERROR)
             }
         }
     }

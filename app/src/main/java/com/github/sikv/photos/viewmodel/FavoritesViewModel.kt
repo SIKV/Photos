@@ -1,10 +1,7 @@
 package com.github.sikv.photos.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.*
 import com.github.sikv.photos.App
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.database.FavoritePhotoEntity
@@ -13,6 +10,7 @@ import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.util.getString
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
@@ -61,9 +59,10 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
      * Instead, the photos are marked as deleted and the user can press "Undo" to put them back.
      */
     fun markAllAsRemoved() {
-        favoritesRepository.markAllAsRemoved {
-            removeAllResultMutableEvent.postValue(Event(it))
+        viewModelScope.launch {
+            val markedAllAsRemoved = favoritesRepository.markAllAsRemoved()
 
+            removeAllResultMutableEvent.value = Event(markedAllAsRemoved)
             removeAllUndone = false
         }
     }

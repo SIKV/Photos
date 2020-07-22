@@ -1,10 +1,9 @@
 package com.github.sikv.photos.api
 
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.pexels.PexelsCuratedPhotosResponse
 import com.github.sikv.photos.model.pexels.PexelsSearchResponse
-import com.github.sikv.photos.model.Photo
-import io.reactivex.Single
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,15 +12,22 @@ class PexelsClient @Inject constructor(
         private val pexelsApi: PexelsApi,
         private val favoritesRepository: FavoritesRepository) {
 
-    fun getCuratedPhotos(page: Int, perPage: Int): Single<PexelsCuratedPhotosResponse> =
-            pexelsApi.getCuratedPhotos(page, perPage)
-                    .map(favoritesRepository::populateFavorite)
+    suspend fun getCuratedPhotos(page: Int, perPage: Int): PexelsCuratedPhotosResponse =
+            pexelsApi.getCuratedPhotos(page, perPage).apply {
+                photos.forEach {
+                    favoritesRepository.populateFavorite(it)
+                }
+            }
 
-    fun getPhoto(id: String): Single<Photo> =
-            pexelsApi.getPhoto(id)
-                    .map(favoritesRepository::populateFavorite)
+    suspend fun getPhoto(id: String): Photo =
+            pexelsApi.getPhoto(id).apply {
+                favoritesRepository.populateFavorite(this)
+            }
 
-    fun searchPhotos(query: String, page: Int, perPage: Int): Single<PexelsSearchResponse> =
-            pexelsApi.searchPhotos(query, page, perPage)
-                    .map(favoritesRepository::populateFavorite)
+    suspend fun searchPhotos(query: String, page: Int, perPage: Int): PexelsSearchResponse =
+            pexelsApi.searchPhotos(query, page, perPage).apply {
+                photos.forEach {
+                    favoritesRepository.populateFavorite(it)
+                }
+            }
 }

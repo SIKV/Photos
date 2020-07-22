@@ -30,16 +30,12 @@ class ApiClient private constructor() {
 
             try {
                 val unsplashPhotos = unsplashClient.searchPhotos(query, 0, limitForEachSource)
-                        .blockingGet()
-
                 photos.addAll(unsplashPhotos.results)
 
             } catch (e: Exception) { }
 
             try {
                 val pexelsPhotos = pexelsClient.searchPhotos(query, 0, limitForEachSource)
-                        .blockingGet()
-
                 photos.addAll(pexelsPhotos.photos)
 
             } catch (e: Exception) { }

@@ -6,13 +6,8 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import com.github.sikv.photos.database.FavoritePhotoEntity
 import com.github.sikv.photos.database.FavoritesDao
 import com.github.sikv.photos.enumeration.SortBy
-import com.github.sikv.photos.model.*
-import com.github.sikv.photos.model.pexels.PexelsCuratedPhotosResponse
-import com.github.sikv.photos.model.pexels.PexelsSearchResponse
-import com.github.sikv.photos.model.unsplash.UnsplashPhoto
-import com.github.sikv.photos.model.unsplash.UnsplashSearchResponse
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import com.github.sikv.photos.model.Photo
+import kotlinx.coroutines.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,6 +20,8 @@ class FavoritesRepository @Inject constructor(
         fun onFavoriteChanged(photo: Photo, favorite: Boolean)
         fun onFavoritesChanged()
     }
+
+    private val scope = CoroutineScope(Job() + Dispatchers.IO)
 
     private val subscribers = mutableListOf<Listener>()
 
@@ -73,7 +70,7 @@ class FavoritesRepository @Inject constructor(
 
         val favoritePhoto = FavoritePhotoEntity.fromPhoto(photo)
 
-        GlobalScope.launch {
+        scope.launch {
             if (favorite) {
                 favoritesDao.insert(favoritePhoto)
             } else {
@@ -82,30 +79,28 @@ class FavoritesRepository @Inject constructor(
         }
     }
 
-    fun markAllAsRemoved(completion: (Boolean) -> Unit) {
-        GlobalScope.launch {
-            val count = favoritesDao.getCount()
+    suspend fun markAllAsRemoved(): Boolean = withContext(Dispatchers.IO) {
+        val count = favoritesDao.getCount()
 
-            if (count > 0) {
-                favoritesDao.markAllAsDeleted()
+        if (count > 0) {
+            favoritesDao.markAllAsDeleted()
 
-                favorites.keys.forEach {
-                    favorites[it] = false
-                }
-
-                subscribers.forEach {
-                    it.onFavoritesChanged()
-                }
-
-                completion(true)
-            } else {
-                completion(false)
+            favorites.keys.forEach {
+                favorites[it] = false
             }
+
+            subscribers.forEach {
+                it.onFavoritesChanged()
+            }
+
+            true
+        } else {
+            false
         }
     }
 
     fun unmarkAllAsRemoved() {
-        GlobalScope.launch {
+        scope.launch {
             favoritesDao.unmarkAllAsDeleted()
 
             favorites.keys.forEach {
@@ -119,7 +114,7 @@ class FavoritesRepository @Inject constructor(
     }
 
     fun removeAll() {
-        GlobalScope.launch {
+        scope.launch {
             favoritesDao.deleteAll()
         }
     }
@@ -128,44 +123,14 @@ class FavoritesRepository @Inject constructor(
      * Used to get [photo]'s isFavorite flag. If [photo] is contained in [favorites] map
      * then this function returns overridden local result from the map, if not, the initial one.
      */
-    fun isFavorite(photo: Photo?): Boolean {
-        return favorites[photo] ?: photo?.favorite ?: false
+    fun isFavorite(photo: Photo?): Boolean = favorites[photo] ?: photo?.favorite ?: false
+
+    suspend fun isFavoriteFromDatabase(photo: Photo): Boolean = withContext(Dispatchers.IO) {
+        favoritesDao.getById(photo.getPhotoId()) != null
     }
 
-    fun isFavoriteFromDatabase(photo: Photo): Boolean {
-        return favoritesDao.getById(photo.getPhotoId()) != null
-    }
-
-    fun populateFavorite(photo: Photo): Photo {
+    suspend fun populateFavorite(photo: Photo): Photo {
         photo.favorite = isFavoriteFromDatabase(photo)
         return photo
-    }
-
-    fun populateFavorite(photos: List<UnsplashPhoto>): List<UnsplashPhoto> {
-        photos.forEach {
-            it.favorite = isFavoriteFromDatabase(it)
-        }
-        return photos
-    }
-
-    fun populateFavorite(response: UnsplashSearchResponse): UnsplashSearchResponse {
-        response.results.forEach {
-            it.favorite = isFavoriteFromDatabase(it)
-        }
-        return response
-    }
-
-    fun populateFavorite(response: PexelsCuratedPhotosResponse): PexelsCuratedPhotosResponse {
-        response.photos.forEach {
-            it.favorite = isFavoriteFromDatabase(it)
-        }
-        return response
-    }
-
-    fun populateFavorite(response: PexelsSearchResponse): PexelsSearchResponse {
-        response.photos.forEach {
-            it.favorite = isFavoriteFromDatabase(it)
-        }
-        return response
     }
 }
