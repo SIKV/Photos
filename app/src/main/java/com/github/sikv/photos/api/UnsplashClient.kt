@@ -1,7 +1,7 @@
 package com.github.sikv.photos.api
 
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.unsplash.UnsplashPhoto
 import com.github.sikv.photos.model.unsplash.UnsplashSearchResponse
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -9,9 +9,10 @@ import javax.inject.Singleton
 @Singleton
 class UnsplashClient @Inject constructor(
         private val unsplashApi: UnsplashApi,
-        private val favoritesRepository: FavoritesRepository) {
+        private val favoritesRepository: FavoritesRepository
+) {
 
-    suspend fun getPhoto(id: String): Photo =
+    suspend fun getPhoto(id: String): UnsplashPhoto =
             unsplashApi.getPhoto(id).apply {
                 favoritesRepository.populateFavorite(this)
             }

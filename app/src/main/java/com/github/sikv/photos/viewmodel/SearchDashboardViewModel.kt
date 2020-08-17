@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.App
 import com.github.sikv.photos.RuntimeBehaviour
-import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.config.Config
+import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.recommendation.RecommendedPhotos
 import com.github.sikv.photos.recommendation.Recommender
 import kotlinx.coroutines.launch
@@ -18,6 +18,9 @@ class SearchDashboardViewModel : ViewModel() {
     companion object {
         private const val RECOMMENDATIONS_LIMIT = 18
     }
+
+    @Inject
+    lateinit var photosRepository: PhotosRepository
 
     @Inject
     lateinit var recommender: Recommender
@@ -44,7 +47,7 @@ class SearchDashboardViewModel : ViewModel() {
             val recommendation = recommender.getNextRecommendation()
 
             if (recommendation.query != null) {
-                val photos = ApiClient.INSTANCE.searchPhotos(recommendation.query, RECOMMENDATIONS_LIMIT)
+                val photos = photosRepository.searchPhotos(recommendation.query, RECOMMENDATIONS_LIMIT)
 
                 recommendedPhotosLoadedMutableEvent.postValue(RecommendedPhotos(photos, recommendation.moreAvailable, reset))
             } else {

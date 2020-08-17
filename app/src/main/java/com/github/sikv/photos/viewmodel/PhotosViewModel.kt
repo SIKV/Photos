@@ -7,12 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.github.sikv.photos.App
-import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.PexelsCuratedPhotosDataSource
 import com.github.sikv.photos.data.PexelsCuratedPhotosDataSourceFactory
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.enumeration.DataSourceState
-import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.event.VoidEvent
 import com.github.sikv.photos.model.Photo
@@ -78,7 +76,7 @@ class PhotosViewModel : ViewModel(), FavoritesRepository.Listener {
     }
 
     fun getPexelsCuratedPhotos(): LiveData<PagedList<Photo>>? {
-        pexelsDataSourceFactoryPexelsCurated = PexelsCuratedPhotosDataSourceFactory(ApiClient.INSTANCE.pexelsClient)
+        pexelsDataSourceFactoryPexelsCurated = PexelsCuratedPhotosDataSourceFactory()
 
         pexelsSearchLivePagedList = LivePagedListBuilder(pexelsDataSourceFactoryPexelsCurated!!, pagedListConfig)
                 .setFetchExecutor(Executors.newSingleThreadExecutor())

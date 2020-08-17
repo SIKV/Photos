@@ -15,9 +15,8 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.createShareIntent
@@ -31,6 +30,9 @@ class PhotoViewModel(
         application: Application,
         private var photo: Photo
 ) : AndroidViewModel(application), FavoritesRepository.Listener {
+
+    @Inject
+    lateinit var photosRepository: PhotosRepository
 
     @Inject
     lateinit var favoritesRepository: FavoritesRepository
@@ -126,11 +128,7 @@ class PhotoViewModel(
 
         viewModelScope.launch {
             try {
-                when (photo.getPhotoSource()) {
-                    PhotoSource.PEXELS -> ApiClient.INSTANCE.pexelsClient.getPhoto(photo.getPhotoId())
-                    PhotoSource.UNSPLASH -> ApiClient.INSTANCE.unsplashClient.getPhoto(photo.getPhotoId())
-                    else -> null
-                }?.let { photo ->
+                photosRepository.getPhoto(photo.getPhotoId(), photo.getPhotoSource())?.let { photo ->
                     this@PhotoViewModel.photo = photo
 
                     glide.asBitmap()

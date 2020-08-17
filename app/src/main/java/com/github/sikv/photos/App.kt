@@ -43,6 +43,7 @@ class App : Application() {
 
     external fun getPexelsKey(): String?
     external fun getUnsplashKey(): String?
+    external fun getPixabayKey(): String?
 
     fun getPrivatePreferences(): SharedPreferences {
         return getSharedPreferences("Preferences", Context.MODE_PRIVATE)

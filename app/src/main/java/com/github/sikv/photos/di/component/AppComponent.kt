@@ -1,6 +1,8 @@
 package com.github.sikv.photos.di.component
 
 import android.content.Context
+import com.github.sikv.photos.data.PexelsCuratedPhotosDataSource
+import com.github.sikv.photos.data.SearchPhotosDataSource
 import com.github.sikv.photos.di.module.GlideModule
 import com.github.sikv.photos.di.module.RoomModule
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
@@ -35,4 +37,6 @@ interface AppComponent {
     fun inject(adapter: PhotoPagedListAdapter)
     fun inject(adapter: PhotoListAdapter)
     fun inject(popup: PhotoPreviewPopup)
+    fun inject(dataSource: SearchPhotosDataSource)
+    fun inject(dataSource: PexelsCuratedPhotosDataSource)
 }

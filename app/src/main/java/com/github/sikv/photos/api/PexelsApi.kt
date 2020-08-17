@@ -10,10 +10,13 @@ import retrofit2.http.Query
 interface PexelsApi {
 
     @GET("curated")
-    suspend fun getCuratedPhotos(@Query("page") page: Int, @Query("per_page") perPage: Int): PexelsCuratedPhotosResponse
+    suspend fun getCuratedPhotos(@Query("page") page: Int,
+                                 @Query("per_page") perPage: Int): PexelsCuratedPhotosResponse
 
     @GET("search")
-    suspend fun searchPhotos(@Query("query") query: String, @Query("page") page: Int, @Query("per_page") perPage: Int):PexelsSearchResponse
+    suspend fun searchPhotos(@Query("query") query: String,
+                             @Query("page") page: Int,
+                             @Query("per_page") perPage: Int): PexelsSearchResponse
 
     @GET("photos/{id}")
     suspend fun getPhoto(@Path("id") id: String): PexelsPhoto
