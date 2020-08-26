@@ -38,6 +38,10 @@ class PlaceholderGeneratorBuilder(private val context: Context) {
         this.text = text.getInitials()
     }
 
+    fun textFirstChar(text: String) = apply {
+        this.text = text.first().toUpperCase().toString()
+    }
+
     fun textColor(@ColorRes textColor: Int) = apply {
         this.textColor = ContextCompat.getColor(context, textColor)
     }

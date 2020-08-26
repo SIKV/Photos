@@ -73,7 +73,7 @@
     <string name="error_setting_wallpaper">Error setting wallpaper</string>
     <string name="try_again">Try Again</string>
     <string name="sign_in_with_google">Sign in with Google</string>
-    <string name="sign_in_pref_summary">Sign in to save and sync favorites</string>
+    <string name="sign_in_pref_summary">Sync across devices</string>
     <string name="signed_in_as_s">Signed in as %s</string>
     <string name="sign_out">Sign Out</string>
     <string name="app_version">App Version</string>

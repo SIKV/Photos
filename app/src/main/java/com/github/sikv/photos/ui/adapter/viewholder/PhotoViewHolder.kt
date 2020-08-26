@@ -130,10 +130,10 @@ class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     .into(itemView.photoImage)
 
             TextPlaceholder.with(itemView.context)
-                    .textInitials(it.getPhotoPhotographerName())
-                    .textColor(R.color.colorSecondary)
+                    .textFirstChar(it.getPhotoPhotographerName())
+                    .textColor(R.color.colorText)
+                    .background(TextPlaceholder.Shape.CIRCLE, R.color.colorPrimary)
                     .generateDrawable { placeholder ->
-
                         glide.load(it.getPhotoPhotographerImageUrl())
                                 .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
                                 .transform(CircleCrop())
