@@ -17,7 +17,9 @@ import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.setToolbarTitle
 import com.github.sikv.photos.viewmodel.MoreViewModel
+import com.github.sikv.photos.viewmodel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
 
 class MoreFragment : BaseFragment() {
 
@@ -66,16 +68,23 @@ class MoreFragment : BaseFragment() {
 
     class PreferenceFragment : PreferenceFragmentCompat() {
 
+        @Inject
+        lateinit var viewModelFactory: ViewModelFactory
+
         private val viewModel: MoreViewModel by lazy {
-            ViewModelProvider(this).get(MoreViewModel::class.java)
+            ViewModelProvider(this, viewModelFactory).get(MoreViewModel::class.java)
         }
 
         private var signingInSnackbar: Snackbar? = null
 
+        init {
+            App.instance.appComponent.inject(this)
+        }
+
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_more, rootKey)
 
-            handleSignInVisibility(viewModel.accountManager.loginStatus)
+            handleSignInVisibility(viewModel.accountManager.getLoginStatus())
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

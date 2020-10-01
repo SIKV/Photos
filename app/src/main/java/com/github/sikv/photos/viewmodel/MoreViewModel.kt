@@ -5,26 +5,23 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.sikv.photos.App
+import com.github.sikv.photos.account.AccountManager
+import com.github.sikv.photos.account.AccountManagerListener
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.event.Event
-import com.github.sikv.photos.util.AccountManager
 import javax.inject.Inject
 
-class MoreViewModel: ViewModel(), AccountManager.Callback {
-
-    @Inject
-    lateinit var accountManager: AccountManager
+class MoreViewModel @Inject constructor(
+        val accountManager: AccountManager
+) : ViewModel(), AccountManagerListener {
 
     private val loginStatusChangedMutableEvent = MutableLiveData<Event<LoginStatus>>()
     val loginStatusChangedEvent: LiveData<Event<LoginStatus>> = loginStatusChangedMutableEvent
 
     init {
-        App.instance.appComponent.inject(this)
-
         accountManager.subscribe(this)
 
-        loginStatusChangedMutableEvent.value = Event(accountManager.loginStatus)
+        loginStatusChangedMutableEvent.value = Event(accountManager.getLoginStatus())
     }
 
     override fun onCleared() {

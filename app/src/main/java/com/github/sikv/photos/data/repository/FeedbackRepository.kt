@@ -1,7 +1,7 @@
 package com.github.sikv.photos.data.repository
 
 import com.github.sikv.photos.model.Feedback
-import com.github.sikv.photos.util.AccountManager
+import com.github.sikv.photos.account.AccountManager
 import com.github.sikv.photos.util.Utils
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject

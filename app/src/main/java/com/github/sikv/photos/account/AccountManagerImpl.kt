@@ -1,4 +1,4 @@
-package com.github.sikv.photos.util
+package com.github.sikv.photos.account
 
 import android.content.Context
 import android.content.Intent
@@ -16,19 +16,15 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AccountManager @Inject constructor(context: Context) {
+class AccountManagerImpl @Inject constructor(context: Context) : AccountManager {
 
     companion object {
         const val RC_GOOGLE_SIGN_IN = 500
     }
 
-    interface Callback {
-        fun onLoginStatusChanged(status: LoginStatus)
-    }
+    private val subscribers = mutableListOf<AccountManagerListener>()
 
-    private val subscribers = mutableListOf<Callback>()
-
-    var loginStatus: LoginStatus = LoginStatus.NotSet
+    private var loginStatus: LoginStatus = LoginStatus.NotSet
         private set(value) {
             field = value
 
@@ -54,12 +50,16 @@ class AccountManager @Inject constructor(context: Context) {
         }
     }
 
-    fun subscribe(callback: Callback) {
-        subscribers.add(callback)
+    override fun subscribe(listener: AccountManagerListener) {
+        subscribers.add(listener)
     }
 
-    fun unsubscribe(callback: Callback) {
-        subscribers.remove(callback)
+    override fun unsubscribe(listener: AccountManagerListener) {
+        subscribers.remove(listener)
+    }
+
+    override fun getLoginStatus(): LoginStatus {
+        return loginStatus
     }
 
     private fun isSignedIn(): Boolean {
@@ -70,7 +70,7 @@ class AccountManager @Inject constructor(context: Context) {
         return auth.currentUser != null && auth.currentUser?.isAnonymous == true
     }
 
-    fun signInAnonymously(doAfter: () -> Unit) {
+    override fun signInAnonymously(doAfter: () -> Unit) {
         if (isSignedIn() || isSignedInAnonymously() ) {
             doAfter()
         } else {
@@ -83,13 +83,13 @@ class AccountManager @Inject constructor(context: Context) {
         }
     }
 
-    fun signInWithGoogle(fragment: Fragment) {
+    override fun signInWithGoogle(fragment: Fragment) {
         fragment.startActivityForResult(googleSignInClient.signInIntent, RC_GOOGLE_SIGN_IN)
 
         loginStatus = LoginStatus.SigningIn
     }
 
-    fun handleSignInResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun handleSignInResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RC_GOOGLE_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 
@@ -106,7 +106,7 @@ class AccountManager @Inject constructor(context: Context) {
         }
     }
 
-    fun signOut() {
+    override fun signOut() {
         auth.signOut()
 
         loginStatus = LoginStatus.SignedOut
