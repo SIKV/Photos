@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.github.sikv.photos.App
+import com.github.sikv.photos.config.ListConfig
 import com.github.sikv.photos.data.PexelsCuratedPhotosDataSource
 import com.github.sikv.photos.data.PexelsCuratedPhotosDataSourceFactory
 import com.github.sikv.photos.data.repository.FavoritesRepository
@@ -19,18 +20,13 @@ import javax.inject.Inject
 
 class PhotosViewModel : ViewModel(), FavoritesRepository.Listener {
 
-    companion object {
-        const val INITIAL_LOAD_SIZE = 10
-        const val PAGE_SIZE = 10
-    }
-
     @Inject
     lateinit var favoritesRepository: FavoritesRepository
 
     private val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(INITIAL_LOAD_SIZE)
-            .setPageSize(PAGE_SIZE)
+            .setInitialLoadSizeHint(ListConfig.INITIAL_LOAD_SIZE)
+            .setPageSize(ListConfig.PAGE_SIZE)
             .build()
 
     private var pexelsDataSourceFactoryPexelsCurated: PexelsCuratedPhotosDataSourceFactory? = null

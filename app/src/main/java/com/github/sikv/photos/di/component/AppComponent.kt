@@ -3,15 +3,13 @@ package com.github.sikv.photos.di.component
 import android.content.Context
 import com.github.sikv.photos.data.PexelsCuratedPhotosDataSource
 import com.github.sikv.photos.data.SearchPhotosDataSource
-import com.github.sikv.photos.di.module.AppModule
-import com.github.sikv.photos.di.module.GlideModule
-import com.github.sikv.photos.di.module.RoomModule
-import com.github.sikv.photos.di.module.ViewModelModule
+import com.github.sikv.photos.di.module.*
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoGridViewHolder
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import com.github.sikv.photos.ui.fragment.MoreFragment
+import com.github.sikv.photos.ui.fragment.SingleSearchFragment
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.viewmodel.*
 import dagger.BindsInstance
@@ -19,7 +17,13 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [AppModule::class, RoomModule::class, GlideModule::class, ViewModelModule::class])
+@Component(modules = [
+    AppModule::class,
+    RoomModule::class,
+    RepositoryModule::class,
+    ViewModelModule::class,
+    GlideModule::class
+])
 interface AppComponent {
 
     @Component.Factory
@@ -27,6 +31,7 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
+    fun inject(fragment: SingleSearchFragment)
     fun inject(fragment: MoreFragment.PreferenceFragment)
 
     fun inject(viewModel: PhotosViewModel)

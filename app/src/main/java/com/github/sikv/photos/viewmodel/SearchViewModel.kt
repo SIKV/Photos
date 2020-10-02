@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.github.sikv.photos.App
+import com.github.sikv.photos.config.ListConfig
 import com.github.sikv.photos.data.SearchPhotosDataSource
 import com.github.sikv.photos.data.SearchPhotosDataSourceFactory
 import com.github.sikv.photos.data.repository.FavoritesRepository
@@ -18,20 +18,14 @@ import com.github.sikv.photos.model.Photo
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
-class SearchViewModel : ViewModel(), FavoritesRepository.Listener {
-
-    companion object {
-        const val INITIAL_LOAD_SIZE = 10
-        const val PAGE_SIZE = 10
-    }
-
-    @Inject
-    lateinit var favoritesRepository: FavoritesRepository
+class SearchViewModel @Inject constructor(
+        private val favoritesRepository: FavoritesRepository
+) : ViewModel(), FavoritesRepository.Listener {
 
     private val pagedListConfig = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(INITIAL_LOAD_SIZE)
-            .setPageSize(PAGE_SIZE)
+            .setInitialLoadSizeHint(ListConfig.INITIAL_LOAD_SIZE)
+            .setPageSize(ListConfig.PAGE_SIZE)
             .build()
 
     private val dataSourceFactories = mutableMapOf<PhotoSource, SearchPhotosDataSourceFactory>()
@@ -44,8 +38,6 @@ class SearchViewModel : ViewModel(), FavoritesRepository.Listener {
     val favoritesChangedEvent: LiveData<VoidEvent> = favoritesChangedMutableEvent
 
     init {
-        App.instance.appComponent.inject(this)
-
         favoritesRepository.subscribe(this)
     }
 

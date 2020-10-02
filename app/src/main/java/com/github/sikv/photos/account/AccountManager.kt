@@ -5,8 +5,13 @@ import androidx.fragment.app.Fragment
 import com.github.sikv.photos.enumeration.LoginStatus
 
 interface AccountManager {
-    fun subscribe(listener: AccountManagerListener)
-    fun unsubscribe(listener: AccountManagerListener)
+
+    interface Listener {
+        fun onLoginStatusChanged(status: LoginStatus)
+    }
+
+    fun subscribe(listener: Listener)
+    fun unsubscribe(listener: Listener)
 
     fun getLoginStatus(): LoginStatus
 

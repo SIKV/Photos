@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.DataSourceState
 import com.github.sikv.photos.enumeration.PhotoSource
@@ -15,12 +15,14 @@ import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.util.disableChangeAnimations
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchViewModel
+import com.github.sikv.photos.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_single_search.*
 import kotlinx.android.synthetic.main.layout_loading_error.*
 import kotlinx.android.synthetic.main.layout_loading_list.*
 import kotlinx.android.synthetic.main.layout_no_results_found.*
+import javax.inject.Inject
 
-class SingleSearchFragment : Fragment() {
+class SingleSearchFragment : BaseFragment() {
 
     companion object {
         private const val KEY_SEARCH_SOURCE = "key_search_source"
@@ -36,8 +38,11 @@ class SingleSearchFragment : Fragment() {
         }
     }
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private val viewModel: SearchViewModel by lazy {
-        ViewModelProvider(this).get(SearchViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory).get(SearchViewModel::class.java)
     }
 
     private val photoActionDispatcher by lazy {
@@ -48,6 +53,10 @@ class SingleSearchFragment : Fragment() {
 
     private lateinit var photoSource: PhotoSource
     private val photoAdapter = PhotoPagedListAdapter(photoActionDispatcher)
+
+    init {
+        App.instance.appComponent.inject(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

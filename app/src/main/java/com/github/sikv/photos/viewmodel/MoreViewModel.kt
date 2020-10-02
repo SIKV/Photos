@@ -6,14 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sikv.photos.account.AccountManager
-import com.github.sikv.photos.account.AccountManagerListener
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.event.Event
 import javax.inject.Inject
 
 class MoreViewModel @Inject constructor(
         val accountManager: AccountManager
-) : ViewModel(), AccountManagerListener {
+) : ViewModel(), AccountManager.Listener {
 
     private val loginStatusChangedMutableEvent = MutableLiveData<Event<LoginStatus>>()
     val loginStatusChangedEvent: LiveData<Event<LoginStatus>> = loginStatusChangedMutableEvent

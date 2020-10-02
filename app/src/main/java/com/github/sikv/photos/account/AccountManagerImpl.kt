@@ -22,7 +22,7 @@ class AccountManagerImpl @Inject constructor(context: Context) : AccountManager 
         const val RC_GOOGLE_SIGN_IN = 500
     }
 
-    private val subscribers = mutableListOf<AccountManagerListener>()
+    private val subscribers = mutableListOf<AccountManager.Listener>()
 
     private var loginStatus: LoginStatus = LoginStatus.NotSet
         private set(value) {
@@ -50,11 +50,11 @@ class AccountManagerImpl @Inject constructor(context: Context) : AccountManager 
         }
     }
 
-    override fun subscribe(listener: AccountManagerListener) {
+    override fun subscribe(listener: AccountManager.Listener) {
         subscribers.add(listener)
     }
 
-    override fun unsubscribe(listener: AccountManagerListener) {
+    override fun unsubscribe(listener: AccountManager.Listener) {
         subscribers.remove(listener)
     }
 
