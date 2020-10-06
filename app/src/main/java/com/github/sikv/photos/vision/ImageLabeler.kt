@@ -19,6 +19,10 @@ class ImageLabeler @Inject constructor(
 
     suspend fun processImage(imageUrl: String): List<String> {
         return suspendCoroutine { continuation ->
+            if (imageUrl.isBlank()) {
+                continuation.resume(emptyList())
+            }
+
             glide.asBitmap()
                     .load(imageUrl)
                     .into(object : CustomTarget<Bitmap>() {
