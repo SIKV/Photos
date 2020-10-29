@@ -14,13 +14,10 @@ import com.github.sikv.photos.recommendation.Recommender
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SearchDashboardViewModel : ViewModel() {
-
-    @Inject
-    lateinit var photosRepository: PhotosRepository
-
-    @Inject
-    lateinit var recommender: Recommender
+class SearchDashboardViewModel @Inject constructor(
+        private val photosRepository: PhotosRepository,
+        private val recommender: Recommender
+) : ViewModel() {
 
     private val recommendedPhotosLoadedMutableEvent= MutableLiveData<RecommendedPhotos>()
     val recommendedPhotosLoadedEvent: LiveData<RecommendedPhotos> = recommendedPhotosLoadedMutableEvent

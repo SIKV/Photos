@@ -9,6 +9,7 @@ import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoGridViewHolder
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import com.github.sikv.photos.ui.fragment.MoreFragment
+import com.github.sikv.photos.ui.fragment.SearchDashboardFragment
 import com.github.sikv.photos.ui.fragment.SingleSearchFragment
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.viewmodel.*
@@ -31,6 +32,7 @@ interface AppComponent {
         fun create(@BindsInstance context: Context): AppComponent
     }
 
+    fun inject(fragment: SearchDashboardFragment)
     fun inject(fragment: SingleSearchFragment)
     fun inject(fragment: MoreFragment.PreferenceFragment)
 

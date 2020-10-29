@@ -10,22 +10,28 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchDashboardViewModel
+import com.github.sikv.photos.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_search_dashboard.*
 import kotlinx.android.synthetic.main.layout_no_recommendations.*
+import javax.inject.Inject
 
 class SearchDashboardFragment : BaseFragment() {
 
     companion object {
-        private const val REQUEST_CODE_SPEECH_RECOGNIZER = 125
+        private const val RC_SPEECH_RECOGNIZER = 125
     }
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private val viewModel: SearchDashboardViewModel by lazy {
-        ViewModelProvider(this).get(SearchDashboardViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory).get(SearchDashboardViewModel::class.java)
     }
 
     private lateinit var recommendedPhotosAdapter: PhotoGridAdapter
@@ -34,6 +40,10 @@ class SearchDashboardFragment : BaseFragment() {
         PhotoActionDispatcher(this) {
             // Don't need to handle [Favorite] action here.
         }
+    }
+
+    init {
+        App.instance.appComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -50,7 +60,7 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE_SPEECH_RECOGNIZER && resultCode == Activity.RESULT_OK) {
+        if (requestCode == RC_SPEECH_RECOGNIZER && resultCode == Activity.RESULT_OK) {
             val spokenText = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.let { results ->
                 results[0]
             }
@@ -90,7 +100,7 @@ class SearchDashboardFragment : BaseFragment() {
             putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
         }
 
-        startActivityForResult(intent, REQUEST_CODE_SPEECH_RECOGNIZER)
+        startActivityForResult(intent, RC_SPEECH_RECOGNIZER)
     }
 
     private fun setListeners() {
