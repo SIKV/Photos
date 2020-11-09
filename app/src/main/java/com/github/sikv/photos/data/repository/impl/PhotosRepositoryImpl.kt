@@ -18,7 +18,7 @@ class PhotosRepositoryImpl @Inject constructor() : PhotosRepository {
         return when (source) {
             PhotoSource.PEXELS -> api.pexelsClient.getPhoto(id)
             PhotoSource.UNSPLASH -> api.unsplashClient.getPhoto(id)
-            PhotoSource.PIXABAY -> api.pixabayClient.getPhoto(id)
+            PhotoSource.PIXABAY -> api.pixabayClient.getPhoto(id).hits.firstOrNull()
 
             else -> throw NotImplementedError()
         }

@@ -1,7 +1,6 @@
 package com.github.sikv.photos.api
 
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.model.pixabay.PixabayPhoto
 import com.github.sikv.photos.model.pixabay.PixabaySearchResponse
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -19,8 +18,10 @@ class PixabayClient @Inject constructor(
                 }
             }
 
-    suspend fun getPhoto(id: String): PixabayPhoto =
+    suspend fun getPhoto(id: String): PixabaySearchResponse =
             pixabayApi.getPhoto(id).apply {
-                favoritesRepository.populateFavorite(this)
+                hits.forEach {
+                    favoritesRepository.populateFavorite(it)
+                }
             }
 }
