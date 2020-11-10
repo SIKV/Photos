@@ -1,4 +1,4 @@
-<img src="../assets/FeatureGraphic.png" width="750">
+<img src="../assets/FeatureGraphic.png" width="700">
 
 Browse, search, download, and share amazing free photos provided by talented photographers on [Pexels](https://www.pexels.com) and [Pixabay](https://pixabay.com).
 
@@ -24,10 +24,7 @@ Browse, search, download, and share amazing free photos provided by talented pho
 
 # Screenshots
 <p>
-  <img src="../assets/screenshot1.png" width="300">
-  <img src="../assets/screenshot2.png" width="300">
-  <img src="../assets/screenshot3.png" width="300">
+  <img src="../assets/promo1.jpg" width="250">
+  <img src="../assets/promo2.jpg" width="250">
+  <img src="../assets/promo3.jpg" width="250">
 </p>
-
-# Download
-Soon.
