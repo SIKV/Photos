@@ -1,7 +1,7 @@
 package com.github.sikv.photos.event
 
 /**
- * Used as a wrapper to send an event without data.
+ * A wrapper to send an event without data.
  */
 class VoidEvent {
 

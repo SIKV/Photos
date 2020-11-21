@@ -5,8 +5,9 @@ import android.graphics.drawable.Drawable
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.google.firebase.ml.vision.FirebaseVision
-import com.google.firebase.ml.vision.common.FirebaseVisionImage
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.label.ImageLabeling
+import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.coroutines.resume
@@ -27,11 +28,10 @@ class ImageLabeler @Inject constructor(
                     .load(imageUrl)
                     .into(object : CustomTarget<Bitmap>() {
                         override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                            val image = FirebaseVisionImage.fromBitmap(bitmap)
+                            val image = InputImage.fromBitmap(bitmap, 0)
 
-                            FirebaseVision.getInstance()
-                                    .onDeviceImageLabeler
-                                    .processImage(image)
+                            ImageLabeling.getClient(ImageLabelerOptions.DEFAULT_OPTIONS)
+                                    .process(image)
                                     .addOnSuccessListener { labels ->
                                         continuation.resume(labels.map { it.text })
                                     }.addOnFailureListener {
