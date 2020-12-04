@@ -41,6 +41,13 @@
             android:textColor="@color/colorNotFoundContainer"
             android:text="@string/loading_error_description" />
 
+        <Button
+            android:id="@+id/tryAgainButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/try_again" />
+
     </LinearLayout>
 
 </merge>

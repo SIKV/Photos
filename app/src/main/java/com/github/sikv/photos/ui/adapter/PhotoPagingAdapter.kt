@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
-import androidx.paging.PagedListAdapter
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.github.sikv.photos.App
 import com.github.sikv.photos.data.repository.FavoritesRepository
@@ -13,9 +13,9 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import javax.inject.Inject
 
-class PhotoPagedListAdapter(
+class PhotoPagingAdapter(
         private val listener: OnPhotoActionListener
-) : PagedListAdapter<Photo, PhotoViewHolder>(Photo.COMPARATOR) {
+) : PagingDataAdapter<Photo, PhotoViewHolder>(Photo.COMPARATOR) {
 
     @Inject
     lateinit var favoritesRepository: FavoritesRepository
@@ -40,9 +40,7 @@ class PhotoPagedListAdapter(
     }
 
     fun notifyPhotoChanged(photo: Photo) {
-        currentList?.indexOf(photo)?.let {
-            notifyItemChanged(it)
-        }
+        notifyItemChanged(snapshot().indexOf(photo))
     }
 
     fun setItemLayoutType(itemLayoutType: PhotoItemLayoutType) {

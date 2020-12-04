@@ -2,34 +2,29 @@ package com.github.sikv.photos.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.github.sikv.photos.config.ListConfig
-import com.github.sikv.photos.data.SearchPhotosDataSource
-import com.github.sikv.photos.data.SearchPhotosDataSourceFactory
+import com.github.sikv.photos.data.SearchPhotosPagingSource
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.enumeration.DataSourceState
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.event.VoidEvent
 import com.github.sikv.photos.model.Photo
-import java.util.concurrent.Executors
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
         private val favoritesRepository: FavoritesRepository
 ) : ViewModel(), FavoritesRepository.Listener {
 
-    private val pagedListConfig = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setInitialLoadSizeHint(ListConfig.INITIAL_LOAD_SIZE)
-            .setPageSize(ListConfig.PAGE_SIZE)
-            .build()
-
-    private val dataSourceFactories = mutableMapOf<PhotoSource, SearchPhotosDataSourceFactory>()
-    private val livePagedLists = mutableMapOf<PhotoSource, LiveData<PagedList<Photo>>?>()
+    private val pagingConfig = PagingConfig(
+            initialLoadSize = ListConfig.INITIAL_LOAD_SIZE,
+            pageSize = ListConfig.PAGE_SIZE,
+            enablePlaceholders = false
+    )
 
     private val favoriteChangedMutableEvent = MutableLiveData<Event<Photo>>()
     val favoriteChangedEvent: LiveData<Event<Photo>> = favoriteChangedMutableEvent
@@ -59,33 +54,16 @@ class SearchViewModel @Inject constructor(
         favoritesRepository.invertFavorite(photo)
     }
 
-    fun getSearchLoadingState(photoSource: PhotoSource): LiveData<DataSourceState>? {
-        dataSourceFactories[photoSource]?.let {
-            return Transformations.switchMap<SearchPhotosDataSource, DataSourceState>(
-                    it.searchDataSourceLiveData, SearchPhotosDataSource::state)
-        } ?: run {
-            return null
-        }
-    }
-
-    fun searchPhotos(photoSource: PhotoSource, query: String): LiveData<PagedList<Photo>>? {
+    fun searchPhotos(photoSource: PhotoSource, query: String): LiveData<PagingData<Photo>>? {
         val queryTrimmed = query.trim()
 
         if (queryTrimmed.isEmpty()) {
             return null
         }
 
-        val dataSourceFactory = SearchPhotosDataSourceFactory(photoSource, queryTrimmed)
-        dataSourceFactories[photoSource] = dataSourceFactory
-
-        livePagedLists[photoSource] = LivePagedListBuilder(dataSourceFactory, pagedListConfig)
-                .setFetchExecutor(Executors.newSingleThreadExecutor())
-                .build()
-
-        return livePagedLists[photoSource]
-    }
-
-    fun isSearchListEmpty(photoSource: PhotoSource): Boolean {
-        return livePagedLists[photoSource]?.value?.isEmpty() ?: true
+        return Pager(
+                config = pagingConfig,
+                pagingSourceFactory = { SearchPhotosPagingSource(photoSource, queryTrimmed) }
+        ).liveData
     }
 }

@@ -1,11 +1,11 @@
 package com.github.sikv.photos.di.component
 
 import android.content.Context
-import com.github.sikv.photos.data.PexelsCuratedPhotosDataSource
-import com.github.sikv.photos.data.SearchPhotosDataSource
+import com.github.sikv.photos.data.PexelsCuratedPhotosPagingSource
+import com.github.sikv.photos.data.SearchPhotosPagingSource
 import com.github.sikv.photos.di.module.*
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
-import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
+import com.github.sikv.photos.ui.adapter.PhotoPagingAdapter
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoGridViewHolder
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 import com.github.sikv.photos.ui.fragment.MoreFragment
@@ -50,9 +50,9 @@ interface AppComponent {
 
     fun inject(popup: PhotoPreviewPopup)
 
-    fun inject(adapter: PhotoPagedListAdapter)
+    fun inject(adapter: PhotoPagingAdapter)
     fun inject(adapter: PhotoListAdapter)
 
-    fun inject(dataSource: SearchPhotosDataSource)
-    fun inject(dataSource: PexelsCuratedPhotosDataSource)
+    fun inject(source: SearchPhotosPagingSource)
+    fun inject(source: PexelsCuratedPhotosPagingSource)
 }

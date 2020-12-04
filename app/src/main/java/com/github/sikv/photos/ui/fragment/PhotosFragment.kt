@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.PagedList
+import androidx.paging.LoadState
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.DataSourceState
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
-import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.PhotoActionDispatcher
-import com.github.sikv.photos.ui.adapter.PhotoPagedListAdapter
+import com.github.sikv.photos.ui.adapter.PhotoPagingAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.PhotosViewModel
@@ -37,7 +35,7 @@ class PhotosFragment : BaseFragment() {
         }
     }
 
-    private val photoAdapter = PhotoPagedListAdapter(photoActionDispatcher)
+    private val photoAdapter = PhotoPagingAdapter(photoActionDispatcher)
 
     private var currentSpanCount: Int = SPAN_COUNT_LIST
         set(value) {
@@ -70,8 +68,12 @@ class PhotosFragment : BaseFragment() {
             currentSpanCount = SPAN_COUNT_LIST
         }
 
+        tryAgainButton.setOnClickListener {
+            photoAdapter.retry()
+        }
+
+        initAdapter()
         observe()
-        observeLoadingState()
     }
 
     override fun onCreateToolbar(): FragmentToolbar? {
@@ -113,8 +115,8 @@ class PhotosFragment : BaseFragment() {
     }
 
     private fun observe() {
-        viewModel.getPexelsCuratedPhotos()?.observe(viewLifecycleOwner, Observer<PagedList<Photo>> { pagedList ->
-            photoAdapter.submitList(pagedList)
+        viewModel.getPexelsCuratedPhotos().observe(viewLifecycleOwner, Observer {
+            photoAdapter.submitData(lifecycle, it)
         })
 
         viewModel.favoriteChangedEvent.observe(viewLifecycleOwner, Observer {
@@ -130,38 +132,27 @@ class PhotosFragment : BaseFragment() {
         })
     }
 
-    private fun observeLoadingState() {
-        viewModel.getLoadingState()?.observe(viewLifecycleOwner, Observer { state ->
-            when (state) {
-                DataSourceState.LOADING_INITIAL -> {
-                    loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
-                    photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
-                    loadingListLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
-                }
-
-                DataSourceState.INITIAL_LOADING_DONE -> {
+    private fun initAdapter() {
+        photoAdapter.addLoadStateListener { loadState ->
+            when (loadState.source.refresh) {
+                is LoadState.NotLoading -> {
                     photosRecycler.setVisibilityAnimated(View.VISIBLE)
                     loadingListLayout.setVisibilityAnimated(View.GONE)
                     loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
                 }
 
-                DataSourceState.NEXT_DONE -> {
-                    // In some cases INITIAL_LOADING_DONE is not being called
-                    if (photosRecycler.visibility != View.VISIBLE) {
-                        photosRecycler.setVisibilityAnimated(View.VISIBLE)
-                        loadingListLayout.setVisibilityAnimated(View.GONE)
-                        loadingErrorLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
-                    }
+                is LoadState.Loading -> {
+                    loadingErrorLayout.setVisibilityAnimated(View.GONE, duration = 0)
+                    photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
+                    loadingListLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
                 }
 
-                DataSourceState.ERROR -> {
+                is LoadState.Error -> {
                     photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
                     loadingListLayout.setVisibilityAnimated(View.GONE, duration = 0)
                     loadingErrorLayout.setVisibilityAnimated(View.VISIBLE, duration = 0)
                 }
-
-                else -> { }
             }
-        })
+        }
     }
 }
