@@ -12,6 +12,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.github.sikv.photos.RuntimeBehaviour
+import com.github.sikv.photos.config.Config
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.disableScrollableToolbar
@@ -62,10 +64,6 @@ class MoreFragment : BaseFragment() {
                 .build()
     }
 
-    /**
-     *
-     */
-
     class PreferenceFragment : PreferenceFragmentCompat() {
 
         @Inject
@@ -83,6 +81,12 @@ class MoreFragment : BaseFragment() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_more, rootKey)
+
+            val syncEnabled = RuntimeBehaviour.getConfig(Config.SYNC_ENABLED)
+
+            findPreference<Preference>(getString(R.string._pref_sign_in))?.isEnabled = syncEnabled
+            findPreference<Preference>(getString(R.string._pref_sign_out))?.isEnabled = syncEnabled
+            findPreference<Preference>(getString(R.string._pref_sync_not_available))?.isVisible = !syncEnabled
 
             handleSignInVisibility(viewModel.accountManager.getLoginStatus())
         }

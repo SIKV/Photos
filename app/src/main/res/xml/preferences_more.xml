@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
         <Preference
             android:key="@string/_pref_sign_in"
-            android:icon="@drawable/ic_google_20dp"
             android:title="@string/sign_in_with_google"
-            android:summary="@string/sign_in_pref_summary"
-            app:isPreferenceVisible="false"
-            tools:isPreferenceVisible="true" />
+            android:summary="@string/sign_in_pref_summary" />
 
         <Preference
             android:key="@string/_pref_sign_out"
             android:icon="@drawable/ic_sign_out_24dp"
-            android:title="@string/sign_out"
-            app:isPreferenceVisible="false"
-            tools:isPreferenceVisible="true" />
+            android:title="@string/sign_out" />
+
+        <PreferenceCategory
+            android:key="@string/_pref_sync_not_available"
+            android:summary="@string/sync_not_available" />
 
 </PreferenceScreen>

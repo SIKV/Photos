@@ -5,6 +5,7 @@
 
     <string name="_pref_sign_in">PreferenceSignIn</string>
     <string name="_pref_sign_out">PreferenceSignOut</string>
+    <string name="_pref_sync_not_available">PreferenceSyncNotAvailable</string>
     <string name="_pref_dark_theme">PreferenceDarkTheme</string>
     <string name="_pref_send_feedback">PreferenceSendFeedback</string>
     <string name="_pref_rate_app">PreferenceRateApp</string>
@@ -100,4 +101,5 @@
     <string name="sort_by">Sort by</string>
     <string name="date_added_newest">Date added (newest)</string>
     <string name="date_added_oldest">Date added (oldest)</string>
+    <string name="sync_not_available">Sync is not available.</string>
 </resources>
