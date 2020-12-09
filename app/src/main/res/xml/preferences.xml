@@ -22,11 +22,6 @@
                     android:icon="@drawable/ic_feedback_24dp"
                     android:title="@string/send_feedback" />
 
-                <Preference
-                    android:key="@string/_pref_rate_app"
-                    android:icon="@drawable/ic_star_24dp"
-                    android:title="@string/rate_app" />
-
         </PreferenceCategory>
 
         <PreferenceCategory
