@@ -41,11 +41,14 @@ class SearchDashboardViewModel @Inject constructor(
             val recommendation = recommender.getNextRecommendation()
 
             if (recommendation.query != null) {
-                val photos = photosRepository.searchPhotos(recommendation.query, ListConfig.RECOMMENDATIONS_LIMIT)
+                val photos = photosRepository.searchPhotos(recommendation.query,
+                        ListConfig.RECOMMENDATIONS_LIMIT)
 
-                recommendedPhotosLoadedMutableEvent.postValue(RecommendedPhotos(photos, recommendation.moreAvailable, reset))
+                recommendedPhotosLoadedMutableEvent.postValue(RecommendedPhotos(photos,
+                        recommendation.moreAvailable, reset))
             } else {
-                recommendedPhotosLoadedMutableEvent.postValue(RecommendedPhotos(emptyList(), recommendation.moreAvailable, reset))
+                recommendedPhotosLoadedMutableEvent.postValue(RecommendedPhotos(emptyList(),
+                        recommendation.moreAvailable, reset))
             }
         }
     }

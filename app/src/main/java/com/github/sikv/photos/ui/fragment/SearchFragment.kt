@@ -23,15 +23,15 @@ import kotlinx.android.synthetic.main.fragment_search.*
 class SearchFragment : BaseFragment() {
 
     companion object {
-        private const val EXTRA_SEARCH_TEXT = "extra_search_text"
-        private const val EXTRA_LAST_SEARCH_TEXT = "extra_last_search_text"
+        private const val KEY_SEARCH_TEXT = "searchText"
+        private const val KEY_LAST_SEARCH_TEXT = "lastSearchText"
 
         fun newInstance(searchText: String? = null): SearchFragment {
             val fragment = SearchFragment()
 
             searchText?.let {
                 val args = Bundle()
-                args.putString(EXTRA_SEARCH_TEXT, it)
+                args.putString(KEY_LAST_SEARCH_TEXT, it)
 
                 fragment.arguments = args
             }
@@ -59,7 +59,7 @@ class SearchFragment : BaseFragment() {
 
         initViewPager {
             if (savedInstanceState == null) {
-                arguments?.getString(EXTRA_SEARCH_TEXT)?.let { searchText ->
+                arguments?.getString(KEY_SEARCH_TEXT)?.let { searchText ->
                     searchEdit.append(searchText)
                     searchPhotos(searchText)
                 }
@@ -77,7 +77,7 @@ class SearchFragment : BaseFragment() {
         super.onViewStateRestored(savedInstanceState)
 
         if (savedInstanceState != null) {
-            savedInstanceState.getString(EXTRA_LAST_SEARCH_TEXT)?.let { text ->
+            savedInstanceState.getString(KEY_LAST_SEARCH_TEXT)?.let { text ->
                 searchPhotos(text)
             }
         }
@@ -87,7 +87,7 @@ class SearchFragment : BaseFragment() {
         super.onSaveInstanceState(outState)
 
         lastSearchText?.let { text ->
-            outState.putSerializable(EXTRA_LAST_SEARCH_TEXT, text)
+            outState.putSerializable(KEY_LAST_SEARCH_TEXT, text)
         }
     }
 
@@ -100,7 +100,7 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun shownKeyboardIfNeeded() {
-        val showKeyboard = arguments?.getString(EXTRA_SEARCH_TEXT) == null
+        val showKeyboard = arguments?.getString(KEY_SEARCH_TEXT) == null
         var keyboardShown = false
 
         if (showKeyboard) {
@@ -136,6 +136,7 @@ class SearchFragment : BaseFragment() {
         viewPagerAdapter = SearchViewPagerAdapter(childFragmentManager)
 
         viewPager.adapter = viewPagerAdapter
+        viewPager.offscreenPageLimit = SearchSource.size
 
         tabLayout.setupWithViewPager(viewPager)
 
@@ -171,31 +172,31 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    /**
-     * SearchViewPagerAdapter
-     */
-
     private class SearchViewPagerAdapter(
             fragmentManager: FragmentManager
     ) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
-            return SingleSearchFragment.newInstance(SearchSource.values()[position].photoSource)
+            return SingleSearchFragment.newInstance(SearchSource.getAt(position).photoSource)
         }
 
         override fun getPageTitle(position: Int): CharSequence? {
-            return SearchSource.values()[position].photoSource.title
+            return SearchSource.getAt(position).photoSource.title
         }
 
         override fun getCount(): Int {
-            return SearchSource.values().size
+            return SearchSource.size
         }
 
         fun searchPhotos(viewPager: ViewPager, text: String) {
             startUpdate(viewPager)
 
             for (i in 0 until count) {
-                (instantiateItem(viewPager, i) as? SingleSearchFragment)?.searchPhotos(text)
+                (instantiateItem(viewPager, i) as? SingleSearchFragment)?.apply {
+                    if (isAdded) {
+                        searchPhotos(text)
+                    }
+                }
             }
 
             finishUpdate(viewPager)

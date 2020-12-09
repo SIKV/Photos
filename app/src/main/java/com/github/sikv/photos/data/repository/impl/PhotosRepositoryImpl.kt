@@ -3,6 +3,7 @@ package com.github.sikv.photos.data.repository.impl
 import com.github.sikv.photos.api.ApiClient
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.enumeration.SearchSource
 import com.github.sikv.photos.model.Photo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -42,12 +43,17 @@ class PhotosRepositoryImpl @Inject constructor() : PhotosRepository {
         }
     }
 
-    // TODO Add Pixabay
     override suspend fun searchPhotos(query: String, limit: Int): List<Photo> {
         return withContext(Dispatchers.IO) {
-            val limitForEachSource = limit / 2
+            val limitForEachSource = limit / SearchSource.size
 
             val photos = mutableListOf<Photo>()
+
+            try {
+                val pexelsPhotos = ApiClient.INSTANCE.pexelsClient.searchPhotos(query, 0, limitForEachSource)
+                photos.addAll(pexelsPhotos.photos)
+
+            } catch (e: Exception) { }
 
             try {
                 val unsplashPhotos = ApiClient.INSTANCE.unsplashClient.searchPhotos(query, 0, limitForEachSource)
@@ -56,8 +62,8 @@ class PhotosRepositoryImpl @Inject constructor() : PhotosRepository {
             } catch (e: Exception) { }
 
             try {
-                val pexelsPhotos = ApiClient.INSTANCE.pexelsClient.searchPhotos(query, 0, limitForEachSource)
-                photos.addAll(pexelsPhotos.photos)
+                val pixabayPhotos = ApiClient.INSTANCE.pixabayClient.searchPhotos(query, 0, limitForEachSource)
+                photos.addAll(pixabayPhotos.hits)
 
             } catch (e: Exception) { }
 

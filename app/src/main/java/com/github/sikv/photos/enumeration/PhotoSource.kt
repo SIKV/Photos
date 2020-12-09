@@ -1,8 +1,14 @@
 package com.github.sikv.photos.enumeration
 
-enum class PhotoSource(val title: String) {
-    UNSPECIFIED(""),
-    PEXELS("Pexels"),
-    UNSPLASH("Unsplash"),
-    PIXABAY("Pixabay")
+enum class PhotoSource(val id: Int, val title: String) {
+    UNSPECIFIED(0, ""),
+    PEXELS(1, "Pexels"),
+    UNSPLASH(2, "Unsplash"),
+    PIXABAY(3, "Pixabay");
+
+    companion object {
+        fun findById(id: Int): PhotoSource? {
+            return values().firstOrNull { it.id == id }
+        }
+    }
 }

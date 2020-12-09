@@ -25,11 +25,11 @@ import javax.inject.Inject
 class SingleSearchFragment : BaseFragment() {
 
     companion object {
-        private const val KEY_SEARCH_SOURCE = "key_search_source"
+        private const val KEY_PHOTO_SOURCE_ID = "photoSourceId"
 
         fun newInstance(photoSource: PhotoSource): SingleSearchFragment {
             val args = Bundle()
-            args.putSerializable(KEY_SEARCH_SOURCE, photoSource)
+            args.putInt(KEY_PHOTO_SOURCE_ID, photoSource.id)
 
             val fragment = SingleSearchFragment()
             fragment.arguments = args
@@ -51,7 +51,8 @@ class SingleSearchFragment : BaseFragment() {
         }
     }
 
-    private lateinit var photoSource: PhotoSource
+    private var photoSource: PhotoSource? = null
+
     private val photoAdapter = PhotoPagingAdapter(photoActionDispatcher)
 
     init {
@@ -61,7 +62,9 @@ class SingleSearchFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        photoSource = arguments?.getSerializable(KEY_SEARCH_SOURCE) as PhotoSource
+        arguments?.getInt(KEY_PHOTO_SOURCE_ID)?.let { photoSourceId ->
+            photoSource = PhotoSource.findById(photoSourceId)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -83,9 +86,11 @@ class SingleSearchFragment : BaseFragment() {
     }
 
     fun searchPhotos(text: String) {
-        viewModel.searchPhotos(photoSource, text)?.observe(viewLifecycleOwner, Observer {
-            photoAdapter.submitData(lifecycle, it)
-        })
+        photoSource?.let { photoSource ->
+            viewModel.searchPhotos(photoSource, text)?.observe(viewLifecycleOwner, Observer {
+                photoAdapter.submitData(lifecycle, it)
+            })
+        }
     }
 
     private fun observe() {
