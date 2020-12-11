@@ -19,8 +19,10 @@ import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.util.setToolbarTitleWithBackButton
 import com.github.sikv.photos.viewmodel.SettingsViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_settings.*
 
+@AndroidEntryPoint
 class SettingsFragment : BaseFragment() {
 
     override val overrideBackground: Boolean = true
@@ -82,10 +84,7 @@ class SettingsFragment : BaseFragment() {
         )
     }
 
-    /**
-     *
-     */
-
+    @AndroidEntryPoint
     class PreferenceFragment : PreferenceFragmentCompat() {
 
         private val viewModel: SettingsViewModel by lazy {

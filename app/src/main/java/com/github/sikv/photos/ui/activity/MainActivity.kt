@@ -14,8 +14,10 @@ import com.github.sikv.photos.model.FragmentInfo
 import com.github.sikv.photos.ui.fragment.*
 import com.github.sikv.photos.util.customTag
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     companion object {

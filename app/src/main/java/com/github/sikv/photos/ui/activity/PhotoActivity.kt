@@ -16,12 +16,12 @@ import android.transition.Transition
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
@@ -30,20 +30,21 @@ import com.github.sikv.photos.util.favoriteAnimation
 import com.github.sikv.photos.util.makeClickable
 import com.github.sikv.photos.util.makeUnderlineBold
 import com.github.sikv.photos.viewmodel.PhotoViewModel
-import com.github.sikv.photos.viewmodel.PhotoViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_photo.*
 
+@AndroidEntryPoint
 class PhotoActivity : BaseActivity(), SensorEventListener {
 
     companion object {
         private const val TRANSITION_ANIMATION_DURATION = 250L
-        private const val EXTRA_PHOTO = "photo"
 
         fun startActivity(activity: Activity?, transitionView: View, photo: Photo) {
             activity?.let {
-                val intent = Intent(activity, PhotoActivity::class.java)
-                intent.putExtra(EXTRA_PHOTO, photo)
+                val intent = Intent(activity, PhotoActivity::class.java).apply {
+                    putExtra(Photo.KEY, photo)
+                }
 
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
                     val transitionName = activity.getString(R.string._transition_photo)
@@ -57,13 +58,7 @@ class PhotoActivity : BaseActivity(), SensorEventListener {
         }
     }
 
-    private val viewModel: PhotoViewModel by lazy {
-        val photo: Photo = intent.getParcelableExtra(EXTRA_PHOTO)!!
-
-        val viewModelFactory = PhotoViewModelFactory(application, photo)
-
-        ViewModelProvider(this, viewModelFactory).get(PhotoViewModel::class.java)
-    }
+    private val viewModel: PhotoViewModel by viewModels()
 
     // Parallax Effect
     private var sensorManager: SensorManager? = null

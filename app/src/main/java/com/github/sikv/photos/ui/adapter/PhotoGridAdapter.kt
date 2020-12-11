@@ -6,6 +6,7 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.LoadMoreViewHolder
@@ -18,6 +19,7 @@ data class PhotoGridItem(
 )
 
 class PhotoGridAdapter(
+        private val glide: RequestManager,
         private val listener: OnPhotoActionListener,
         private val loadMoreCallback: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -102,7 +104,7 @@ class PhotoGridAdapter(
         return if (viewType == ITEM_VIEW_TYPE_LOAD_MORE) {
             LoadMoreViewHolder(view)
         } else {
-            PhotoGridViewHolder(view)
+            PhotoGridViewHolder(view, glide)
         }
     }
 

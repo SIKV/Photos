@@ -12,11 +12,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AccountManagerImpl @Inject constructor(context: Context) : AccountManager {
+class AccountManagerImpl @Inject constructor(
+        @ApplicationContext private val context: Context
+) : AccountManager {
 
     companion object {
         const val RC_GOOGLE_SIGN_IN = 500

@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
@@ -19,10 +19,10 @@ import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.setToolbarTitle
 import com.github.sikv.photos.viewmodel.MoreViewModel
-import com.github.sikv.photos.viewmodel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MoreFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -64,20 +64,12 @@ class MoreFragment : BaseFragment() {
                 .build()
     }
 
+    @AndroidEntryPoint
     class PreferenceFragment : PreferenceFragmentCompat() {
 
-        @Inject
-        lateinit var viewModelFactory: ViewModelFactory
-
-        private val viewModel: MoreViewModel by lazy {
-            ViewModelProvider(this, viewModelFactory).get(MoreViewModel::class.java)
-        }
+        private val viewModel: MoreViewModel by viewModels()
 
         private var signingInSnackbar: Snackbar? = null
-
-        init {
-            App.instance.appComponent.inject(this)
-        }
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_more, rootKey)

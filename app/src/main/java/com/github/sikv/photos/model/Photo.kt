@@ -18,6 +18,8 @@ fun Photo.createShareIntent(): Intent {
 abstract class Photo : Parcelable {
 
     companion object {
+        const val KEY = "photo"
+
         val COMPARATOR = object : DiffUtil.ItemCallback<Photo>() {
             override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean =
                     oldItem.getPhotoId() == newItem.getPhotoId()

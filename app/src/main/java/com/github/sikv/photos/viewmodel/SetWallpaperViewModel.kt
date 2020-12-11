@@ -21,28 +21,23 @@ import com.github.sikv.photos.util.startSetWallpaperActivity
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.File
-import javax.inject.Inject
 
 data class StateWithData(val state: SetWallpaperState, val data: Any?)
 
 class SetWallpaperViewModel(
         application: Application,
-        private var photo: Photo
+        private val glide: RequestManager,
+        private var photo: Photo?
 ) : AndroidViewModel(application) {
 
     companion object {
         private const val KEY_PHOTO_URI = "photoUri"
     }
 
-    @Inject
-    lateinit var glide: RequestManager
-
     private val stateMutableEvent = MutableLiveData<Event<StateWithData>>()
     val stateEvent: LiveData<Event<StateWithData>> = stateMutableEvent
 
     init {
-        App.instance.appComponent.inject(this)
-
         setWallpaper()
     }
 
@@ -53,7 +48,7 @@ class SetWallpaperViewModel(
     fun setWallpaper() {
         updateState(SetWallpaperState.DOWNLOADING_PHOTO)
 
-        val url = photo.getPhotoDownloadUrl()
+        val url = photo?.getPhotoDownloadUrl()
 
         glide.asBitmap()
                 .load(url)

@@ -7,20 +7,21 @@ import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.sikv.photos.App
+import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchDashboardViewModel
-import com.github.sikv.photos.viewmodel.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_search_dashboard.*
 import kotlinx.android.synthetic.main.layout_no_recommendations.*
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class SearchDashboardFragment : BaseFragment() {
 
     companion object {
@@ -28,22 +29,16 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    lateinit var glide: RequestManager
 
-    private val viewModel: SearchDashboardViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(SearchDashboardViewModel::class.java)
-    }
+    private val viewModel: SearchDashboardViewModel by viewModels()
 
     private lateinit var recommendedPhotosAdapter: PhotoGridAdapter
 
     private val photoActionDispatcher by lazy {
-        PhotoActionDispatcher(this) {
+        PhotoActionDispatcher(this, glide) {
             // Don't need to handle [Favorite] action here.
         }
-    }
-
-    init {
-        App.instance.appComponent.inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -126,7 +121,7 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private fun init() {
-        recommendedPhotosAdapter = PhotoGridAdapter(photoActionDispatcher) {
+        recommendedPhotosAdapter = PhotoGridAdapter(glide, photoActionDispatcher) {
             viewModel.loadRecommendations()
         }
 

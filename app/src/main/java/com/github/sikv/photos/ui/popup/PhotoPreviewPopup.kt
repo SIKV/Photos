@@ -14,18 +14,14 @@ import android.widget.PopupWindow
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import kotlinx.android.synthetic.main.popup_photo_preview.view.*
-import javax.inject.Inject
 
 class PhotoPreviewPopup(
-        private val context: Context
+        private val context: Context,
+        private val glide: RequestManager
 ) {
-
-    @Inject
-    lateinit var glide: RequestManager
 
     private var popupWindow: PopupWindow? = null
 
@@ -33,8 +29,6 @@ class PhotoPreviewPopup(
     private var photoPreviewImage: ImageView? = null
 
     init {
-        App.instance.appComponent.inject(this)
-
         val layout = LayoutInflater.from(context)
                 .inflate(R.layout.popup_photo_preview, null, false)
 

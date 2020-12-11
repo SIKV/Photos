@@ -1,10 +1,10 @@
 package com.github.sikv.photos.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sikv.photos.App
 import com.github.sikv.photos.RuntimeBehaviour
 import com.github.sikv.photos.config.Config
 import com.github.sikv.photos.config.ListConfig
@@ -12,9 +12,8 @@ import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.recommendation.RecommendedPhotos
 import com.github.sikv.photos.recommendation.Recommender
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class SearchDashboardViewModel @Inject constructor(
+class SearchDashboardViewModel @ViewModelInject constructor(
         private val photosRepository: PhotosRepository,
         private val recommender: Recommender
 ) : ViewModel() {
@@ -23,8 +22,6 @@ class SearchDashboardViewModel @Inject constructor(
     val recommendedPhotosLoadedEvent: LiveData<RecommendedPhotos> = recommendedPhotosLoadedMutableEvent
 
     init {
-        App.instance.appComponent.inject(this)
-
         loadRecommendations(reset = true)
     }
 

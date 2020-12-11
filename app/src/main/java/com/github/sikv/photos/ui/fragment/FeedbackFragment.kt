@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.RequestStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
@@ -15,8 +15,10 @@ import com.github.sikv.photos.util.resetErrorWhenTextChanged
 import com.github.sikv.photos.util.setToolbarTitleWithBackButton
 import com.github.sikv.photos.util.showSoftInput
 import com.github.sikv.photos.viewmodel.FeedbackViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_feedback.*
 
+@AndroidEntryPoint
 class FeedbackFragment : BaseFragment() {
 
     companion object {
@@ -25,9 +27,7 @@ class FeedbackFragment : BaseFragment() {
         }
     }
 
-    private val viewModel by lazy {
-        ViewModelProvider(this).get(FeedbackViewModel::class.java)
-    }
+    private val viewModel: FeedbackViewModel by viewModels()
 
     override val overrideBackground: Boolean = true
 

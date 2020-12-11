@@ -7,12 +7,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
-import com.github.sikv.photos.di.component.AppComponent
-import com.github.sikv.photos.di.component.DaggerAppComponent
-import com.github.sikv.photos.di.component.DaggerNetworkComponent
-import com.github.sikv.photos.di.component.NetworkComponent
 import com.github.sikv.photos.event.Event
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class App : Application() {
 
     companion object {
@@ -20,30 +18,18 @@ class App : Application() {
             private set
     }
 
-    val appComponent: AppComponent by lazy {
-        DaggerAppComponent.factory().create(applicationContext)
-    }
-
-    val networkComponent: NetworkComponent by lazy {
-        DaggerNetworkComponent.factory().create(applicationContext)
-    }
-
     private val globalMessageMutableEvent = MutableLiveData<Event<String>>()
     val globalMessageEvent: LiveData<Event<String>> = globalMessageMutableEvent
 
     override fun onCreate() {
+        System.loadLibrary("keys")
+
         super.onCreate()
 
         instance = this
 
-        System.loadLibrary("keys")
-
         updateTheme()
     }
-
-    external fun getPexelsKey(): String?
-    external fun getUnsplashKey(): String?
-    external fun getPixabayKey(): String?
 
     fun getPrivatePreferences(): SharedPreferences {
         return getSharedPreferences("Preferences", Context.MODE_PRIVATE)

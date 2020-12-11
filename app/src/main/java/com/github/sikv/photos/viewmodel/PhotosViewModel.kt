@@ -1,5 +1,6 @@
 package com.github.sikv.photos.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,19 +8,18 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.github.sikv.photos.App
 import com.github.sikv.photos.config.ListConfig
 import com.github.sikv.photos.data.PexelsCuratedPhotosPagingSource
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.event.VoidEvent
 import com.github.sikv.photos.model.Photo
-import javax.inject.Inject
 
-class PhotosViewModel : ViewModel(), FavoritesRepository.Listener {
-
-    @Inject
-    lateinit var favoritesRepository: FavoritesRepository
+class PhotosViewModel @ViewModelInject constructor(
+        private val photosRepository: PhotosRepository,
+        private val favoritesRepository: FavoritesRepository
+) : ViewModel(), FavoritesRepository.Listener {
 
     private val pagingConfig = PagingConfig(
             initialLoadSize = ListConfig.INITIAL_LOAD_SIZE,
@@ -34,8 +34,6 @@ class PhotosViewModel : ViewModel(), FavoritesRepository.Listener {
     val favoritesChangedEvent: LiveData<VoidEvent> = favoritesChangedMutableEvent
 
     init {
-        App.instance.appComponent.inject(this)
-
         favoritesRepository.subscribe(this)
     }
 
@@ -60,7 +58,7 @@ class PhotosViewModel : ViewModel(), FavoritesRepository.Listener {
     fun getPexelsCuratedPhotos(): LiveData<PagingData<Photo>> {
         return Pager(
                 config = pagingConfig,
-                pagingSourceFactory = { PexelsCuratedPhotosPagingSource() }
+                pagingSourceFactory = { PexelsCuratedPhotosPagingSource(photosRepository) }
         ).liveData
     }
 }

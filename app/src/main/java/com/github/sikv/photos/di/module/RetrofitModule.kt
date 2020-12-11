@@ -1,9 +1,11 @@
 package com.github.sikv.photos.di.module
 
-import com.github.sikv.photos.App
+import com.github.sikv.photos.Keys
 import com.github.sikv.photos.enumeration.PhotoSource
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -23,6 +25,7 @@ annotation class UnsplashRetrofit
 annotation class PixabayRetrofit
 
 @Module
+@InstallIn(ApplicationComponent::class)
 class RetrofitModule {
 
     companion object {
@@ -30,9 +33,9 @@ class RetrofitModule {
         private const val UNSPLASH_BASE_URL = "https://api.unsplash.com/"
         private const val PIXABAY_BASE_URL = "https://pixabay.com/api/"
 
-        private val pexelsKey = App.instance.getPexelsKey()
-        private val unsplashKey = App.instance.getUnsplashKey()
-        private val pixabayKey = App.instance.getPixabayKey()
+        private val pexelsKey = Keys.getPexelsKey()
+        private val unsplashKey = Keys.getUnsplashKey()
+        private val pixabayKey = Keys.getPixabayKey()
     }
 
     private fun buildOkHttpClient(key: String, photoSource: PhotoSource): OkHttpClient {

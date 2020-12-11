@@ -5,21 +5,25 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
+import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
-import com.github.sikv.photos.viewmodel.FavoritesViewModelFactory
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_favorites.*
 import kotlinx.android.synthetic.main.layout_no_favorites.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class FavoritesFragment : BaseFragment() {
 
     companion object {
@@ -28,21 +32,21 @@ class FavoritesFragment : BaseFragment() {
         private const val KEY_CURRENT_SPAN_COUNT = "key_current_span_count"
     }
 
-    private val viewModel: FavoritesViewModel by lazy {
-        val application = requireNotNull(activity).application
+    @Inject
+    lateinit var glide: RequestManager
 
-        val viewModelFactory = FavoritesViewModelFactory(application)
+    @Inject
+    lateinit var favoritesRepository: FavoritesRepository
 
-        ViewModelProvider(this, viewModelFactory).get(FavoritesViewModel::class.java)
-    }
+    private val viewModel: FavoritesViewModel by viewModels()
 
     private val photoActionDispatcher by lazy {
-        PhotoActionDispatcher(this) { photo ->
+        PhotoActionDispatcher(this, glide) { photo ->
             viewModel.invertFavorite(photo)
         }
     }
 
-    private var photoAdapter = PhotoListAdapter(photoActionDispatcher)
+    private lateinit var photoAdapter: PhotoListAdapter
 
     private var currentSpanCount: Int = DEFAULT_SPAN_COUNT
         set(value) {
@@ -56,6 +60,12 @@ class FavoritesFragment : BaseFragment() {
             setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)
             setMenuItemVisibility(R.id.itemViewGrid, field == SPAN_COUNT_LIST)
         }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        photoAdapter = PhotoListAdapter(glide, favoritesRepository, photoActionDispatcher)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_favorites, container, false)

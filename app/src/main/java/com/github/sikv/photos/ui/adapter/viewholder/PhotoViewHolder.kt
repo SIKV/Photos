@@ -5,23 +5,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
 import com.github.sikv.photos.util.*
 import kotlinx.android.synthetic.main.item_photo_full.view.*
-import javax.inject.Inject
 
-class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-    @Inject
-    lateinit var glide: RequestManager
-
-    init {
-        App.instance.appComponent.inject(this)
-    }
+class PhotoViewHolder(
+        itemView: View,
+        private val glide: RequestManager
+) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(itemLayoutType: PhotoItemLayoutType,
              photo: Photo?,

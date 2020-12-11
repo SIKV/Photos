@@ -3,6 +3,7 @@ package com.github.sikv.photos.ui
 import android.app.Activity
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
@@ -19,6 +20,7 @@ import com.github.sikv.photos.util.openUrl
 
 class PhotoActionDispatcher(
         private val fragment: Fragment,
+        private val glide: RequestManager,
         private val invertFavorite: (Photo) -> Unit
 ) : OnPhotoActionListener {
 
@@ -36,7 +38,7 @@ class PhotoActionDispatcher(
 
             OnPhotoActionListener.Action.HOLD -> {
                 if (!this::photoPreviewPopup.isInitialized) {
-                    photoPreviewPopup = PhotoPreviewPopup(getActivity())
+                    photoPreviewPopup = PhotoPreviewPopup(getActivity(), glide)
                 }
 
                 photoPreviewPopup.show(view, photo)

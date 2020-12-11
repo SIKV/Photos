@@ -1,5 +1,6 @@
 package com.github.sikv.photos.viewmodel
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,13 +11,14 @@ import androidx.paging.liveData
 import com.github.sikv.photos.config.ListConfig
 import com.github.sikv.photos.data.SearchPhotosPagingSource
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.event.VoidEvent
 import com.github.sikv.photos.model.Photo
-import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(
+class SearchViewModel @ViewModelInject constructor(
+        private val photosRepository: PhotosRepository,
         private val favoritesRepository: FavoritesRepository
 ) : ViewModel(), FavoritesRepository.Listener {
 
@@ -63,7 +65,7 @@ class SearchViewModel @Inject constructor(
 
         return Pager(
                 config = pagingConfig,
-                pagingSourceFactory = { SearchPhotosPagingSource(photoSource, queryTrimmed) }
+                pagingSourceFactory = { SearchPhotosPagingSource(photosRepository, photoSource, queryTrimmed) }
         ).liveData
     }
 }

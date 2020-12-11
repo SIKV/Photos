@@ -1,8 +1,8 @@
 package com.github.sikv.photos.viewmodel
 
 import android.app.Application
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.github.sikv.photos.App
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.database.FavoritePhotoEntity
 import com.github.sikv.photos.enumeration.SortBy
@@ -11,12 +11,11 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.util.getString
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-class FavoritesViewModel(application: Application) : AndroidViewModel(application) {
-
-    @Inject
-    lateinit var favoritesRepository: FavoritesRepository
+class FavoritesViewModel @ViewModelInject constructor(
+        application: Application,
+        private val favoritesRepository: FavoritesRepository
+) : AndroidViewModel(application) {
 
     private val favoritesNewest: LiveData<List<FavoritePhotoEntity>>
     private val favoritesOldest: LiveData<List<FavoritePhotoEntity>>
@@ -32,8 +31,6 @@ class FavoritesViewModel(application: Application) : AndroidViewModel(applicatio
     private var removeAllUndone = false
 
     init {
-        App.instance.appComponent.inject(this)
-
         favoritesNewest = favoritesRepository.getFavoritesLiveData(SortBy.DATE_ADDED_NEWEST)
         favoritesOldest = favoritesRepository.getFavoritesLiveData(SortBy.DATE_ADDED_OLDEST)
 

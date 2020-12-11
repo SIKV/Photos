@@ -6,8 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.SetWallpaperState
 import com.github.sikv.photos.model.Photo
@@ -15,18 +16,22 @@ import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.viewmodel.SetWallpaperViewModel
 import com.github.sikv.photos.viewmodel.SetWallpaperViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.layout_set_wallpaper.*
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SetWallpaperDialog : BottomSheetDialogFragment() {
 
-    companion object {
-        private const val KEY_PHOTO = "photo"
+    @Inject
+    lateinit var glide: RequestManager
 
+    companion object {
         fun newInstance(photo: Photo): SetWallpaperDialog {
             val dialogFragment = SetWallpaperDialog()
 
             val args = Bundle()
-            args.putParcelable(KEY_PHOTO, photo)
+            args.putParcelable(Photo.KEY, photo)
 
             dialogFragment.arguments = args
 
@@ -34,25 +39,19 @@ class SetWallpaperDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private val viewModel: SetWallpaperViewModel? by lazy {
-        arguments?.getParcelable<Photo>(KEY_PHOTO)?.let { photo ->
-            val viewModelFactory = SetWallpaperViewModelFactory(requireActivity().application, photo)
+    private val viewModel: SetWallpaperViewModel by viewModels {
+        val photo =  arguments?.getParcelable<Photo>(Photo.KEY)
 
-            ViewModelProvider(this, viewModelFactory).get(SetWallpaperViewModel::class.java)
-        } ?: run {
-            null
-        }
+        SetWallpaperViewModelFactory(requireActivity().application, glide, photo)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.layout_bottom_sheet, container, false)
 
         val rootLayout = view.findViewById<ViewGroup>(R.id.rootLayout)
-
         val layout = LayoutInflater.from(context).inflate(R.layout.layout_set_wallpaper, rootLayout, false)
 
         rootLayout.addView(layout)
-
         Utils.addCancelOption(context, rootLayout, View.OnClickListener { dismiss() })
 
         return view
@@ -62,10 +61,10 @@ class SetWallpaperDialog : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         tryAgainButton.setOnClickListener {
-            viewModel?.setWallpaper()
+            viewModel.setWallpaper()
         }
 
-        viewModel?.stateEvent?.observe(viewLifecycleOwner, Observer { event ->
+        viewModel.stateEvent.observe(viewLifecycleOwner, Observer { event ->
             event.getContentIfNotHandled()?.let { stateWithData ->
                 when (stateWithData.state) {
                     SetWallpaperState.DOWNLOADING_PHOTO -> {
@@ -82,7 +81,7 @@ class SetWallpaperDialog : BottomSheetDialogFragment() {
                         tryAgainButton.visibility = View.GONE
 
                         (stateWithData.data as? Uri)?.let { uri ->
-                            viewModel?.setWallpaperFromUri(uri)
+                            viewModel.setWallpaperFromUri(uri)
                             dismiss()
                         }
                     }

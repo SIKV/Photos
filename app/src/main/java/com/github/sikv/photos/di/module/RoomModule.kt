@@ -6,9 +6,13 @@ import com.github.sikv.photos.database.FavoritesDao
 import com.github.sikv.photos.database.FavoritesDatabase
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 @Module
+@InstallIn(ApplicationComponent::class)
 class RoomModule {
 
     companion object {
@@ -17,7 +21,7 @@ class RoomModule {
 
     @Singleton
     @Provides
-    fun provideFavoritesDatabase(context: Context): FavoritesDatabase {
+    fun provideFavoritesDatabase(@ApplicationContext context: Context): FavoritesDatabase {
         return Room.databaseBuilder(context.applicationContext, FavoritesDatabase::class.java, DATABASE_NAME)
                 .fallbackToDestructiveMigration()
                 .build()
