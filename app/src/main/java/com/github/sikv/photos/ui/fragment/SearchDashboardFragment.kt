@@ -14,6 +14,7 @@ import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
+import com.github.sikv.photos.util.scrollToTop
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchDashboardViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,6 +65,10 @@ class SearchDashboardFragment : BaseFragment() {
         }
 
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onScrollToTop() {
+        recommendedPhotosRecycler.scrollToTop()
     }
 
     private fun observe() {

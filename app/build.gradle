@@ -111,7 +111,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:22.0.0'
 
     // ML Kit
-    implementation 'com.google.mlkit:image-labeling:17.0.0'
+    implementation 'com.google.mlkit:image-labeling:17.0.1'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'

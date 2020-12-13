@@ -29,7 +29,7 @@ class FavoritesFragment : BaseFragment() {
     companion object {
         private const val DEFAULT_SPAN_COUNT = SPAN_COUNT_GRID
 
-        private const val KEY_CURRENT_SPAN_COUNT = "key_current_span_count"
+        private const val KEY_CURRENT_SPAN_COUNT = "currentSpanCount"
     }
 
     @Inject

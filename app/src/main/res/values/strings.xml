@@ -83,7 +83,7 @@
     <string name="enter_your_email">Enter your email</string>
     <string name="send_feedback_description">Leave app feedback or share your ideas</string>
     <string name="storage_permission">Storage permission</string>
-    <string name="storage_permission_description">Storage permission is required to download a photo</string>
+    <string name="storage_permission_description">Storage permission is required to download photos.</string>
     <string name="open_settings">Open Settings</string>
     <string name="enter_valid_email">Please enter valid email</string>
     <string name="enter_some_text">Please enter some text here</string>

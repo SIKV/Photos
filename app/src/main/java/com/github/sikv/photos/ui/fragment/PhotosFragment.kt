@@ -27,7 +27,7 @@ import javax.inject.Inject
 class PhotosFragment : BaseFragment() {
 
     companion object {
-        private const val KEY_CURRENT_SPAN_COUNT = "key_current_span_count"
+        private const val KEY_CURRENT_SPAN_COUNT = "currentSpanCount"
     }
 
     @Inject
