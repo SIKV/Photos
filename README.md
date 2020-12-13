@@ -1,6 +1,6 @@
 <img src="../assets/FeatureGraphic.png" width="700">
 
-Browse, search, download, and share amazing free photos provided by talented photographers on [Pexels](https://www.pexels.com) and [Pixabay](https://pixabay.com).
+Browse, search, download, and share amazing free photos provided by talented photographers on [Pexels](https://www.pexels.com), [Unsplash](https://unsplash.com), and [Pixabay](https://pixabay.com).
 
 - Discover new photos every day
 - Search for any topic
@@ -11,7 +11,9 @@ Browse, search, download, and share amazing free photos provided by talented pho
 
 # Technologies
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture)
-- [Dagger](https://dagger.dev)
+- [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+- [Paging 3](https://developer.android.com/topic/libraries/architecture/paging/v3-overview)
+- [Room](https://developer.android.com/topic/libraries/architecture/room)
 - [Retrofit](https://square.github.io/retrofit)
 - [Kotlin Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
 - [Firebase Authentication](https://firebase.google.com/docs/auth)
