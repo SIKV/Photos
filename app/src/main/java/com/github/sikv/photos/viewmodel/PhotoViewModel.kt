@@ -32,11 +32,11 @@ class PhotoViewModel @ViewModelInject constructor(
         @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), FavoritesRepository.Listener {
 
-    private val showPhotoInfoMutableEvent = MutableLiveData<Event<Photo?>>()
-    val showPhotoInfoEvent: LiveData<Event<Photo?>> = showPhotoInfoMutableEvent
+    private val showPhotoInfoMutableEvent = MutableLiveData<Photo?>()
+    val showPhotoInfoEvent: LiveData<Photo?> = showPhotoInfoMutableEvent
 
-    private val showPhotoMutableEvent = MutableLiveData<Event<Bitmap>>()
-    val showPhotoEvent: LiveData<Event<Bitmap>> = showPhotoMutableEvent
+    private val showPhotoMutableEvent = MutableLiveData<Bitmap>()
+    val showPhotoEvent: LiveData<Bitmap> = showPhotoMutableEvent
 
     private val favoriteInitMutableEvent = MutableLiveData<Event<Boolean>>()
     val favoriteInitEvent: LiveData<Event<Boolean>> = favoriteInitMutableEvent
@@ -93,7 +93,7 @@ class PhotoViewModel @ViewModelInject constructor(
                                     .into(object : CustomTarget<Bitmap>() {
                                         override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
                                             if (!fullPhotoAlreadyLoaded) {
-                                                showPhotoMutableEvent.value = Event(bitmap)
+                                                showPhotoMutableEvent.value = bitmap
                                             }
                                         }
 
@@ -102,14 +102,14 @@ class PhotoViewModel @ViewModelInject constructor(
                         }
 
                         override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                            showPhotoMutableEvent.value = Event(bitmap)
+                            showPhotoMutableEvent.value = bitmap
                             fullPhotoAlreadyLoaded = true
                         }
 
                         override fun onLoadCleared(placeholder: Drawable?) { }
                     })
 
-            showPhotoInfoMutableEvent.postValue(Event(photo))
+            showPhotoInfoMutableEvent.postValue(photo)
         }
     }
 
@@ -122,7 +122,7 @@ class PhotoViewModel @ViewModelInject constructor(
                 .load(photo!!.getPhotoPreviewUrl())
                 .into(object : CustomTarget<Bitmap>() {
                     override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                        showPhotoMutableEvent.value = Event(bitmap)
+                        showPhotoMutableEvent.value = bitmap
                     }
 
                     override fun onLoadCleared(placeholder: Drawable?) { }
@@ -137,13 +137,13 @@ class PhotoViewModel @ViewModelInject constructor(
                             .load(photo.getPhotoFullPreviewUrl())
                             .into(object : CustomTarget<Bitmap>() {
                                 override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                                    showPhotoMutableEvent.value = Event(bitmap)
+                                    showPhotoMutableEvent.value = bitmap
                                 }
 
                                 override fun onLoadCleared(placeholder: Drawable?) {}
                             })
 
-                    showPhotoInfoMutableEvent.postValue(Event(photo))
+                    showPhotoInfoMutableEvent.postValue(photo)
 
                 } ?: run {
                     // TODO Error loading photo
