@@ -6,6 +6,7 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import com.github.sikv.photos.config.CacheConfig
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.database.CuratedDb
 import com.github.sikv.photos.database.entity.CuratedPhotoEntity
@@ -24,8 +25,6 @@ class CuratedPhotosRemoteMediator(
     private val dbLastUpdatedKey = "dbLastUpdated"
     private val remotePageQuery = "Curated"
 
-    private val cacheTimeoutHours = 12L
-
     override suspend fun initialize(): InitializeAction {
         val dbLastUpdated = preferences.getLong(dbLastUpdatedKey, 0)
 
@@ -33,7 +32,7 @@ class CuratedPhotosRemoteMediator(
             return InitializeAction.LAUNCH_INITIAL_REFRESH
         }
 
-        val cacheTimeout = TimeUnit.HOURS.toMillis(cacheTimeoutHours)
+        val cacheTimeout = TimeUnit.HOURS.toMillis(CacheConfig.curatedPhotosCacheTimeoutHours)
 
         return if (System.currentTimeMillis() - dbLastUpdated >= cacheTimeout) {
             InitializeAction.LAUNCH_INITIAL_REFRESH
