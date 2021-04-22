@@ -1,6 +1,7 @@
 package com.github.sikv.photos.data
 
 import androidx.paging.PagingSource
+import androidx.paging.PagingState
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
@@ -27,5 +28,9 @@ class SearchPhotosPagingSource(
         } catch (e: Exception) {
             return LoadResult.Error(e)
         }
+    }
+
+    override fun getRefreshKey(state: PagingState<Int, Photo>): Int? {
+        return state.anchorPosition
     }
 }

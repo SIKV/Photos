@@ -23,12 +23,8 @@ class PhotosRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getLatestPhotos(page: Int, perPage: Int, source: PhotoSource): List<Photo> {
-        return when (source) {
-            PhotoSource.PEXELS -> apiClient.pexelsClient.getCuratedPhotos(page, perPage).photos
-
-            else -> throw NotImplementedError()
-        }
+    override suspend fun getCuratedPhotos(page: Int, perPage: Int): List<Photo> {
+        return apiClient.pexelsClient.getCuratedPhotos(page, perPage).photos
     }
 
     override suspend fun searchPhotos(query: String, page: Int, perPage: Int, source: PhotoSource): List<Photo> {

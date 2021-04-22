@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.database.FavoritePhotoEntity
+import com.github.sikv.photos.database.entity.FavoritePhotoEntity
 import com.github.sikv.photos.enumeration.SortBy
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.Photo

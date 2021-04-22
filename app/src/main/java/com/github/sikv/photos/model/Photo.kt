@@ -15,18 +15,18 @@ fun Photo.createShareIntent(): Intent {
     return intent
 }
 
+class PhotoDiffUtil<T : Photo> : DiffUtil.ItemCallback<T>() {
+    override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
+            oldItem.getPhotoId() == newItem.getPhotoId()
+
+    override fun areContentsTheSame(oldItem: T, newItem: T): Boolean =
+            oldItem == newItem
+}
+
 abstract class Photo : Parcelable {
 
     companion object {
         const val KEY = "photo"
-
-        val COMPARATOR = object : DiffUtil.ItemCallback<Photo>() {
-            override fun areItemsTheSame(oldItem: Photo, newItem: Photo): Boolean =
-                    oldItem.getPhotoId() == newItem.getPhotoId()
-
-            override fun areContentsTheSame(oldItem: Photo, newItem: Photo): Boolean =
-                    oldItem == newItem
-        }
     }
 
     /**

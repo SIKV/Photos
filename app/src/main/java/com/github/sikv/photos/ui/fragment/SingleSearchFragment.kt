@@ -11,6 +11,7 @@ import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagingAdapter
 import com.github.sikv.photos.util.disableChangeAnimations
@@ -56,7 +57,7 @@ class SingleSearchFragment : BaseFragment() {
 
     private var photoSource: PhotoSource? = null
 
-    private lateinit var photoAdapter: PhotoPagingAdapter
+    private lateinit var photoAdapter: PhotoPagingAdapter<Photo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

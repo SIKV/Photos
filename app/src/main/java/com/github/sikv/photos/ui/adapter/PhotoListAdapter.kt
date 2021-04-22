@@ -10,13 +10,14 @@ import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.PhotoDiffUtil
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
 class PhotoListAdapter(
         private val glide: RequestManager,
         private val favoritesRepository: FavoritesRepository,
         private val listener: OnPhotoActionListener
-) : ListAdapter<Photo, PhotoViewHolder>(Photo.COMPARATOR) {
+) : ListAdapter<Photo, PhotoViewHolder>(PhotoDiffUtil()) {
 
     private var itemLayoutType = PhotoItemLayoutType.FULL
 

@@ -3,9 +3,10 @@ package com.github.sikv.photos.data.repository.impl
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.sqlite.db.SimpleSQLiteQuery
+import com.github.sikv.photos.config.DbConfig
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.database.FavoritePhotoEntity
-import com.github.sikv.photos.database.FavoritesDao
+import com.github.sikv.photos.database.dao.FavoritesDao
+import com.github.sikv.photos.database.entity.FavoritePhotoEntity
 import com.github.sikv.photos.enumeration.SortBy
 import com.github.sikv.photos.model.Photo
 import kotlinx.coroutines.*
@@ -38,9 +39,9 @@ class FavoritesRepositoryImpl @Inject constructor(
     override fun getFavoritesLiveData(sortBy: SortBy): LiveData<List<FavoritePhotoEntity>>  {
         val query = when (sortBy) {
             SortBy.DATE_ADDED_NEWEST ->
-                SimpleSQLiteQuery("SELECT * from FavoritePhoto WHERE markedAsDeleted=0 ORDER BY dateAdded DESC")
+                SimpleSQLiteQuery("SELECT * from ${DbConfig.favoritePhotosTableName} WHERE markedAsDeleted=0 ORDER BY dateAdded DESC")
             SortBy.DATE_ADDED_OLDEST ->
-                SimpleSQLiteQuery("SELECT * from FavoritePhoto WHERE markedAsDeleted=0 ORDER BY dateAdded ASC")
+                SimpleSQLiteQuery("SELECT * from ${DbConfig.favoritePhotosTableName} WHERE markedAsDeleted=0 ORDER BY dateAdded ASC")
         }
 
         return Transformations.map(favoritesDao.getPhotos(query)) {

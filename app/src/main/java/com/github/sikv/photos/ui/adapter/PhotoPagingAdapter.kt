@@ -4,19 +4,21 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
+import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.PhotoDiffUtil
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
-class PhotoPagingAdapter(
+class PhotoPagingAdapter<T : Photo>(
         private val glide: RequestManager,
         private val favoritesRepository: FavoritesRepository,
         private val listener: OnPhotoActionListener
-) : PagingDataAdapter<Photo, PhotoViewHolder>(Photo.COMPARATOR) {
+) : PagingDataAdapter<T, PhotoViewHolder>(PhotoDiffUtil()) {
 
     private var itemLayoutType = PhotoItemLayoutType.FULL
 

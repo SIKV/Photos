@@ -6,11 +6,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.paging.LoadState
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.database.entity.CuratedPhotoEntity
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagingAdapter
@@ -44,7 +44,7 @@ class PhotosFragment : BaseFragment() {
         }
     }
 
-    private lateinit var photoAdapter: PhotoPagingAdapter
+    private lateinit var photoAdapter: PhotoPagingAdapter<CuratedPhotoEntity>
 
     private var currentSpanCount: Int = SPAN_COUNT_LIST
         set(value) {
@@ -130,17 +130,17 @@ class PhotosFragment : BaseFragment() {
     }
 
     private fun observe() {
-        viewModel.getPexelsCuratedPhotos().observe(viewLifecycleOwner, Observer {
+        viewModel.getCuratedPhotos().observe(viewLifecycleOwner, {
             photoAdapter.submitData(lifecycle, it)
         })
 
-        viewModel.favoriteChangedEvent.observe(viewLifecycleOwner, Observer {
+        viewModel.favoriteChangedEvent.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { photo ->
                 photoAdapter.notifyPhotoChanged(photo)
             }
         })
 
-        viewModel.favoritesChangedEvent.observe(viewLifecycleOwner, Observer {
+        viewModel.favoritesChangedEvent.observe(viewLifecycleOwner, {
             if (it.canHandle()) {
                 photoAdapter.notifyDataSetChanged()
             }
@@ -149,7 +149,7 @@ class PhotosFragment : BaseFragment() {
 
     private fun initAdapter() {
         photoAdapter.addLoadStateListener { loadState ->
-            when (loadState.source.refresh) {
+            when (loadState.mediator?.refresh) {
                 is LoadState.NotLoading -> {
                     photosRecycler.setVisibilityAnimated(View.VISIBLE)
                     loadingListLayout.setVisibilityAnimated(View.GONE)

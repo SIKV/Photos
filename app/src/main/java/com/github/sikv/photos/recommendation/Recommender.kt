@@ -1,6 +1,6 @@
 package com.github.sikv.photos.recommendation
 
-import com.github.sikv.photos.database.FavoritesDao
+import com.github.sikv.photos.database.dao.FavoritesDao
 import com.github.sikv.photos.vision.ImageLabeler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

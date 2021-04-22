@@ -4,21 +4,22 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
+import androidx.paging.*
+import com.github.sikv.photos.App
 import com.github.sikv.photos.config.ListConfig
-import com.github.sikv.photos.data.PexelsCuratedPhotosPagingSource
+import com.github.sikv.photos.data.mediator.CuratedPhotosRemoteMediator
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
+import com.github.sikv.photos.database.CuratedDb
+import com.github.sikv.photos.database.entity.CuratedPhotoEntity
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.event.VoidEvent
 import com.github.sikv.photos.model.Photo
 
 class PhotosViewModel @ViewModelInject constructor(
         private val photosRepository: PhotosRepository,
-        private val favoritesRepository: FavoritesRepository
+        private val favoritesRepository: FavoritesRepository,
+        private val curatedDb: CuratedDb
 ) : ViewModel(), FavoritesRepository.Listener {
 
     private val pagingConfig = PagingConfig(
@@ -55,10 +56,17 @@ class PhotosViewModel @ViewModelInject constructor(
         favoritesRepository.invertFavorite(photo)
     }
 
-    fun getPexelsCuratedPhotos(): LiveData<PagingData<Photo>> {
+    @OptIn(ExperimentalPagingApi::class)
+    fun getCuratedPhotos(): LiveData<PagingData<CuratedPhotoEntity>> {
         return Pager(
                 config = pagingConfig,
-                pagingSourceFactory = { PexelsCuratedPhotosPagingSource(photosRepository) }
-        ).liveData
+                remoteMediator = CuratedPhotosRemoteMediator(
+                        curatedDb,
+                        photosRepository,
+                        App.instance.getPrivatePreferences()
+                ),
+        ) {
+            curatedDb.curatedDao.pagingSource()
+        }.liveData
     }
 }
