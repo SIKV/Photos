@@ -6,15 +6,17 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.enumeration.ListLayout
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
-import com.github.sikv.photos.util.*
+import com.github.sikv.photos.util.scrollToTop
+import com.github.sikv.photos.util.setItemLayoutType
+import com.github.sikv.photos.util.setToolbarTitle
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -25,12 +27,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoritesFragment : BaseFragment() {
-
-    companion object {
-        private const val DEFAULT_SPAN_COUNT = SPAN_COUNT_GRID
-
-        private const val KEY_CURRENT_SPAN_COUNT = "currentSpanCount"
-    }
 
     @Inject
     lateinit var glide: RequestManager
@@ -47,19 +43,6 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private lateinit var photoAdapter: PhotoListAdapter
-
-    private var currentSpanCount: Int = DEFAULT_SPAN_COUNT
-        set(value) {
-            field = value
-
-            val itemLayoutType = PhotoItemLayoutType.findBySpanCount(field)
-
-            photoAdapter.setItemLayoutType(itemLayoutType)
-            photosRecycler.setItemLayoutType(itemLayoutType)
-
-            setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)
-            setMenuItemVisibility(R.id.itemViewGrid, field == SPAN_COUNT_LIST)
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,16 +64,10 @@ class FavoritesFragment : BaseFragment() {
         // Default value is not working good. When a photo is removed animation is broken.
         photosRecycler.itemAnimator?.removeDuration = 0
 
-        if (savedInstanceState != null) {
-            currentSpanCount = savedInstanceState.getInt(KEY_CURRENT_SPAN_COUNT, DEFAULT_SPAN_COUNT)
-        } else {
-            currentSpanCount = DEFAULT_SPAN_COUNT
-        }
-
         observe()
     }
 
-    override fun onCreateToolbar(): FragmentToolbar? {
+    override fun onCreateToolbar(): FragmentToolbar {
         return FragmentToolbar.Builder()
                 .withId(R.id.toolbar)
                 .withMenu(R.menu.menu_favorites)
@@ -104,14 +81,14 @@ class FavoritesFragment : BaseFragment() {
                         listOf(
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        currentSpanCount = SPAN_COUNT_LIST
+                                        viewModel.updateListLayout(ListLayout.LIST)
                                         return true
                                     }
                                 },
 
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        currentSpanCount = SPAN_COUNT_GRID
+                                        viewModel.updateListLayout(ListLayout.GRID)
                                         return true
                                     }
                                 },
@@ -134,25 +111,19 @@ class FavoritesFragment : BaseFragment() {
                 .build()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putInt(KEY_CURRENT_SPAN_COUNT, currentSpanCount)
-    }
-
     override fun onScrollToTop() {
         photosRecycler.scrollToTop()
     }
 
     private fun observe() {
-        viewModel.favoritesLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.favoritesLiveData.observe(viewLifecycleOwner, {
             it?.let { photos ->
                 photoAdapter.submitList(photos)
                 noFavoritesLayout.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
             }
         })
 
-        viewModel.removeAllResultEvent.observe(viewLifecycleOwner, Observer { event ->
+        viewModel.removeAllResultEvent.observe(viewLifecycleOwner, { event ->
             if (event.getContentIfNotHandled() == true) {
                 Snackbar.make(rootLayout, R.string.removed, Snackbar.LENGTH_LONG)
                         .setAction(R.string.undo) {
@@ -166,5 +137,19 @@ class FavoritesFragment : BaseFragment() {
                         .show()
             }
         })
+
+        viewModel.listLayoutChanged.observe(viewLifecycleOwner, { listLayout ->
+            updateListLayout(listLayout)
+        })
+    }
+
+    private fun updateListLayout(listLayout: ListLayout) {
+        val itemLayoutType = PhotoItemLayoutType.findBySpanCount(listLayout.spanCount)
+
+        photoAdapter.setItemLayoutType(itemLayoutType)
+        photosRecycler.setItemLayoutType(itemLayoutType)
+
+        setMenuItemVisibility(R.id.itemViewList, listLayout == ListLayout.GRID)
+        setMenuItemVisibility(R.id.itemViewGrid, listLayout == ListLayout.LIST)
     }
 }

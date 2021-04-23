@@ -10,9 +10,6 @@ import kotlinx.android.synthetic.main.item_option.view.*
 import java.text.DateFormat
 import java.util.*
 
-const val SPAN_COUNT_LIST = 1
-const val SPAN_COUNT_GRID = 3
-
 const val PHOTO_TRANSITION_DURATION = 500
 
 object Utils {

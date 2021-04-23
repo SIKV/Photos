@@ -1,8 +1,10 @@
 package com.github.sikv.photos.di.module
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.github.sikv.photos.App
 import com.github.sikv.photos.account.AccountManager
 import com.github.sikv.photos.account.AccountManagerImpl
 import dagger.Module
@@ -14,6 +16,11 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 class AppModule {
+
+    @Provides
+    fun providePreferences(): SharedPreferences {
+        return App.instance.getPrivatePreferences()
+    }
 
     @Provides
     fun provideAccountManager(accountManager: AccountManagerImpl): AccountManager {

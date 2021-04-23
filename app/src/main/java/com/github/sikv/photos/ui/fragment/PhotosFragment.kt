@@ -11,6 +11,7 @@ import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.database.entity.CuratedPhotoEntity
+import com.github.sikv.photos.enumeration.ListLayout
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagingAdapter
@@ -25,10 +26,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class PhotosFragment : BaseFragment() {
-
-    companion object {
-        private const val KEY_CURRENT_SPAN_COUNT = "currentSpanCount"
-    }
 
     @Inject
     lateinit var glide: RequestManager
@@ -45,19 +42,6 @@ class PhotosFragment : BaseFragment() {
     }
 
     private lateinit var photoAdapter: PhotoPagingAdapter<CuratedPhotoEntity>
-
-    private var currentSpanCount: Int = SPAN_COUNT_LIST
-        set(value) {
-            field = value
-
-            val itemLayoutType = PhotoItemLayoutType.findBySpanCount(field)
-
-            photoAdapter.setItemLayoutType(itemLayoutType)
-            photosRecycler.setItemLayoutType(itemLayoutType)
-
-            setMenuItemVisibility(R.id.itemViewList, field == SPAN_COUNT_GRID)
-            setMenuItemVisibility(R.id.itemViewGrid, field == SPAN_COUNT_LIST)
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,12 +61,6 @@ class PhotosFragment : BaseFragment() {
         photosRecycler.adapter = photoAdapter
         photosRecycler.disableChangeAnimations()
 
-        if (savedInstanceState != null) {
-            currentSpanCount = savedInstanceState.getInt(KEY_CURRENT_SPAN_COUNT, SPAN_COUNT_LIST)
-        } else {
-            currentSpanCount = SPAN_COUNT_LIST
-        }
-
         tryAgainButton.setOnClickListener {
             photoAdapter.retry()
         }
@@ -91,7 +69,7 @@ class PhotosFragment : BaseFragment() {
         observe()
     }
 
-    override fun onCreateToolbar(): FragmentToolbar? {
+    override fun onCreateToolbar(): FragmentToolbar {
         return FragmentToolbar.Builder()
                 .withId(R.id.toolbar)
                 .withMenu(R.menu.menu_photos)
@@ -103,26 +81,20 @@ class PhotosFragment : BaseFragment() {
                         listOf(
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        currentSpanCount = SPAN_COUNT_LIST
+                                        viewModel.updateListLayout(ListLayout.LIST)
                                         return true
                                     }
                                 },
 
                                 object : MenuItem.OnMenuItemClickListener {
                                     override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        currentSpanCount = SPAN_COUNT_GRID
+                                        viewModel.updateListLayout(ListLayout.GRID)
                                         return true
                                     }
                                 }
                         )
                 )
                 .build()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putInt(KEY_CURRENT_SPAN_COUNT, currentSpanCount)
     }
 
     override fun onScrollToTop() {
@@ -145,6 +117,20 @@ class PhotosFragment : BaseFragment() {
                 photoAdapter.notifyDataSetChanged()
             }
         })
+
+        viewModel.listLayoutChanged.observe(viewLifecycleOwner, { listLayout ->
+            updateListLayout(listLayout)
+        })
+    }
+
+    private fun updateListLayout(listLayout: ListLayout) {
+        val itemLayoutType = PhotoItemLayoutType.findBySpanCount(listLayout.spanCount)
+
+        photoAdapter.setItemLayoutType(itemLayoutType)
+        photosRecycler.setItemLayoutType(itemLayoutType)
+
+        setMenuItemVisibility(R.id.itemViewList, listLayout == ListLayout.GRID)
+        setMenuItemVisibility(R.id.itemViewGrid, listLayout == ListLayout.LIST)
     }
 
     private fun initAdapter() {

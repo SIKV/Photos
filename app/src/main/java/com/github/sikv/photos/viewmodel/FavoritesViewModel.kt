@@ -1,9 +1,12 @@
 package com.github.sikv.photos.viewmodel
 
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.lifecycle.*
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.database.entity.FavoritePhotoEntity
+import com.github.sikv.photos.enumeration.ListLayout
+import com.github.sikv.photos.enumeration.SavedPreference
 import com.github.sikv.photos.enumeration.SortBy
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.Photo
@@ -16,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
         application: Application,
-        private val favoritesRepository: FavoritesRepository
+        private val favoritesRepository: FavoritesRepository,
+        private val preferences: SharedPreferences
 ) : AndroidViewModel(application) {
 
     private val favoritesNewest: LiveData<List<FavoritePhotoEntity>>
@@ -29,6 +33,9 @@ class FavoritesViewModel @Inject constructor(
 
     private val removeAllResultMutableEvent = MutableLiveData<Event<Boolean>>()
     val removeAllResultEvent: LiveData<Event<Boolean>> = removeAllResultMutableEvent
+
+    private val listLayoutChangedMutable = MutableLiveData<ListLayout>()
+    val listLayoutChanged: LiveData<ListLayout> = listLayoutChangedMutable
 
     private var removeAllUndone = false
 
@@ -47,6 +54,11 @@ class FavoritesViewModel @Inject constructor(
                 favoritesMediatorLiveData.value = result
             }
         }
+
+        val listLayout = ListLayout.findBySpanCount(
+                preferences.getInt(SavedPreference.FAVORITES_LIST_LAYOUT.key, ListLayout.GRID.spanCount)
+        )
+        listLayoutChangedMutable.value = listLayout
     }
 
     fun invertFavorite(photo: Photo) {
@@ -82,6 +94,14 @@ class FavoritesViewModel @Inject constructor(
         if (!removeAllUndone) {
             favoritesRepository.removeAll()
         }
+    }
+
+    fun updateListLayout(listLayout: ListLayout) {
+        preferences.edit()
+                .putInt(SavedPreference.FAVORITES_LIST_LAYOUT.key, listLayout.spanCount)
+                .apply()
+
+        listLayoutChangedMutable.value = listLayout
     }
 
     fun createSortByDialog(): OptionsBottomSheetDialog {
