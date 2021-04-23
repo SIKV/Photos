@@ -1,6 +1,5 @@
 package com.github.sikv.photos.viewmodel
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,8 +14,11 @@ import com.github.sikv.photos.database.entity.CuratedPhotoEntity
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.event.VoidEvent
 import com.github.sikv.photos.model.Photo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class PhotosViewModel @ViewModelInject constructor(
+@HiltViewModel
+class PhotosViewModel @Inject constructor(
         private val photosRepository: PhotosRepository,
         private val favoritesRepository: FavoritesRepository,
         private val curatedDb: CuratedDb

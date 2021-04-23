@@ -1,7 +1,6 @@
 package com.github.sikv.photos.viewmodel
 
 import android.app.Application
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,9 +12,12 @@ import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.Feedback
 import com.github.sikv.photos.util.Utils
 import com.github.sikv.photos.util.isValidEmail
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FeedbackViewModel @ViewModelInject constructor(
+@HiltViewModel
+class FeedbackViewModel @Inject constructor(
         application: Application,
         private val feedbackRepository: FeedbackRepository
 ) : AndroidViewModel(application) {

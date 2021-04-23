@@ -2,15 +2,17 @@ package com.github.sikv.photos.viewmodel
 
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sikv.photos.account.AccountManager
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.event.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MoreViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MoreViewModel @Inject constructor(
         val accountManager: AccountManager
 ) : ViewModel(), AccountManager.Listener {
 

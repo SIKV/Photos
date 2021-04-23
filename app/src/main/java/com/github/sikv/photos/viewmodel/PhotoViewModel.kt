@@ -1,12 +1,9 @@
 package com.github.sikv.photos.viewmodel
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import androidx.fragment.app.FragmentManager
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.target.CustomTarget
@@ -21,15 +18,18 @@ import com.github.sikv.photos.model.createShareIntent
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
-import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PhotoViewModel @ViewModelInject constructor(
-        @ApplicationContext private val context: Context,
+@HiltViewModel
+class PhotoViewModel @Inject constructor(
+        savedStateHandle: SavedStateHandle,
         private val photosRepository: PhotosRepository,
         private val favoritesRepository: FavoritesRepository,
         private val glide: RequestManager,
-        @Assisted private val savedStateHandle: SavedStateHandle
 ) : ViewModel(), FavoritesRepository.Listener {
 
     private val showPhotoInfoMutableEvent = MutableLiveData<Photo?>()
@@ -163,8 +163,8 @@ class PhotoViewModel @ViewModelInject constructor(
 
     fun downloadPhotoAndSave() {
         photo?.let { photo ->
-            context.downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
-            App.instance.postGlobalMessage(context.getString(R.string.downloading_photo))
+            App.instance.downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
+            App.instance.postGlobalMessage(App.instance.getString(R.string.downloading_photo))
         }
     }
 
@@ -177,10 +177,10 @@ class PhotoViewModel @ViewModelInject constructor(
     }
 
     fun openAuthorUrl() {
-        photo?.getPhotoPhotographerUrl()?.let(context::openUrl)
+        photo?.getPhotoPhotographerUrl()?.let(App.instance::openUrl)
     }
 
     fun openPhotoSource() {
-        photo?.getPhotoShareUrl()?.let(context::openUrl)
+        photo?.getPhotoShareUrl()?.let(App.instance::openUrl)
     }
 }

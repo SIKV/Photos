@@ -1,7 +1,6 @@
 package com.github.sikv.photos.viewmodel
 
 import android.app.Application
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.database.entity.FavoritePhotoEntity
@@ -10,9 +9,12 @@ import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.util.getString
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FavoritesViewModel @ViewModelInject constructor(
+@HiltViewModel
+class FavoritesViewModel @Inject constructor(
         application: Application,
         private val favoritesRepository: FavoritesRepository
 ) : AndroidViewModel(application) {

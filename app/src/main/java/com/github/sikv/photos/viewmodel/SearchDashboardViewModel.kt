@@ -1,6 +1,5 @@
 package com.github.sikv.photos.viewmodel
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,9 +10,12 @@ import com.github.sikv.photos.config.ListConfig
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.recommendation.RecommendedPhotos
 import com.github.sikv.photos.recommendation.Recommender
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SearchDashboardViewModel @ViewModelInject constructor(
+@HiltViewModel
+class SearchDashboardViewModel @Inject constructor(
         private val photosRepository: PhotosRepository,
         private val recommender: Recommender
 ) : ViewModel() {
