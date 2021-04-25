@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.github.sikv.photos.R
+import com.github.sikv.photos.databinding.FragmentFeedbackBinding
 import com.github.sikv.photos.enumeration.RequestStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.hideSoftInput
@@ -16,7 +17,6 @@ import com.github.sikv.photos.util.setToolbarTitleWithBackButton
 import com.github.sikv.photos.util.showSoftInput
 import com.github.sikv.photos.viewmodel.FeedbackViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_feedback.*
 
 @AndroidEntryPoint
 class FeedbackFragment : BaseFragment() {
@@ -27,14 +27,18 @@ class FeedbackFragment : BaseFragment() {
         }
     }
 
+    private var _binding: FragmentFeedbackBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: FeedbackViewModel by viewModels()
 
     override val overrideBackground: Boolean = true
 
     private var sendMenuItem: MenuItem? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_feedback, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentFeedbackBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,15 +48,21 @@ class FeedbackFragment : BaseFragment() {
             navigation?.backPressed()
         }
 
-        context?.showSoftInput(emailEdit)
+        context?.showSoftInput(binding.emailEdit)
 
         observe()
 
-        emailEdit.resetErrorWhenTextChanged(emailInputLayout)
-        descriptionEdit.resetErrorWhenTextChanged(descriptionInputLayout)
+        binding.emailEdit.resetErrorWhenTextChanged(binding.emailInputLayout)
+        binding.descriptionEdit.resetErrorWhenTextChanged(binding.descriptionInputLayout)
     }
 
-    override fun onCreateToolbar(): FragmentToolbar? {
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
+    }
+
+    override fun onCreateToolbar(): FragmentToolbar {
         return FragmentToolbar.Builder()
                 .withId(R.id.toolbar)
                 .withMenu(R.menu.menu_feedback)
@@ -66,8 +76,8 @@ class FeedbackFragment : BaseFragment() {
                                         sendMenuItem = menuItem
 
                                         viewModel.send(
-                                                email = emailEdit.text.toString(),
-                                                description = descriptionEdit.text.toString()
+                                                email = binding.emailEdit.text.toString(),
+                                                description = binding.descriptionEdit.text.toString()
                                         )
 
                                         return true
@@ -99,8 +109,8 @@ class FeedbackFragment : BaseFragment() {
 
                     is RequestStatus.ValidationError -> {
                         when (requestStatus.invalidInputIndex) {
-                            1 -> emailInputLayout.error = requestStatus.message
-                            2 -> descriptionInputLayout.error = requestStatus.message
+                            1 -> binding.emailInputLayout.error = requestStatus.message
+                            2 -> binding.descriptionInputLayout.error = requestStatus.message
                             else -> { }
                         }
                     }

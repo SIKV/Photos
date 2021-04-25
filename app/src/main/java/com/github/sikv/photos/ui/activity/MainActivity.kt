@@ -9,13 +9,14 @@ import androidx.lifecycle.Observer
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.RuntimeBehaviour
+import com.github.sikv.photos.databinding.ActivityMainBinding
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.FragmentInfo
 import com.github.sikv.photos.ui.fragment.*
+import com.github.sikv.photos.ui.fragment.root.*
 import com.github.sikv.photos.util.customTag
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_main.*
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -45,6 +46,8 @@ class MainActivity : BaseActivity() {
             )
     )
 
+    private lateinit var binding: ActivityMainBinding
+
     private val photosFragmentIndex = 0
     private val searchFragmentIndex = 1
 
@@ -54,8 +57,8 @@ class MainActivity : BaseActivity() {
 
     private val globalMessageEventObserver = Observer<Event<String>> { event ->
         event.getContentIfNotHandled()?.let { message ->
-            Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT)
-                    .setAnchorView(bottomNavigationView)
+            Snackbar.make(binding.rootLayout, message, Snackbar.LENGTH_SHORT)
+                    .setAnchorView(binding.bottomNavigationView)
                     .show()
         }
     }
@@ -63,7 +66,8 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             shortcutManager = getSystemService(ShortcutManager::class.java) as ShortcutManager
@@ -112,7 +116,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupBottomNavigation() {
-        bottomNavigationView.selectedItemId = initialFragmentInfo.itemId
+        binding.bottomNavigationView.selectedItemId = initialFragmentInfo.itemId
 
         fragments.forEach { fragmentInfo ->
             val transaction = supportFragmentManager.beginTransaction()
@@ -127,12 +131,12 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setNavigationListener() {
-        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             changeFragment(menuItem.itemId)
             true
         }
 
-        bottomNavigationView.setOnNavigationItemReselectedListener { menuItem ->
+        binding.bottomNavigationView.setOnNavigationItemReselectedListener { menuItem ->
             val fragmentTag = getFragmentTagByItemId(menuItem.itemId)
             val fragment = findFragment(fragmentTag) as RootFragment
 
@@ -181,11 +185,11 @@ class MainActivity : BaseActivity() {
     }
 
     private fun isInitialFragmentSelected(): Boolean {
-        return bottomNavigationView.selectedItemId != initialFragmentInfo.itemId
+        return binding.bottomNavigationView.selectedItemId != initialFragmentInfo.itemId
     }
 
     private fun selectInitialFragment() {
-        bottomNavigationView.selectedItemId = initialFragmentInfo.itemId
+        binding.bottomNavigationView.selectedItemId = initialFragmentInfo.itemId
     }
 
     private fun reportShortcutUsed(id: String) {

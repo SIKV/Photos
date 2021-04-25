@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
+import com.github.sikv.photos.databinding.LayoutSetWallpaperBinding
 import com.github.sikv.photos.enumeration.SetWallpaperState
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.Utils
@@ -17,14 +17,10 @@ import com.github.sikv.photos.viewmodel.SetWallpaperViewModel
 import com.github.sikv.photos.viewmodel.SetWallpaperViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.layout_set_wallpaper.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SetWallpaperDialog : BottomSheetDialogFragment() {
-
-    @Inject
-    lateinit var glide: RequestManager
 
     companion object {
         fun newInstance(photo: Photo): SetWallpaperDialog {
@@ -39,9 +35,14 @@ class SetWallpaperDialog : BottomSheetDialogFragment() {
         }
     }
 
-    private val viewModel: SetWallpaperViewModel by viewModels {
-        val photo =  arguments?.getParcelable<Photo>(Photo.KEY)
+    private var _binding: LayoutSetWallpaperBinding? = null
+    private val binding get() = _binding!!
 
+    @Inject
+    lateinit var glide: RequestManager
+
+    private val viewModel: SetWallpaperViewModel by viewModels {
+        val photo = arguments?.getParcelable<Photo>(Photo.KEY)
         SetWallpaperViewModelFactory(requireActivity().application, glide, photo)
     }
 
@@ -49,10 +50,10 @@ class SetWallpaperDialog : BottomSheetDialogFragment() {
         val view = inflater.inflate(R.layout.layout_bottom_sheet, container, false)
 
         val rootLayout = view.findViewById<ViewGroup>(R.id.rootLayout)
-        val layout = LayoutInflater.from(context).inflate(R.layout.layout_set_wallpaper, rootLayout, false)
+        _binding = LayoutSetWallpaperBinding.inflate(layoutInflater, rootLayout, false)
 
-        rootLayout.addView(layout)
-        Utils.addCancelOption(context, rootLayout, View.OnClickListener { dismiss() })
+        rootLayout.addView(binding.root)
+        Utils.addCancelOption(context, rootLayout) { dismiss() }
 
         return view
     }
@@ -60,25 +61,25 @@ class SetWallpaperDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tryAgainButton.setOnClickListener {
+        binding.tryAgainButton.setOnClickListener {
             viewModel.setWallpaper()
         }
 
-        viewModel.stateEvent.observe(viewLifecycleOwner, Observer { event ->
+        viewModel.stateEvent.observe(viewLifecycleOwner, { event ->
             event.getContentIfNotHandled()?.let { stateWithData ->
                 when (stateWithData.state) {
                     SetWallpaperState.DOWNLOADING_PHOTO -> {
-                        statusText.setText(R.string.downloading_photo)
+                        binding.statusText.setText(R.string.downloading_photo)
 
-                        progressBar.visibility = View.VISIBLE
-                        tryAgainButton.visibility = View.GONE
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.tryAgainButton.visibility = View.GONE
                     }
 
                     SetWallpaperState.PHOTO_READY -> {
-                        statusText.setText(R.string.setting_wallpaper)
+                        binding.statusText.setText(R.string.setting_wallpaper)
 
-                        progressBar.visibility = View.VISIBLE
-                        tryAgainButton.visibility = View.GONE
+                        binding.progressBar.visibility = View.VISIBLE
+                        binding.tryAgainButton.visibility = View.GONE
 
                         (stateWithData.data as? Uri)?.let { uri ->
                             viewModel.setWallpaperFromUri(uri)
@@ -87,14 +88,20 @@ class SetWallpaperDialog : BottomSheetDialogFragment() {
                     }
 
                     SetWallpaperState.ERROR_DOWNLOADING_PHOTO -> {
-                        statusText.setText(R.string.error_downloading_photo)
+                        binding.statusText.setText(R.string.error_downloading_photo)
 
-                        progressBar.visibility = View.GONE
-                        tryAgainButton.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.GONE
+                        binding.tryAgainButton.visibility = View.VISIBLE
                     }
                 }
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 
     fun show(fragmentManager: FragmentManager) {

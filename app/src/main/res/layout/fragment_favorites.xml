@@ -28,7 +28,9 @@
             android:clipToPadding="false"
             tools:listitem="@layout/item_photo_full" />
 
-        <include layout="@layout/layout_no_favorites" />
+        <include
+            android:id="@+id/noFavoritesLayout"
+            layout="@layout/layout_no_favorites" />
 
     </FrameLayout>
 

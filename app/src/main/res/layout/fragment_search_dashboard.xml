@@ -86,7 +86,9 @@
                 android:paddingVertical="@dimen/photoGridRecyclerVerticalPadding"
                 android:clipToPadding="false" />
 
-            <include layout="@layout/layout_no_recommendations" />
+            <include
+                android:id="@+id/noRecommendationsLayout"
+                layout="@layout/layout_no_recommendations" />
 
         </com.github.sikv.photos.ui.custom.PullRefreshLayout>
 

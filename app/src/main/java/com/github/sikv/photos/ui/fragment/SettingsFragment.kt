@@ -13,6 +13,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.github.sikv.photos.databinding.FragmentSettingsBinding
 import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.makeClickable
 import com.github.sikv.photos.util.openUrl
@@ -20,21 +21,23 @@ import com.github.sikv.photos.util.setToolbarTitleWithBackButton
 import com.github.sikv.photos.viewmodel.SettingsViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_settings.*
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment() {
 
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
+
     override val overrideBackground: Boolean = true
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_settings, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
         childFragmentManager.beginTransaction()
                 .replace(R.id.fragmentContainer, PreferenceFragment())
                 .commit()
 
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,6 +52,12 @@ class SettingsFragment : BaseFragment() {
         showIconsAttribution()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
+    }
+
     private fun showIconsAttribution() {
         val thoseIcons = getString(R.string.those_icons)
         val thoseIconsUrl = "https://www.flaticon.com/authors/those-icons"
@@ -59,10 +68,10 @@ class SettingsFragment : BaseFragment() {
         val flaticon = getString(R.string.flaticon)
         val flaticonUrl = "https://www.flaticon.com"
 
-        iconsAttributionText.text = getString(R.string.icons_made_by_s_and_s_from_s,
+        binding.iconsAttributionText.text = getString(R.string.icons_made_by_s_and_s_from_s,
                 thoseIcons, freepik, flaticon)
 
-        iconsAttributionText.makeClickable(arrayOf(
+        binding.iconsAttributionText.makeClickable(arrayOf(
                 thoseIcons, freepik, flaticon),
                 arrayOf(
                         object : ClickableSpan() {

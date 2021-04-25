@@ -12,6 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.updatePadding
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.github.sikv.photos.databinding.ActivityPhotoBinding
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.util.favoriteAnimation
 import com.github.sikv.photos.util.makeClickable
@@ -19,7 +20,6 @@ import com.github.sikv.photos.util.makeUnderlineBold
 import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_photo.*
 
 @AndroidEntryPoint
 class PhotoActivity : BaseActivity() {
@@ -34,6 +34,8 @@ class PhotoActivity : BaseActivity() {
         }
     }
 
+    private lateinit var binding: ActivityPhotoBinding
+
     private val viewModel: PhotoViewModel by viewModels()
 
     private var favoriteMenuItemIcon: Int? = null
@@ -41,8 +43,10 @@ class PhotoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_photo)
-        setSupportActionBar(toolbar)
+        binding = ActivityPhotoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -91,11 +95,11 @@ class PhotoActivity : BaseActivity() {
         val authorName = photo.getPhotoPhotographerName()
         val source = photo.getPhotoSource().title
 
-        authorText.text = String.format(getString(R.string.photo_by_s_on_s), authorName, source)
+        binding.authorText.text = String.format(getString(R.string.photo_by_s_on_s), authorName, source)
 
-        authorText.makeUnderlineBold(arrayOf(authorName, source))
+        binding.authorText.makeUnderlineBold(arrayOf(authorName, source))
 
-        authorText.makeClickable(arrayOf(authorName, source),
+        binding.authorText.makeClickable(arrayOf(authorName, source),
                 arrayOf(
                         object : ClickableSpan() {
                             override fun onClick(view: View) {
@@ -126,7 +130,7 @@ class PhotoActivity : BaseActivity() {
         })
 
         viewModel.showPhotoEvent.observe(this, { photo ->
-            photoImageView.setImageBitmap(photo)
+            binding.photoImageView.setImageBitmap(photo)
         })
 
         viewModel.favoriteInitEvent.observe(this, {
@@ -141,23 +145,23 @@ class PhotoActivity : BaseActivity() {
     }
 
     private fun setListeners() {
-        setWallpaperButton.setOnClickListener {
+        binding.setWallpaperButton.setOnClickListener {
             viewModel.setWallpaper(supportFragmentManager)
         }
 
-        downloadButton.setOnClickListener {
+        binding.downloadButton.setOnClickListener {
             requestWriteExternalStoragePermission {
                 viewModel.downloadPhotoAndSave()
             }
         }
 
-        shareButton.setOnClickListener {
+        binding.shareButton.setOnClickListener {
             startActivity(viewModel.createShareIntent())
         }
     }
 
     private fun setOnApplyWindowInsetsListeners() {
-        ViewCompat.setOnApplyWindowInsetsListener(toolbar) { view, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.toolbar) { view, insets ->
             view.updatePadding(
                     top = insets.systemWindowInsetTop,
                     left = insets.systemWindowInsetLeft,
@@ -166,7 +170,7 @@ class PhotoActivity : BaseActivity() {
             insets
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(contentLayout) { view, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.contentLayout) { view, insets ->
             view.updatePadding(bottom = insets.systemWindowInsetBottom)
             insets
         }
@@ -175,7 +179,7 @@ class PhotoActivity : BaseActivity() {
     private fun observeGlobalMessageEvent() {
         App.instance.globalMessageEvent.observe(this, { event ->
             event.getContentIfNotHandled()?.let { message ->
-                Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT)
+                Snackbar.make(binding.rootLayout, message, Snackbar.LENGTH_SHORT)
                         .show()
             }
         })

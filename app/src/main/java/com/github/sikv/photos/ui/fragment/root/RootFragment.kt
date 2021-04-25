@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.fragment
+package com.github.sikv.photos.ui.fragment.root
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import com.github.sikv.photos.R
+import com.github.sikv.photos.databinding.ItemOptionBinding
 import com.github.sikv.photos.util.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.android.synthetic.main.item_option.view.*
 import java.util.*
 
 class OptionsBottomSheetDialog : BottomSheetDialogFragment() {
@@ -46,25 +46,26 @@ class OptionsBottomSheetDialog : BottomSheetDialogFragment() {
                 val layout = view.findViewById<ViewGroup>(R.id.rootLayout)
 
                 optionsList.forEachIndexed { index, optionText ->
-                    val optionLayout = LayoutInflater.from(context).inflate(R.layout.item_option, null, false)
+                    val optionLayoutBinding = ItemOptionBinding.inflate(layoutInflater, null, false)
 
-                    optionLayout.optionText.text = optionText
+                    optionLayoutBinding.optionText.text = optionText
 
                     if (index == selectedOptionIndex) {
-                        optionLayout.optionSelectedImage.setImageResource(R.drawable.ic_check_secondary_24dp)
+                        optionLayoutBinding.optionSelectedImage
+                                .setImageResource(R.drawable.ic_check_secondary_24dp)
                     } else {
-                        optionLayout.optionSelectedImage.setImageDrawable(null)
+                        optionLayoutBinding.optionSelectedImage.setImageDrawable(null)
                     }
 
-                    optionLayout.setOnClickListener {
+                    optionLayoutBinding.root.setOnClickListener {
                         onItemSelected?.invoke(index)
                         dismiss()
                     }
 
-                    layout.addView(optionLayout)
+                    layout.addView(optionLayoutBinding.root)
                 }
 
-                Utils.addCancelOption(context, layout, View.OnClickListener { dismiss() })
+                Utils.addCancelOption(context, layout) { dismiss() }
             }
         }
 

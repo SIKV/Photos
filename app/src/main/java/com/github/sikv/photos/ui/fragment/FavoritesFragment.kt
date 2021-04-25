@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.databinding.FragmentFavoritesBinding
 import com.github.sikv.photos.enumeration.ListLayout
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.ui.PhotoActionDispatcher
@@ -21,18 +22,19 @@ import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_favorites.*
-import kotlinx.android.synthetic.main.layout_no_favorites.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoritesFragment : BaseFragment() {
 
-    @Inject
-    lateinit var glide: RequestManager
+    private var _binding: FragmentFavoritesBinding? = null
+    private val binding get() = _binding!!
 
     @Inject
     lateinit var favoritesRepository: FavoritesRepository
+
+    @Inject
+    lateinit var glide: RequestManager
 
     private val viewModel: FavoritesViewModel by viewModels()
 
@@ -50,8 +52,9 @@ class FavoritesFragment : BaseFragment() {
         photoAdapter = PhotoListAdapter(glide, favoritesRepository, photoActionDispatcher)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_favorites, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,12 +62,18 @@ class FavoritesFragment : BaseFragment() {
 
         setToolbarTitle(R.string.favorites)
 
-        photosRecycler.adapter = photoAdapter
+        binding.photosRecycler.adapter = photoAdapter
 
         // Default value is not working good. When a photo is removed animation is broken.
-        photosRecycler.itemAnimator?.removeDuration = 0
+        binding.photosRecycler.itemAnimator?.removeDuration = 0
 
         observe()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
     }
 
     override fun onCreateToolbar(): FragmentToolbar {
@@ -112,20 +121,20 @@ class FavoritesFragment : BaseFragment() {
     }
 
     override fun onScrollToTop() {
-        photosRecycler.scrollToTop()
+        binding.photosRecycler.scrollToTop()
     }
 
     private fun observe() {
         viewModel.favoritesLiveData.observe(viewLifecycleOwner, {
             it?.let { photos ->
                 photoAdapter.submitList(photos)
-                noFavoritesLayout.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
+                binding.noFavoritesLayout.root.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
             }
         })
 
         viewModel.removeAllResultEvent.observe(viewLifecycleOwner, { event ->
             if (event.getContentIfNotHandled() == true) {
-                Snackbar.make(rootLayout, R.string.removed, Snackbar.LENGTH_LONG)
+                Snackbar.make(binding.rootLayout, R.string.removed, Snackbar.LENGTH_LONG)
                         .setAction(R.string.undo) {
                             viewModel.unmarkAllAsRemoved()
                         }
@@ -147,7 +156,7 @@ class FavoritesFragment : BaseFragment() {
         val itemLayoutType = PhotoItemLayoutType.findBySpanCount(listLayout.spanCount)
 
         photoAdapter.setItemLayoutType(itemLayoutType)
-        photosRecycler.setItemLayoutType(itemLayoutType)
+        binding.photosRecycler.setItemLayoutType(itemLayoutType)
 
         setMenuItemVisibility(R.id.itemViewList, listLayout == ListLayout.GRID)
         setMenuItemVisibility(R.id.itemViewGrid, listLayout == ListLayout.LIST)

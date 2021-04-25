@@ -26,8 +26,13 @@
             android:scrollbars="vertical"
             android:clipToPadding="false" />
 
-        <include layout="@layout/layout_loading_list" />
-        <include layout="@layout/layout_loading_error" />
+        <include
+            android:id="@+id/loadingListLayout"
+            layout="@layout/layout_loading_list" />
+
+        <include
+            android:id="@+id/loadingErrorLayout"
+            layout="@layout/layout_loading_error" />
 
     </FrameLayout>
 

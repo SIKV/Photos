@@ -12,13 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.github.sikv.photos.R
+import com.github.sikv.photos.databinding.FragmentSearchBinding
 import com.github.sikv.photos.enumeration.SearchSource
 import com.github.sikv.photos.util.changeVisibilityWithAnimation
 import com.github.sikv.photos.util.hideSoftInput
 import com.github.sikv.photos.util.showSoftInput
 import com.github.sikv.photos.util.showToolbarBackButton
-import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : BaseFragment() {
 
@@ -40,14 +39,18 @@ class SearchFragment : BaseFragment() {
         }
     }
 
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
+
     override val overrideBackground: Boolean = true
 
     private lateinit var viewPagerAdapter: SearchViewPagerAdapter
 
     private var lastSearchText: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,7 +63,7 @@ class SearchFragment : BaseFragment() {
         initViewPager {
             if (savedInstanceState == null) {
                 arguments?.getString(KEY_SEARCH_TEXT)?.let { searchText ->
-                    searchEdit.append(searchText)
+                    binding.searchEdit.append(searchText)
                     searchPhotos(searchText)
                 }
 
@@ -91,12 +94,18 @@ class SearchFragment : BaseFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        _binding = null
+    }
+
     private fun searchPhotos(text: String) {
-        context?.hideSoftInput(searchEdit)
+        context?.hideSoftInput(binding.searchEdit)
 
         lastSearchText = text
 
-        viewPagerAdapter.searchPhotos(viewPager, text)
+        viewPagerAdapter.searchPhotos(binding.viewPager, text)
     }
 
     private fun shownKeyboardIfNeeded() {
@@ -105,16 +114,16 @@ class SearchFragment : BaseFragment() {
 
         if (showKeyboard) {
             if (!keyboardShown) {
-                keyboardShown = requireActivity().showSoftInput(searchEdit)
+                keyboardShown = requireActivity().showSoftInput(binding.searchEdit)
             }
 
-            searchEdit.viewTreeObserver.addOnWindowFocusChangeListener(object : ViewTreeObserver.OnWindowFocusChangeListener {
+            binding.searchEdit.viewTreeObserver.addOnWindowFocusChangeListener(object : ViewTreeObserver.OnWindowFocusChangeListener {
                 override fun onWindowFocusChanged(hasFocus: Boolean) {
                     if (hasFocus && !keyboardShown) {
-                        keyboardShown = requireActivity().showSoftInput(searchEdit)
+                        keyboardShown = requireActivity().showSoftInput(binding.searchEdit)
                     }
 
-                    searchEdit?.viewTreeObserver?.removeOnWindowFocusChangeListener(this)
+                    binding.searchEdit.viewTreeObserver?.removeOnWindowFocusChangeListener(this)
                 }
             })
         }
@@ -123,11 +132,11 @@ class SearchFragment : BaseFragment() {
     private fun changeClearButtonVisibility(visible: Boolean, withAnimation: Boolean = true) {
         val newVisibility = if (visible) View.VISIBLE else View.INVISIBLE
 
-        if (searchClearButton.visibility != newVisibility) {
+        if (binding.searchClearButton.visibility != newVisibility) {
             if (withAnimation) {
-                searchClearButton.changeVisibilityWithAnimation(newVisibility)
+                binding.searchClearButton.changeVisibilityWithAnimation(newVisibility)
             } else {
-                searchClearButton.visibility = newVisibility
+                binding.searchClearButton.visibility = newVisibility
             }
         }
     }
@@ -135,26 +144,26 @@ class SearchFragment : BaseFragment() {
     private fun initViewPager(after: () -> Unit) {
         viewPagerAdapter = SearchViewPagerAdapter(childFragmentManager)
 
-        viewPager.adapter = viewPagerAdapter
-        viewPager.offscreenPageLimit = SearchSource.size
+        binding.viewPager.adapter = viewPagerAdapter
+        binding.viewPager.offscreenPageLimit = SearchSource.size
 
-        tabLayout.setupWithViewPager(viewPager)
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
 
-        viewPager.post {
+        binding.viewPager.post {
             after()
         }
     }
 
     private fun setListeners() {
-        searchEdit.setOnEditorActionListener { _, actionId, _ ->
+        binding.searchEdit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                searchPhotos(searchEdit.text.toString())
+                searchPhotos(binding.searchEdit.text.toString())
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
         }
 
-        searchEdit.addTextChangedListener(object : TextWatcher {
+        binding.searchEdit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(editable: Editable?) {
                 changeClearButtonVisibility(editable?.isNotEmpty() ?: false)
             }
@@ -166,9 +175,9 @@ class SearchFragment : BaseFragment() {
             }
         })
 
-        searchClearButton.setOnClickListener {
-            searchEdit.text?.clear()
-            context?.showSoftInput(searchEdit)
+        binding.searchClearButton.setOnClickListener {
+            binding.searchEdit.text?.clear()
+            context?.showSoftInput(binding.searchEdit)
         }
     }
 
@@ -180,7 +189,7 @@ class SearchFragment : BaseFragment() {
             return SingleSearchFragment.newInstance(SearchSource.getAt(position).photoSource)
         }
 
-        override fun getPageTitle(position: Int): CharSequence? {
+        override fun getPageTitle(position: Int): CharSequence {
             return SearchSource.getAt(position).photoSource.title
         }
 

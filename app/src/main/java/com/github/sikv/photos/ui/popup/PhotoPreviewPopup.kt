@@ -16,7 +16,6 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
-import kotlinx.android.synthetic.main.popup_photo_preview.view.*
 
 class PhotoPreviewPopup(
         private val context: Context,
@@ -38,8 +37,8 @@ class PhotoPreviewPopup(
                 true
         )
 
-        photoPreviewCard = layout.photoPreviewCard
-        photoPreviewImage = layout.photoPreviewImage
+        photoPreviewCard = layout.findViewById(R.id.photoPreviewCard)
+        photoPreviewImage = layout.findViewById(R.id.photoPreviewImage)
 
         popupWindow?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         popupWindow?.isOutsideTouchable = false
