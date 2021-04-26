@@ -12,7 +12,8 @@ import com.github.sikv.photos.RuntimeBehaviour
 import com.github.sikv.photos.databinding.ActivityMainBinding
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.FragmentInfo
-import com.github.sikv.photos.ui.fragment.*
+import com.github.sikv.photos.ui.fragment.BaseFragment
+import com.github.sikv.photos.ui.fragment.SearchFragment
 import com.github.sikv.photos.ui.fragment.root.*
 import com.github.sikv.photos.util.customTag
 import com.google.android.material.snackbar.Snackbar
@@ -57,7 +58,7 @@ class MainActivity : BaseActivity() {
 
     private val globalMessageEventObserver = Observer<Event<String>> { event ->
         event.getContentIfNotHandled()?.let { message ->
-            Snackbar.make(binding.rootLayout, message, Snackbar.LENGTH_SHORT)
+            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
                     .setAnchorView(binding.bottomNavigationView)
                     .show()
         }

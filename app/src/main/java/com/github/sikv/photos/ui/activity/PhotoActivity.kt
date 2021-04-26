@@ -179,7 +179,7 @@ class PhotoActivity : BaseActivity() {
     private fun observeGlobalMessageEvent() {
         App.instance.globalMessageEvent.observe(this, { event ->
             event.getContentIfNotHandled()?.let { message ->
-                Snackbar.make(binding.rootLayout, message, Snackbar.LENGTH_SHORT)
+                Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
                         .show()
             }
         })

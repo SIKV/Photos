@@ -134,7 +134,7 @@ class FavoritesFragment : BaseFragment() {
 
         viewModel.removeAllResultEvent.observe(viewLifecycleOwner, { event ->
             if (event.getContentIfNotHandled() == true) {
-                Snackbar.make(binding.rootLayout, R.string.removed, Snackbar.LENGTH_LONG)
+                Snackbar.make(binding.root, R.string.removed, Snackbar.LENGTH_LONG)
                         .setAction(R.string.undo) {
                             viewModel.unmarkAllAsRemoved()
                         }
