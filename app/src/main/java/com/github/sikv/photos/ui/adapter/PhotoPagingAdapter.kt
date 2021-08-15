@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
-import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
@@ -35,7 +34,7 @@ class PhotoPagingAdapter<T : Photo>(
         }
     }
 
-    fun notifyPhotoChanged(photo: Photo) {
+    fun notifyPhotoChanged(photo: Photo?) {
         notifyItemChanged(snapshot().indexOf(photo))
     }
 

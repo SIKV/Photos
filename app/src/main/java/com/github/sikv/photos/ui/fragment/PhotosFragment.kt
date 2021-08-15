@@ -10,10 +10,10 @@ import androidx.paging.LoadState
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.database.entity.CuratedPhotoEntity
 import com.github.sikv.photos.databinding.FragmentPhotosBinding
 import com.github.sikv.photos.enumeration.ListLayout
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
+import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagingAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
@@ -42,7 +42,7 @@ class PhotosFragment : BaseFragment() {
         }
     }
 
-    private lateinit var photoAdapter: PhotoPagingAdapter<CuratedPhotoEntity>
+    private lateinit var photoAdapter: PhotoPagingAdapter<Photo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -1,10 +1,15 @@
 package com.github.sikv.photos.config
 
+import androidx.paging.PagingConfig
 import com.github.sikv.photos.enumeration.SearchSource
 
 object ListConfig {
-    const val INITIAL_LOAD_SIZE = 10
-    const val PAGE_SIZE = 10
+
+    val pagingConfig = PagingConfig(
+            initialLoadSize = 10,
+            pageSize = 10,
+            enablePlaceholders = false
+    )
 
     val RECOMMENDATIONS_LIMIT = 9 * SearchSource.size
 }

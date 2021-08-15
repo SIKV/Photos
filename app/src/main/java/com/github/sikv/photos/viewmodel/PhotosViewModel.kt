@@ -4,13 +4,13 @@ import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.paging.*
+import androidx.paging.Pager
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.github.sikv.photos.config.ListConfig
-import com.github.sikv.photos.data.mediator.CuratedPhotosRemoteMediator
+import com.github.sikv.photos.data.CuratedPhotosPagingSource
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
-import com.github.sikv.photos.database.CuratedDb
-import com.github.sikv.photos.database.entity.CuratedPhotoEntity
 import com.github.sikv.photos.enumeration.ListLayout
 import com.github.sikv.photos.enumeration.SavedPreference
 import com.github.sikv.photos.event.Event
@@ -23,15 +23,8 @@ import javax.inject.Inject
 class PhotosViewModel @Inject constructor(
         private val photosRepository: PhotosRepository,
         private val favoritesRepository: FavoritesRepository,
-        private val curatedDb: CuratedDb,
         private val preferences: SharedPreferences
 ) : ViewModel(), FavoritesRepository.Listener {
-
-    private val pagingConfig = PagingConfig(
-            initialLoadSize = ListConfig.INITIAL_LOAD_SIZE,
-            pageSize = ListConfig.PAGE_SIZE,
-            enablePlaceholders = false
-    )
 
     private val favoriteChangedMutableEvent = MutableLiveData<Event<Photo>>()
     val favoriteChangedEvent: LiveData<Event<Photo>> = favoriteChangedMutableEvent
@@ -77,17 +70,12 @@ class PhotosViewModel @Inject constructor(
         listLayoutChangedMutable.value = listLayout
     }
 
-    @OptIn(ExperimentalPagingApi::class)
-    fun getCuratedPhotos(): LiveData<PagingData<CuratedPhotoEntity>> {
+    fun getCuratedPhotos(): LiveData<PagingData<Photo>> {
         return Pager(
-                config = pagingConfig,
-                remoteMediator = CuratedPhotosRemoteMediator(
-                        curatedDb,
-                        photosRepository,
-                        preferences
-                ),
-        ) {
-            curatedDb.curatedDao.pagingSource()
-        }.liveData
+                config = ListConfig.pagingConfig,
+                pagingSourceFactory = {
+                    CuratedPhotosPagingSource(photosRepository)
+                }
+        ).liveData
     }
 }
