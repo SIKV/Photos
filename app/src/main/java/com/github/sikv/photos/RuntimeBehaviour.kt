@@ -1,26 +1,27 @@
 package com.github.sikv.photos
 
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
-import com.github.sikv.photos.config.Config
 import com.github.sikv.photos.config.ConfigProvider
-import com.github.sikv.photos.config.RemoteConfigProvider
+import com.github.sikv.photos.config.FeatureFlag
 import com.github.sikv.photos.ui.dialog.FullScreenLoadingDialog
-import com.github.sikv.photos.util.NotInitializedException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object RuntimeBehaviour {
+@Singleton
+class RuntimeBehaviour @Inject constructor(
+        private val configProvider: ConfigProvider,
+        private val preferences: SharedPreferences
+) {
 
-    private const val KEY_CONFIG_FETCHED = "configFetched"
+    private val keyConfigFetched = "configFetched"
 
-    private var configProvider: ConfigProvider? = null
-
-    fun init(activity: AppCompatActivity, doAfter: () -> Unit) {
-        configProvider = RemoteConfigProvider()
-
+    fun fetchConfig(activity: AppCompatActivity, doAfter: () -> Unit) {
         if (!isConfigFetched()) {
             val dialog = FullScreenLoadingDialog()
             dialog.show(activity.supportFragmentManager, null)
 
-            configProvider?.fetch {
+            configProvider.fetch {
                 dialog.dismiss()
                 doAfter()
 
@@ -28,25 +29,19 @@ object RuntimeBehaviour {
             }
         } else {
             doAfter()
-            configProvider?.refresh()
+            configProvider.refresh()
         }
     }
 
-    fun getConfig(config: Config): Boolean {
-        configProvider?.let {
-            return it.getConfig(config)
-        } ?: run {
-            throw NotInitializedException("RuntimeBehaviour is not initialized")
-        }
+    fun isFeatureEnabled(featureFlag: FeatureFlag): Boolean {
+        return configProvider.isFeatureEnabled(featureFlag)
     }
 
     private fun isConfigFetched(): Boolean {
-        val preferences = App.instance.getPrivatePreferences()
-        return preferences.getBoolean(KEY_CONFIG_FETCHED, false)
+        return preferences.getBoolean(keyConfigFetched, false)
     }
 
     private fun configFetched() {
-        val preferences = App.instance.getPrivatePreferences()
-        preferences.edit().putBoolean(KEY_CONFIG_FETCHED, true).apply()
+        preferences.edit().putBoolean(keyConfigFetched, true).apply()
     }
 }

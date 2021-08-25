@@ -7,6 +7,8 @@ import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.App
 import com.github.sikv.photos.account.AccountManager
 import com.github.sikv.photos.account.AccountManagerImpl
+import com.github.sikv.photos.config.ConfigProvider
+import com.github.sikv.photos.config.RemoteConfigProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,12 +25,17 @@ class AppModule {
     }
 
     @Provides
-    fun provideAccountManager(accountManager: AccountManagerImpl): AccountManager {
-        return accountManager
+    fun provideConfigProvider(): ConfigProvider {
+        return RemoteConfigProvider()
     }
 
     @Provides
     fun provideGlide(@ApplicationContext context: Context): RequestManager {
         return Glide.with(context)
+    }
+
+    @Provides
+    fun provideAccountManager(accountManager: AccountManagerImpl): AccountManager {
+        return accountManager
     }
 }

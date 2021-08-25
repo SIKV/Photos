@@ -12,7 +12,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.RuntimeBehaviour
-import com.github.sikv.photos.config.Config
+import com.github.sikv.photos.config.FeatureFlag
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.disableScrollableToolbar
@@ -20,6 +20,7 @@ import com.github.sikv.photos.util.setToolbarTitle
 import com.github.sikv.photos.viewmodel.MoreViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MoreFragment : BaseFragment() {
@@ -66,6 +67,9 @@ class MoreFragment : BaseFragment() {
     @AndroidEntryPoint
     class PreferenceFragment : PreferenceFragmentCompat() {
 
+        @Inject
+        lateinit var runtimeBehaviour: RuntimeBehaviour
+
         private val viewModel: MoreViewModel by viewModels()
 
         private var signingInSnackbar: Snackbar? = null
@@ -73,7 +77,7 @@ class MoreFragment : BaseFragment() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_more, rootKey)
 
-            val syncEnabled = RuntimeBehaviour.getConfig(Config.SYNC_ENABLED)
+            val syncEnabled = runtimeBehaviour.isFeatureEnabled(FeatureFlag.SYNC)
 
             findPreference<Preference>(getString(R.string._pref_sign_in))?.isEnabled = syncEnabled
             findPreference<Preference>(getString(R.string._pref_sign_out))?.isEnabled = syncEnabled

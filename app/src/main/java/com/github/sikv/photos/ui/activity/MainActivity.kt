@@ -18,6 +18,7 @@ import com.github.sikv.photos.ui.fragment.root.*
 import com.github.sikv.photos.util.customTag
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
@@ -27,6 +28,9 @@ class MainActivity : BaseActivity() {
 
         private const val SHORTCUT_SEARCH = "search"
     }
+
+    @Inject
+    lateinit var runtimeBehaviour: RuntimeBehaviour
 
     private val fragments = listOf(
             FragmentInfo(
@@ -74,7 +78,7 @@ class MainActivity : BaseActivity() {
             shortcutManager = getSystemService(ShortcutManager::class.java) as ShortcutManager
         }
 
-        RuntimeBehaviour.init(this) {
+        runtimeBehaviour.fetchConfig(this) {
             when (intent.action) {
                 ACTION_SHORTCUT_SEARCH -> {
                     reportShortcutUsed(SHORTCUT_SEARCH)

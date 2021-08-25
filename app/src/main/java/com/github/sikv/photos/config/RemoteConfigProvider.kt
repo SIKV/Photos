@@ -31,7 +31,7 @@ class RemoteConfigProvider : ConfigProvider {
         remoteConfig.fetchAndActivate()
     }
 
-    override fun getConfig(config: Config): Boolean {
-        return remoteConfig.getBoolean(config.key)
+    override fun isFeatureEnabled(featureFlag: FeatureFlag): Boolean {
+        return remoteConfig.getBoolean(featureFlag.key)
     }
 }

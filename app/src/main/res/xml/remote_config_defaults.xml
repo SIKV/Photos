@@ -5,7 +5,7 @@
         <value>false</value>
     </entry>
     <entry>
-        <key>recommendations_enabled</key>
+        <key>search_recommendations_enabled</key>
         <value>true</value>
     </entry>
 </defaultsMap>

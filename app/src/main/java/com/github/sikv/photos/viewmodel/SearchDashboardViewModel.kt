@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.RuntimeBehaviour
-import com.github.sikv.photos.config.Config
+import com.github.sikv.photos.config.FeatureFlag
 import com.github.sikv.photos.config.ListConfig
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.recommendation.RecommendedPhotos
@@ -16,6 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchDashboardViewModel @Inject constructor(
+        private val runtimeBehaviour: RuntimeBehaviour,
         private val photosRepository: PhotosRepository,
         private val recommender: Recommender
 ) : ViewModel() {
@@ -28,7 +29,7 @@ class SearchDashboardViewModel @Inject constructor(
     }
 
     fun loadRecommendations(reset: Boolean = false) {
-        if (!RuntimeBehaviour.getConfig(Config.RECOMMENDATIONS_ENABLED)) {
+        if (!runtimeBehaviour.isFeatureEnabled(FeatureFlag.SEARCH_RECOMMENDATIONS)) {
             return
         }
 
