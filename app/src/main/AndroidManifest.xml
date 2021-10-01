@@ -5,10 +5,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"
+    <uses-permission
+        android:name="android.permission.READ_PHONE_STATE"
         tools:node="remove" />
 
     <application
@@ -21,23 +23,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.activity.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme">
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data android:name="android.app.shortcuts"
+            <meta-data
+                android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity android:name=".ui.activity.PhotoActivity"
+        <activity
+            android:name=".ui.activity.PhotoActivity"
             android:theme="@style/AppTheme.Translucent" />
 
-        <activity android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
             android:theme="@style/AppTheme.OssLicenses" />
 
         <provider
@@ -52,5 +59,4 @@
         </provider>
 
     </application>
-
 </manifest>
