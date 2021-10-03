@@ -19,15 +19,14 @@ class RoomModule {
         private const val FAVORITES_DB = "favorites.db"
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideFavoritesDatabase(@ApplicationContext context: Context): FavoritesDb {
         return Room.databaseBuilder(context.applicationContext, FavoritesDb::class.java, FAVORITES_DB)
                 .fallbackToDestructiveMigration()
                 .build()
     }
 
-    @Singleton
     @Provides
     fun provideFavoritesDao(favoritesDb: FavoritesDb): FavoritesDao {
         return favoritesDb.favoritesDao

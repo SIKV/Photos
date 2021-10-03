@@ -5,6 +5,7 @@ import androidx.lifecycle.Transformations
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.github.sikv.photos.config.DbConfig
 import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.database.FavoritesDbQueryBuilder
 import com.github.sikv.photos.database.dao.FavoritesDao
 import com.github.sikv.photos.database.entity.FavoritePhotoEntity
 import com.github.sikv.photos.enumeration.SortBy
@@ -15,7 +16,8 @@ import javax.inject.Singleton
 
 @Singleton
 class FavoritesRepositoryImpl @Inject constructor(
-        private val favoritesDao: FavoritesDao
+        private val favoritesDao: FavoritesDao,
+        private val queryBuilder: FavoritesDbQueryBuilder
 ) : FavoritesRepository {
 
     private val scope = CoroutineScope(Job() + Dispatchers.IO)
@@ -36,20 +38,11 @@ class FavoritesRepositoryImpl @Inject constructor(
         subscribers.remove(listener)
     }
 
-    override fun getFavoritesLiveData(sortBy: SortBy): LiveData<List<FavoritePhotoEntity>>  {
-        val query = when (sortBy) {
-            SortBy.DATE_ADDED_NEWEST ->
-                SimpleSQLiteQuery("SELECT * from ${DbConfig.favoritePhotosTableName} WHERE markedAsDeleted=0 ORDER BY dateAdded DESC")
-            SortBy.DATE_ADDED_OLDEST ->
-                SimpleSQLiteQuery("SELECT * from ${DbConfig.favoritePhotosTableName} WHERE markedAsDeleted=0 ORDER BY dateAdded ASC")
-        }
+    override fun getFavoritesLiveData(sortBy: SortBy): LiveData<List<FavoritePhotoEntity>> {
+        val query = queryBuilder.buildGetPhotosQuery(sortBy)
 
-        return Transformations.map(favoritesDao.getPhotos(query)) {
-            it.forEach { photo ->
-                photo.favorite = true
-            }
-
-            it
+        return Transformations.map(favoritesDao.getPhotos(query)) { photos ->
+            photos.onEach { it.favorite = true }
         }
     }
 
