@@ -22,8 +22,6 @@ class App : Application() {
     val globalMessageEvent: LiveData<Event<String>> = globalMessageMutableEvent
 
     override fun onCreate() {
-        System.loadLibrary("keys")
-
         super.onCreate()
 
         instance = this
@@ -41,9 +39,7 @@ class App : Application() {
 
     fun updateTheme() {
         val preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
-
         val nightModeEnabled = preferenceManager.getBoolean(getString(R.string._pref_dark_theme), true)
-
         AppCompatDelegate.setDefaultNightMode(if (nightModeEnabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
     }
 }
