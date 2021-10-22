@@ -1,5 +1,7 @@
 <img src="../assets/FeatureGraphic.png" width="700">
 
+![Build](https://github.com/SIKV/Photos/workflows/Build/badge.svg)
+
 Browse, search, download, and share amazing free photos provided by talented photographers on [Pexels](https://www.pexels.com), [Unsplash](https://unsplash.com), and [Pixabay](https://pixabay.com).
 
 - Discover new photos every day
