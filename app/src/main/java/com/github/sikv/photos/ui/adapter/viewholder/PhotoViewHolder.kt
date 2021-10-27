@@ -1,5 +1,6 @@
 package com.github.sikv.photos.ui.adapter.viewholder
 
+import android.graphics.Color
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
@@ -10,6 +11,7 @@ import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
 import com.github.sikv.photos.util.*
+import com.google.android.material.color.MaterialColors
 import kotlinx.android.synthetic.main.item_photo_full.view.*
 
 class PhotoViewHolder(
@@ -123,10 +125,14 @@ class PhotoViewHolder(
                     .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
                     .into(itemView.photoImage)
 
+            // TODO Refactor
+            val textColor = MaterialColors.getColor(itemView.context, R.attr.colorOnPrimaryContainer, Color.WHITE)
+            val backgroundColor = MaterialColors.getColor(itemView.context, R.attr.colorPrimaryContainer, Color.BLACK)
+
             TextPlaceholder.with(itemView.context)
                     .textFirstChar(it.getPhotoPhotographerName())
-                    .textColor(R.color.colorText)
-                    .background(TextPlaceholder.Shape.CIRCLE, R.color.colorPrimary)
+                    .textColor(textColor)
+                    .background(TextPlaceholder.Shape.CIRCLE, backgroundColor)
                     .generateDrawable { placeholder ->
                         glide.load(it.getPhotoPhotographerImageUrl())
                                 .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))

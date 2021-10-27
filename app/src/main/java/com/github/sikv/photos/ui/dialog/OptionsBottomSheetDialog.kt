@@ -52,7 +52,7 @@ class OptionsBottomSheetDialog : BottomSheetDialogFragment() {
 
                     if (index == selectedOptionIndex) {
                         optionLayoutBinding.optionSelectedImage
-                                .setImageResource(R.drawable.ic_check_secondary_24dp)
+                                .setImageResource(R.drawable.ic_check_primary_24dp)
                     } else {
                         optionLayoutBinding.optionSelectedImage.setImageDrawable(null)
                     }

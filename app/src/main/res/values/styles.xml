@@ -1,28 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-
-    <style name="BaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-        <item name="colorOnSecondary">@color/colorOnSecondary</item>
-        <item name="colorError">@color/colorError</item>
-        <item name="colorOnError">@color/colorOnError</item>
-        <item name="colorSurface">@color/colorSurface</item>
-        <item name="colorOnSurface">@color/colorOnSurface</item>
-        <item name="android:colorBackground">@color/colorBackground</item>
-        <item name="colorOnBackground">@color/colorOnBackground</item>
-
-        <item name="colorControlNormal">@color/colorIcon</item>
-        <item name="android:colorControlActivated">?colorSecondary</item>
+    <style name="BaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimaryDark">?colorSurface</item>
 
         <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
 
-        <item name="toolbarStyle">@style/ToolbarStyle</item>
-        <item name="bottomNavigationStyle">@style/BottomNavigationStyle</item>
-        <item name="tabStyle">@style/TabStyle</item>
         <item name="chipStyle">@style/ChipStyle</item>
         <item name="textInputStyle">@style/TextInputStyle</item>
     </style>
@@ -50,7 +31,6 @@
     </style>
 
     <style name="AppTheme.Span" parent="AppTheme">
-        <item name="colorAccent">@color/colorText</item>
     </style>
 
     <style name="AppTheme.SpanWhite" parent="AppTheme">
@@ -76,34 +56,17 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="BottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
-        <item name="itemBackground">?colorPrimary</item>
-        <item name="itemIconTint">@drawable/selector_bottom_navigation_item</item>
-    </style>
-
-    <style name="TabStyle" parent="Widget.MaterialComponents.TabLayout.Colored">
-        <item name="tabMode">fixed</item>
-        <item name="tabGravity">fill</item>
-        <item name="tabSelectedTextColor">?colorSecondary</item>
-        <item name="tabIndicatorFullWidth">false</item>
-        <item name="tabIndicator">@drawable/tab_indicator</item>
-        <item name="tabIndicatorColor">?colorSecondary</item>
-    </style>
-
     <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Action">
         <item name="chipSurfaceColor">@android:color/transparent</item>
         <item name="chipBackgroundColor">@color/colorChipBackground</item>
     </style>
 
     <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@drawable/selector_text_input_box_stroke</item>
         <item name="boxStrokeWidthFocused">1dp</item>
-        <item name="hintTextColor">?colorSecondary</item>
     </style>
 
     <style name="ToolbarTitle">
         <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textColor">@color/colorText</item>
         <item name="android:textSize">20sp</item>
     </style>
 
@@ -111,7 +74,6 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:drawablePadding">6dp</item>
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textColor">@color/colorText</item>
         <item name="android:textSize">10sp</item>
         <item name="android:textAllCaps">true</item>
     </style>
@@ -145,5 +107,4 @@
     <style name="AlertDialogBodyTextStyle" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
         <item name="android:textSize">16sp</item>
     </style>
-
 </resources>

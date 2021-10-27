@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
 
-    <stroke android:color="@color/colorSecondary"
+    <stroke android:color="?colorPrimary"
         android:dashWidth="8dp"
         android:dashGap="8dp"
         android:width="@dimen/progressBarStrokeWidth" />

@@ -16,7 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textColor="@color/colorText"
         android:textSize="16sp"
         tools:text="@string/downloading_photo" />
 
@@ -36,7 +35,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:textColor="@color/colorText"
         android:text="@string/try_again"
         android:visibility="gone" />
 

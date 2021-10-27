@@ -29,7 +29,6 @@
             android:layout_marginTop="24dp"
             android:textSize="24sp"
             android:fontFamily="sans-serif-black"
-            android:textColor="@color/colorNotFoundContainer"
             android:text="@string/no_recommendations" />
 
         <TextView
@@ -38,7 +37,6 @@
             android:layout_marginTop="8dp"
             android:textSize="15sp"
             android:textAlignment="center"
-            android:textColor="@color/colorNotFoundContainer"
             android:text="@string/no_recommendations_description" />
 
         <com.google.android.material.button.MaterialButton
@@ -47,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="@string/refresh"
-            android:textColor="@color/colorSecondary"
+            android:textColor="?colorPrimary"
             app:rippleColor="@color/colorRippleLight"
             style="@style/Widget.MaterialComponents.Button.TextButton" />
 

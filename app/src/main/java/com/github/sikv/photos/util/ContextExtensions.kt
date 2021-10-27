@@ -11,7 +11,6 @@ import android.provider.Settings
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.browser.customtabs.CustomTabsIntent
-import androidx.core.content.ContextCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import java.io.File
@@ -33,11 +32,8 @@ fun Activity.hideSoftInput() {
 
 fun Context.openUrl(url: String) {
     val builder = CustomTabsIntent.Builder()
-    builder.setToolbarColor(ContextCompat.getColor(this, R.color.colorPrimary))
-
     val intent = builder.build()
     intent.intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-
     intent.launchUrl(this, Uri.parse(url))
 }
 

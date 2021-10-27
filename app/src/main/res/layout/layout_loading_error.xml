@@ -29,7 +29,6 @@
             android:layout_marginTop="24dp"
             android:textSize="24sp"
             android:fontFamily="sans-serif-black"
-            android:textColor="@color/colorNotFoundContainer"
             android:text="@string/loading_error" />
 
         <TextView
@@ -38,7 +37,6 @@
             android:layout_marginTop="8dp"
             android:textSize="15sp"
             android:textAlignment="center"
-            android:textColor="@color/colorNotFoundContainer"
             android:text="@string/loading_error_description" />
 
         <Button

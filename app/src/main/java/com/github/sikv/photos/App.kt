@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.preference.PreferenceManager
 import com.github.sikv.photos.event.Event
+import com.google.android.material.color.DynamicColors
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
@@ -26,6 +27,7 @@ class App : Application() {
 
         instance = this
 
+        DynamicColors.applyToActivitiesIfAvailable(this)
         updateTheme()
     }
 

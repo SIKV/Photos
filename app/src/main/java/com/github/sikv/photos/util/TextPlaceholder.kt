@@ -4,8 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.text.TextPaint
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
+import androidx.annotation.ColorInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -42,13 +41,13 @@ class PlaceholderGeneratorBuilder(private val context: Context) {
         this.text = text.first().toUpperCase().toString()
     }
 
-    fun textColor(@ColorRes textColor: Int) = apply {
-        this.textColor = ContextCompat.getColor(context, textColor)
+    fun textColor(@ColorInt color: Int) = apply {
+        this.textColor = color
     }
 
-    fun background(shape: TextPlaceholder.Shape, @ColorRes backgroundColor: Int) = apply {
+    fun background(shape: TextPlaceholder.Shape, @ColorInt backgroundColor: Int) = apply {
         this.shape = shape
-        this.backgroundColor = ContextCompat.getColor(context, backgroundColor)
+        this.backgroundColor = backgroundColor
     }
 
     fun generateDrawable(completion: ((BitmapDrawable?) -> Unit)? = null) {

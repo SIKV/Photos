@@ -36,7 +36,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Photographer Name"
-                android:textColor="@color/colorText"
                 android:textStyle="bold" />
 
             <TextView
@@ -44,7 +43,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="Source"
-                android:textColor="@color/colorText"
                 android:textSize="11sp"
                 tools:ignore="SmallSp" />
 

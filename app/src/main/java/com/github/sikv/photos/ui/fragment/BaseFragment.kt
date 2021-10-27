@@ -1,9 +1,9 @@
 package com.github.sikv.photos.ui.fragment
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
@@ -11,6 +11,7 @@ import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbarManager
 import com.github.sikv.photos.ui.navigation.Navigation
 import com.github.sikv.photos.ui.navigation.NavigationProvider
+import com.google.android.material.color.MaterialColors
 
 abstract class BaseFragment : Fragment() {
 
@@ -32,9 +33,8 @@ abstract class BaseFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (overrideBackground) {
-            context?.let {
-                view.setBackgroundColor(ContextCompat.getColor(it, R.color.colorBackground))
-            }
+            val backgroundColor = MaterialColors.getColor(requireContext(), R.attr.colorSurface, Color.BLACK)
+            view.setBackgroundColor(backgroundColor)
 
             view.isClickable = true
             view.isFocusable = true
