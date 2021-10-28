@@ -19,7 +19,7 @@
             android:layout_height="36dp"
             android:layout_centerVertical="true"
             android:contentDescription="@string/cn_photographer_photo"
-            tools:background="@color/colorIcon" />
+            tools:background="?colorOnSurface" />
 
         <LinearLayout
             android:id="@+id/photographerLayout"

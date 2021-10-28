@@ -4,7 +4,6 @@
 
         <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
 
-        <item name="chipStyle">@style/ChipStyle</item>
         <item name="textInputStyle">@style/TextInputStyle</item>
     </style>
 
@@ -54,11 +53,6 @@
 
     <style name="TransparentToolbarStyle" parent="ToolbarStyle">
         <item name="android:background">@android:color/transparent</item>
-    </style>
-
-    <style name="ChipStyle" parent="Widget.MaterialComponents.Chip.Action">
-        <item name="chipSurfaceColor">@android:color/transparent</item>
-        <item name="chipBackgroundColor">@color/colorChipBackground</item>
     </style>
 
     <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
