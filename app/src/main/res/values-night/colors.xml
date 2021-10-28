@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorNavigationIcon">#80FFFFFF</color>
-    <color name="colorNavigationIconActive">#FFFFFF</color>
-
     <color name="colorPlaceholder">#252525</color>
 </resources>

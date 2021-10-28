@@ -3,18 +3,18 @@
 
     <item android:id="@+id/photos"
         android:title="@string/photos"
-        android:icon="@drawable/ic_nav_photos_white_24dp" />
+        android:icon="@drawable/ic_nav_photos_24dp" />
 
     <item android:id="@+id/search"
         android:title="@string/search"
-        android:icon="@drawable/ic_nav_search_white_24dp" />
+        android:icon="@drawable/ic_nav_search_24dp" />
 
     <item android:id="@+id/favorites"
         android:title="@string/favorites"
-        android:icon="@drawable/ic_nav_favorite_white_24dp" />
+        android:icon="@drawable/ic_nav_favorite_24dp" />
 
     <item android:id="@+id/more"
         android:title="@string/more"
-        android:icon="@drawable/ic_nav_more_white_24dp" />
+        android:icon="@drawable/ic_nav_more_24dp" />
 
 </menu>

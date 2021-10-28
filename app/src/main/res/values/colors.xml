@@ -2,9 +2,6 @@
 <resources>
     <color name="colorNotFoundContainer">?colorOnSurface</color>
 
-    <color name="colorNavigationIcon">#80000000</color>
-    <color name="colorNavigationIconActive">#000000</color>
-
     <color name="launcherBackground">#181818</color>
 
     <color name="colorOverlay">#AA000000</color>
