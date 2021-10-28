@@ -1,9 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="BaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimaryDark">?colorSurface</item>
-
         <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
-
         <item name="textInputStyle">@style/TextInputStyle</item>
     </style>
 
@@ -30,10 +28,7 @@
     </style>
 
     <style name="AppTheme.Span" parent="AppTheme">
-    </style>
-
-    <style name="AppTheme.SpanWhite" parent="AppTheme">
-        <item name="colorAccent">@android:color/white</item>
+        <item name="colorPrimary">?colorOnSurface</item>
     </style>
 
     <style name="AppTheme.OssLicenses" parent="AppTheme">
@@ -42,7 +37,6 @@
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="colorPrimary">?colorSecondary</item>
         <item name="materialAlertDialogTitleTextStyle">@style/AlertDialogTitleTextStyle</item>
         <item name="materialAlertDialogBodyTextStyle">@style/AlertDialogBodyTextStyle</item>
     </style>
