@@ -14,7 +14,6 @@ import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.databinding.FragmentSettingsBinding
-import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.makeClickable
 import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.util.setToolbarTitleWithBackButton
@@ -46,8 +45,6 @@ class SettingsFragment : BaseFragment() {
         setToolbarTitleWithBackButton(R.string.settings) {
             navigation?.backPressed()
         }
-
-        disableScrollableToolbar()
 
         showIconsAttribution()
     }

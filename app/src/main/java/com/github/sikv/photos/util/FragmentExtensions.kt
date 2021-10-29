@@ -1,7 +1,5 @@
 package com.github.sikv.photos.util
 
-import android.view.View
-import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
@@ -14,11 +12,8 @@ fun Fragment.customTag(): String {
 }
 
 fun Fragment.setToolbarTitle(@StringRes title: Int) {
-    view?.findViewById<TextView>(R.id.toolbarTitleText)?.setText(title)
-}
-
-fun Fragment.setToolbarTitle(title: String) {
-    view?.findViewById<TextView>(R.id.toolbarTitleText)?.text = title
+    val toolbar = view?.findViewById<Toolbar>(R.id.toolbar)
+    toolbar?.setTitle(title)
 }
 
 fun Fragment.disableScrollableToolbar() {
@@ -39,26 +34,11 @@ fun Fragment.showToolbarBackButton(navigationOnClickListener: () -> Unit) {
     }
 }
 
-fun Fragment.showToolbarSubtitle(@StringRes subtitle: Int, @DrawableRes drawableStart: Int) {
-    val subtitleTextView = view?.findViewById<TextView>(R.id.toolbarSubtitleText)
-
-    subtitleTextView?.setText(subtitle)
-    subtitleTextView?.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableStart, 0, 0, 0)
-
-    subtitleTextView?.visibility = View.VISIBLE
-}
-
-fun Fragment.hideToolbarSubtitle() {
-    val subtitleTextView = view?.findViewById<TextView>(R.id.toolbarSubtitleText)
-    subtitleTextView?.visibility = View.GONE
-}
-
 private fun setToolbarTitleWithButton(fragment: Fragment, @StringRes title: Int?, @DrawableRes navigationIcon: Int, navigationOnClickListener: () -> Unit) {
     val toolbar = fragment.view?.findViewById<Toolbar>(R.id.toolbar)
-    val toolbarTitleTextView = fragment.view?.findViewById<TextView>(R.id.toolbarTitleText)
 
     title?.let {
-        toolbarTitleTextView?.setText(it)
+        toolbar?.setTitle(it)
     }
 
     toolbar?.setNavigationIcon(navigationIcon)
