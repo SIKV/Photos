@@ -1,54 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/noRecommendationsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:layout_margin="16dp"
+    android:visibility="gone"
+    tools:visibility="visible">
 
-    <LinearLayout
-        android:id="@+id/noRecommendationsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_margin="16dp"
-        android:visibility="gone"
-        tools:visibility="visible">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_broken_image_96dp"
+        android:contentDescription="@string/cn_image_icon" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_broken_image_96dp"
-            android:contentDescription="@string/cn_image_icon" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-black"
+        android:text="@string/no_recommendations" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:textSize="24sp"
-            android:fontFamily="sans-serif-black"
-            android:text="@string/no_recommendations" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="15sp"
+        android:textAlignment="center"
+        android:text="@string/no_recommendations_description" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textSize="15sp"
-            android:textAlignment="center"
-            android:text="@string/no_recommendations_description" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/refreshRecommendationsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/refresh"
+        android:textColor="?colorPrimary"
+        app:rippleColor="@color/colorRippleLight"
+        style="@style/Widget.MaterialComponents.Button.TextButton" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/refreshRecommendationsButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/refresh"
-            android:textColor="?colorPrimary"
-            app:rippleColor="@color/colorRippleLight"
-            style="@style/Widget.MaterialComponents.Button.TextButton" />
-
-    </LinearLayout>
-
-</merge>
+</LinearLayout>
