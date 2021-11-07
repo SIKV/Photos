@@ -2,24 +2,24 @@ package com.github.sikv.photos.ui
 
 import android.app.Activity
 import android.view.View
-import androidx.fragment.app.Fragment
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.createShareIntent
 import com.github.sikv.photos.ui.activity.BaseActivity
-import com.github.sikv.photos.ui.activity.PhotoActivity
 import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
+import com.github.sikv.photos.ui.fragment.BaseFragment
+import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.util.copyText
 import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
 
 class PhotoActionDispatcher(
-        private val fragment: Fragment,
+        private val fragment: BaseFragment,
         private val glide: RequestManager,
         private val invertFavorite: (Photo) -> Unit
 ) : OnPhotoActionListener {
@@ -33,7 +33,7 @@ class PhotoActionDispatcher(
     override fun onPhotoAction(action: OnPhotoActionListener.Action, photo: Photo, view: View) {
         when (action) {
             OnPhotoActionListener.Action.CLICK -> {
-                PhotoActivity.startActivity(getActivity(), view, photo)
+                fragment.navigation?.addFragment(PhotoDetailsFragment.newInstance(photo))
             }
 
             OnPhotoActionListener.Action.HOLD -> {

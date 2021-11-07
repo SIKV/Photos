@@ -21,6 +21,7 @@ import com.github.sikv.photos.viewmodel.PhotoViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
+@Deprecated("Use PhotoDetailsFragment instead")
 @AndroidEntryPoint
 class PhotoActivity : BaseActivity() {
 
@@ -64,7 +65,7 @@ class PhotoActivity : BaseActivity() {
         return true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_photo, menu)
         return true
     }

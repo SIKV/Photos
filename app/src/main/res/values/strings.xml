@@ -98,4 +98,7 @@
     <string name="date_added_newest">Date added (newest)</string>
     <string name="date_added_oldest">Date added (oldest)</string>
     <string name="sync_not_available">Sync is not implemented yet</string>
+
+    <!-- Content description -->
+    <string name="cd_back_button">Back button</string>
 </resources>
