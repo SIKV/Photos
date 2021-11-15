@@ -12,6 +12,10 @@ import com.github.sikv.photos.ui.navigation.NavigationProvider
 
 abstract class RootFragment : Fragment(), NavigationProvider {
 
+    private val navigation: Navigation by lazy {
+        NavigationDispatcher(this, R.id.fragmentContainer)
+    }
+
     private var delayedFragment: Fragment? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,13 +34,12 @@ abstract class RootFragment : Fragment(), NavigationProvider {
         }
     }
 
-    // TODO Used for 'Search' shortcut. Should be refactored.
-    fun addFragmentDelayed(fragment: Fragment) {
+    fun addDelayedFragment(fragment: Fragment) {
         delayedFragment = fragment
     }
 
     override fun provideNavigation(): Navigation {
-        return NavigationDispatcher(this, R.id.fragmentContainer)
+        return navigation
     }
 
     abstract fun provideRootFragment(): Fragment

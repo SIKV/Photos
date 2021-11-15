@@ -3,32 +3,45 @@ package com.github.sikv.photos.ui.navigation
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import com.github.sikv.photos.R
+import com.github.sikv.photos.util.getActiveFragment
 import com.github.sikv.photos.util.hideSoftInput
 
 class NavigationDispatcher(
-        private val fragment: Fragment,
-        @IdRes private val containerId: Int
+    private val fragment: Fragment,
+    @IdRes private val containerId: Int
 ) : Navigation {
 
+    private var destinationChangedListener: OnDestinationChangedListener? = null
+
     override fun addFragment(fragment: Fragment, withAnimation: Boolean) {
-        val transaction = this.fragment.childFragmentManager.beginTransaction()
+        val fm = this.fragment.childFragmentManager
+        val transaction = fm.beginTransaction()
 
         if (withAnimation) {
-            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_right, R.anim.slide_out_left)
+            transaction.setCustomAnimations(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         }
 
-        transaction.add(containerId, fragment)
-                .addToBackStack(null)
-                .commit()
+        transaction
+            .add(containerId, fragment)
+            .addToBackStack(null)
+            .commit()
+
+        destinationChangedListener?.onDestinationChanged(fragment)
     }
 
     override fun backPressed(): Boolean {
         fragment.activity?.hideSoftInput()
 
-        val fragmentManager = fragment.childFragmentManager
+        val fm = fragment.childFragmentManager
 
-        return if (fragmentManager.backStackEntryCount > 1) {
-            fragmentManager.popBackStack()
+        return if (fm.backStackEntryCount > 1) {
+            fm.popBackStack()
+            destinationChangedListener?.onDestinationChanged(fm.getActiveFragment())
             true
         } else {
             false
@@ -36,12 +49,19 @@ class NavigationDispatcher(
     }
 
     override fun backToRoot(): Fragment? {
-        val fragmentManager = fragment.childFragmentManager
+        val fm = fragment.childFragmentManager
 
-        for (i in 1 until fragmentManager.backStackEntryCount) {
-            fragmentManager.popBackStack()
+        for (i in 1 until fm.backStackEntryCount) {
+            fm.popBackStack()
         }
 
-        return fragmentManager.fragments.firstOrNull()
+        val rootFragment = fm.fragments.firstOrNull()
+        destinationChangedListener?.onDestinationChanged(rootFragment)
+
+        return rootFragment
+    }
+
+    override fun setOnDestinationChangedListener(destinationChangedListener: OnDestinationChangedListener?) {
+        this.destinationChangedListener = destinationChangedListener
     }
 }

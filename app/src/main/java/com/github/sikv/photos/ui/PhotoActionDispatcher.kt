@@ -19,9 +19,9 @@ import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
 
 class PhotoActionDispatcher(
-        private val fragment: BaseFragment,
-        private val glide: RequestManager,
-        private val invertFavorite: (Photo) -> Unit
+    private val fragment: BaseFragment,
+    private val glide: RequestManager,
+    private val invertFavorite: (Photo) -> Unit
 ) : OnPhotoActionListener {
 
     private lateinit var photoPreviewPopup: PhotoPreviewPopup
@@ -40,7 +40,6 @@ class PhotoActionDispatcher(
                 if (!this::photoPreviewPopup.isInitialized) {
                     photoPreviewPopup = PhotoPreviewPopup(getActivity(), glide)
                 }
-
                 photoPreviewPopup.show(view, photo)
             }
 
@@ -71,7 +70,6 @@ class PhotoActionDispatcher(
             OnPhotoActionListener.Action.DOWNLOAD -> {
                 (getActivity() as? BaseActivity)?.requestWriteExternalStoragePermission {
                     getActivity().downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
-
                     App.instance.postGlobalMessage(getActivity().getString(R.string.downloading_photo))
                 }
             }
@@ -86,8 +84,8 @@ class PhotoActionDispatcher(
 
     private fun showOptionsDialog(photo: Photo) {
         val options = listOf(
-                getActivity().getString(R.string.set_wallpaper),
-                getActivity().getString(R.string.copy_link)
+            getActivity().getString(R.string.set_wallpaper),
+            getActivity().getString(R.string.copy_link)
         )
 
         val dialog = OptionsBottomSheetDialog.newInstance(options, null) { index ->

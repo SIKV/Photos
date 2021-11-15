@@ -6,4 +6,5 @@ interface Navigation {
     fun addFragment(fragment: Fragment, withAnimation: Boolean = true)
     fun backPressed(): Boolean
     fun backToRoot(): Fragment?
+    fun setOnDestinationChangedListener(destinationChangedListener: OnDestinationChangedListener?)
 }

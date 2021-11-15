@@ -7,10 +7,6 @@ import androidx.fragment.app.Fragment
 import com.github.sikv.photos.R
 import com.google.android.material.appbar.AppBarLayout
 
-fun Fragment.customTag(): String {
-    return this::class.java.simpleName
-}
-
 fun Fragment.setToolbarTitle(@StringRes title: Int) {
     val toolbar = view?.findViewById<Toolbar>(R.id.toolbar)
     toolbar?.setTitle(title)

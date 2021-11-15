@@ -1,19 +1,22 @@
 <resources>
     <string name="app_name">Photos</string>
 
-    <string name="_file_provider">com.github.sikv.photos.fileprovider</string>
+    <string name="_file_provider" translatable="false">com.github.sikv.photos.fileprovider</string>
 
-    <string name="_pref_sign_in">PreferenceSignIn</string>
-    <string name="_pref_sign_out">PreferenceSignOut</string>
-    <string name="_pref_sync_not_available">PreferenceSyncNotAvailable</string>
-    <string name="_pref_dark_theme">PreferenceDarkTheme</string>
-    <string name="_pref_send_feedback">PreferenceSendFeedback</string>
-    <string name="_pref_open_source_licences">PreferenceOpenSourceLicences</string>
-    <string name="_pref_app_version">PreferenceAppVersion</string>
+    <string name="_pref_sign_in" translatable="false">PreferenceSignIn</string>
+    <string name="_pref_sign_out" translatable="false">PreferenceSignOut</string>
+    <string name="_pref_sync_not_available" translatable="false">PreferenceSyncNotAvailable</string>
+    <string name="_pref_dark_theme" translatable="false">PreferenceDarkTheme</string>
+    <string name="_pref_send_feedback" translatable="false">PreferenceSendFeedback</string>
+    <string name="_pref_open_source_licences" translatable="false">PreferenceOpenSourceLicences</string>
+    <string name="_pref_app_version" translatable="false">PreferenceAppVersion</string>
 
-    <string name="those_icons">Those Icons</string>
-    <string name="freepik">Freepik</string>
-    <string name="flaticon">www.flaticon.com</string>
+    <string name="_shortcut_search" translatable="false">search</string>
+    <string name="_shortcut_action_search" translatable="false">com.github.sikv.photos.action.SHORTCUT_SEARCH</string>
+
+    <string name="those_icons" translatable="false">Those Icons</string>
+    <string name="freepik" translatable="false">Freepik</string>
+    <string name="flaticon" translatable="false">www.flaticon.com</string>
 
     <string name="cn_photo">Photo</string>
     <string name="cn_app_icon">App icon</string>
