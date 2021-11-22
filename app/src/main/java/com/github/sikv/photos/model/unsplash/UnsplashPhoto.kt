@@ -7,64 +7,42 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 class UnsplashPhoto(
-        @SerializedName("id")
-        val id: String,
+    @SerializedName("id")
+    val id: String,
 
-        @SerializedName("width")
-        val width: Int,
+    @SerializedName("width")
+    val width: Int,
 
-        @SerializedName("height")
-        val height: Int,
+    @SerializedName("height")
+    val height: Int,
 
-        @SerializedName("created_at")
-        val createdAt: String,
+    @SerializedName("created_at")
+    val createdAt: String,
 
-        @SerializedName("description")
-        val description: String?,
+    @SerializedName("description")
+    val description: String?,
 
-        @SerializedName("user")
-        val user: UnsplashUser,
+    @SerializedName("user")
+    val user: UnsplashUser,
 
-        @SerializedName("urls")
-        val urls: UnsplashUrls,
+    @SerializedName("urls")
+    val urls: UnsplashUrls,
 
-        @SerializedName("links")
-        val links: UnsplashLinks
+    @SerializedName("links")
+    val links: UnsplashLinks
 ) : Photo() {
 
-    override fun getPhotoId(): String {
-        return id
-    }
+    override fun getPhotoId(): String = id
 
-    override fun getPhotoPreviewUrl(): String {
-        return urls.regular
-    }
+    override fun getPhotoPreviewUrl(): String = urls.regular
+    override fun getPhotoFullPreviewUrl(): String = urls.regular
+    override fun getPhotoDownloadUrl(): String = links.download
+    override fun getPhotoShareUrl(): String = links.html
 
-    override fun getPhotoFullPreviewUrl(): String {
-        return urls.regular
-    }
+    override fun getPhotoPhotographerName(): String = user.name
+    override fun getPhotoPhotographerImageUrl(): String? = user.profileImage?.medium
+    override fun getPhotoPhotographerUrl(): String? = user.portfolioUrl
 
-    override fun getPhotoDownloadUrl(): String {
-        return links.download
-    }
-
-    override fun getPhotoShareUrl(): String {
-        return links.html
-    }
-
-    override fun getPhotoPhotographerName(): String {
-        return user.name
-    }
-
-    override fun getPhotoPhotographerImageUrl(): String? {
-        return user.profileImage?.medium
-    }
-
-    override fun getPhotoPhotographerUrl(): String? {
-        return user.portfolioUrl
-    }
-
-    override fun getPhotoSource(): PhotoSource {
-        return PhotoSource.UNSPLASH
-    }
+    override fun getPhotoSource(): PhotoSource = PhotoSource.UNSPLASH
+    override fun isLocalPhoto(): Boolean = false
 }

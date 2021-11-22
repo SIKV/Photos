@@ -3,12 +3,12 @@ package com.github.sikv.photos.model.unsplash
 import com.google.gson.annotations.SerializedName
 
 data class UnsplashSearchResponse(
-        @SerializedName("total")
-        val total: Int,
+    @SerializedName("total")
+    val total: Int,
 
-        @SerializedName("total_pages")
-        val totalPages: Int,
+    @SerializedName("total_pages")
+    val totalPages: Int,
 
-        @SerializedName("results")
-        val results: List<UnsplashPhoto>
+    @SerializedName("results")
+    val results: List<UnsplashPhoto>
 )

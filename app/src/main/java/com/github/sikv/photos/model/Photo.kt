@@ -34,20 +34,20 @@ abstract class Photo : Parcelable {
      */
     var favorite: Boolean = false
 
-    open fun getPhotoId(): String = ""
+    abstract fun getPhotoId(): String
 
-    open fun getPhotoPreviewUrl(): String = ""
-    open fun getPhotoFullPreviewUrl(): String = ""
-    open fun getPhotoDownloadUrl(): String = ""
-    open fun getPhotoShareUrl(): String = ""
+    abstract fun getPhotoPreviewUrl(): String
+    abstract fun getPhotoFullPreviewUrl(): String
+    abstract fun getPhotoDownloadUrl(): String
+    abstract fun getPhotoShareUrl(): String
 
-    open fun getPhotoPhotographerName(): String = ""
+    abstract fun getPhotoPhotographerName(): String
     open fun getPhotoPhotographerImageUrl(): String? = null
     open fun getPhotoPhotographerUrl(): String? = null
 
     open fun getPhotoSource(): PhotoSource = PhotoSource.UNSPECIFIED
 
-    open fun isLocalPhoto(): Boolean = false
+    abstract fun isLocalPhoto(): Boolean
 
     override fun equals(other: Any?): Boolean {
         return if (other !is Photo) {

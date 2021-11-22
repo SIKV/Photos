@@ -7,61 +7,38 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 class PixabayPhoto(
-        @SerializedName("id")
-        val id: Long,
+    @SerializedName("id")
+    val id: Long,
 
-        @SerializedName("pageURL")
-        val pageUrl: String,
+    @SerializedName("pageURL")
+    val pageUrl: String,
 
-        @SerializedName("imageURL")
-        val imageUrl: String,
+    @SerializedName("imageURL")
+    val imageUrl: String,
 
-        @SerializedName("fullHDURL")
-        val fullHDUrl: String,
+    @SerializedName("fullHDURL")
+    val fullHDUrl: String,
 
-        @SerializedName("largeImageURL")
-        val largeImageUrl: String,
+    @SerializedName("largeImageURL")
+    val largeImageUrl: String,
 
-        @SerializedName("user")
-        val user: String,
+    @SerializedName("user")
+    val user: String,
 
-        @SerializedName("userImageURL")
-        val userImageUrl: String
+    @SerializedName("userImageURL")
+    val userImageUrl: String
 ) : Photo() {
 
-    override fun getPhotoId(): String {
-        return id.toString()
-    }
+    override fun getPhotoId(): String = id.toString()
 
-    override fun getPhotoPreviewUrl(): String {
-        return imageUrl
-    }
+    override fun getPhotoPreviewUrl(): String = imageUrl
+    override fun getPhotoFullPreviewUrl(): String = fullHDUrl
+    override fun getPhotoDownloadUrl(): String = largeImageUrl
+    override fun getPhotoShareUrl(): String = pageUrl
 
-    override fun getPhotoFullPreviewUrl(): String {
-        return fullHDUrl
-    }
+    override fun getPhotoPhotographerName(): String = user
+    override fun getPhotoPhotographerImageUrl(): String = userImageUrl
 
-    override fun getPhotoDownloadUrl(): String {
-        return largeImageUrl
-    }
-
-    override fun getPhotoShareUrl(): String {
-        return pageUrl
-    }
-
-    override fun getPhotoPhotographerName(): String {
-        return user
-    }
-
-    override fun getPhotoPhotographerImageUrl(): String? {
-        return userImageUrl
-    }
-
-    override fun getPhotoPhotographerUrl(): String? {
-        return null
-    }
-
-    override fun getPhotoSource(): PhotoSource {
-        return PhotoSource.PIXABAY
-    }
+    override fun getPhotoSource(): PhotoSource = PhotoSource.PIXABAY
+    override fun isLocalPhoto(): Boolean = false
 }

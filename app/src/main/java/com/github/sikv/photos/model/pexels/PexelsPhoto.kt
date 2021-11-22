@@ -7,58 +7,40 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 class PexelsPhoto(
-        @SerializedName("url")
-        val url: String,
+    @SerializedName("url")
+    val url: String,
 
-        @SerializedName("width")
-        val width: Int,
+    @SerializedName("width")
+    val width: Int,
 
-        @SerializedName("height")
-        val height: Int,
+    @SerializedName("height")
+    val height: Int,
 
-        @SerializedName("photographer")
-        val photographer: String,
+    @SerializedName("photographer")
+    val photographer: String,
 
-        @SerializedName("photographer_url")
-        val photographerUrl: String,
+    @SerializedName("photographer_url")
+    val photographerUrl: String,
 
-        @SerializedName("src")
-        val src: PexelsSrc
+    @SerializedName("src")
+    val src: PexelsSrc
 ) : Photo() {
 
     override fun getPhotoId(): String {
-        return url.substring(url.substring(0, url.length - 1).lastIndexOf("-") + 1, url.lastIndexOf("/"))
+        return url.substring(
+            url.substring(0, url.length - 1).lastIndexOf("-") + 1,
+            url.lastIndexOf("/")
+        )
     }
 
-    override fun getPhotoPreviewUrl(): String {
-        return src.large
-    }
+    override fun getPhotoPreviewUrl(): String = src.large
+    override fun getPhotoFullPreviewUrl(): String = src.large
+    override fun getPhotoDownloadUrl(): String = src.large2x
+    override fun getPhotoShareUrl(): String = url
 
-    override fun getPhotoFullPreviewUrl(): String {
-        return src.large
-    }
+    override fun getPhotoPhotographerName(): String = photographer
+    override fun getPhotoPhotographerUrl(): String = photographerUrl
 
-    override fun getPhotoDownloadUrl(): String {
-        return src.large2x
-    }
-
-    override fun getPhotoShareUrl(): String {
-        return url
-    }
-
-    override fun getPhotoPhotographerName(): String {
-        return photographer
-    }
-
-    override fun getPhotoPhotographerImageUrl(): String? {
-        return null
-    }
-
-    override fun getPhotoPhotographerUrl(): String? {
-        return photographerUrl
-    }
-
-    override fun getPhotoSource(): PhotoSource {
-        return PhotoSource.PEXELS
-    }
+    override fun getPhotoSource(): PhotoSource = PhotoSource.PEXELS
+    override fun isLocalPhoto(): Boolean = false
 }

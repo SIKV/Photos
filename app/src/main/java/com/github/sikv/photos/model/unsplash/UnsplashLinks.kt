@@ -6,12 +6,12 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class UnsplashLinks(
-        @SerializedName("self")
-        val self: String,
+    @SerializedName("self")
+    val self: String,
 
-        @SerializedName("html")
-        val html: String,
+    @SerializedName("html")
+    val html: String,
 
-        @SerializedName("download")
-        val download: String
+    @SerializedName("download")
+    val download: String
 ) : Parcelable
