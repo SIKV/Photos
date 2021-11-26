@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
@@ -49,7 +50,12 @@ class FavoritesFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        photoAdapter = PhotoListAdapter(glide, favoritesRepository, photoActionDispatcher)
+        photoAdapter = PhotoListAdapter(
+            glide = glide,
+            favoritesRepository = favoritesRepository,
+            lifecycleScope = lifecycleScope,
+            listener = photoActionDispatcher
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

@@ -1,9 +1,13 @@
 package com.github.sikv.photos.model
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Parcelable
 import androidx.recyclerview.widget.DiffUtil
+import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoSource
+import com.google.android.material.color.MaterialColors
 
 fun Photo.createShareIntent(): Intent {
     val intent = Intent()
@@ -14,6 +18,12 @@ fun Photo.createShareIntent(): Intent {
 
     return intent
 }
+
+fun Photo.getAttributionPlaceholderTextColor(context: Context): Int = MaterialColors
+    .getColor(context, R.attr.colorOnPrimaryContainer, Color.WHITE)
+
+fun Photo.getAttributionPlaceholderBackgroundColor(context: Context): Int = MaterialColors
+    .getColor(context, R.attr.colorPrimaryContainer, Color.BLACK)
 
 class PhotoDiffUtil<T : Photo> : DiffUtil.ItemCallback<T>() {
     override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =

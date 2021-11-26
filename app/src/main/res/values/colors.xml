@@ -10,7 +10,4 @@
     <color name="colorPlaceholder">#EEEEEE</color>
 
     <color name="colorRed">#EF4141</color>
-
-    <color name="colorRoundOutlineButton">@android:color/white</color>
-    <color name="colorRoundOutlineButtonDisabled">#AAAAAA</color>
 </resources>

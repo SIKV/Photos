@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
@@ -14,9 +15,10 @@ import com.github.sikv.photos.model.PhotoDiffUtil
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
 class PhotoListAdapter(
-        private val glide: RequestManager,
-        private val favoritesRepository: FavoritesRepository,
-        private val listener: OnPhotoActionListener
+    private val glide: RequestManager,
+    private val favoritesRepository: FavoritesRepository,
+    private val lifecycleScope: LifecycleCoroutineScope,
+    private val listener: OnPhotoActionListener
 ) : ListAdapter<Photo, PhotoViewHolder>(PhotoDiffUtil()) {
 
     private var itemLayoutType = PhotoItemLayoutType.FULL
@@ -40,13 +42,13 @@ class PhotoListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(itemLayoutType.layout, parent, false)
-        return PhotoViewHolder(view, glide)
+        return PhotoViewHolder(view, glide, lifecycleScope)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
         val photo = getItem(position)
-        val favorite = favoritesRepository.isFavorite(photo)
+        val isFavorite = favoritesRepository.isFavorite(photo)
 
-        holder.bind(itemLayoutType, photo, favorite, listener)
+        holder.bind(itemLayoutType, photo, isFavorite, listener)
     }
 }

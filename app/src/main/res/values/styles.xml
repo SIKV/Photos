@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <style name="BaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimaryDark">?colorSurface</item>
         <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
@@ -7,19 +7,6 @@
 
     <style name="AppTheme" parent="BaseTheme">
         <item name="android:statusBarColor">@android:color/black</item>
-    </style>
-
-    <style name="AppTheme.Translucent" parent="AppTheme">
-        <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@android:color/transparent</item>
-
-        <item name="colorControlNormal">@android:color/white</item>
-
-        <item name="toolbarStyle">@style/TransparentToolbarStyle</item>
     </style>
 
     <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Dialog">
@@ -41,42 +28,8 @@
         <item name="materialAlertDialogBodyTextStyle">@style/AlertDialogBodyTextStyle</item>
     </style>
 
-    <style name="ToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
-        <item name="android:elevation">0dp</item>
-    </style>
-
-    <style name="TransparentToolbarStyle" parent="ToolbarStyle">
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
     <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeWidthFocused">1dp</item>
-    </style>
-
-    <style name="ToolbarTitle">
-        <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="ToolbarSubtitle">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:drawablePadding">6dp</item>
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">10sp</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="RoundOutlineButton">
-        <item name="android:layout_width">192dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@drawable/selector_round_outline_button</item>
-        <item name="android:fontFamily">sans-serif-black</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:background">@drawable/bg_round_outline_button</item>
-    </style>
-
-    <style name="ImageButton">
-        <item name="android:background">?android:selectableItemBackground</item>
     </style>
 
     <style name="CircleImageButton">

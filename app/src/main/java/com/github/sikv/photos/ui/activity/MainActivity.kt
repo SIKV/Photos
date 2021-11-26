@@ -3,6 +3,7 @@ package com.github.sikv.photos.ui.activity
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.github.sikv.photos.App
@@ -43,11 +44,7 @@ class MainActivity : BaseActivity() {
     private val destinationChangedListener = object: OnDestinationChangedListener {
         override fun onDestinationChanged(fragment: Fragment?) {
             val bottomNavigationVisible = fragment !is PhotoDetailsFragment
-
-            binding.bottomNavigationView.apply {
-                animate()
-                    .translationY(if (bottomNavigationVisible) 0F else height.toFloat())
-            }
+            binding.bottomNavigationView.isVisible = bottomNavigationVisible
         }
     }
 

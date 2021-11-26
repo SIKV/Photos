@@ -6,8 +6,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.text.TextPaint
 import androidx.annotation.ColorInt
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
@@ -38,7 +36,7 @@ class PlaceholderGeneratorBuilder(private val context: Context) {
     }
 
     fun textFirstChar(text: String) = apply {
-        this.text = text.first().toUpperCase().toString()
+        this.text = text.first().uppercaseChar().toString()
     }
 
     fun textColor(@ColorInt color: Int) = apply {
@@ -50,13 +48,7 @@ class PlaceholderGeneratorBuilder(private val context: Context) {
         this.backgroundColor = backgroundColor
     }
 
-    fun generateDrawable(completion: ((BitmapDrawable?) -> Unit)? = null) {
-        GlobalScope.launch(Dispatchers.Main) {
-            completion?.invoke(generateBitmapDrawable())
-        }
-    }
-
-    private suspend fun generateBitmapDrawable(): BitmapDrawable? = withContext(Dispatchers.IO) {
+    suspend fun build(): BitmapDrawable? = withContext(Dispatchers.IO) {
         text?.let { t ->
             val generator = PlaceholderGenerator(t, textColor, shape, backgroundColor)
             val bitmap = generator.generate()
@@ -69,10 +61,10 @@ class PlaceholderGeneratorBuilder(private val context: Context) {
 }
 
 private class PlaceholderGenerator(
-        val text: String,
-        val textColor: Int,
-        val shape: TextPlaceholder.Shape,
-        val backgroundColor: Int
+    val text: String,
+    val textColor: Int,
+    val shape: TextPlaceholder.Shape,
+    val backgroundColor: Int
 ) {
 
     companion object {
@@ -92,10 +84,10 @@ private class PlaceholderGenerator(
             bgPaint.color = backgroundColor
 
             canvas.drawCircle(
-                    (W / 2).toFloat(),
-                    (H / 2).toFloat(),
-                    (W / 2).toFloat(),
-                    bgPaint
+                (W / 2).toFloat(),
+                (H / 2).toFloat(),
+                (W / 2).toFloat(),
+                bgPaint
             )
         }
 
@@ -145,5 +137,5 @@ private fun String.getInitials(): String {
         }
     }
 
-    return initials.toUpperCase(Locale.ROOT)
+    return initials.uppercase(Locale.ROOT)
 }

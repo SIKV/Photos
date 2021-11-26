@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
@@ -47,7 +48,12 @@ class PhotosFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        photoAdapter = PhotoPagingAdapter(glide, favoritesRepository, photoActionDispatcher)
+        photoAdapter = PhotoPagingAdapter(
+            glide = glide,
+            favoritesRepository = favoritesRepository,
+            lifecycleScope = lifecycleScope,
+            listener = photoActionDispatcher
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

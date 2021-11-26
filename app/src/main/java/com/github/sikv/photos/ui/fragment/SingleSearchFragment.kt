@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.data.repository.FavoritesRepository
@@ -65,7 +66,12 @@ class SingleSearchFragment : BaseFragment() {
             photoSource = PhotoSource.findById(photoSourceId)
         }
 
-        photoAdapter = PhotoPagingAdapter(glide, favoritesRepository, photoActionDispatcher)
+        photoAdapter = PhotoPagingAdapter(
+            glide = glide,
+            favoritesRepository = favoritesRepository,
+            lifecycleScope = lifecycleScope,
+            listener = photoActionDispatcher
+        )
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {

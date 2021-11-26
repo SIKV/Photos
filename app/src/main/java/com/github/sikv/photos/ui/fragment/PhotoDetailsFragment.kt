@@ -4,92 +4,85 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
+import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.createShareIntent
+import com.github.sikv.photos.ui.compose.PhotoDetailsScreen
+import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
+import com.github.sikv.photos.ui.state.PhotoState
+import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
+import com.github.sikv.photos.util.openUrl
+import com.github.sikv.photos.viewmodel.PhotoDetailsViewModel
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.skydoves.landscapist.CircularReveal
-import com.skydoves.landscapist.glide.GlideImage
+import dagger.hilt.android.AndroidEntryPoint
 
+@OptIn(ExperimentalMaterialApi::class)
+@AndroidEntryPoint
 class PhotoDetailsFragment : BaseFragment() {
 
     companion object {
         fun newInstance(photo: Photo): PhotoDetailsFragment = PhotoDetailsFragment()
-            .apply {
-                arguments = bundleOf(
-                    Photo.KEY to photo
-                )
-            }
+            .apply { arguments = bundleOf(Photo.KEY to photo) }
     }
+
+    private val viewModel: PhotoDetailsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = ComposeView(inflater.context).apply {
-        val photo = arguments?.getParcelable<Photo>(Photo.KEY)
-        val photoUrl: String? = photo?.getPhotoFullPreviewUrl()
-
+    ): View = ComposeView(requireContext()).apply {
+        layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
         setContent {
             MdcTheme {
                 Surface {
-                    Box {
-                        if (photoUrl != null) {
-                            NetworkImage(imageUrl = photoUrl)
-                        }
-                        TransparentTopAppBar {
-                            navigation?.backPressed()
-                        }
+                    val uiState: PhotoState? by viewModel.uiState.observeAsState()
+
+                    uiState?.let { photoState ->
+                        PhotoDetailsScreen(
+                            photo = photoState.photo,
+                            onBackPressed = { navigation?.backPressed() },
+                            isFavorite = photoState.isFavorite,
+                            onToggleFavorite = { viewModel.toggleFavorite() },
+                            onSharePressed = { sharePhoto(photoState.photo) },
+                            onDownloadPressed = { downloadPhoto(photoState.photo) },
+                            onSetWallpaperPressed = { setWallpaper(photoState.photo) },
+                            onAttributionPressed = { openAttribution(photoState.photo) }
+                        )
                     }
                 }
             }
         }
     }
-}
 
-@Composable
-fun NetworkImage(imageUrl: String) {
-    GlideImage(
-        modifier = Modifier.fillMaxSize(),
-        imageModel = imageUrl,
-        contentScale = ContentScale.Fit,
-        circularReveal = CircularReveal(duration = 1000),
-    )
-}
+    private fun sharePhoto(photo: Photo) {
+        startActivity(photo.createShareIntent())
+    }
 
-@Composable
-fun TransparentTopAppBar(onBackClicked: () -> Unit) {
-    TopAppBar(
-        title = { },
-        navigationIcon = {
-            IconButton(
-                modifier = Modifier
-                    .background(
-                        MaterialTheme.colors.surface.copy(alpha = 0.5F),
-                        shape = CircleShape
-                    ),
-                onClick = onBackClicked
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_arrow_back_24dp),
-                    contentDescription = stringResource(id = R.string.cd_back_button)
-                )
-            }
-        },
-        elevation = 0.dp,
-        backgroundColor = Color.Transparent
-    )
+    private fun downloadPhoto(photo: Photo) {
+        requireContext().downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
+        App.instance.postGlobalMessage(App.instance.getString(R.string.downloading_photo))
+
+    }
+
+    private fun setWallpaper(photo: Photo) {
+        SetWallpaperDialog
+            .newInstance(photo)
+            .show(childFragmentManager)
+    }
+
+    private fun openAttribution(photo: Photo) {
+        requireContext().openUrl(photo.getPhotoShareUrl())
+    }
 }

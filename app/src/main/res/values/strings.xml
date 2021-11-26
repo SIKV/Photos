@@ -38,10 +38,9 @@
     <string name="cn_cloud_image">Cloud image</string>
     <string name="cn_item_selected_image">Item selected image</string>
     <string name="cn_load_more_button">Load more button</string>
-
-    <string name="photo_by_s_on_s">Photo by %s on %s</string>
     <string name="share">Share</string>
     <string name="set_wallpaper">Set Wallpaper</string>
+    <string name="wallpaper">Wallpaper</string>
     <string name="favorite">Favorite</string>
     <string name="favorites">Favorites</string>
     <string name="more">More</string>
@@ -102,6 +101,10 @@
     <string name="date_added_oldest">Date added (oldest)</string>
     <string name="sync_not_available">Sync is not implemented yet</string>
 
-    <!-- Content description -->
-    <string name="cd_back_button">Back button</string>
+    <!-- Content descriptions -->
+    <string name="cd_back">Back</string>
+    <string name="cd_toggle_favorite">Toggle favorite</string>
+    <string name="cd_share">Share</string>
+    <string name="cd_download">Download</string>
+    <string name="cd_set_wallpaper">Set wallpaper</string>
 </resources>

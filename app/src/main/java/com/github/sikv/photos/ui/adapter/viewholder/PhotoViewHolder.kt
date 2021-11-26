@@ -1,7 +1,7 @@
 package com.github.sikv.photos.ui.adapter.viewholder
 
-import android.graphics.Color
 import android.view.View
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -9,33 +9,37 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.sikv.photos.R
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.getAttributionPlaceholderBackgroundColor
+import com.github.sikv.photos.model.getAttributionPlaceholderTextColor
 import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
 import com.github.sikv.photos.util.*
-import com.google.android.material.color.MaterialColors
 import kotlinx.android.synthetic.main.item_photo_full.view.*
+import kotlinx.coroutines.launch
 
 class PhotoViewHolder(
-        itemView: View,
-        private val glide: RequestManager
+    itemView: View,
+    private val glide: RequestManager,
+    private val lifecycleScope: LifecycleCoroutineScope
 ) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(itemLayoutType: PhotoItemLayoutType,
-             photo: Photo?,
-             favorite: Boolean,
-             listener: OnPhotoActionListener) {
-
+    fun bind(
+        itemLayoutType: PhotoItemLayoutType,
+        photo: Photo?,
+        isFavorite: Boolean,
+        listener: OnPhotoActionListener
+    ) {
         if (itemLayoutType == PhotoItemLayoutType.MIN) {
             bindMin(photo, listener)
             return
         }
 
-        loadPhotos(photo)
+        loadPhotos(photo, lifecycleScope)
 
         itemView.photographerNameText.text = photo?.getPhotoPhotographerName()
         itemView.sourceText.text = photo?.getPhotoSource()?.title
 
         itemView.favoriteButton.visibility = View.VISIBLE
-        itemView.favoriteButton.setImageResource(if (favorite) R.drawable.ic_favorite_red_24dp else R.drawable.ic_favorite_border_24dp)
+        itemView.favoriteButton.setImageResource(if (isFavorite) R.drawable.ic_favorite_red_24dp else R.drawable.ic_favorite_border_24dp)
 
         photo?.let {
             itemView.photoImage.setOnClickListener { view ->
@@ -116,30 +120,33 @@ class PhotoViewHolder(
         }
     }
 
-    private fun loadPhotos(photo: Photo?) {
+    private fun loadPhotos(photo: Photo?, lifecycleScope: LifecycleCoroutineScope) {
         itemView.photoImage.setImageDrawable(null)
         itemView.photographerImage.setImageDrawable(null)
 
-        photo?.let {
-            glide.load(it.getPhotoPreviewUrl())
-                    .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
-                    .into(itemView.photoImage)
+        if (photo == null) {
+            return
+        }
 
-            // TODO Refactor
-            val textColor = MaterialColors.getColor(itemView.context, R.attr.colorOnPrimaryContainer, Color.WHITE)
-            val backgroundColor = MaterialColors.getColor(itemView.context, R.attr.colorPrimaryContainer, Color.BLACK)
+        glide.load(photo.getPhotoPreviewUrl())
+            .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
+            .into(itemView.photoImage)
 
-            TextPlaceholder.with(itemView.context)
-                    .textFirstChar(it.getPhotoPhotographerName())
-                    .textColor(textColor)
-                    .background(TextPlaceholder.Shape.CIRCLE, backgroundColor)
-                    .generateDrawable { placeholder ->
-                        glide.load(it.getPhotoPhotographerImageUrl())
-                                .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
-                                .transform(CircleCrop())
-                                .placeholder(placeholder)
-                                .into(itemView.photographerImage)
-                    }
+        val textColor = photo.getAttributionPlaceholderTextColor(itemView.context)
+        val backgroundColor = photo.getAttributionPlaceholderBackgroundColor(itemView.context)
+
+        lifecycleScope.launch {
+            val placeholder = TextPlaceholder.with(itemView.context)
+                .textFirstChar(photo.getPhotoPhotographerName())
+                .textColor(textColor)
+                .background(TextPlaceholder.Shape.CIRCLE, backgroundColor)
+                .build()
+
+            glide.load(photo.getPhotoPhotographerImageUrl())
+                .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
+                .transform(CircleCrop())
+                .placeholder(placeholder)
+                .into(itemView.photographerImage)
         }
     }
 }
