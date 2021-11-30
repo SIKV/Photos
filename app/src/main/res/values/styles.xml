@@ -1,4 +1,5 @@
 <resources>
+
     <style name="BaseTheme" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimaryDark">?colorSurface</item>
         <item name="materialAlertDialogTheme">@style/AlertDialogTheme</item>
@@ -26,6 +27,14 @@
     <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="materialAlertDialogTitleTextStyle">@style/AlertDialogTitleTextStyle</item>
         <item name="materialAlertDialogBodyTextStyle">@style/AlertDialogBodyTextStyle</item>
+    </style>
+
+    <style name="BottomNavigationViewTextAppearanceActive" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="BottomNavigationViewTextAppearanceInactive" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+        <item name="android:textSize">11.5sp</item>
     </style>
 
     <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">

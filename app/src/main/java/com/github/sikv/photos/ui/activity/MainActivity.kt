@@ -30,13 +30,13 @@ class MainActivity : BaseActivity() {
     lateinit var runtimeBehaviour: RuntimeBehaviour
 
     private val fragmentsTag = mapOf(
-        R.id.photos to PhotosRootFragment::class.customTag(),
+        R.id.home to HomeRootFragment::class.customTag(),
         R.id.search to SearchRootFragment::class.customTag(),
         R.id.favorites to FavoritesRootFragment::class.customTag(),
         R.id.more to MoreRootFragment::class.customTag()
     )
 
-    private var initialFragmentId = R.id.photos
+    private var initialFragmentId = R.id.home
     private var initialDelayedFragment: Fragment? = null
 
     private lateinit var binding: ActivityMainBinding
@@ -114,7 +114,7 @@ class MainActivity : BaseActivity() {
         binding.bottomNavigationView.selectedItemId = initialFragmentId
 
         listOf(
-            PhotosRootFragment(),
+            HomeRootFragment(),
             SearchRootFragment(),
             FavoritesRootFragment(),
             MoreRootFragment()

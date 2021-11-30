@@ -50,6 +50,7 @@
     <string name="loading_error">Loading Error</string>
     <string name="loading_error_description">Please check your Internet connection\nor try again later</string>
     <string name="remove_all">Remove all</string>
+    <string name="home">Home</string>
     <string name="photos">Photos</string>
     <string name="list">List</string>
     <string name="grid">Grid</string>
