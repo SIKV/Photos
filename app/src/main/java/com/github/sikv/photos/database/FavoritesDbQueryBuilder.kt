@@ -2,7 +2,6 @@ package com.github.sikv.photos.database
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
-import com.github.sikv.photos.config.DbConfig
 import com.github.sikv.photos.enumeration.SortBy
 import javax.inject.Inject
 

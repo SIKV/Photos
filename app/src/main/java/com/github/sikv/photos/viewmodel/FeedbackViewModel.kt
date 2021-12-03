@@ -10,7 +10,7 @@ import com.github.sikv.photos.data.repository.FeedbackRepository
 import com.github.sikv.photos.enumeration.RequestStatus
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.Feedback
-import com.github.sikv.photos.util.Utils
+import com.github.sikv.photos.service.PreferencesService
 import com.github.sikv.photos.util.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,8 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeedbackViewModel @Inject constructor(
-        application: Application,
-        private val feedbackRepository: FeedbackRepository
+    application: Application,
+    private val feedbackRepository: FeedbackRepository,
+    private val preferencesService: PreferencesService
 ) : AndroidViewModel(application) {
 
     private val sendFeedbackStatusMutableEvent = MutableLiveData<Event<RequestStatus>>()
@@ -39,9 +40,9 @@ class FeedbackViewModel @Inject constructor(
         }
 
         val feedback = Feedback(
-                Utils.getSessionId(),
-                email,
-                description
+            preferencesService.getSessionId(),
+            email,
+            description
         )
 
         sendFeedbackStatusMutableEvent.value = Event(RequestStatus.InProgress)
@@ -49,10 +50,17 @@ class FeedbackViewModel @Inject constructor(
         viewModelScope.launch {
             val sent = feedbackRepository.sendFeedback(feedback)
 
-            val messageId =  if (sent) R.string.feedback_sent else R.string.error_sending_feedback
+            val messageId = if (sent) R.string.feedback_sent else R.string.error_sending_feedback
             val message = getApplication<Application>().getString(messageId)
 
-            sendFeedbackStatusMutableEvent.postValue(Event(RequestStatus.Done(success = sent, message = message)))
+            sendFeedbackStatusMutableEvent.postValue(
+                Event(
+                    RequestStatus.Done(
+                        success = sent,
+                        message = message
+                    )
+                )
+            )
         }
     }
 }

@@ -6,9 +6,8 @@ import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.RuntimeBehaviour
+import com.github.sikv.photos.config.feature.FeatureFlagFetcher
 import com.github.sikv.photos.databinding.ActivityMainBinding
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.ui.fragment.BaseFragment
@@ -27,7 +26,7 @@ import kotlin.reflect.KClass
 class MainActivity : BaseActivity() {
 
     @Inject
-    lateinit var runtimeBehaviour: RuntimeBehaviour
+    lateinit var featureFlagFetcher: FeatureFlagFetcher
 
     private val fragmentsTag = mapOf(
         R.id.home to HomeRootFragment::class.customTag(),
@@ -63,7 +62,7 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        runtimeBehaviour.fetchConfig(this) {
+        featureFlagFetcher.fetch(this) {
             when (intent.action) {
                 getString(R.string._shortcut_action_search) -> {
                     getString(R.string._shortcut_search).reportShortcutUsed()
@@ -80,18 +79,6 @@ class MainActivity : BaseActivity() {
             setNavigationListener()
             setOnDestinationChangedListener(destinationChangedListener)
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        App.instance.globalMessageEvent.removeObserver(globalMessageEventObserver)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        App.instance.globalMessageEvent.observe(this, globalMessageEventObserver)
     }
 
     override fun onBackPressed() {

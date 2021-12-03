@@ -6,41 +6,45 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.ui.state.PhotoState
+import com.github.sikv.photos.service.DownloadService
+import com.github.sikv.photos.ui.compose.state.PhotoViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class PhotoDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val favoritesRepository: FavoritesRepository
+    private val favoritesRepository: FavoritesRepository,
+    private val downloadService: DownloadService
 ) : ViewModel(), FavoritesRepository.Listener {
 
-    private val photo = requireNotNull(savedStateHandle.get<Photo>(Photo.KEY))
-
-    private val mutableUiState = MutableLiveData<PhotoState>()
-    val uiState: LiveData<PhotoState> = mutableUiState
+    private val mutableViewState = MutableLiveData<PhotoViewState>(PhotoViewState.NoData)
+    val viewState: LiveData<PhotoViewState> = mutableViewState
 
     init {
-        mutableUiState.value = PhotoState(
-            photo = photo,
-            isFavorite = false
-        )
+        val photo = requireNotNull(savedStateHandle.get<Photo>(Photo.KEY))
 
         favoritesRepository.subscribe(this)
 
-        val isFavorite = favoritesRepository.isFavorite(photo)
-
-        mutableUiState.postValue(
-            uiState.value?.copy(isFavorite = isFavorite)
+        mutableViewState.value = PhotoViewState.Ready(
+            photo = photo,
+            isFavorite = favoritesRepository.isFavorite(photo)
         )
     }
 
     fun toggleFavorite() {
-        val photo = uiState.value?.photo
+        when (val state = viewState.value) {
+            is PhotoViewState.Ready -> {
+                favoritesRepository.invertFavorite(state.photo)
+            }
+        }
+    }
 
-        if (photo != null) {
-            favoritesRepository.invertFavorite(photo)
+    fun downloadPhoto() {
+        when (val state = viewState.value) {
+            is PhotoViewState.Ready -> {
+                downloadService.downloadPhoto(state.photo.getPhotoDownloadUrl())
+            }
         }
     }
 
@@ -50,11 +54,13 @@ class PhotoDetailsViewModel @Inject constructor(
         favoritesRepository.unsubscribe(this)
     }
 
-    override fun onFavoriteChanged(photo: Photo, favorite: Boolean) {
-        mutableUiState.postValue(
-            uiState.value?.copy(isFavorite = favorite)
-        )
+    override fun onFavoriteChanged(photo: Photo, isFavorite: Boolean) {
+        when (val state = viewState.value) {
+            is PhotoViewState.Ready -> {
+                mutableViewState.postValue(state.copy(isFavorite = isFavorite))
+            }
+        }
     }
 
-    override fun onFavoritesChanged() { }
+    override fun onFavoritesChanged() {}
 }

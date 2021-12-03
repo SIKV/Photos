@@ -1,4 +1,4 @@
-package com.github.sikv.photos.config
+package com.github.sikv.photos.database
 
 object DbConfig {
     const val favoritePhotosTableName = "FavoritePhotos"

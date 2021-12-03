@@ -13,6 +13,7 @@ import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.databinding.FragmentSingleSearchBinding
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagingAdapter
 import com.github.sikv.photos.util.disableChangeAnimations
@@ -45,14 +46,21 @@ class SingleSearchFragment : BaseFragment() {
     lateinit var favoritesRepository: FavoritesRepository
 
     @Inject
+    lateinit var downloadService: DownloadService
+
+    @Inject
     lateinit var glide: RequestManager
 
     private val viewModel: SearchViewModel by viewModels()
 
     private val photoActionDispatcher by lazy {
-        PhotoActionDispatcher(this, glide) { photo ->
-            viewModel.invertFavorite(photo)
-        }
+        PhotoActionDispatcher(
+            fragment = this,
+            downloadService = downloadService,
+            glide = glide,
+            onToggleFavorite = viewModel::toggleFavorite,
+            onShowMessage = ::showMessage
+        )
     }
 
     private var photoSource: PhotoSource? = null
@@ -74,7 +82,11 @@ class SingleSearchFragment : BaseFragment() {
         )
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSingleSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -130,9 +142,15 @@ class SingleSearchFragment : BaseFragment() {
                     binding.loadingErrorLayout.root.setVisibilityAnimated(View.GONE, duration = 0)
 
                     if (photoAdapter.itemCount == 0) {
-                        binding.noResultsFoundLayout.root.setVisibilityAnimated(View.VISIBLE, duration = 0)
+                        binding.noResultsFoundLayout.root.setVisibilityAnimated(
+                            View.VISIBLE,
+                            duration = 0
+                        )
                     } else {
-                        binding.noResultsFoundLayout.root.setVisibilityAnimated(View.GONE, duration = 0)
+                        binding.noResultsFoundLayout.root.setVisibilityAnimated(
+                            View.GONE,
+                            duration = 0
+                        )
                     }
                 }
 
@@ -146,7 +164,10 @@ class SingleSearchFragment : BaseFragment() {
                 is LoadState.Error -> {
                     binding.photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
                     binding.loadingListLayout.root.setVisibilityAnimated(View.GONE, duration = 0)
-                    binding.loadingErrorLayout.root.setVisibilityAnimated(View.VISIBLE, duration = 0)
+                    binding.loadingErrorLayout.root.setVisibilityAnimated(
+                        View.VISIBLE,
+                        duration = 0
+                    )
                     binding.noResultsFoundLayout.root.setVisibilityAnimated(View.GONE, duration = 0)
                 }
             }

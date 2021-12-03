@@ -5,8 +5,9 @@ import android.view.View
 import androidx.appcompat.widget.Toolbar
 
 class FragmentToolbarManager constructor(
-        private var builder: FragmentToolbar,
-        private var container: View) {
+    private var builder: FragmentToolbar,
+    private var container: View
+) {
 
     private var toolbar: Toolbar? = null
 

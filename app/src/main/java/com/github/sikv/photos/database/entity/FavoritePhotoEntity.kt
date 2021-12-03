@@ -2,7 +2,7 @@ package com.github.sikv.photos.database.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.github.sikv.photos.config.DbConfig
+import com.github.sikv.photos.database.DbConfig
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
 import kotlinx.android.parcel.Parcelize

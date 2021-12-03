@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.sqlite.db.SupportSQLiteQuery
-import com.github.sikv.photos.config.DbConfig
+import com.github.sikv.photos.database.DbConfig
 import com.github.sikv.photos.database.entity.FavoritePhotoEntity
 
 @Dao

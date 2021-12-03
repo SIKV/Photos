@@ -29,12 +29,16 @@ class SettingsFragment : BaseFragment() {
 
     override val overrideBackground: Boolean = true
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, PreferenceFragment())
-                .commit()
+            .replace(R.id.fragmentContainer, PreferenceFragment())
+            .commit()
 
         return binding.root
     }
@@ -65,28 +69,31 @@ class SettingsFragment : BaseFragment() {
         val flaticon = getString(R.string.flaticon)
         val flaticonUrl = "https://www.flaticon.com"
 
-        binding.iconsAttributionText.text = getString(R.string.icons_made_by_s_and_s_from_s,
-                thoseIcons, freepik, flaticon)
+        binding.iconsAttributionText.text = getString(
+            R.string.icons_made_by_s_and_s_from_s,
+            thoseIcons, freepik, flaticon
+        )
 
         binding.iconsAttributionText.makeClickable(arrayOf(
-                thoseIcons, freepik, flaticon),
-                arrayOf(
-                        object : ClickableSpan() {
-                            override fun onClick(view: View) {
-                                activity?.openUrl(thoseIconsUrl)
-                            }
-                        },
-                        object : ClickableSpan() {
-                            override fun onClick(view: View) {
-                                activity?.openUrl(freepikUrl)
-                            }
-                        },
-                        object : ClickableSpan() {
-                            override fun onClick(view: View) {
-                                activity?.openUrl(flaticonUrl)
-                            }
-                        }
-                )
+            thoseIcons, freepik, flaticon
+        ),
+            arrayOf(
+                object : ClickableSpan() {
+                    override fun onClick(view: View) {
+                        activity?.openUrl(thoseIconsUrl)
+                    }
+                },
+                object : ClickableSpan() {
+                    override fun onClick(view: View) {
+                        activity?.openUrl(freepikUrl)
+                    }
+                },
+                object : ClickableSpan() {
+                    override fun onClick(view: View) {
+                        activity?.openUrl(flaticonUrl)
+                    }
+                }
+            )
         )
     }
 
@@ -113,18 +120,17 @@ class SettingsFragment : BaseFragment() {
                     App.instance.updateTheme()
                     true
                 }
-
                 getString(R.string._pref_send_feedback) -> {
                     showFragment(FeedbackFragment.newInstance())
                     return true
                 }
-
                 getString(R.string._pref_open_source_licences) -> {
                     startActivity(Intent(context, OssLicensesMenuActivity::class.java))
-                    OssLicensesMenuActivity.setActivityTitle(context?.getString(R.string.open_source_licences) ?: "")
+                    OssLicensesMenuActivity.setActivityTitle(
+                        context?.getString(R.string.open_source_licences) ?: ""
+                    )
                     return true
                 }
-
                 else -> {
                     super.onPreferenceTreeClick(preference)
                 }
@@ -132,9 +138,10 @@ class SettingsFragment : BaseFragment() {
         }
 
         private fun observe() {
-            viewModel.showAppVersionEvent.observe(viewLifecycleOwner, Observer {
+            viewModel.showAppVersionEvent.observe(viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let { appVersion ->
-                    findPreference<Preference>(getString(R.string._pref_app_version))?.summary = appVersion
+                    findPreference<Preference>(getString(R.string._pref_app_version))?.summary =
+                        appVersion
                 }
             })
         }

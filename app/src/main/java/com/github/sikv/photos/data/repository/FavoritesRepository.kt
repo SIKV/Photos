@@ -8,7 +8,7 @@ import com.github.sikv.photos.model.Photo
 interface FavoritesRepository {
 
     interface Listener {
-        fun onFavoriteChanged(photo: Photo, favorite: Boolean)
+        fun onFavoriteChanged(photo: Photo, isFavorite: Boolean)
         fun onFavoritesChanged()
     }
 

@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.databinding.FragmentSearchDashboardBinding
+import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
 import com.github.sikv.photos.util.scrollToTop
@@ -31,6 +32,9 @@ class SearchDashboardFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     @Inject
+    lateinit var downloadService: DownloadService
+
+    @Inject
     lateinit var glide: RequestManager
 
     private val viewModel: SearchDashboardViewModel by viewModels()
@@ -38,12 +42,20 @@ class SearchDashboardFragment : BaseFragment() {
     private lateinit var recommendedPhotosAdapter: PhotoGridAdapter
 
     private val photoActionDispatcher by lazy {
-        PhotoActionDispatcher(this, glide) {
-            // Don't need to handle [Favorite] action here.
-        }
+        PhotoActionDispatcher(
+            fragment = this,
+            downloadService = downloadService,
+            glide = glide,
+            onToggleFavorite = { /** Don't need to handle this action here. */ },
+            onShowMessage = ::showMessage
+        )
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSearchDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -65,9 +77,10 @@ class SearchDashboardFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RC_SPEECH_RECOGNIZER && resultCode == Activity.RESULT_OK) {
-            val spokenText = data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.let { results ->
-                results[0]
-            }
+            val spokenText =
+                data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.let { results ->
+                    results[0]
+                }
 
             showSearchFragment(searchText = spokenText)
         }
@@ -94,7 +107,10 @@ class SearchDashboardFragment : BaseFragment() {
                 binding.recommendedPhotosRecycler.setVisibilityAnimated(View.VISIBLE)
                 binding.noRecommendationsLayout.root.setVisibilityAnimated(View.GONE)
 
-                recommendedPhotosAdapter.addItems(recommended.photos, showLoadMoreOption = recommended.moreAvailable)
+                recommendedPhotosAdapter.addItems(
+                    recommended.photos,
+                    showLoadMoreOption = recommended.moreAvailable
+                )
             }
         })
     }
@@ -105,7 +121,10 @@ class SearchDashboardFragment : BaseFragment() {
 
     private fun showSpeechRecognizer() {
         val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
+            putExtra(
+                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+            )
         }
 
         startActivityForResult(intent, RC_SPEECH_RECOGNIZER)

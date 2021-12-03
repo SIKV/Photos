@@ -11,8 +11,9 @@ import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.databinding.FragmentFavoritesBinding
-import com.github.sikv.photos.enumeration.ListLayout
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
+import com.github.sikv.photos.model.ListLayout
+import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
@@ -35,14 +36,21 @@ class FavoritesFragment : BaseFragment() {
     lateinit var favoritesRepository: FavoritesRepository
 
     @Inject
+    lateinit var downloadService: DownloadService
+
+    @Inject
     lateinit var glide: RequestManager
 
     private val viewModel: FavoritesViewModel by viewModels()
 
     private val photoActionDispatcher by lazy {
-        PhotoActionDispatcher(this, glide) { photo ->
-            viewModel.invertFavorite(photo)
-        }
+        PhotoActionDispatcher(
+            fragment = this,
+            downloadService = downloadService,
+            glide = glide,
+            onToggleFavorite = viewModel::toggleFavorite,
+            onShowMessage = ::showMessage
+        )
     }
 
     private lateinit var photoAdapter: PhotoListAdapter
@@ -58,7 +66,11 @@ class FavoritesFragment : BaseFragment() {
         )
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -84,46 +96,46 @@ class FavoritesFragment : BaseFragment() {
 
     override fun onCreateToolbar(): FragmentToolbar {
         return FragmentToolbar.Builder()
-                .withId(R.id.toolbar)
-                .withMenu(R.menu.menu_favorites)
-                .withMenuItems(
-                        listOf(
-                                R.id.itemViewList,
-                                R.id.itemViewGrid,
-                                R.id.itemSortBy,
-                                R.id.itemRemoveAll
-                        ),
-                        listOf(
-                                object : MenuItem.OnMenuItemClickListener {
-                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        viewModel.updateListLayout(ListLayout.LIST)
-                                        return true
-                                    }
-                                },
+            .withId(R.id.toolbar)
+            .withMenu(R.menu.menu_favorites)
+            .withMenuItems(
+                listOf(
+                    R.id.itemViewList,
+                    R.id.itemViewGrid,
+                    R.id.itemSortBy,
+                    R.id.itemRemoveAll
+                ),
+                listOf(
+                    object : MenuItem.OnMenuItemClickListener {
+                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                            viewModel.updateListLayout(ListLayout.LIST)
+                            return true
+                        }
+                    },
 
-                                object : MenuItem.OnMenuItemClickListener {
-                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        viewModel.updateListLayout(ListLayout.GRID)
-                                        return true
-                                    }
-                                },
+                    object : MenuItem.OnMenuItemClickListener {
+                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                            viewModel.updateListLayout(ListLayout.GRID)
+                            return true
+                        }
+                    },
 
-                                object : MenuItem.OnMenuItemClickListener {
-                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        viewModel.createSortByDialog().show(childFragmentManager)
-                                        return true
-                                    }
-                                },
+                    object : MenuItem.OnMenuItemClickListener {
+                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                            viewModel.createSortByDialog().show(childFragmentManager)
+                            return true
+                        }
+                    },
 
-                                object : MenuItem.OnMenuItemClickListener {
-                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        viewModel.markAllAsRemoved()
-                                        return true
-                                    }
-                                }
-                        )
+                    object : MenuItem.OnMenuItemClickListener {
+                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                            viewModel.markAllAsRemoved()
+                            return true
+                        }
+                    }
                 )
-                .build()
+            )
+            .build()
     }
 
     override fun onScrollToTop() {
@@ -134,22 +146,23 @@ class FavoritesFragment : BaseFragment() {
         viewModel.favoritesLiveData.observe(viewLifecycleOwner, {
             it?.let { photos ->
                 photoAdapter.submitList(photos)
-                binding.noFavoritesLayout.root.visibility = if (photos.isEmpty()) View.VISIBLE else View.GONE
+                binding.noFavoritesLayout.root.visibility =
+                    if (photos.isEmpty()) View.VISIBLE else View.GONE
             }
         })
 
         viewModel.removeAllResultEvent.observe(viewLifecycleOwner, { event ->
             if (event.getContentIfNotHandled() == true) {
                 Snackbar.make(binding.root, R.string.removed, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.undo) {
-                            viewModel.unmarkAllAsRemoved()
+                    .setAction(R.string.undo) {
+                        viewModel.unmarkAllAsRemoved()
+                    }
+                    .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                            viewModel.removeAllIfNotUndone()
                         }
-                        .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                                viewModel.removeAllIfNotUndone()
-                            }
-                        })
-                        .show()
+                    })
+                    .show()
             }
         })
 

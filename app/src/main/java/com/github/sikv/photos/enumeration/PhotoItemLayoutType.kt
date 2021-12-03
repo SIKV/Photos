@@ -3,6 +3,7 @@ package com.github.sikv.photos.enumeration
 import androidx.annotation.LayoutRes
 import com.github.sikv.photos.App
 import com.github.sikv.photos.R
+import com.github.sikv.photos.model.ListLayout
 
 enum class PhotoItemLayoutType(
         @LayoutRes val layout: Int,

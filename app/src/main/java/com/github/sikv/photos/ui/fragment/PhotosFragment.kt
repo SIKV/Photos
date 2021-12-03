@@ -12,9 +12,10 @@ import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.databinding.FragmentPhotosBinding
-import com.github.sikv.photos.enumeration.ListLayout
 import com.github.sikv.photos.enumeration.PhotoItemLayoutType
+import com.github.sikv.photos.model.ListLayout
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagingAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
@@ -33,14 +34,21 @@ class PhotosFragment : BaseFragment() {
     lateinit var favoritesRepository: FavoritesRepository
 
     @Inject
+    lateinit var downloadService: DownloadService
+
+    @Inject
     lateinit var glide: RequestManager
 
     private val viewModel: PhotosViewModel by viewModels()
 
     private val photoActionDispatcher by lazy {
-        PhotoActionDispatcher(this, glide) { photo ->
-            viewModel.invertFavorite(photo)
-        }
+        PhotoActionDispatcher(
+            fragment = this,
+            downloadService = downloadService,
+            glide = glide,
+            onToggleFavorite = viewModel::toggleFavorite,
+            onShowMessage = ::showMessage
+        )
     }
 
     private lateinit var photoAdapter: PhotoPagingAdapter<Photo>

@@ -1,25 +1,31 @@
-package com.github.sikv.photos.recommendation
+package com.github.sikv.photos.service
 
 import com.github.sikv.photos.database.dao.FavoritesDao
-import com.github.sikv.photos.vision.ImageLabeler
+import com.github.sikv.photos.model.Photo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class Recommender @Inject constructor(
-        private val favoritesDao: FavoritesDao,
-        private val imageLabeler: ImageLabeler
+data class RecommendedPhotos(
+    val photos: List<Photo>,
+    val moreAvailable: Boolean,
+    val reset: Boolean
+)
+
+class RecommendationService @Inject constructor(
+    private val favoritesDao: FavoritesDao,
+    private val imageLabelerService: ImageLabelerService
 ) {
 
     data class Recommendation(
-            val query: String?,
-            val moreAvailable: Boolean
+        val query: String?,
+        val moreAvailable: Boolean
     )
 
     suspend fun getNextRecommendation(): Recommendation {
         return withContext(Dispatchers.IO) {
             favoritesDao.getRandom()?.let { randomFavorite ->
-                val labels = imageLabeler.processImage(randomFavorite.getPhotoPreviewUrl())
+                val labels = imageLabelerService.processImage(randomFavorite.getPhotoPreviewUrl())
 
                 if (labels.isEmpty()) {
                     Recommendation(null, true)
@@ -32,5 +38,5 @@ class Recommender @Inject constructor(
         }
     }
 
-    fun reset() { }
+    fun reset() {}
 }

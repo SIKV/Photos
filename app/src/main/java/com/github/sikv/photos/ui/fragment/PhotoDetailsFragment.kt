@@ -6,19 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import com.github.sikv.photos.App
-import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.createShareIntent
 import com.github.sikv.photos.ui.compose.PhotoDetailsScreen
+import com.github.sikv.photos.ui.compose.state.PhotoViewState
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
-import com.github.sikv.photos.ui.state.PhotoState
-import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.viewmodel.PhotoDetailsViewModel
 import com.google.android.material.composethemeadapter.MdcTheme
@@ -47,19 +44,22 @@ class PhotoDetailsFragment : BaseFragment() {
         setContent {
             MdcTheme {
                 Surface {
-                    val uiState: PhotoState? by viewModel.uiState.observeAsState()
+                    val viewState: State<PhotoViewState> =
+                        viewModel.viewState.observeAsState(PhotoViewState.NoData)
 
-                    uiState?.let { photoState ->
-                        PhotoDetailsScreen(
-                            photo = photoState.photo,
-                            onBackPressed = { navigation?.backPressed() },
-                            isFavorite = photoState.isFavorite,
-                            onToggleFavorite = { viewModel.toggleFavorite() },
-                            onSharePressed = { sharePhoto(photoState.photo) },
-                            onDownloadPressed = { downloadPhoto(photoState.photo) },
-                            onSetWallpaperPressed = { setWallpaper(photoState.photo) },
-                            onAttributionPressed = { openAttribution(photoState.photo) }
-                        )
+                    when (val state = viewState.value) {
+                        is PhotoViewState.Ready -> {
+                            PhotoDetailsScreen(
+                                photo = state.photo,
+                                onBackPressed = { navigation?.backPressed() },
+                                isFavorite = state.isFavorite,
+                                onToggleFavorite = { viewModel.toggleFavorite() },
+                                onSharePressed = { sharePhoto(state.photo) },
+                                onDownloadPressed = { viewModel.downloadPhoto() },
+                                onSetWallpaperPressed = { setWallpaper(state.photo) },
+                                onAttributionPressed = { openAttribution(state.photo) }
+                            )
+                        }
                     }
                 }
             }
@@ -68,12 +68,6 @@ class PhotoDetailsFragment : BaseFragment() {
 
     private fun sharePhoto(photo: Photo) {
         startActivity(photo.createShareIntent())
-    }
-
-    private fun downloadPhoto(photo: Photo) {
-        requireContext().downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
-        App.instance.postGlobalMessage(App.instance.getString(R.string.downloading_photo))
-
     }
 
     private fun setWallpaper(photo: Photo) {

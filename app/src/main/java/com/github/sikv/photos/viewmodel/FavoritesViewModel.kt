@@ -1,15 +1,14 @@
 package com.github.sikv.photos.viewmodel
 
 import android.app.Application
-import android.content.SharedPreferences
 import androidx.lifecycle.*
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.database.entity.FavoritePhotoEntity
-import com.github.sikv.photos.enumeration.ListLayout
-import com.github.sikv.photos.enumeration.SavedPreference
 import com.github.sikv.photos.enumeration.SortBy
 import com.github.sikv.photos.event.Event
+import com.github.sikv.photos.model.ListLayout
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.service.PreferencesService
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.util.getString
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,9 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
-        application: Application,
-        private val favoritesRepository: FavoritesRepository,
-        private val preferences: SharedPreferences
+    application: Application,
+    private val favoritesRepository: FavoritesRepository,
+    private val preferencesService: PreferencesService
 ) : AndroidViewModel(application) {
 
     private val favoritesNewest: LiveData<List<FavoritePhotoEntity>>
@@ -55,13 +54,10 @@ class FavoritesViewModel @Inject constructor(
             }
         }
 
-        val listLayout = ListLayout.findBySpanCount(
-                preferences.getInt(SavedPreference.FAVORITES_LIST_LAYOUT.key, ListLayout.GRID.spanCount)
-        )
-        listLayoutChangedMutable.value = listLayout
+        listLayoutChangedMutable.value = preferencesService.getFavoritesListLayout()
     }
 
-    fun invertFavorite(photo: Photo) {
+    fun toggleFavorite(photo: Photo) {
         favoritesRepository.invertFavorite(photo)
     }
 
@@ -97,10 +93,7 @@ class FavoritesViewModel @Inject constructor(
     }
 
     fun updateListLayout(listLayout: ListLayout) {
-        preferences.edit()
-                .putInt(SavedPreference.FAVORITES_LIST_LAYOUT.key, listLayout.spanCount)
-                .apply()
-
+        preferencesService.setFavoritesListLayout(listLayout)
         listLayoutChangedMutable.value = listLayout
     }
 
@@ -112,8 +105,12 @@ class FavoritesViewModel @Inject constructor(
             val selectedSortBy = SortBy.values()[index]
 
             when (selectedSortBy) {
-                SortBy.DATE_ADDED_NEWEST -> favoritesNewest.value?.let { favoritesMediatorLiveData.value = it }
-                SortBy.DATE_ADDED_OLDEST -> favoritesOldest.value?.let { favoritesMediatorLiveData.value = it }
+                SortBy.DATE_ADDED_NEWEST -> favoritesNewest.value?.let {
+                    favoritesMediatorLiveData.value = it
+                }
+                SortBy.DATE_ADDED_OLDEST -> favoritesOldest.value?.let {
+                    favoritesMediatorLiveData.value = it
+                }
             }
 
             sortBy = selectedSortBy

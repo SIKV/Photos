@@ -1,6 +1,6 @@
-package com.github.sikv.photos.config
+package com.github.sikv.photos.config.feature
 
-interface ConfigProvider {
+interface FeatureFlagRepository {
     fun fetch(doAfter: () -> Unit)
     fun refresh()
     fun isFeatureEnabled(featureFlag: FeatureFlag): Boolean

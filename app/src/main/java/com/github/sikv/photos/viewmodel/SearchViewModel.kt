@@ -39,7 +39,7 @@ class SearchViewModel @Inject constructor(
         favoritesRepository.unsubscribe(this)
     }
 
-    override fun onFavoriteChanged(photo: Photo, favorite: Boolean) {
+    override fun onFavoriteChanged(photo: Photo, isFavorite: Boolean) {
         favoriteChangedMutableEvent.postValue(Event(photo))
     }
 
@@ -47,7 +47,7 @@ class SearchViewModel @Inject constructor(
         favoritesChangedMutableEvent.postValue(VoidEvent())
     }
 
-    fun invertFavorite(photo: Photo) {
+    fun toggleFavorite(photo: Photo) {
         favoritesRepository.invertFavorite(photo)
     }
 

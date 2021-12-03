@@ -3,10 +3,10 @@ package com.github.sikv.photos.ui
 import android.app.Activity
 import android.view.View
 import com.bumptech.glide.RequestManager
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.createShareIntent
+import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.activity.BaseActivity
 import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
@@ -15,13 +15,14 @@ import com.github.sikv.photos.ui.fragment.BaseFragment
 import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.util.copyText
-import com.github.sikv.photos.util.downloadPhotoAndSaveToPictures
 import com.github.sikv.photos.util.openUrl
 
 class PhotoActionDispatcher(
     private val fragment: BaseFragment,
+    private val downloadService: DownloadService,
     private val glide: RequestManager,
-    private val invertFavorite: (Photo) -> Unit
+    private val onToggleFavorite: (Photo) -> Unit,
+    private val onShowMessage: (String) -> Unit
 ) : OnPhotoActionListener {
 
     private lateinit var photoPreviewPopup: PhotoPreviewPopup
@@ -60,7 +61,7 @@ class PhotoActionDispatcher(
             }
 
             OnPhotoActionListener.Action.FAVORITE -> {
-                invertFavorite(photo)
+                onToggleFavorite(photo)
             }
 
             OnPhotoActionListener.Action.SHARE -> {
@@ -69,8 +70,8 @@ class PhotoActionDispatcher(
 
             OnPhotoActionListener.Action.DOWNLOAD -> {
                 (getActivity() as? BaseActivity)?.requestWriteExternalStoragePermission {
-                    getActivity().downloadPhotoAndSaveToPictures(photo.getPhotoDownloadUrl())
-                    App.instance.postGlobalMessage(getActivity().getString(R.string.downloading_photo))
+                    downloadService.downloadPhoto(photo.getPhotoDownloadUrl())
+                    onShowMessage(getActivity().getString(R.string.downloading_photo))
                 }
             }
         }
@@ -94,14 +95,13 @@ class PhotoActionDispatcher(
                 0 -> {
                     SetWallpaperDialog.newInstance(photo).show(fragment.childFragmentManager)
                 }
-
                 // Copy Link
                 1 -> {
                     val label = getActivity().getString(R.string.photo_link)
                     val text = photo.getPhotoShareUrl()
 
                     getActivity().copyText(label, text)
-                    App.instance.postGlobalMessage(getActivity().getString(R.string.link_copied))
+                    onShowMessage(getActivity().getString(R.string.link_copied))
                 }
             }
         }

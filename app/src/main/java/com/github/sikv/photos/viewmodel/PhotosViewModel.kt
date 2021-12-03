@@ -1,6 +1,5 @@
 package com.github.sikv.photos.viewmodel
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,19 +10,19 @@ import com.github.sikv.photos.config.ListConfig
 import com.github.sikv.photos.data.CuratedPhotosPagingSource
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
-import com.github.sikv.photos.enumeration.ListLayout
-import com.github.sikv.photos.enumeration.SavedPreference
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.event.VoidEvent
+import com.github.sikv.photos.model.ListLayout
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.service.PreferencesService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class PhotosViewModel @Inject constructor(
-        private val photosRepository: PhotosRepository,
-        private val favoritesRepository: FavoritesRepository,
-        private val preferences: SharedPreferences
+    private val photosRepository: PhotosRepository,
+    private val favoritesRepository: FavoritesRepository,
+    private val preferencesService: PreferencesService
 ) : ViewModel(), FavoritesRepository.Listener {
 
     private val favoriteChangedMutableEvent = MutableLiveData<Event<Photo>>()
@@ -38,10 +37,7 @@ class PhotosViewModel @Inject constructor(
     init {
         favoritesRepository.subscribe(this)
 
-        val listLayout = ListLayout.findBySpanCount(
-                preferences.getInt(SavedPreference.CURATED_LIST_LAYOUT.key, ListLayout.LIST.spanCount)
-        )
-        listLayoutChangedMutable.value = listLayout
+        listLayoutChangedMutable.value = preferencesService.getCuratedListLayout()
     }
 
     override fun onCleared() {
@@ -50,7 +46,7 @@ class PhotosViewModel @Inject constructor(
         favoritesRepository.unsubscribe(this)
     }
 
-    override fun onFavoriteChanged(photo: Photo, favorite: Boolean) {
+    override fun onFavoriteChanged(photo: Photo, isFavorite: Boolean) {
         favoriteChangedMutableEvent.postValue(Event(photo))
     }
 
@@ -58,24 +54,21 @@ class PhotosViewModel @Inject constructor(
         favoritesChangedMutableEvent.postValue(VoidEvent())
     }
 
-    fun invertFavorite(photo: Photo) {
+    fun toggleFavorite(photo: Photo) {
         favoritesRepository.invertFavorite(photo)
     }
 
     fun updateListLayout(listLayout: ListLayout) {
-        preferences.edit()
-                .putInt(SavedPreference.CURATED_LIST_LAYOUT.key, listLayout.spanCount)
-                .apply()
-
+        preferencesService.setCuratedListLayout(listLayout)
         listLayoutChangedMutable.value = listLayout
     }
 
     fun getCuratedPhotos(): LiveData<PagingData<Photo>> {
         return Pager(
-                config = ListConfig.pagingConfig,
-                pagingSourceFactory = {
-                    CuratedPhotosPagingSource(photosRepository)
-                }
+            config = ListConfig.pagingConfig,
+            pagingSourceFactory = {
+                CuratedPhotosPagingSource(photosRepository)
+            }
         ).liveData
     }
 }

@@ -4,21 +4,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sikv.photos.RuntimeBehaviour
-import com.github.sikv.photos.config.FeatureFlag
 import com.github.sikv.photos.config.ListConfig
+import com.github.sikv.photos.config.feature.FeatureFlag
+import com.github.sikv.photos.config.feature.FeatureFlagProvider
 import com.github.sikv.photos.data.repository.PhotosRepository
-import com.github.sikv.photos.recommendation.RecommendedPhotos
-import com.github.sikv.photos.recommendation.Recommender
+import com.github.sikv.photos.service.RecommendationService
+import com.github.sikv.photos.service.RecommendedPhotos
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchDashboardViewModel @Inject constructor(
-        private val runtimeBehaviour: RuntimeBehaviour,
-        private val photosRepository: PhotosRepository,
-        private val recommender: Recommender
+    private val photosRepository: PhotosRepository,
+    private val recommendationService: RecommendationService,
+    private val featureFlagProvider: FeatureFlagProvider
 ) : ViewModel() {
 
     private val recommendedPhotosLoadedMutableEvent= MutableLiveData<RecommendedPhotos>()
@@ -29,26 +29,30 @@ class SearchDashboardViewModel @Inject constructor(
     }
 
     fun loadRecommendations(reset: Boolean = false) {
-        if (!runtimeBehaviour.isFeatureEnabled(FeatureFlag.SEARCH_RECOMMENDATIONS)) {
+        if (!featureFlagProvider.isFeatureEnabled(FeatureFlag.RECOMMENDATIONS)) {
             return
         }
 
         if (reset) {
-            recommender.reset()
+            recommendationService.reset()
         }
 
         viewModelScope.launch {
-            val recommendation = recommender.getNextRecommendation()
+            val recommendation = recommendationService.getNextRecommendation()
 
             if (recommendation.query != null) {
                 val photos = photosRepository.searchPhotos(recommendation.query,
                         ListConfig.RECOMMENDATIONS_LIMIT)
 
-                recommendedPhotosLoadedMutableEvent.postValue(RecommendedPhotos(photos,
-                        recommendation.moreAvailable, reset))
+                recommendedPhotosLoadedMutableEvent.postValue(
+                    RecommendedPhotos(photos,
+                        recommendation.moreAvailable, reset)
+                )
             } else {
-                recommendedPhotosLoadedMutableEvent.postValue(RecommendedPhotos(emptyList(),
-                        recommendation.moreAvailable, reset))
+                recommendedPhotosLoadedMutableEvent.postValue(
+                    RecommendedPhotos(emptyList(),
+                        recommendation.moreAvailable, reset)
+                )
             }
         }
     }

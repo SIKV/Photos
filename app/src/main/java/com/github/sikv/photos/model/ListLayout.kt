@@ -1,4 +1,4 @@
-package com.github.sikv.photos.enumeration
+package com.github.sikv.photos.model
 
 enum class ListLayout(val spanCount: Int) {
     LIST(1),
@@ -9,7 +9,7 @@ enum class ListLayout(val spanCount: Int) {
             return if (spanCount == LIST.spanCount) {
                 LIST
             } else {
-               GRID
+                GRID
             }
         }
     }

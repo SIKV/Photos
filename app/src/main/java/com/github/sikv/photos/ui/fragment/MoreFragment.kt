@@ -9,10 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
-import com.github.sikv.photos.RuntimeBehaviour
-import com.github.sikv.photos.config.FeatureFlag
+import com.github.sikv.photos.config.feature.FeatureFlag
+import com.github.sikv.photos.config.feature.FeatureFlagProvider
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.disableScrollableToolbar
@@ -68,7 +67,7 @@ class MoreFragment : BaseFragment() {
     class PreferenceFragment : PreferenceFragmentCompat() {
 
         @Inject
-        lateinit var runtimeBehaviour: RuntimeBehaviour
+        lateinit var featureFlagProvider: FeatureFlagProvider
 
         private val viewModel: MoreViewModel by viewModels()
 
@@ -77,7 +76,7 @@ class MoreFragment : BaseFragment() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_more, rootKey)
 
-            val syncEnabled = runtimeBehaviour.isFeatureEnabled(FeatureFlag.SYNC)
+            val syncEnabled = featureFlagProvider.isFeatureEnabled(FeatureFlag.SYNC)
 
             findPreference<Preference>(getString(R.string._pref_sign_in))?.isEnabled = syncEnabled
             findPreference<Preference>(getString(R.string._pref_sign_out))?.isEnabled = syncEnabled
@@ -129,8 +128,7 @@ class MoreFragment : BaseFragment() {
 
                         LoginStatus.SignInError -> {
                             signingInSnackbar?.dismiss()
-
-                            App.instance.postGlobalMessage(getString(R.string.error_signing_in))
+                            // TODO Show R.string.error_signing_in message
                         }
 
                         else -> signingInSnackbar?.dismiss()

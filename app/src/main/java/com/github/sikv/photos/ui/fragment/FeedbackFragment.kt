@@ -36,7 +36,11 @@ class FeedbackFragment : BaseFragment() {
 
     private var sendMenuItem: MenuItem? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentFeedbackBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -64,27 +68,26 @@ class FeedbackFragment : BaseFragment() {
 
     override fun onCreateToolbar(): FragmentToolbar {
         return FragmentToolbar.Builder()
-                .withId(R.id.toolbar)
-                .withMenu(R.menu.menu_feedback)
-                .withMenuItems(
-                        listOf(
-                                R.id.itemSubmit
-                        ),
-                        listOf(
-                                object : MenuItem.OnMenuItemClickListener {
-                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        sendMenuItem = menuItem
+            .withId(R.id.toolbar)
+            .withMenu(R.menu.menu_feedback)
+            .withMenuItems(
+                listOf(
+                    R.id.itemSubmit
+                ),
+                listOf(
+                    object : MenuItem.OnMenuItemClickListener {
+                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                            sendMenuItem = menuItem
 
-                                        viewModel.send(
-                                                email = binding.emailEdit.text.toString(),
-                                                description = binding.descriptionEdit.text.toString()
-                                        )
-
-                                        return true
-                                    }
-                                }
-                        )
-                ).build()
+                            viewModel.send(
+                                email = binding.emailEdit.text.toString(),
+                                description = binding.descriptionEdit.text.toString()
+                            )
+                            return true
+                        }
+                    }
+                )
+            ).build()
     }
 
     private fun observe() {
@@ -98,7 +101,7 @@ class FeedbackFragment : BaseFragment() {
                     is RequestStatus.Done -> {
                         sendMenuItem?.actionView = null
 
-                        postGlobalMessage(requestStatus.message)
+                        showMessage(requestStatus.message)
 
                         if (requestStatus.success) {
                             navigation?.backPressed()
@@ -111,7 +114,8 @@ class FeedbackFragment : BaseFragment() {
                         when (requestStatus.invalidInputIndex) {
                             1 -> binding.emailInputLayout.error = requestStatus.message
                             2 -> binding.descriptionInputLayout.error = requestStatus.message
-                            else -> { }
+                            else -> {
+                            }
                         }
                     }
                 }

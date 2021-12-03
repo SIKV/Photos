@@ -2,8 +2,6 @@ package com.github.sikv.photos.data.repository.impl
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import androidx.sqlite.db.SimpleSQLiteQuery
-import com.github.sikv.photos.config.DbConfig
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.database.FavoritesDbQueryBuilder
 import com.github.sikv.photos.database.dao.FavoritesDao

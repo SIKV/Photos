@@ -5,10 +5,11 @@ import androidx.annotation.IdRes
 import androidx.annotation.MenuRes
 
 class FragmentToolbar(
-        @IdRes val resId: Int,
-        @MenuRes val menuId: Int,
-        val menuItems: List<Int>,
-        val menuItemClickListeners: List<MenuItem.OnMenuItemClickListener?>) {
+    @IdRes val resId: Int,
+    @MenuRes val menuId: Int,
+    val menuItems: List<Int>,
+    val menuItemClickListeners: List<MenuItem.OnMenuItemClickListener?>
+) {
 
     companion object {
         const val NO_TOOLBAR = -1
@@ -24,7 +25,10 @@ class FragmentToolbar(
 
         fun withMenu(@MenuRes menuId: Int) = apply { this.menuId = menuId }
 
-        fun withMenuItems(menuItems: List<Int>, menuItemClickListeners: List<MenuItem.OnMenuItemClickListener?>) = apply {
+        fun withMenuItems(
+            menuItems: List<Int>,
+            menuItemClickListeners: List<MenuItem.OnMenuItemClickListener?>
+        ) = apply {
             this.menuItems = menuItems
             this.menuItemClickListeners = menuItemClickListeners
         }

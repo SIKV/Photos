@@ -3,8 +3,8 @@ package com.github.sikv.photos.ui.fragment
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbarManager
@@ -19,15 +19,26 @@ abstract class BaseFragment : Fragment() {
 
     protected open val overrideBackground = false
 
-    val navigation: Navigation? get() {
-        return (parentFragment as? NavigationProvider)?.provideNavigation()
-    }
+    val navigation: Navigation?
+        get() {
+            var parent = parentFragment
+
+            while (parent != null) {
+                if (parent is NavigationProvider) {
+                    return (parent as NavigationProvider).provideNavigation()
+                } else {
+                    parent = parent.parentFragment
+                }
+            }
+            return null
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         if (overrideBackground) {
-            val backgroundColor = MaterialColors.getColor(requireContext(), R.attr.colorSurface, Color.BLACK)
+            val backgroundColor =
+                MaterialColors.getColor(requireContext(), R.attr.colorSurface, Color.BLACK)
             view.setBackgroundColor(backgroundColor)
 
             view.isClickable = true
@@ -42,7 +53,7 @@ abstract class BaseFragment : Fragment() {
         }
     }
 
-    open fun onScrollToTop() { }
+    open fun onScrollToTop() {}
 
     protected open fun onCreateToolbar(): FragmentToolbar? {
         return null
@@ -52,7 +63,8 @@ abstract class BaseFragment : Fragment() {
         fragmentToolbarManager?.setMenuItemVisibility(menuItem, visible)
     }
 
-    protected fun postGlobalMessage(message: String) {
-        App.instance.postGlobalMessage(message)
+    protected fun showMessage(text: String) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
+            .show()
     }
 }
