@@ -108,6 +108,7 @@ dependencies {
     implementation 'androidx.compose.runtime:runtime-livedata:1.0.5'
     implementation 'androidx.compose.material:material:1.0.5'
     implementation 'com.google.android.material:compose-theme-adapter:1.1.0'
+    implementation 'com.google.accompanist:accompanist-insets:0.21.4-beta'
 
     // Paging
     implementation 'androidx.paging:paging-runtime-ktx:3.1.0-rc01'

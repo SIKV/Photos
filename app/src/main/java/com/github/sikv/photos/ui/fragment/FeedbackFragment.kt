@@ -13,7 +13,7 @@ import com.github.sikv.photos.enumeration.RequestStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.hideSoftInput
 import com.github.sikv.photos.util.resetErrorWhenTextChanged
-import com.github.sikv.photos.util.setToolbarTitleWithBackButton
+import com.github.sikv.photos.util.setupToolbarWithBackButton
 import com.github.sikv.photos.util.showSoftInput
 import com.github.sikv.photos.viewmodel.FeedbackViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,9 +48,10 @@ class FeedbackFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setToolbarTitleWithBackButton(R.string.send_feedback) {
-            navigation?.backPressed()
-        }
+        setupToolbarWithBackButton(
+            title = R.string.send_feedback,
+            navigationOnClickListener = { navigation?.backPressed() }
+        )
 
         context?.showSoftInput(binding.emailEdit)
 

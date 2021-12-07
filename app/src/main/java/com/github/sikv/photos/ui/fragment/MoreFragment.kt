@@ -15,7 +15,7 @@ import com.github.sikv.photos.config.feature.FeatureFlagProvider
 import com.github.sikv.photos.enumeration.LoginStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.disableScrollableToolbar
-import com.github.sikv.photos.util.setToolbarTitle
+import com.github.sikv.photos.util.setupToolbar
 import com.github.sikv.photos.viewmodel.MoreViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +39,7 @@ class MoreFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setToolbarTitle(R.string.more)
+        setupToolbar(R.string.more)
         disableScrollableToolbar()
     }
 

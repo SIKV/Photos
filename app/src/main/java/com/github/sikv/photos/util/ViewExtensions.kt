@@ -11,8 +11,12 @@ import android.text.style.ClickableSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.TextView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -23,6 +27,19 @@ import com.google.android.material.textfield.TextInputLayout
 /**
  * View
  */
+fun View.applyStatusBarsInsets() {
+    ViewCompat.setOnApplyWindowInsetsListener(this) { view, windowInsets ->
+        val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
+
+        view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            topMargin = insets.top
+            leftMargin = insets.left
+            rightMargin = insets.right
+        }
+        windowInsets
+    }
+}
+
 fun View.changeVisibilityWithAnimation(visibility: Int) {
     val duration = 100L
 

@@ -20,6 +20,8 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.getAttributionPlaceholderBackgroundColor
 import com.github.sikv.photos.model.getAttributionPlaceholderTextColor
+import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
 
 @ExperimentalMaterialApi
 @Composable
@@ -56,6 +58,8 @@ fun PhotoDetailsScreen(
         },
         sheetShape = RoundedCornerShape(topStart = sheetRadius, topEnd = sheetRadius),
         sheetPeekHeight = sheetPeekHeight,
+        modifier = Modifier
+            .navigationBarsPadding()
     ) {
         Box(
             modifier = modifier
@@ -69,6 +73,7 @@ fun PhotoDetailsScreen(
             TransparentTopAppBar(
                 onBackPressed = onBackPressed,
                 modifier = Modifier
+                    .statusBarsPadding()
                     .padding(8.dp)
             )
         }

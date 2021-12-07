@@ -18,6 +18,7 @@ import com.github.sikv.photos.ui.compose.state.PhotoViewState
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.viewmodel.PhotoDetailsViewModel
+import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,22 +44,24 @@ class PhotoDetailsFragment : BaseFragment() {
         )
         setContent {
             MdcTheme {
-                Surface {
-                    val viewState: State<PhotoViewState> =
-                        viewModel.viewState.observeAsState(PhotoViewState.NoData)
+                ProvideWindowInsets {
+                    Surface {
+                        val viewState: State<PhotoViewState> =
+                            viewModel.viewState.observeAsState(PhotoViewState.NoData)
 
-                    when (val state = viewState.value) {
-                        is PhotoViewState.Ready -> {
-                            PhotoDetailsScreen(
-                                photo = state.photo,
-                                onBackPressed = { navigation?.backPressed() },
-                                isFavorite = state.isFavorite,
-                                onToggleFavorite = { viewModel.toggleFavorite() },
-                                onSharePressed = { sharePhoto(state.photo) },
-                                onDownloadPressed = { viewModel.downloadPhoto() },
-                                onSetWallpaperPressed = { setWallpaper(state.photo) },
-                                onAttributionPressed = { openAttribution(state.photo) }
-                            )
+                        when (val state = viewState.value) {
+                            is PhotoViewState.Ready -> {
+                                PhotoDetailsScreen(
+                                    photo = state.photo,
+                                    onBackPressed = { navigation?.backPressed() },
+                                    isFavorite = state.isFavorite,
+                                    onToggleFavorite = { viewModel.toggleFavorite() },
+                                    onSharePressed = { sharePhoto(state.photo) },
+                                    onDownloadPressed = { viewModel.downloadPhoto() },
+                                    onSetWallpaperPressed = { setWallpaper(state.photo) },
+                                    onAttributionPressed = { openAttribution(state.photo) }
+                                )
+                            }
                         }
                     }
                 }

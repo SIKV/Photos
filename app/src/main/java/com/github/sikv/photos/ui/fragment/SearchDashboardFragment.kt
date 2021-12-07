@@ -15,6 +15,7 @@ import com.github.sikv.photos.databinding.FragmentSearchDashboardBinding
 import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
+import com.github.sikv.photos.util.applyStatusBarsInsets
 import com.github.sikv.photos.util.scrollToTop
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchDashboardViewModel
@@ -62,6 +63,8 @@ class SearchDashboardFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.toolbar.applyStatusBarsInsets()
 
         init()
         setListeners()

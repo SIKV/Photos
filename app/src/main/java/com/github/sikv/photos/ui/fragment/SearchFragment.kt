@@ -16,8 +16,8 @@ import com.github.sikv.photos.databinding.FragmentSearchBinding
 import com.github.sikv.photos.enumeration.SearchSource
 import com.github.sikv.photos.util.changeVisibilityWithAnimation
 import com.github.sikv.photos.util.hideSoftInput
+import com.github.sikv.photos.util.setupToolbarWithBackButton
 import com.github.sikv.photos.util.showSoftInput
-import com.github.sikv.photos.util.showToolbarBackButton
 
 class SearchFragment : BaseFragment() {
 
@@ -56,9 +56,10 @@ class SearchFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        showToolbarBackButton {
-            navigation?.backPressed()
-        }
+        setupToolbarWithBackButton(
+            title = null,
+            navigationOnClickListener = { navigation?.backPressed() }
+        )
 
         initViewPager {
             if (savedInstanceState == null) {

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -16,7 +15,7 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.databinding.FragmentSettingsBinding
 import com.github.sikv.photos.util.makeClickable
 import com.github.sikv.photos.util.openUrl
-import com.github.sikv.photos.util.setToolbarTitleWithBackButton
+import com.github.sikv.photos.util.setupToolbarWithBackButton
 import com.github.sikv.photos.viewmodel.SettingsViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,9 +45,10 @@ class SettingsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setToolbarTitleWithBackButton(R.string.settings) {
-            navigation?.backPressed()
-        }
+        setupToolbarWithBackButton(
+            title = R.string.settings,
+            navigationOnClickListener = { navigation?.backPressed() }
+        )
 
         showIconsAttribution()
     }

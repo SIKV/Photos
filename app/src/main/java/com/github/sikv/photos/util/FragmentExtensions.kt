@@ -1,45 +1,76 @@
 package com.github.sikv.photos.util
 
+import android.util.Log
 import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.github.sikv.photos.R
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
 
-fun Fragment.setToolbarTitle(@StringRes title: Int) {
-    val toolbar = view?.findViewById<Toolbar>(R.id.toolbar)
-    toolbar?.setTitle(title)
+fun Fragment.setupToolbar(
+    @StringRes title: Int,
+    applyInsets: Boolean = true
+) {
+    setupToolbar(
+        fragment = this,
+        toolbarId = R.id.toolbar,
+        title = title,
+        applyInsets = applyInsets
+    )
+}
+
+fun Fragment.setupToolbarWithBackButton(
+    @StringRes title: Int?,
+    navigationOnClickListener: () -> Unit,
+    applyInsets: Boolean = true
+) {
+    setupToolbar(
+        fragment = this,
+        toolbarId = R.id.toolbar,
+        title = title,
+        navigationIcon = R.drawable.ic_arrow_back_24dp,
+        navigationOnClick = navigationOnClickListener,
+        applyInsets = applyInsets
+    )
 }
 
 fun Fragment.disableScrollableToolbar() {
-    (view?.findViewById<Toolbar>(R.id.toolbar)?.layoutParams as? AppBarLayout.LayoutParams)?.scrollFlags = 0
+    (view?.findViewById<Toolbar>(R.id.toolbar)
+        ?.layoutParams as? AppBarLayout.LayoutParams)?.scrollFlags = 0
 }
 
-fun Fragment.setToolbarTitleWithBackButton(@StringRes title: Int?, navigationOnClickListener: () -> Unit) {
-    setToolbarTitleWithButton(this, title, R.drawable.ic_arrow_back_24dp, navigationOnClickListener)
-}
+private fun setupToolbar(
+    fragment: Fragment,
+    @IdRes toolbarId: Int,
+    @StringRes title: Int?,
+    @DrawableRes navigationIcon: Int? = null,
+    navigationOnClick: (() -> Unit)? = null,
+    applyInsets: Boolean = true
+) {
+    val toolbar = fragment.view?.findViewById<Toolbar>(toolbarId) ?: return
 
-fun Fragment.showToolbarBackButton(navigationOnClickListener: () -> Unit) {
-    view?.findViewById<Toolbar>(R.id.toolbar)?.run {
-        setNavigationIcon(R.drawable.ic_arrow_back_24dp)
+    title?.let(toolbar::setTitle)
 
-        setNavigationOnClickListener {
-            navigationOnClickListener()
+    navigationIcon?.let(toolbar::setNavigationIcon)
+
+    navigationOnClick?.let { onClick ->
+        toolbar.setNavigationOnClickListener {
+            onClick()
         }
     }
-}
 
-private fun setToolbarTitleWithButton(fragment: Fragment, @StringRes title: Int?, @DrawableRes navigationIcon: Int, navigationOnClickListener: () -> Unit) {
-    val toolbar = fragment.view?.findViewById<Toolbar>(R.id.toolbar)
+    if (applyInsets) {
+        if (toolbar.parent is CollapsingToolbarLayout) {
+            val toolbarTopParent = toolbar.parent.parent
 
-    title?.let {
-        toolbar?.setTitle(it)
-    }
-
-    toolbar?.setNavigationIcon(navigationIcon)
-
-    toolbar?.setNavigationOnClickListener {
-        navigationOnClickListener()
+            if (toolbarTopParent is AppBarLayout) {
+                toolbarTopParent.applyStatusBarsInsets()
+            }
+        } else {
+            toolbar.applyStatusBarsInsets()
+        }
     }
 }

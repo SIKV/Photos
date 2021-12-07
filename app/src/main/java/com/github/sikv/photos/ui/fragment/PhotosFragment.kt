@@ -72,7 +72,7 @@ class PhotosFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setToolbarTitle(R.string.app_name)
+        setupToolbar(R.string.app_name)
 
         binding.photosRecycler.adapter = photoAdapter
         binding.photosRecycler.disableChangeAnimations()

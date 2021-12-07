@@ -19,7 +19,7 @@ import com.github.sikv.photos.ui.adapter.PhotoListAdapter
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.scrollToTop
 import com.github.sikv.photos.util.setItemLayoutType
-import com.github.sikv.photos.util.setToolbarTitle
+import com.github.sikv.photos.util.setupToolbar
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -78,7 +78,7 @@ class FavoritesFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setToolbarTitle(R.string.favorites)
+        setupToolbar(R.string.favorites)
 
         binding.photosRecycler.adapter = photoAdapter
 
