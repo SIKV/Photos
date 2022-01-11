@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.github.sikv.photos.R
 import com.github.sikv.photos.ui.navigation.Navigation
+import com.github.sikv.photos.ui.navigation.NavigationAnimation
 import com.github.sikv.photos.ui.navigation.NavigationDispatcher
 import com.github.sikv.photos.ui.navigation.NavigationProvider
 
@@ -26,10 +27,10 @@ abstract class RootFragment : Fragment(), NavigationProvider {
         super.onViewCreated(view, savedInstanceState)
 
         if (savedInstanceState == null) {
-            provideNavigation().addFragment(provideRootFragment(), withAnimation = false)
+            provideNavigation().addFragment(provideRootFragment(), animation = NavigationAnimation.NONE)
 
             delayedFragment?.let {
-                provideNavigation().addFragment(it, withAnimation = false)
+                provideNavigation().addFragment(it, animation = NavigationAnimation.NONE)
             }
         }
     }

@@ -13,17 +13,28 @@ class NavigationDispatcher(
 
     private var destinationChangedListener: OnDestinationChangedListener? = null
 
-    override fun addFragment(fragment: Fragment, withAnimation: Boolean) {
+    override fun addFragment(fragment: Fragment, animation: NavigationAnimation) {
         val fm = this.fragment.childFragmentManager
         val transaction = fm.beginTransaction()
 
-        if (withAnimation) {
-            transaction.setCustomAnimations(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left,
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
+        when (animation) {
+            NavigationAnimation.SLIDE_H -> {
+                transaction.setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
+            }
+            NavigationAnimation.SLIDE_V -> {
+                transaction.setCustomAnimations(
+                    R.anim.slide_in_bottom,
+                    R.anim.slide_out_top,
+                    R.anim.slide_in_bottom,
+                    R.anim.slide_out_top
+                )
+            }
+            else -> { }
         }
 
         transaction

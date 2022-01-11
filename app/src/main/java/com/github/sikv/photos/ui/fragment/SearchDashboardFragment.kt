@@ -15,6 +15,7 @@ import com.github.sikv.photos.databinding.FragmentSearchDashboardBinding
 import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
+import com.github.sikv.photos.ui.navigation.NavigationAnimation
 import com.github.sikv.photos.util.applyStatusBarsInsets
 import com.github.sikv.photos.util.scrollToTop
 import com.github.sikv.photos.util.setVisibilityAnimated
@@ -119,7 +120,7 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private fun showSearchFragment(searchText: String? = null) {
-        navigation?.addFragment(SearchFragment.newInstance(searchText), withAnimation = false)
+        navigation?.addFragment(SearchFragment.newInstance(searchText), animation = NavigationAnimation.NONE)
     }
 
     private fun showSpeechRecognizer() {

@@ -13,6 +13,7 @@ import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.ui.fragment.BaseFragment
 import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
+import com.github.sikv.photos.ui.navigation.NavigationAnimation
 import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
 import com.github.sikv.photos.util.copyText
 import com.github.sikv.photos.util.openUrl
@@ -34,7 +35,9 @@ class PhotoActionDispatcher(
     override fun onPhotoAction(action: OnPhotoActionListener.Action, photo: Photo, view: View) {
         when (action) {
             OnPhotoActionListener.Action.CLICK -> {
-                fragment.navigation?.addFragment(PhotoDetailsFragment.newInstance(photo))
+                fragment.navigation?.addFragment(PhotoDetailsFragment.newInstance(photo),
+                    animation = NavigationAnimation.SLIDE_V
+                )
             }
 
             OnPhotoActionListener.Action.HOLD -> {
