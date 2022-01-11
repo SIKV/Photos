@@ -9,13 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.getAttributionPlaceholderBackgroundColor
@@ -36,15 +35,15 @@ fun PhotoDetailsScreen(
     onAttributionPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val sheetRadius = 24.dp
-    val sheetPeekHeight = 196.dp
-
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
     )
 
+    val sheetPeekHeight = 196.dp
+    val sheetRadius = (24 - (24 * scaffoldState.bottomSheetState.currentFraction)).dp
+
     BottomSheetScaffold(
-        scaffoldState = bottomSheetScaffoldState,
+        scaffoldState = scaffoldState,
         sheetContent = {
             SheetContent(
                 photo = photo,
@@ -90,9 +89,12 @@ private fun SheetContent(
     onSetWallpaperPressed: () -> Unit,
     onAttributionPressed: () -> Unit
 ) {
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
+            .height(screenHeight)
             .padding(horizontal = 16.dp)
     ) {
         DragIndicator(
@@ -188,11 +190,10 @@ private fun Attribution(
 
         Column {
             Text(photo.getPhotoPhotographerName(),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
+                style = MaterialTheme.typography.h6
             )
             Text(photo.getPhotoSource().url,
-                fontSize = 12.sp
+                style = MaterialTheme.typography.caption
             )
         }
     }
