@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -72,16 +73,19 @@ class PhotosFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupToolbar(R.string.app_name)
+        setupToolbar(R.string.photos)
 
         binding.photosRecycler.adapter = photoAdapter
         binding.photosRecycler.disableChangeAnimations()
 
-        binding.loadingErrorLayout.tryAgainButton.setOnClickListener {
+        binding.loadingView.isVisible = false
+        binding.loadingErrorView.isVisible = false
+
+        binding.loadingErrorView.setTryAgainClickListener {
             photoAdapter.retry()
         }
 
-        initAdapter()
+        addLoadStateListener()
         observe()
     }
 
@@ -93,30 +97,30 @@ class PhotosFragment : BaseFragment() {
 
     override fun onCreateToolbar(): FragmentToolbar {
         return FragmentToolbar.Builder()
-                .withId(R.id.toolbar)
-                .withMenu(R.menu.menu_photos)
-                .withMenuItems(
-                        listOf(
-                                R.id.itemViewList,
-                                R.id.itemViewGrid
-                        ),
-                        listOf(
-                                object : MenuItem.OnMenuItemClickListener {
-                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        viewModel.updateListLayout(ListLayout.LIST)
-                                        return true
-                                    }
-                                },
+            .withId(R.id.toolbar)
+            .withMenu(R.menu.menu_photos)
+            .withMenuItems(
+                listOf(
+                    R.id.itemViewList,
+                    R.id.itemViewGrid
+                ),
+                listOf(
+                    object : MenuItem.OnMenuItemClickListener {
+                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                            viewModel.updateListLayout(ListLayout.LIST)
+                            return true
+                        }
+                    },
 
-                                object : MenuItem.OnMenuItemClickListener {
-                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        viewModel.updateListLayout(ListLayout.GRID)
-                                        return true
-                                    }
-                                }
-                        )
+                    object : MenuItem.OnMenuItemClickListener {
+                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                            viewModel.updateListLayout(ListLayout.GRID)
+                            return true
+                        }
+                    }
                 )
-                .build()
+            )
+            .build()
     }
 
     override fun onScrollToTop() {
@@ -145,6 +149,19 @@ class PhotosFragment : BaseFragment() {
         })
     }
 
+    private fun addLoadStateListener() {
+        photoAdapter.addLoadStateListener { loadState ->
+            when (loadState.refresh) {
+                is LoadState.NotLoading -> binding.photosRecycler.setVisibilityAnimated(View.VISIBLE)
+                is LoadState.Loading -> binding.photosRecycler.setVisibilityAnimated(View.GONE)
+                is LoadState.Error -> binding.photosRecycler.setVisibilityAnimated(View.GONE)
+            }
+
+            binding.loadingView.updateLoadState(loadState)
+            binding.loadingErrorView.updateLoadState(loadState)
+        }
+    }
+
     private fun updateListLayout(listLayout: ListLayout) {
         val itemLayoutType = PhotoItemLayoutType.findBySpanCount(listLayout.spanCount)
 
@@ -153,29 +170,5 @@ class PhotosFragment : BaseFragment() {
 
         setMenuItemVisibility(R.id.itemViewList, listLayout == ListLayout.GRID)
         setMenuItemVisibility(R.id.itemViewGrid, listLayout == ListLayout.LIST)
-    }
-
-    private fun initAdapter() {
-        photoAdapter.addLoadStateListener { loadState ->
-            when (loadState.mediator?.refresh) {
-                is LoadState.NotLoading -> {
-                    binding.photosRecycler.setVisibilityAnimated(View.VISIBLE)
-                    binding.loadingListLayout.root.setVisibilityAnimated(View.GONE)
-                    binding.loadingErrorLayout.root.setVisibilityAnimated(View.GONE, duration = 0)
-                }
-
-                is LoadState.Loading -> {
-                    binding.loadingErrorLayout.root.setVisibilityAnimated(View.GONE, duration = 0)
-                    binding.photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
-                    binding.loadingListLayout.root.setVisibilityAnimated(View.VISIBLE, duration = 0)
-                }
-
-                is LoadState.Error -> {
-                    binding.photosRecycler.setVisibilityAnimated(View.GONE, duration = 0)
-                    binding.loadingListLayout.root.setVisibilityAnimated(View.GONE, duration = 0)
-                    binding.loadingErrorLayout.root.setVisibilityAnimated(View.VISIBLE, duration = 0)
-                }
-            }
-        }
     }
 }

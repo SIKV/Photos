@@ -1,11 +1,9 @@
-package com.github.sikv.photos.database.dao
+package com.github.sikv.photos.data.storage
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.sqlite.db.SupportSQLiteQuery
-import com.github.sikv.photos.database.DbConfig
-import com.github.sikv.photos.database.entity.FavoritePhotoEntity
 
 @Dao
 interface FavoritesDao {

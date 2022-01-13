@@ -3,9 +3,9 @@ package com.github.sikv.photos.data.repository.impl
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.database.FavoritesDbQueryBuilder
-import com.github.sikv.photos.database.dao.FavoritesDao
-import com.github.sikv.photos.database.entity.FavoritePhotoEntity
+import com.github.sikv.photos.data.storage.FavoritesDbQueryBuilder
+import com.github.sikv.photos.data.storage.FavoritesDao
+import com.github.sikv.photos.data.storage.FavoritePhotoEntity
 import com.github.sikv.photos.enumeration.SortBy
 import com.github.sikv.photos.model.Photo
 import kotlinx.coroutines.*
@@ -14,8 +14,8 @@ import javax.inject.Singleton
 
 @Singleton
 class FavoritesRepositoryImpl @Inject constructor(
-        private val favoritesDao: FavoritesDao,
-        private val queryBuilder: FavoritesDbQueryBuilder
+    private val favoritesDao: FavoritesDao,
+    private val queryBuilder: FavoritesDbQueryBuilder
 ) : FavoritesRepository {
 
     private val scope = CoroutineScope(Job() + Dispatchers.IO)

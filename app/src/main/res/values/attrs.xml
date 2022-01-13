@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NoResultsView">
+        <attr name="dataSourceType" format="enum">
+            <enum name="search" value="0" />
+            <enum name="favorites" value="1" />
+            <enum name="recommendations" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>

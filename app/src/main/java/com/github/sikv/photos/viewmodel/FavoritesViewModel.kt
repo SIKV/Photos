@@ -3,7 +3,7 @@ package com.github.sikv.photos.viewmodel
 import android.app.Application
 import androidx.lifecycle.*
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.database.entity.FavoritePhotoEntity
+import com.github.sikv.photos.data.storage.FavoritePhotoEntity
 import com.github.sikv.photos.enumeration.SortBy
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.ListLayout

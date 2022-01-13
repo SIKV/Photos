@@ -9,12 +9,6 @@
     <style name="AppTheme" parent="BaseTheme">
     </style>
 
-    <style name="AppTheme.OssLicenses" parent="AppTheme">
-        <item name="android:windowTranslucentStatus">false</item>
-        <item name="windowActionBar">true</item>
-        <item name="windowNoTitle">false</item>
-    </style>
-
     <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Dialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">?android:colorBackground</item>
@@ -22,6 +16,12 @@
 
     <style name="AppTheme.Span" parent="AppTheme">
         <item name="colorPrimary">?colorOnSurface</item>
+    </style>
+
+    <style name="AppTheme.OssLicenses" parent="AppTheme">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="windowActionBar">true</item>
+        <item name="windowNoTitle">false</item>
     </style>
 
     <style name="TextAppearanceHeadline6" parent="TextAppearance.MaterialComponents.Headline6">

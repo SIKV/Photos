@@ -3,20 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginBottom="@dimen/photoItemFullBottomMargin">
+    android:layout_marginBottom="@dimen/photoItemFullMarginBottom"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/photoItemFullContentHorizontalMargin"
-        android:layout_marginEnd="@dimen/photoItemFullContentHorizontalMargin"
-        android:layout_marginBottom="12dp">
+        android:layout_marginStart="@dimen/photoItemFullContentMarginHorizontal"
+        android:layout_marginEnd="@dimen/photoItemFullContentMarginHorizontal"
+        android:layout_marginBottom="@dimen/photoItemFullHeaderMarginBottom">
 
         <ImageView
             android:id="@+id/photographerImage"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/photoItemFullPhotographerImageSize"
+            android:layout_height="@dimen/photoItemFullPhotographerImageSize"
             android:layout_centerVertical="true"
             android:contentDescription="@string/cn_photographer_photo"
             tools:background="?colorOnSurface" />
@@ -25,38 +25,38 @@
             android:id="@+id/photographerLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginStart="12dp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/photoItemFullHeaderSpacing"
+            android:layout_toStartOf="@id/optionsButton"
             android:layout_toEndOf="@id/photographerImage"
-            android:layout_toStartOf="@id/optionsButton">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/photographerNameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Photographer Name"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="Photographer Name" />
 
             <TextView
                 android:id="@+id/sourceText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Source"
                 android:textSize="11sp"
-                tools:ignore="SmallSp" />
+                tools:ignore="SmallSp"
+                tools:text="Source" />
 
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/optionsButton"
+            style="@style/CircleImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/cn_options_button"
-            android:src="@drawable/ic_more_vert_24dp"
-            style="@style/CircleImageButton" />
+            android:src="@drawable/ic_more_vert_24dp" />
 
     </RelativeLayout>
 
@@ -64,48 +64,47 @@
         android:id="@+id/photoImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
+        android:background="@color/colorPlaceholder"
         android:contentDescription="@string/cn_photo"
-        android:background="@color/colorPlaceholder" />
+        android:scaleType="centerCrop" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginStart="@dimen/photoItemFullContentHorizontalMargin"
-        android:layout_marginEnd="@dimen/photoItemFullContentHorizontalMargin"
-        android:layout_marginBottom="8dp">
+        android:layout_marginStart="@dimen/photoItemFullContentMarginHorizontal"
+        android:layout_marginTop="@dimen/photoItemFullActionsMarginTop"
+        android:layout_marginEnd="@dimen/photoItemFullContentMarginHorizontal">
 
         <ImageButton
             android:id="@+id/favoriteButton"
+            style="@style/CircleImageButtonNoBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:contentDescription="@string/cn_favorite_button"
-            android:src="@drawable/ic_favorite_border_24dp"
-            style="@style/CircleImageButtonNoBackground" />
+            android:src="@drawable/ic_favorite_border_24dp" />
 
         <ImageButton
             android:id="@+id/shareButton"
+            style="@style/CircleImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingBottom="3dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="@dimen/photoItemFullActionsSpacing"
             android:layout_toEndOf="@id/favoriteButton"
             android:contentDescription="@string/cn_share_button"
-            android:src="@drawable/ic_share_24dp"
-            style="@style/CircleImageButton" />
+            android:paddingBottom="3dp"
+            android:src="@drawable/ic_share_24dp" />
 
         <ImageButton
             android:id="@+id/downloadButton"
+            style="@style/CircleImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:contentDescription="@string/cn_download_button"
-            android:src="@drawable/ic_file_download_24dp"
-            style="@style/CircleImageButton" />
+            android:src="@drawable/ic_file_download_24dp" />
 
     </RelativeLayout>
 

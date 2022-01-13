@@ -1,10 +1,8 @@
-package com.github.sikv.photos.database
+package com.github.sikv.photos.data.storage
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.github.sikv.photos.database.dao.FavoritesDao
-import com.github.sikv.photos.database.entity.FavoritePhotoEntity
 
 @Database(
         entities = [FavoritePhotoEntity::class],

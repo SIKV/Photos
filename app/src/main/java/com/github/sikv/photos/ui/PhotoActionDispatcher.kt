@@ -14,7 +14,7 @@ import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.ui.fragment.BaseFragment
 import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
 import com.github.sikv.photos.ui.navigation.NavigationAnimation
-import com.github.sikv.photos.ui.popup.PhotoPreviewPopup
+import com.github.sikv.photos.ui.dialog.PhotoPreviewPopup
 import com.github.sikv.photos.util.copyText
 import com.github.sikv.photos.util.openUrl
 

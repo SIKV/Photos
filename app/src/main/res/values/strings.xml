@@ -29,7 +29,6 @@
     <string name="cn_options_button">Options button</string>
     <string name="cn_share_button">Share button</string>
     <string name="cn_download_button">Download button</string>
-    <string name="cn_loading_error_icon">Loading error icon</string>
     <string name="cn_clear_button">Clear button</string>
     <string name="cn_voice_input_button">Voice input button</string>
     <string name="cn_item_icon">Item icon</string>
@@ -48,7 +47,7 @@
     <string name="no_results_found">No Results Found</string>
     <string name="no_results_found_description">Try something similar or more general</string>
     <string name="loading_error">Loading Error</string>
-    <string name="loading_error_description">Please check your Internet connection\nor try again later</string>
+    <string name="general_error_description">Please check your Internet connection\nor try again later</string>
     <string name="remove_all">Remove all</string>
     <string name="home">Home</string>
     <string name="photos">Photos</string>
@@ -103,9 +102,13 @@
     <string name="sync_not_available">Sync is not implemented yet</string>
 
     <!-- Content descriptions -->
+    <string name="cd_photo_loading">Photo loading</string>
     <string name="cd_back">Back</string>
     <string name="cd_toggle_favorite">Toggle favorite</string>
     <string name="cd_share">Share</string>
     <string name="cd_download">Download</string>
     <string name="cd_set_wallpaper">Set wallpaper</string>
+    <string name="cd_loading_error">Loading error</string>
+    <string name="cd_no_results_found">No results found</string>
+
 </resources>

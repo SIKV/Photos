@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.RequestManager
@@ -146,8 +147,7 @@ class FavoritesFragment : BaseFragment() {
         viewModel.favoritesLiveData.observe(viewLifecycleOwner, {
             it?.let { photos ->
                 photoAdapter.submitList(photos)
-                binding.noFavoritesLayout.root.visibility =
-                    if (photos.isEmpty()) View.VISIBLE else View.GONE
+                binding.noResultsView.isVisible = photos.isEmpty()
             }
         })
 

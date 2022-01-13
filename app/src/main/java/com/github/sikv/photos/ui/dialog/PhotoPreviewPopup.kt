@@ -1,5 +1,6 @@
-package com.github.sikv.photos.ui.popup
+package com.github.sikv.photos.ui.dialog
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -17,9 +18,10 @@ import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.R
 import com.github.sikv.photos.model.Photo
 
+@SuppressLint("InflateParams", "ClickableViewAccessibility")
 class PhotoPreviewPopup(
-        private val context: Context,
-        private val glide: RequestManager
+    private val context: Context,
+    private val glide: RequestManager
 ) {
 
     private var popupWindow: PopupWindow? = null
@@ -29,12 +31,13 @@ class PhotoPreviewPopup(
 
     init {
         val layout = LayoutInflater.from(context)
-                .inflate(R.layout.popup_photo_preview, null, false)
+            .inflate(R.layout.popup_photo_preview, null, false)
 
-        popupWindow = PopupWindow(layout,
-                calculateWidth(),
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                true
+        popupWindow = PopupWindow(
+            layout,
+            calculateWidth(),
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
         )
 
         photoPreviewCard = layout.findViewById(R.id.photoPreviewCard)
@@ -55,20 +58,20 @@ class PhotoPreviewPopup(
 
     fun show(parent: View, photo: Photo) {
         glide.asBitmap()
-                .load(photo.getPhotoPreviewUrl())
-                .into(object : CustomTarget<Bitmap>() {
-                    override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                        photoPreviewImage?.setImageBitmap(bitmap)
+            .load(photo.getPhotoPreviewUrl())
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                    photoPreviewImage?.setImageBitmap(bitmap)
 
-                        popupWindow?.showAtLocation(parent, Gravity.CENTER, 0, 0)
-                        dimBackground()
+                    popupWindow?.showAtLocation(parent, Gravity.CENTER, 0, 0)
+                    dimBackground()
 
-                        val animation = AnimationUtils.loadAnimation(context, R.anim.zoom_in)
-                        photoPreviewCard?.startAnimation(animation)
-                    }
+                    val animation = AnimationUtils.loadAnimation(context, R.anim.zoom_in)
+                    photoPreviewCard?.startAnimation(animation)
+                }
 
-                    override fun onLoadCleared(placeholder: Drawable?) { }
-                })
+                override fun onLoadCleared(placeholder: Drawable?) {}
+            })
     }
 
     fun isShown(): Boolean = popupWindow?.isShowing ?: false
@@ -77,9 +80,9 @@ class PhotoPreviewPopup(
         val dismissAnimation = AnimationUtils.loadAnimation(context, R.anim.zoom_out)
 
         dismissAnimation?.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationStart(animation: Animation?) { }
+            override fun onAnimationStart(animation: Animation?) {}
 
-            override fun onAnimationRepeat(animation: Animation?) { }
+            override fun onAnimationRepeat(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
                 photoPreviewImage?.setImageDrawable(null)
@@ -99,7 +102,8 @@ class PhotoPreviewPopup(
             layoutParams.flags = layoutParams.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
             layoutParams.dimAmount = 0.75F
 
-            val windowManager = popup.contentView.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val windowManager =
+                popup.contentView.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             windowManager.updateViewLayout(rootView, layoutParams)
         }
     }

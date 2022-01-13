@@ -21,17 +21,21 @@
             android:id="@+id/photosRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
             android:paddingVertical="@dimen/photoRecyclerVerticalPadding"
-            android:scrollbars="vertical"
-            android:clipToPadding="false" />
+            android:scrollbars="vertical" />
 
-        <include
-            android:id="@+id/loadingListLayout"
-            layout="@layout/layout_loading_list" />
+        <com.github.sikv.photos.ui.custom.PhotoItemLoadingView
+            android:id="@+id/loadingView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/photoRecyclerVerticalPadding" />
 
-        <include
-            android:id="@+id/loadingErrorLayout"
-            layout="@layout/layout_loading_error" />
+        <com.github.sikv.photos.ui.custom.LoadingErrorView
+            android:id="@+id/loadingErrorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
     </FrameLayout>
 

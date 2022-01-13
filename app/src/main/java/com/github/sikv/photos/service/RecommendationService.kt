@@ -1,6 +1,6 @@
 package com.github.sikv.photos.service
 
-import com.github.sikv.photos.database.dao.FavoritesDao
+import com.github.sikv.photos.data.storage.FavoritesDao
 import com.github.sikv.photos.model.Photo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -1,7 +1,7 @@
 package com.github.sikv.photos.data.repository
 
 import androidx.lifecycle.LiveData
-import com.github.sikv.photos.database.entity.FavoritePhotoEntity
+import com.github.sikv.photos.data.storage.FavoritePhotoEntity
 import com.github.sikv.photos.enumeration.SortBy
 import com.github.sikv.photos.model.Photo
 

@@ -3,8 +3,15 @@
     <dimen name="photoGridRecyclerVerticalPadding">2.5dp</dimen>
     <dimen name="photoRecyclerVerticalPadding">16dp</dimen>
     <dimen name="photoItemGridSpacing">2.5dp</dimen>
-    <dimen name="photoItemFullContentHorizontalMargin">12dp</dimen>
-    <dimen name="photoItemFullBottomMargin">32dp</dimen>
+
+    <dimen name="photoItemFullPhotographerImageSize">36dp</dimen>
+    <dimen name="photoItemFullHeaderSpacing">12dp</dimen>
+    <dimen name="photoItemFullHeaderMarginBottom">12dp</dimen>
+    <dimen name="photoItemFullContentMarginHorizontal">12dp</dimen>
+    <dimen name="photoItemFullActionsMarginTop">12dp</dimen>
+    <dimen name="photoItemFullActionsSpacing">24dp</dimen>
+    <dimen name="photoItemFullMarginBottom">38dp</dimen>
+
     <dimen name="photoItemMinBottomMargin">3dp</dimen>
     <dimen name="photoItemMinHorizontalMargin">1.5dp</dimen>
 

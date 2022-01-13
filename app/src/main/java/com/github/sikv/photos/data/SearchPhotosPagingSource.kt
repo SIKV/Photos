@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
+import kotlinx.coroutines.delay
 
 class SearchPhotosPagingSource(
         private val photosRepository: PhotosRepository,
@@ -15,6 +16,9 @@ class SearchPhotosPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         val initialPosition = 0
         val position = params.key ?: initialPosition
+
+        // TODO
+        delay(4000)
 
         return try {
             val photos = photosRepository

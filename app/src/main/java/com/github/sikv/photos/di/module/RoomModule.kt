@@ -2,8 +2,8 @@ package com.github.sikv.photos.di.module
 
 import android.content.Context
 import androidx.room.Room
-import com.github.sikv.photos.database.FavoritesDb
-import com.github.sikv.photos.database.dao.FavoritesDao
+import com.github.sikv.photos.data.storage.FavoritesDb
+import com.github.sikv.photos.data.storage.FavoritesDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

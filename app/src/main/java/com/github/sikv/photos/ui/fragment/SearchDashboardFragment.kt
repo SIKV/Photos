@@ -7,8 +7,8 @@ import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.databinding.FragmentSearchDashboardBinding
@@ -97,7 +97,7 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private fun observe() {
-        viewModel.recommendedPhotosLoadedEvent.observe(viewLifecycleOwner, Observer { recommended ->
+        viewModel.recommendedPhotosLoadedEvent.observe(viewLifecycleOwner, { recommended ->
             binding.pullRefreshLayout.finishRefreshing()
 
             if (recommended.reset) {
@@ -106,10 +106,10 @@ class SearchDashboardFragment : BaseFragment() {
 
             if (recommended.photos.isEmpty() && !recommendedPhotosAdapter.hasItems()) {
                 binding.recommendedPhotosRecycler.setVisibilityAnimated(View.GONE)
-                binding.noRecommendationsLayout.root.setVisibilityAnimated(View.VISIBLE)
+                binding.noResultsView.isVisible = true
             } else {
                 binding.recommendedPhotosRecycler.setVisibilityAnimated(View.VISIBLE)
-                binding.noRecommendationsLayout.root.setVisibilityAnimated(View.GONE)
+                binding.noResultsView.isVisible = false
 
                 recommendedPhotosAdapter.addItems(
                     recommended.photos,
@@ -147,7 +147,7 @@ class SearchDashboardFragment : BaseFragment() {
             showSpeechRecognizer()
         }
 
-        binding.noRecommendationsLayout.refreshRecommendationsButton.setOnClickListener {
+        binding.noResultsView.setActionButtonClickListener {
             viewModel.loadRecommendations(reset = true)
         }
 

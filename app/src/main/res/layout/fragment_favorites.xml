@@ -23,13 +23,16 @@
             android:id="@+id/photosRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingVertical="@dimen/photoRecyclerVerticalPadding"
             android:clipToPadding="false"
+            android:paddingVertical="@dimen/photoRecyclerVerticalPadding"
             tools:listitem="@layout/item_photo_full" />
 
-        <include
-            android:id="@+id/noFavoritesLayout"
-            layout="@layout/layout_no_favorites" />
+        <com.github.sikv.photos.ui.custom.NoResultsView
+            android:id="@+id/noResultsView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:dataSourceType="favorites" />
 
     </FrameLayout>
 

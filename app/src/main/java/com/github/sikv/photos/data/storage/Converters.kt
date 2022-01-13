@@ -1,4 +1,4 @@
-package com.github.sikv.photos.database
+package com.github.sikv.photos.data.storage
 
 import androidx.room.TypeConverter
 import com.github.sikv.photos.enumeration.PhotoSource
