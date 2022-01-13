@@ -5,29 +5,25 @@ import androidx.paging.PagingState
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.enumeration.PhotoSource
 import com.github.sikv.photos.model.Photo
-import kotlinx.coroutines.delay
 
 class SearchPhotosPagingSource(
-        private val photosRepository: PhotosRepository,
-        private val photoSource: PhotoSource,
-        private val searchQuery: String
+    private val photosRepository: PhotosRepository,
+    private val photoSource: PhotoSource,
+    private val searchQuery: String
 ) : PagingSource<Int, Photo>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         val initialPosition = 0
         val position = params.key ?: initialPosition
 
-        // TODO
-        delay(4000)
-
         return try {
             val photos = photosRepository
-                    .searchPhotos(searchQuery, position, params.loadSize, photoSource)
+                .searchPhotos(searchQuery, position, params.loadSize, photoSource)
 
             LoadResult.Page(
-                    data = photos,
-                    prevKey = if (position == initialPosition) null else position - 1,
-                    nextKey = if (photos.isEmpty()) null else position + 1
+                data = photos,
+                prevKey = if (position == initialPosition) null else position - 1,
+                nextKey = if (photos.isEmpty()) null else position + 1
             )
         } catch (e: Exception) {
             return LoadResult.Error(e)

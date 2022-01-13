@@ -6,7 +6,7 @@ import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.model.Photo
 
 class CuratedPhotosPagingSource(
-        private val photosRepository: PhotosRepository,
+    private val photosRepository: PhotosRepository,
 ) : PagingSource<Int, Photo>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
@@ -17,9 +17,9 @@ class CuratedPhotosPagingSource(
             val photos = photosRepository.getCuratedPhotos(position, params.loadSize)
 
             LoadResult.Page(
-                    data = photos,
-                    prevKey = if (position == initialPosition) null else position - 1,
-                    nextKey = if (photos.isEmpty()) null else position + 1
+                data = photos,
+                prevKey = if (position == initialPosition) null else position - 1,
+                nextKey = if (photos.isEmpty()) null else position + 1
             )
         } catch (e: Exception) {
             return LoadResult.Error(e)
