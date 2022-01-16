@@ -20,7 +20,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.github.sikv.photos.enumeration.PhotoItemLayoutType
+import com.github.sikv.photos.model.PhotoItemLayoutType
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 

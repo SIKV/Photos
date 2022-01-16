@@ -12,13 +12,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.github.sikv.photos.config.ConfigProvider
 import com.github.sikv.photos.databinding.FragmentSearchBinding
-import com.github.sikv.photos.enumeration.SearchSource
 import com.github.sikv.photos.util.changeVisibilityWithAnimation
 import com.github.sikv.photos.util.hideSoftInput
 import com.github.sikv.photos.util.setupToolbarWithBackButton
 import com.github.sikv.photos.util.showSoftInput
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class SearchFragment : BaseFragment() {
 
     companion object {
@@ -39,6 +42,9 @@ class SearchFragment : BaseFragment() {
         }
     }
 
+    @Inject
+    lateinit var configProvider: ConfigProvider
+
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
@@ -48,7 +54,11 @@ class SearchFragment : BaseFragment() {
 
     private var lastSearchText: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -118,7 +128,8 @@ class SearchFragment : BaseFragment() {
                 keyboardShown = requireActivity().showSoftInput(binding.searchEdit)
             }
 
-            binding.searchEdit.viewTreeObserver.addOnWindowFocusChangeListener(object : ViewTreeObserver.OnWindowFocusChangeListener {
+            binding.searchEdit.viewTreeObserver.addOnWindowFocusChangeListener(object :
+                ViewTreeObserver.OnWindowFocusChangeListener {
                 override fun onWindowFocusChanged(hasFocus: Boolean) {
                     if (hasFocus && !keyboardShown) {
                         keyboardShown = requireActivity().showSoftInput(binding.searchEdit)
@@ -143,10 +154,10 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun initViewPager(after: () -> Unit) {
-        viewPagerAdapter = SearchViewPagerAdapter(childFragmentManager)
+        viewPagerAdapter = SearchViewPagerAdapter(childFragmentManager, configProvider)
 
         binding.viewPager.adapter = viewPagerAdapter
-        binding.viewPager.offscreenPageLimit = SearchSource.size
+        binding.viewPager.offscreenPageLimit = configProvider.getSearchSources().size
 
         binding.tabLayout.setupWithViewPager(binding.viewPager)
 
@@ -183,19 +194,20 @@ class SearchFragment : BaseFragment() {
     }
 
     private class SearchViewPagerAdapter(
-            fragmentManager: FragmentManager
+        fragmentManager: FragmentManager,
+        private val configProvider: ConfigProvider
     ) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
         override fun getItem(position: Int): Fragment {
-            return SingleSearchFragment.newInstance(SearchSource.getAt(position).photoSource)
+            return SingleSearchFragment.newInstance(configProvider.getSearchSources()[position])
         }
 
         override fun getPageTitle(position: Int): CharSequence {
-            return SearchSource.getAt(position).photoSource.title
+            return configProvider.getSearchSources()[position].title
         }
 
         override fun getCount(): Int {
-            return SearchSource.size
+            return configProvider.getSearchSources().size
         }
 
         fun searchPhotos(viewPager: ViewPager, text: String) {

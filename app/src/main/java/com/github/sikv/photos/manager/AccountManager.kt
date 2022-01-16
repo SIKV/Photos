@@ -1,8 +1,8 @@
-package com.github.sikv.photos.account
+package com.github.sikv.photos.manager
 
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import com.github.sikv.photos.enumeration.LoginStatus
+import com.github.sikv.photos.model.LoginStatus
 
 interface AccountManager {
 

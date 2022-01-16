@@ -2,7 +2,7 @@ package com.github.sikv.photos.data.repository
 
 import androidx.lifecycle.LiveData
 import com.github.sikv.photos.data.storage.FavoritePhotoEntity
-import com.github.sikv.photos.enumeration.SortBy
+import com.github.sikv.photos.model.SortBy
 import com.github.sikv.photos.model.Photo
 
 interface FavoritesRepository {
@@ -15,7 +15,8 @@ interface FavoritesRepository {
     fun subscribe(listener: Listener)
     fun unsubscribe(listener: Listener)
 
-    fun getFavoritesLiveData(sortBy: SortBy = SortBy.DATE_ADDED_NEWEST): LiveData<List<FavoritePhotoEntity>>
+    fun getFavorites(sortBy: SortBy = SortBy.DATE_ADDED_NEWEST): LiveData<List<FavoritePhotoEntity>>
+    fun getRandom(): FavoritePhotoEntity?
 
     /**
      * Inverts isFavorite flag for [photo] and notifies all subscribers that [photo] has been changed.

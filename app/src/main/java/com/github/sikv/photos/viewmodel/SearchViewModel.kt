@@ -6,11 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.liveData
-import com.github.sikv.photos.config.ListConfig
-import com.github.sikv.photos.data.SearchPhotosPagingSource
+import com.github.sikv.photos.config.ConfigProvider
+import com.github.sikv.photos.data.source.SearchPhotosPagingSource
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
-import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.event.VoidEvent
 import com.github.sikv.photos.model.Photo
@@ -19,8 +19,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-        private val photosRepository: PhotosRepository,
-        private val favoritesRepository: FavoritesRepository
+    private val photosRepository: PhotosRepository,
+    private val favoritesRepository: FavoritesRepository,
+    private val configProvider: ConfigProvider
 ) : ViewModel(), FavoritesRepository.Listener {
 
     private val favoriteChangedMutableEvent = MutableLiveData<Event<Photo>>()
@@ -59,10 +60,10 @@ class SearchViewModel @Inject constructor(
         }
 
         return Pager(
-                config = ListConfig.pagingConfig,
-                pagingSourceFactory = {
-                    SearchPhotosPagingSource(photosRepository, photoSource, queryTrimmed)
-                }
+            config = configProvider.getPagingConfig(),
+            pagingSourceFactory = {
+                SearchPhotosPagingSource(photosRepository, photoSource, queryTrimmed)
+            }
         ).liveData
     }
 }

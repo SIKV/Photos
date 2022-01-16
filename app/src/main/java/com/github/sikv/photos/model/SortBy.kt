@@ -1,4 +1,4 @@
-package com.github.sikv.photos.enumeration
+package com.github.sikv.photos.model
 
 import androidx.annotation.StringRes
 import com.github.sikv.photos.R

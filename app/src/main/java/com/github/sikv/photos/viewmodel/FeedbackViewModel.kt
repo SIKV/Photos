@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FeedbackRepository
-import com.github.sikv.photos.enumeration.RequestStatus
+import com.github.sikv.photos.model.RequestStatus
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.Feedback
 import com.github.sikv.photos.service.PreferencesService

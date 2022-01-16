@@ -1,4 +1,4 @@
-package com.github.sikv.photos.enumeration
+package com.github.sikv.photos.model
 
 sealed class LoginStatus {
     object NotSet : LoginStatus()

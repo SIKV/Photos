@@ -1,6 +1,6 @@
 package com.github.sikv.photos.service
 
-import com.github.sikv.photos.data.storage.FavoritesDao
+import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.model.Photo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,7 +13,7 @@ data class RecommendedPhotos(
 )
 
 class RecommendationService @Inject constructor(
-    private val favoritesDao: FavoritesDao,
+    private val favoritesRepository: FavoritesRepository,
     private val imageLabelerService: ImageLabelerService
 ) {
 
@@ -24,7 +24,7 @@ class RecommendationService @Inject constructor(
 
     suspend fun getNextRecommendation(): Recommendation {
         return withContext(Dispatchers.IO) {
-            favoritesDao.getRandom()?.let { randomFavorite ->
+            favoritesRepository.getRandom()?.let { randomFavorite ->
                 val labels = imageLabelerService.processImage(randomFavorite.getPhotoPreviewUrl())
 
                 if (labels.isEmpty()) {

@@ -5,9 +5,9 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
 @Database(
-        entities = [FavoritePhotoEntity::class],
-        version = 1,
-        exportSchema = false
+    entities = [FavoritePhotoEntity::class],
+    version = 1,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class FavoritesDb : RoomDatabase() {

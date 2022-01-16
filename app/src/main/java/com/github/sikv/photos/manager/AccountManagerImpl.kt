@@ -1,10 +1,10 @@
-package com.github.sikv.photos.account
+package com.github.sikv.photos.manager
 
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.LoginStatus
+import com.github.sikv.photos.model.LoginStatus
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -18,7 +18,8 @@ import javax.inject.Singleton
 
 @Singleton
 class AccountManagerImpl @Inject constructor(
-        @ApplicationContext private val context: Context
+    @ApplicationContext
+    private val context: Context
 ) : AccountManager {
 
     companion object {
@@ -38,11 +39,12 @@ class AccountManagerImpl @Inject constructor(
 
     private var auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    private val googleSignInClient = GoogleSignIn.getClient(context,
-            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                    .requestIdToken(context.getString(R.string.default_web_client_id))
-                    .requestEmail()
-                    .build()
+    private val googleSignInClient = GoogleSignIn.getClient(
+        context,
+        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
     )
 
     init {
@@ -74,15 +76,15 @@ class AccountManagerImpl @Inject constructor(
     }
 
     override fun signInAnonymously(doAfter: () -> Unit) {
-        if (isSignedIn() || isSignedInAnonymously() ) {
+        if (isSignedIn() || isSignedInAnonymously()) {
             doAfter()
         } else {
             auth.signInAnonymously()
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            doAfter()
-                        }
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        doAfter()
                     }
+                }
         }
     }
 
@@ -119,13 +121,13 @@ class AccountManagerImpl @Inject constructor(
         val credential = GoogleAuthProvider.getCredential(googleAccount?.idToken, null)
 
         auth.signInWithCredential(credential)
-                .addOnCompleteListener { task ->
-                    loginStatus = if (task.isSuccessful) {
-                        LoginStatus.SignedIn(getSignedInEmail())
-                    } else {
-                        LoginStatus.SignInError
-                    }
+            .addOnCompleteListener { task ->
+                loginStatus = if (task.isSuccessful) {
+                    LoginStatus.SignedIn(getSignedInEmail())
+                } else {
+                    LoginStatus.SignInError
                 }
+            }
     }
 
     private fun getSignedInEmail(): String {

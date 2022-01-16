@@ -1,4 +1,4 @@
-package com.github.sikv.photos.enumeration
+package com.github.sikv.photos.model
 
 enum class PhotoSource(
     val id: Int,

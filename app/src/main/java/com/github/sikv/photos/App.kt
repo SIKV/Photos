@@ -1,15 +1,16 @@
 package com.github.sikv.photos
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.PreferenceManager
+import com.github.sikv.photos.manager.ThemeManager
 import com.google.android.material.color.DynamicColors
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @HiltAndroidApp
 class App : Application() {
+
+    @Inject
+    lateinit var themeManager: ThemeManager
 
     companion object {
         lateinit var instance: App
@@ -21,13 +22,7 @@ class App : Application() {
 
         instance = this
 
+        themeManager.applyTheme()
         DynamicColors.applyToActivitiesIfAvailable(this)
-        updateTheme()
-    }
-
-    fun updateTheme() {
-        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(this)
-        val nightModeEnabled = preferenceManager.getBoolean(getString(R.string._pref_dark_theme), true)
-        AppCompatDelegate.setDefaultNightMode(if (nightModeEnabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
     }
 }

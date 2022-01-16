@@ -3,10 +3,10 @@ package com.github.sikv.photos.data.repository.impl
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.data.storage.FavoritesDbQueryBuilder
-import com.github.sikv.photos.data.storage.FavoritesDao
 import com.github.sikv.photos.data.storage.FavoritePhotoEntity
-import com.github.sikv.photos.enumeration.SortBy
+import com.github.sikv.photos.data.storage.FavoritesDao
+import com.github.sikv.photos.data.storage.FavoritesDbQueryBuilder
+import com.github.sikv.photos.model.SortBy
 import com.github.sikv.photos.model.Photo
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -36,13 +36,15 @@ class FavoritesRepositoryImpl @Inject constructor(
         subscribers.remove(listener)
     }
 
-    override fun getFavoritesLiveData(sortBy: SortBy): LiveData<List<FavoritePhotoEntity>> {
+    override fun getFavorites(sortBy: SortBy): LiveData<List<FavoritePhotoEntity>> {
         val query = queryBuilder.buildGetPhotosQuery(sortBy)
 
         return Transformations.map(favoritesDao.getPhotos(query)) { photos ->
             photos.onEach { it.favorite = true }
         }
     }
+
+    override fun getRandom(): FavoritePhotoEntity? = favoritesDao.getRandom()
 
     /**
      * Inverts isFavorite flag for [photo] and notifies all subscribers that [photo] has been changed.
@@ -113,9 +115,10 @@ class FavoritesRepositoryImpl @Inject constructor(
      */
     override fun isFavorite(photo: Photo?): Boolean = favorites[photo] ?: photo?.favorite ?: false
 
-    override suspend fun isFavoriteFromDatabase(photo: Photo): Boolean = withContext(Dispatchers.IO) {
-        favoritesDao.getById(photo.getPhotoId()) != null
-    }
+    override suspend fun isFavoriteFromDatabase(photo: Photo): Boolean =
+        withContext(Dispatchers.IO) {
+            favoritesDao.getById(photo.getPhotoId()) != null
+        }
 
     override suspend fun populateFavorite(photo: Photo): Photo {
         photo.favorite = isFavoriteFromDatabase(photo)

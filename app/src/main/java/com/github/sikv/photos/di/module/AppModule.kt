@@ -3,8 +3,8 @@ package com.github.sikv.photos.di.module
 import android.content.Context
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
-import com.github.sikv.photos.account.AccountManager
-import com.github.sikv.photos.account.AccountManagerImpl
+import com.github.sikv.photos.manager.AccountManager
+import com.github.sikv.photos.manager.AccountManagerImpl
 import com.github.sikv.photos.config.feature.FeatureFlagRepository
 import com.github.sikv.photos.config.feature.RemoteFeatureFlagRepository
 import dagger.Module

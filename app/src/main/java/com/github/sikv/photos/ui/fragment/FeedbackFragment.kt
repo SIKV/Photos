@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.github.sikv.photos.R
 import com.github.sikv.photos.databinding.FragmentFeedbackBinding
-import com.github.sikv.photos.enumeration.RequestStatus
+import com.github.sikv.photos.model.RequestStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.hideSoftInput
 import com.github.sikv.photos.util.resetErrorWhenTextChanged

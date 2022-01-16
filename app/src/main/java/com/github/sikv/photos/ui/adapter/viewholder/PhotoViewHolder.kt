@@ -7,7 +7,7 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.PhotoItemLayoutType
+import com.github.sikv.photos.model.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.getAttributionPlaceholderBackgroundColor
 import com.github.sikv.photos.model.getAttributionPlaceholderTextColor

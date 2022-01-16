@@ -1,12 +1,15 @@
-package com.github.sikv.photos.data
+package com.github.sikv.photos.data.source
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.github.sikv.photos.data.repository.PhotosRepository
+import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.model.Photo
 
-class CuratedPhotosPagingSource(
+class SearchPhotosPagingSource(
     private val photosRepository: PhotosRepository,
+    private val photoSource: PhotoSource,
+    private val searchQuery: String
 ) : PagingSource<Int, Photo>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
@@ -14,7 +17,8 @@ class CuratedPhotosPagingSource(
         val position = params.key ?: initialPosition
 
         return try {
-            val photos = photosRepository.getCuratedPhotos(position, params.loadSize)
+            val photos = photosRepository
+                .searchPhotos(searchQuery, position, params.loadSize, photoSource)
 
             LoadResult.Page(
                 data = photos,

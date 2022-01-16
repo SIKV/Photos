@@ -1,4 +1,4 @@
-package com.github.sikv.photos.enumeration
+package com.github.sikv.photos.model
 
 sealed class RequestStatus {
     object InProgress : RequestStatus()

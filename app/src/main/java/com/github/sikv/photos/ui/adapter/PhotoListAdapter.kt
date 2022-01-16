@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.enumeration.PhotoItemLayoutType
+import com.github.sikv.photos.model.PhotoItemLayoutType
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.PhotoDiffUtil
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder

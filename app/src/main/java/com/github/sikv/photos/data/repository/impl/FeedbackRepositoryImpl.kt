@@ -1,6 +1,6 @@
 package com.github.sikv.photos.data.repository.impl
 
-import com.github.sikv.photos.account.AccountManager
+import com.github.sikv.photos.manager.AccountManager
 import com.github.sikv.photos.data.repository.FeedbackRepository
 import com.github.sikv.photos.model.Feedback
 import com.github.sikv.photos.util.Utils

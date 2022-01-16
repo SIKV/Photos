@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.storage.FavoritePhotoEntity
-import com.github.sikv.photos.enumeration.SortBy
+import com.github.sikv.photos.model.SortBy
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.ListLayout
 import com.github.sikv.photos.model.Photo
@@ -39,8 +39,8 @@ class FavoritesViewModel @Inject constructor(
     private var removeAllUndone = false
 
     init {
-        favoritesNewest = favoritesRepository.getFavoritesLiveData(SortBy.DATE_ADDED_NEWEST)
-        favoritesOldest = favoritesRepository.getFavoritesLiveData(SortBy.DATE_ADDED_OLDEST)
+        favoritesNewest = favoritesRepository.getFavorites(SortBy.DATE_ADDED_NEWEST)
+        favoritesOldest = favoritesRepository.getFavorites(SortBy.DATE_ADDED_OLDEST)
 
         favoritesMediatorLiveData.addSource(favoritesNewest) { result ->
             if (sortBy == SortBy.DATE_ADDED_NEWEST) {

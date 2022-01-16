@@ -1,6 +1,6 @@
 package com.github.sikv.photos.data.repository
 
-import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.model.Photo
 
 interface PhotosRepository {

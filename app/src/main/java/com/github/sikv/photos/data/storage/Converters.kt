@@ -1,7 +1,7 @@
 package com.github.sikv.photos.data.storage
 
 import androidx.room.TypeConverter
-import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.model.PhotoSource
 
 object Converters {
 

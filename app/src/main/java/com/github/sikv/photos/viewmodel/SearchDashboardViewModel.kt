@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sikv.photos.config.ListConfig
+import com.github.sikv.photos.config.ConfigProvider
 import com.github.sikv.photos.config.feature.FeatureFlag
 import com.github.sikv.photos.config.feature.FeatureFlagProvider
 import com.github.sikv.photos.data.repository.PhotosRepository
@@ -18,11 +18,13 @@ import javax.inject.Inject
 class SearchDashboardViewModel @Inject constructor(
     private val photosRepository: PhotosRepository,
     private val recommendationService: RecommendationService,
+    private val configProvider: ConfigProvider,
     private val featureFlagProvider: FeatureFlagProvider
 ) : ViewModel() {
 
-    private val recommendedPhotosLoadedMutableEvent= MutableLiveData<RecommendedPhotos>()
-    val recommendedPhotosLoadedEvent: LiveData<RecommendedPhotos> = recommendedPhotosLoadedMutableEvent
+    private val recommendedPhotosLoadedMutableEvent = MutableLiveData<RecommendedPhotos>()
+    val recommendedPhotosLoadedEvent: LiveData<RecommendedPhotos> =
+        recommendedPhotosLoadedMutableEvent
 
     init {
         loadRecommendations(reset = true)
@@ -41,17 +43,23 @@ class SearchDashboardViewModel @Inject constructor(
             val recommendation = recommendationService.getNextRecommendation()
 
             if (recommendation.query != null) {
-                val photos = photosRepository.searchPhotos(recommendation.query,
-                        ListConfig.RECOMMENDATIONS_LIMIT)
+                val photos = photosRepository.searchPhotos(
+                    recommendation.query,
+                    configProvider.getRecommendationsLimit()
+                )
 
                 recommendedPhotosLoadedMutableEvent.postValue(
-                    RecommendedPhotos(photos,
-                        recommendation.moreAvailable, reset)
+                    RecommendedPhotos(
+                        photos,
+                        recommendation.moreAvailable, reset
+                    )
                 )
             } else {
                 recommendedPhotosLoadedMutableEvent.postValue(
-                    RecommendedPhotos(emptyList(),
-                        recommendation.moreAvailable, reset)
+                    RecommendedPhotos(
+                        emptyList(),
+                        recommendation.moreAvailable, reset
+                    )
                 )
             }
         }

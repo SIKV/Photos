@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.os.Parcelable
 import androidx.recyclerview.widget.DiffUtil
 import com.github.sikv.photos.R
-import com.github.sikv.photos.enumeration.PhotoSource
 import com.google.android.material.color.MaterialColors
 
 fun Photo.createShareIntent(): Intent {

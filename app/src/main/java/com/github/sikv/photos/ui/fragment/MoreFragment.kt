@@ -12,7 +12,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.R
 import com.github.sikv.photos.config.feature.FeatureFlag
 import com.github.sikv.photos.config.feature.FeatureFlagProvider
-import com.github.sikv.photos.enumeration.LoginStatus
+import com.github.sikv.photos.model.LoginStatus
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.setupToolbar

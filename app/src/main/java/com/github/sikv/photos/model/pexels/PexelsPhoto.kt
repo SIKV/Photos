@@ -1,6 +1,6 @@
 package com.github.sikv.photos.model.pexels
 
-import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.model.Photo
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize

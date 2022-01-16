@@ -1,7 +1,7 @@
 package com.github.sikv.photos.di.module
 
-import com.github.sikv.photos.Keys
-import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.Secrets
+import com.github.sikv.photos.model.PhotoSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,9 +33,9 @@ class RetrofitModule {
         private const val UNSPLASH_BASE_URL = "https://api.unsplash.com/"
         private const val PIXABAY_BASE_URL = "https://pixabay.com/api/"
 
-        private val pexelsKey = Keys.getPexelsKey()
-        private val unsplashKey = Keys.getUnsplashKey()
-        private val pixabayKey = Keys.getPixabayKey()
+        private val pexelsKey = Secrets.getPexelsKey()
+        private val unsplashKey = Secrets.getUnsplashKey()
+        private val pixabayKey = Secrets.getPixabayKey()
     }
 
     private fun buildOkHttpClient(key: String, photoSource: PhotoSource): OkHttpClient {

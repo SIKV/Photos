@@ -7,26 +7,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.github.sikv.photos.App
 import com.github.sikv.photos.R
 import com.github.sikv.photos.databinding.FragmentSettingsBinding
+import com.github.sikv.photos.manager.ThemeManager
 import com.github.sikv.photos.util.makeClickable
 import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.util.setupToolbarWithBackButton
 import com.github.sikv.photos.viewmodel.SettingsViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment() {
 
+    override val overrideBackground: Boolean = true
+
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
-
-    override val overrideBackground: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,9 +101,10 @@ class SettingsFragment : BaseFragment() {
     @AndroidEntryPoint
     class PreferenceFragment : PreferenceFragmentCompat() {
 
-        private val viewModel: SettingsViewModel by lazy {
-            ViewModelProvider(this).get(SettingsViewModel::class.java)
-        }
+        @Inject
+        lateinit var themeManager: ThemeManager
+
+        private val viewModel: SettingsViewModel by viewModels()
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences, rootKey)
@@ -117,7 +119,7 @@ class SettingsFragment : BaseFragment() {
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             return when (preference?.key) {
                 getString(R.string._pref_dark_theme) -> {
-                    App.instance.updateTheme()
+                    themeManager.applyTheme()
                     true
                 }
                 getString(R.string._pref_send_feedback) -> {

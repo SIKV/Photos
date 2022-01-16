@@ -12,7 +12,7 @@ import androidx.paging.LoadState
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.databinding.FragmentSingleSearchBinding
-import com.github.sikv.photos.enumeration.PhotoSource
+import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher

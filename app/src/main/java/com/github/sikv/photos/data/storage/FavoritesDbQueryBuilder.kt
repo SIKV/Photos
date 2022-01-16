@@ -2,8 +2,7 @@ package com.github.sikv.photos.data.storage
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
-import com.github.sikv.photos.data.storage.DbConfig
-import com.github.sikv.photos.enumeration.SortBy
+import com.github.sikv.photos.model.SortBy
 import javax.inject.Inject
 
 class FavoritesDbQueryBuilder @Inject constructor() {
