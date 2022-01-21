@@ -94,10 +94,8 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
-    // Android KTX
     implementation 'androidx.core:core-ktx:1.7.0'
-
-    // LiveData + ViewModel
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
 

@@ -1,17 +1,16 @@
 package com.github.sikv.photos.ui.fragment
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
-import android.speech.RecognizerIntent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.databinding.FragmentSearchDashboardBinding
+import com.github.sikv.photos.manager.VoiceInputManager
 import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
@@ -26,10 +25,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SearchDashboardFragment : BaseFragment() {
 
-    companion object {
-        private const val RC_SPEECH_RECOGNIZER = 125
-    }
-
     private var _binding: FragmentSearchDashboardBinding? = null
     private val binding get() = _binding!!
 
@@ -38,6 +33,8 @@ class SearchDashboardFragment : BaseFragment() {
 
     @Inject
     lateinit var glide: RequestManager
+
+    private lateinit var voiceInputManager: VoiceInputManager
 
     private val viewModel: SearchDashboardViewModel by viewModels()
 
@@ -51,6 +48,16 @@ class SearchDashboardFragment : BaseFragment() {
             onToggleFavorite = { /** Don't need to handle this action here. */ },
             onShowMessage = ::showMessage
         )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        voiceInputManager = VoiceInputManager(requireActivity() as AppCompatActivity) { text ->
+            if (!text.isNullOrBlank()) {
+                showSearchFragment(text)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -77,19 +84,6 @@ class SearchDashboardFragment : BaseFragment() {
         super.onDestroyView()
 
         _binding = null
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RC_SPEECH_RECOGNIZER && resultCode == Activity.RESULT_OK) {
-            val spokenText =
-                data?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.let { results ->
-                    results[0]
-                }
-
-            showSearchFragment(searchText = spokenText)
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onScrollToTop() {
@@ -123,17 +117,6 @@ class SearchDashboardFragment : BaseFragment() {
         navigation?.addFragment(SearchFragment.newInstance(searchText), animation = NavigationAnimation.NONE)
     }
 
-    private fun showSpeechRecognizer() {
-        val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
-            putExtra(
-                RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
-            )
-        }
-
-        startActivityForResult(intent, RC_SPEECH_RECOGNIZER)
-    }
-
     private fun setListeners() {
         binding.searchButton.setOnClickListener {
             showSearchFragment()
@@ -144,7 +127,7 @@ class SearchDashboardFragment : BaseFragment() {
         }
 
         binding.voiceSearchButton.setOnClickListener {
-            showSpeechRecognizer()
+            voiceInputManager.startSpeechRecognizer()
         }
 
         binding.noResultsView.setActionButtonClickListener {
