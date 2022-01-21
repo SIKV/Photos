@@ -1,5 +1,3 @@
-<img src="../assets/FeatureGraphic.png" width="700">
-
 ![Build](https://github.com/SIKV/Photos/workflows/Build/badge.svg)
 
 Browse, search, download, and share amazing free photos provided by talented photographers on [Pexels](https://www.pexels.com), [Unsplash](https://unsplash.com), and [Pixabay](https://pixabay.com).
@@ -12,6 +10,7 @@ Browse, search, download, and share amazing free photos provided by talented pho
 - Set any photo as your device wallpaper
 
 # Technologies
+- [Jetpack Compose](https://developer.android.com/jetpack/compose)
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture)
 - [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
 - [Paging 3](https://developer.android.com/topic/libraries/architecture/paging/v3-overview)
@@ -28,7 +27,8 @@ Browse, search, download, and share amazing free photos provided by talented pho
 
 # Screenshots
 <p>
-  <img src="../assets/promo1.jpg" width="250">
-  <img src="../assets/promo2.jpg" width="250">
-  <img src="../assets/promo3.jpg" width="250">
+  <img src="../assets/2022_1.png" width="225">
+  <img src="../assets/2022_2.png" width="225">
+  <img src="../assets/2022_3.png" width="225">
+  <img src="../assets/2022_4.png" width="225">
 </p>
