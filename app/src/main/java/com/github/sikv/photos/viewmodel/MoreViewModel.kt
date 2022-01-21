@@ -7,22 +7,21 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sikv.photos.manager.AccountManager
 import com.github.sikv.photos.model.LoginStatus
-import com.github.sikv.photos.event.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class MoreViewModel @Inject constructor(
-        val accountManager: AccountManager
+    private val accountManager: AccountManager
 ) : ViewModel(), AccountManager.Listener {
 
-    private val loginStatusChangedMutableEvent = MutableLiveData<Event<LoginStatus>>()
-    val loginStatusChangedEvent: LiveData<Event<LoginStatus>> = loginStatusChangedMutableEvent
+    private val mutableLoginStatusChanged = MutableLiveData<LoginStatus>()
+    val loginStatusChanged: LiveData<LoginStatus> = mutableLoginStatusChanged
 
     init {
         accountManager.subscribe(this)
 
-        loginStatusChangedMutableEvent.value = Event(accountManager.getLoginStatus())
+        mutableLoginStatusChanged.value = accountManager.getLoginStatus()
     }
 
     override fun onCleared() {
@@ -32,7 +31,7 @@ class MoreViewModel @Inject constructor(
     }
 
     override fun onLoginStatusChanged(status: LoginStatus) {
-        loginStatusChangedMutableEvent.value = Event(status)
+        mutableLoginStatusChanged.value = status
     }
 
     fun signInWithGoogle(fragment: Fragment) {

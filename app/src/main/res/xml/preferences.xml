@@ -2,42 +2,36 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-        <PreferenceCategory
-            android:title="@string/appearance">
+    <PreferenceCategory android:title="@string/appearance">
 
-                <SwitchPreference
-                    android:key="@string/_pref_dark_theme"
-                    android:icon="@drawable/ic_brush_24dp"
-                    android:title="@string/dark_theme"
-                    android:defaultValue="true" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/ThemeEntries"
+            android:entryValues="@array/ThemeEntryValues"
+            android:icon="@drawable/ic_brush_24dp"
+            android:key="@string/_pref_theme"
+            android:title="@string/theme"
+            app:useSimpleSummaryProvider="true" />
 
-        </PreferenceCategory>
+    </PreferenceCategory>
 
-        <PreferenceCategory
-            android:title="@string/help"
-            app:allowDividerAbove="false">
+    <PreferenceCategory app:allowDividerAbove="true">
 
-                <Preference
-                    android:key="@string/_pref_send_feedback"
-                    android:icon="@drawable/ic_feedback_24dp"
-                    android:title="@string/send_feedback" />
+        <Preference
+            android:icon="@drawable/ic_bubble_24dp"
+            android:key="@string/_pref_send_feedback"
+            android:title="@string/send_feedback" />
 
-        </PreferenceCategory>
+        <Preference
+            android:icon="@drawable/ic_code_24dp"
+            android:key="@string/_pref_open_source_licences"
+            android:title="@string/open_source_licences" />
 
-        <PreferenceCategory
-            android:title="@string/about"
-            app:allowDividerAbove="false">
+        <Preference
+            android:icon="@drawable/ic_info_24dp"
+            android:key="@string/_pref_app_version"
+            android:title="@string/app_version" />
 
-                <Preference
-                    android:key="@string/_pref_open_source_licences"
-                    android:icon="@drawable/ic_code_24dp"
-                    android:title="@string/open_source_licences" />
-
-                <Preference
-                    android:key="@string/_pref_app_version"
-                    android:icon="@drawable/ic_info_24dp"
-                    android:title="@string/app_version" />
-
-        </PreferenceCategory>
+    </PreferenceCategory>
 
 </PreferenceScreen>

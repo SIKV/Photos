@@ -6,6 +6,10 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.TextView
+import androidx.compose.ui.graphics.Color
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -13,9 +17,11 @@ import com.github.sikv.photos.R
 import com.github.sikv.photos.config.feature.FeatureFlag
 import com.github.sikv.photos.config.feature.FeatureFlagProvider
 import com.github.sikv.photos.model.LoginStatus
+import com.github.sikv.photos.ui.compose.NothingHereScreen
 import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.setupToolbar
+import com.github.sikv.photos.util.showFragment
 import com.github.sikv.photos.viewmodel.MoreViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,17 +30,31 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MoreFragment : BaseFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    @Inject
+    lateinit var featureFlagProvider: FeatureFlagProvider
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_more, container, false)
 
         if (savedInstanceState == null) {
+            val contentFragment = if (showContentFragment()) {
+                PreferenceFragment()
+            } else {
+                NothingHereFragment()
+            }
             childFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentContainer, PreferenceFragment())
-                    .commit()
+                .replace(R.id.fragmentContainer, contentFragment)
+                .commit()
         }
 
         return view
     }
+
+    private fun showContentFragment() = featureFlagProvider.isFeatureEnabled(FeatureFlag.SYNC)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,22 +65,22 @@ class MoreFragment : BaseFragment() {
 
     override fun onCreateToolbar(): FragmentToolbar {
         return FragmentToolbar.Builder()
-                .withId(R.id.toolbar)
-                .withMenu(R.menu.menu_more)
-                .withMenuItems(
-                        listOf(
-                                R.id.itemSettings
-                        ),
-                        listOf(
-                                object : MenuItem.OnMenuItemClickListener {
-                                    override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
-                                        navigation?.addFragment(SettingsFragment())
-                                        return true
-                                    }
-                                }
-                        )
+            .withId(R.id.toolbar)
+            .withMenu(R.menu.menu_more)
+            .withMenuItems(
+                listOf(
+                    R.id.itemSettings
+                ),
+                listOf(
+                    object : MenuItem.OnMenuItemClickListener {
+                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                            navigation?.addFragment(SettingsFragment())
+                            return true
+                        }
+                    }
                 )
-                .build()
+            )
+            .build()
     }
 
     @AndroidEntryPoint
@@ -71,24 +91,21 @@ class MoreFragment : BaseFragment() {
 
         private val viewModel: MoreViewModel by viewModels()
 
-        private var signingInSnackbar: Snackbar? = null
+        private var signInSnackbar: Snackbar? = null
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences_more, rootKey)
-
-            val syncEnabled = featureFlagProvider.isFeatureEnabled(FeatureFlag.SYNC)
-
-            findPreference<Preference>(getString(R.string._pref_sign_in))?.isEnabled = syncEnabled
-            findPreference<Preference>(getString(R.string._pref_sign_out))?.isEnabled = syncEnabled
-            findPreference<Preference>(getString(R.string._pref_sync_not_available))?.isVisible = !syncEnabled
-
-            handleSignInVisibility(viewModel.accountManager.getLoginStatus())
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
-            observe()
+            if (featureFlagProvider.isFeatureEnabled(FeatureFlag.SYNC)) {
+                observeLoginStatus()
+            } else {
+                findPreference<Preference>(getString(R.string._pref_sign_in))?.isVisible = false
+                findPreference<Preference>(getString(R.string._pref_sign_out))?.isVisible = false
+            }
         }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -103,36 +120,33 @@ class MoreFragment : BaseFragment() {
                     viewModel.signInWithGoogle(this)
                     true
                 }
-
                 getString(R.string._pref_sign_out) -> {
                     viewModel.signOut()
                     true
                 }
-
                 else -> super.onPreferenceTreeClick(preference)
             }
         }
 
-        private fun observe() {
-            viewModel.loginStatusChangedEvent.observe(viewLifecycleOwner, { loginStatusEvent ->
-                loginStatusEvent.getContentIfNotHandled()?.let { loginStatus ->
-                    handleSignInVisibility(loginStatus)
+        private fun observeLoginStatus() {
+            viewModel.loginStatusChanged.observe(viewLifecycleOwner, { loginStatus ->
+                handleSignInVisibility(loginStatus)
 
-                    when (loginStatus) {
-                        LoginStatus.SigningIn -> {
-                            view?.let { view ->
-                                signingInSnackbar = Snackbar.make(view, R.string.signing_in, Snackbar.LENGTH_INDEFINITE)
-                                signingInSnackbar?.show()
-                            }
+                when (loginStatus) {
+                    LoginStatus.SigningIn -> {
+                        view?.let { view ->
+                            signInSnackbar = Snackbar.make(
+                                view,
+                                R.string.signing_in,
+                                Snackbar.LENGTH_INDEFINITE
+                            )
+                            signInSnackbar?.show()
                         }
-
-                        LoginStatus.SignInError -> {
-                            signingInSnackbar?.dismiss()
-                            // TODO Show R.string.error_signing_in message
-                        }
-
-                        else -> signingInSnackbar?.dismiss()
                     }
+                    LoginStatus.SignInError -> {
+                        signInSnackbar?.dismiss()
+                    }
+                    else -> signInSnackbar?.dismiss()
                 }
             })
         }
@@ -141,17 +155,17 @@ class MoreFragment : BaseFragment() {
             when (loginStatus) {
                 is LoginStatus.SignedIn -> {
                     findPreference<Preference>(getString(R.string._pref_sign_in))?.isVisible = false
-
                     findPreference<Preference>(getString(R.string._pref_sign_out))?.apply {
                         isVisible = true
                         summary = getString(R.string.signed_in_as_s, loginStatus.signedInAs)
                     }
                 }
-
                 is LoginStatus.SignedOut, is LoginStatus.SignInError -> {
                     findPreference<Preference>(getString(R.string._pref_sign_in))?.isVisible = true
-                    findPreference<Preference>(getString(R.string._pref_sign_out))?.isVisible = false
+                    findPreference<Preference>(getString(R.string._pref_sign_out))?.isVisible =
+                        false
                 }
+                else -> {}
             }
         }
     }

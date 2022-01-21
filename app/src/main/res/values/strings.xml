@@ -3,10 +3,10 @@
 
     <string name="_file_provider" translatable="false">com.github.sikv.photos.fileprovider</string>
 
+    <!-- Preferences -->
     <string name="_pref_sign_in" translatable="false">PreferenceSignIn</string>
     <string name="_pref_sign_out" translatable="false">PreferenceSignOut</string>
-    <string name="_pref_sync_not_available" translatable="false">PreferenceSyncNotAvailable</string>
-    <string name="_pref_dark_theme" translatable="false">PreferenceDarkTheme</string>
+    <string name="_pref_theme" translatable="false">PreferenceTheme</string>
     <string name="_pref_send_feedback" translatable="false">PreferenceSendFeedback</string>
     <string name="_pref_open_source_licences" translatable="false">PreferenceOpenSourceLicences</string>
     <string name="_pref_app_version" translatable="false">PreferenceAppVersion</string>
@@ -58,9 +58,8 @@
     <string name="removed">Removed</string>
     <string name="undo">Undo </string>
     <string name="appearance">Appearance</string>
-    <string name="dark_theme">Dark Theme</string>
+    <string name="theme">Theme</string>
     <string name="help">Help</string>
-    <string name="about">About</string>
     <string name="send_feedback">Send Feedback</string>
     <string name="feedback_sent">Feedback sent</string>
     <string name="error_sending_feedback">Error sending feedback</string>
@@ -99,7 +98,6 @@
     <string name="sort_by">Sort by</string>
     <string name="date_added_newest">Date added (newest)</string>
     <string name="date_added_oldest">Date added (oldest)</string>
-    <string name="sync_not_available">Sync is not implemented yet</string>
 
     <!-- Content descriptions -->
     <string name="cd_photo_loading">Photo loading</string>

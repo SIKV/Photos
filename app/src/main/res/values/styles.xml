@@ -34,7 +34,7 @@
     </style>
 
     <style name="BottomNavigationViewTextAppearanceActive" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">11.5sp</item>
     </style>
 
     <style name="BottomNavigationViewTextAppearanceInactive" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Subtitle">

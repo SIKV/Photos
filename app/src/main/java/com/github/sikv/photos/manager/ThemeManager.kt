@@ -13,13 +13,17 @@ class ThemeManager @Inject constructor(
     @ApplicationContext
     private val context: Context
 ) {
-    fun applyTheme() {
-        val preferenceManager = PreferenceManager.getDefaultSharedPreferences(context)
-        val nightModeEnabled = preferenceManager.getBoolean(context.getString(R.string._pref_dark_theme), true)
+    fun applyTheme(theme: String? = null) {
+        val themeValue = theme ?: PreferenceManager.getDefaultSharedPreferences(context)
+            .getString(context.getString(R.string._pref_theme), "0")
 
-        AppCompatDelegate.setDefaultNightMode(
-            if (nightModeEnabled) AppCompatDelegate.MODE_NIGHT_YES
-            else AppCompatDelegate.MODE_NIGHT_NO
-        )
+        val mode = when (themeValue) {
+            "0" -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            "1" -> AppCompatDelegate.MODE_NIGHT_YES
+            "2" -> AppCompatDelegate.MODE_NIGHT_NO
+            else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+
+        AppCompatDelegate.setDefaultNightMode(mode)
     }
 }

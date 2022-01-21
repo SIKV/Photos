@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.R
@@ -16,6 +17,7 @@ import com.github.sikv.photos.manager.ThemeManager
 import com.github.sikv.photos.util.makeClickable
 import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.util.setupToolbarWithBackButton
+import com.github.sikv.photos.util.showFragment
 import com.github.sikv.photos.viewmodel.SettingsViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -108,20 +110,22 @@ class SettingsFragment : BaseFragment() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences, rootKey)
+
+            findPreference<ListPreference>(getString(R.string._pref_theme))
+                ?.setOnPreferenceChangeListener { _, newValue ->
+                    themeManager.applyTheme(newValue as? String)
+                    true
+                }
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
-            observe()
+            observeAppVersion()
         }
 
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             return when (preference?.key) {
-                getString(R.string._pref_dark_theme) -> {
-                    themeManager.applyTheme()
-                    true
-                }
                 getString(R.string._pref_send_feedback) -> {
                     showFragment(FeedbackFragment.newInstance())
                     return true
@@ -133,23 +137,17 @@ class SettingsFragment : BaseFragment() {
                     )
                     return true
                 }
-                else -> {
-                    super.onPreferenceTreeClick(preference)
-                }
+                else -> super.onPreferenceTreeClick(preference)
             }
         }
 
-        private fun observe() {
+        private fun observeAppVersion() {
             viewModel.showAppVersionEvent.observe(viewLifecycleOwner, {
                 it.getContentIfNotHandled()?.let { appVersion ->
                     findPreference<Preference>(getString(R.string._pref_app_version))?.summary =
                         appVersion
                 }
             })
-        }
-
-        private fun showFragment(fragment: Fragment) {
-            (parentFragment as? BaseFragment)?.navigation?.addFragment(fragment)
         }
     }
 }

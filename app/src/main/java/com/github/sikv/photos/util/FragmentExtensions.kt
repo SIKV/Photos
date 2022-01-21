@@ -1,12 +1,13 @@
 package com.github.sikv.photos.util
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.R
+import com.github.sikv.photos.ui.fragment.BaseFragment
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 
@@ -73,4 +74,8 @@ private fun setupToolbar(
             toolbar.applyStatusBarsInsets()
         }
     }
+}
+
+fun PreferenceFragmentCompat.showFragment(fragment: Fragment) {
+    (parentFragment as? BaseFragment)?.navigation?.addFragment(fragment)
 }
