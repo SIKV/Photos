@@ -44,7 +44,7 @@ android {
             applicationIdSuffix '.dev'
             versionNameSuffix '-dev'
         }
-        prod { }
+        prod {}
     }
 
     externalNativeBuild {
@@ -87,17 +87,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.28.1'
 
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.5.0-alpha05'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-
-    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
-
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.6.0-alpha02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
 
     // Compose
     implementation 'androidx.activity:activity-compose:1.4.0'
@@ -105,35 +104,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
     implementation 'androidx.compose.runtime:runtime-livedata:1.0.5'
     implementation 'androidx.compose.material:material:1.0.5'
-    implementation 'com.google.android.material:compose-theme-adapter:1.1.0'
+    implementation 'com.google.android.material:compose-theme-adapter:1.1.3'
     implementation 'com.google.accompanist:accompanist-insets:0.21.4-beta'
-
-    // Paging
-    implementation 'androidx.paging:paging-runtime-ktx:3.1.0-rc01'
-
-    // Room
-    def room_version = "2.4.0-beta01"
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-
-    // Preferences
-    implementation 'androidx.preference:preference-ktx:1.1.1'
-
-    // Auth
-    implementation 'com.google.firebase:firebase-auth:21.0.1'
-    implementation 'com.google.android.gms:play-services-auth:19.2.0'
-
-    // Firestore
-    implementation 'com.google.firebase:firebase-firestore:24.0.0'
-
-    // ML Kit
-    implementation 'com.google.mlkit:image-labeling:17.0.5'
-
-    // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
 
     // Hilt
     implementation 'com.google.dagger:hilt-android:2.31-alpha'
@@ -141,19 +113,46 @@ dependencies {
     implementation 'androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03'
     kapt 'androidx.hilt:hilt-compiler:1.0.0'
 
-    // Glide (with Jetpack Compose support)
-    implementation 'com.github.skydoves:landscapist-glide:1.4.1'
-
-    // Chrome Custom Tabs
-    implementation 'androidx.browser:browser:1.4.0'
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
 
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
+    // Paging
+    implementation 'androidx.paging:paging-runtime-ktx:3.1.0'
+
+    // Room
+    implementation 'androidx.room:room-runtime:2.4.1'
+    kapt 'androidx.room:room-compiler:2.4.1'
+    implementation 'androidx.room:room-ktx:2.4.1'
+
+    // Firebase
+    // Auth
+    implementation 'com.google.firebase:firebase-auth:21.0.1'
+    implementation 'com.google.android.gms:play-services-auth:20.0.1'
+    // Firestore
+    implementation 'com.google.firebase:firebase-firestore:24.0.1'
     // Remote Config
     implementation 'com.google.firebase:firebase-config-ktx:21.0.1'
-    implementation 'com.google.firebase:firebase-analytics:20.0.0'
+    implementation 'com.google.firebase:firebase-analytics:20.0.2'
+
+    // ML Kit
+    implementation 'com.google.mlkit:image-labeling:17.0.6'
+
+    // Glide (with Jetpack Compose support)
+    implementation 'com.github.skydoves:landscapist-glide:1.4.1'
+
+    // Preferences
+    implementation 'androidx.preference:preference-ktx:1.1.1'
+
+    // Chrome Custom Tabs
+    implementation 'androidx.browser:browser:1.4.0'
+
+    implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 
     // https://stackoverflow.com/a/60492942/7064179
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
