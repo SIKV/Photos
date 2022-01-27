@@ -7,13 +7,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingData
 import androidx.paging.liveData
 import com.github.sikv.photos.config.ConfigProvider
-import com.github.sikv.photos.data.source.SearchPhotosPagingSource
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
-import com.github.sikv.photos.model.PhotoSource
+import com.github.sikv.photos.data.source.SearchPhotosPagingSource
 import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.event.VoidEvent
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.PhotoSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -24,11 +24,14 @@ class SearchViewModel @Inject constructor(
     private val configProvider: ConfigProvider
 ) : ViewModel(), FavoritesRepository.Listener {
 
-    private val favoriteChangedMutableEvent = MutableLiveData<Event<Photo>>()
-    val favoriteChangedEvent: LiveData<Event<Photo>> = favoriteChangedMutableEvent
+    private val mutableSearchQuery = MutableLiveData<String>()
+    val searchQuery: LiveData<String> = mutableSearchQuery
 
-    private val favoritesChangedMutableEvent = MutableLiveData<VoidEvent>()
-    val favoritesChangedEvent: LiveData<VoidEvent> = favoritesChangedMutableEvent
+    private val mutableFavoriteToggled = MutableLiveData<Event<Photo>>()
+    val favoriteToggled: LiveData<Event<Photo>> = mutableFavoriteToggled
+
+    private val mutableFavoriteListToggled = MutableLiveData<VoidEvent>()
+    val favoriteListToggled: LiveData<VoidEvent> = mutableFavoriteListToggled
 
     init {
         favoritesRepository.subscribe(this)
@@ -41,15 +44,15 @@ class SearchViewModel @Inject constructor(
     }
 
     override fun onFavoriteChanged(photo: Photo, isFavorite: Boolean) {
-        favoriteChangedMutableEvent.postValue(Event(photo))
+        mutableFavoriteToggled.postValue(Event(photo))
     }
 
     override fun onFavoritesChanged() {
-        favoritesChangedMutableEvent.postValue(VoidEvent())
+        mutableFavoriteListToggled.postValue(VoidEvent())
     }
 
-    fun toggleFavorite(photo: Photo) {
-        favoritesRepository.invertFavorite(photo)
+    fun requestSearch(text: String) {
+        mutableSearchQuery.postValue(text)
     }
 
     fun searchPhotos(photoSource: PhotoSource, query: String): LiveData<PagingData<Photo>>? {
@@ -65,5 +68,9 @@ class SearchViewModel @Inject constructor(
                 SearchPhotosPagingSource(photosRepository, photoSource, queryTrimmed)
             }
         ).liveData
+    }
+
+    fun toggleFavorite(photo: Photo) {
+        favoritesRepository.invertFavorite(photo)
     }
 }

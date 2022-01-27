@@ -10,11 +10,13 @@ import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.activity.BaseActivity
 import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
+import com.github.sikv.photos.ui.dialog.PhotoPreviewPopup
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
+import com.github.sikv.photos.ui.dialog.SetWallpaperFragmentArguments
 import com.github.sikv.photos.ui.fragment.BaseFragment
 import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
+import com.github.sikv.photos.ui.fragment.PhotoDetailsFragmentArguments
 import com.github.sikv.photos.ui.navigation.NavigationAnimation
-import com.github.sikv.photos.ui.dialog.PhotoPreviewPopup
 import com.github.sikv.photos.util.copyText
 import com.github.sikv.photos.util.openUrl
 
@@ -35,7 +37,10 @@ class PhotoActionDispatcher(
     override fun onPhotoAction(action: OnPhotoActionListener.Action, photo: Photo, view: View) {
         when (action) {
             OnPhotoActionListener.Action.CLICK -> {
-                fragment.navigation?.addFragment(PhotoDetailsFragment.newInstance(photo),
+                val photoDetailsFragment = PhotoDetailsFragment()
+                    .withArguments(PhotoDetailsFragmentArguments(photo))
+
+                fragment.navigation?.addFragment(photoDetailsFragment,
                     animation = NavigationAnimation.SLIDE_V
                 )
             }
@@ -96,7 +101,9 @@ class PhotoActionDispatcher(
             when (index) {
                 // Set Wallpaper
                 0 -> {
-                    SetWallpaperDialog.newInstance(photo).show(fragment.childFragmentManager)
+                    SetWallpaperDialog()
+                        .withArguments(SetWallpaperFragmentArguments(photo))
+                        .show(fragment.childFragmentManager)
                 }
                 // Copy Link
                 1 -> {

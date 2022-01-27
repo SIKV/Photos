@@ -127,7 +127,7 @@ class SettingsFragment : BaseFragment() {
         override fun onPreferenceTreeClick(preference: Preference?): Boolean {
             return when (preference?.key) {
                 getString(R.string._pref_send_feedback) -> {
-                    showFragment(FeedbackFragment.newInstance())
+                    showFragment(FeedbackFragment())
                     return true
                 }
                 getString(R.string._pref_open_source_licences) -> {

@@ -14,8 +14,10 @@ import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.ui.fragment.BaseFragment
 import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
 import com.github.sikv.photos.ui.fragment.SearchFragment
+import com.github.sikv.photos.ui.fragment.SearchFragmentArguments
 import com.github.sikv.photos.ui.fragment.root.*
 import com.github.sikv.photos.ui.navigation.OnDestinationChangedListener
+import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.util.changeFragment
 import com.github.sikv.photos.util.getActiveFragment
 import com.google.android.material.snackbar.Snackbar
@@ -48,15 +50,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private val globalMessageEventObserver = Observer<Event<String>> { event ->
-        event.getContentIfNotHandled()?.let { message ->
-            Snackbar
-                .make(binding.root, message, Snackbar.LENGTH_SHORT)
-                .setAnchorView(binding.bottomNavigationView)
-                .show()
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -71,7 +64,7 @@ class MainActivity : BaseActivity() {
                     getString(R.string._shortcut_search).reportShortcutUsed()
 
                     initialFragmentId = R.id.search
-                    initialDelayedFragment = SearchFragment.newInstance()
+                    initialDelayedFragment = SearchFragment().withArguments(SearchFragmentArguments())
                 }
             }
 

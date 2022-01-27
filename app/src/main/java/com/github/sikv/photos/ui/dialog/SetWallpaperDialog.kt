@@ -4,30 +4,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.databinding.LayoutSetWallpaperBinding
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.service.WallpaperService
+import com.github.sikv.photos.ui.FragmentArguments
+import com.github.sikv.photos.ui.fragmentArguments
 import com.github.sikv.photos.util.Utils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.parcel.Parcelize
 import javax.inject.Inject
+
+@Parcelize
+data class SetWallpaperFragmentArguments(
+    val photo: Photo
+) : FragmentArguments
 
 @AndroidEntryPoint
 class SetWallpaperDialog : BottomSheetDialogFragment() {
 
-    companion object {
-        fun newInstance(photo: Photo): SetWallpaperDialog = SetWallpaperDialog()
-            .apply {
-                arguments = bundleOf(Photo.KEY to photo)
-            }
-    }
-
     @Inject
     lateinit var glide: RequestManager
+
+    private val args by fragmentArguments<SetWallpaperFragmentArguments>()
 
     private val wallpaperService: WallpaperService by lazy {
         WallpaperService(
@@ -72,10 +74,8 @@ class SetWallpaperDialog : BottomSheetDialogFragment() {
         rootLayout.addView(binding.root)
         Utils.addCancelOption(context, rootLayout) { dismiss() }
 
-        val photo = requireNotNull(arguments?.getParcelable<Photo>(Photo.KEY))
-
-        wallpaperService.setWallpaper(photo)
-        binding.tryAgainButton.setOnClickListener { wallpaperService.setWallpaper(photo) }
+        wallpaperService.setWallpaper(args.photo)
+        binding.tryAgainButton.setOnClickListener { wallpaperService.setWallpaper(args.photo) }
 
         return view
     }

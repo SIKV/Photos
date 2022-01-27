@@ -8,6 +8,8 @@ import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.compose.state.PhotoViewState
+import com.github.sikv.photos.ui.fragment.PhotoDetailsFragmentArguments
+import com.github.sikv.photos.ui.fragmentArguments
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -22,7 +24,7 @@ class PhotoDetailsViewModel @Inject constructor(
     val viewState: LiveData<PhotoViewState> = mutableViewState
 
     init {
-        val photo = requireNotNull(savedStateHandle.get<Photo>(Photo.KEY))
+        val photo = savedStateHandle.fragmentArguments<PhotoDetailsFragmentArguments>().photo
 
         favoritesRepository.subscribe(this)
 

@@ -9,27 +9,30 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.createShareIntent
+import com.github.sikv.photos.ui.FragmentArguments
 import com.github.sikv.photos.ui.compose.PhotoDetailsScreen
 import com.github.sikv.photos.ui.compose.state.PhotoViewState
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
+import com.github.sikv.photos.ui.dialog.SetWallpaperFragmentArguments
+import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.viewmodel.PhotoDetailsViewModel
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class PhotoDetailsFragmentArguments(
+    val photo: Photo
+) : FragmentArguments
 
 @OptIn(ExperimentalMaterialApi::class)
 @AndroidEntryPoint
 class PhotoDetailsFragment : BaseFragment() {
-
-    companion object {
-        fun newInstance(photo: Photo): PhotoDetailsFragment = PhotoDetailsFragment()
-            .apply { arguments = bundleOf(Photo.KEY to photo) }
-    }
 
     private val viewModel: PhotoDetailsViewModel by viewModels()
 
@@ -74,8 +77,8 @@ class PhotoDetailsFragment : BaseFragment() {
     }
 
     private fun setWallpaper(photo: Photo) {
-        SetWallpaperDialog
-            .newInstance(photo)
+        SetWallpaperDialog()
+            .withArguments(SetWallpaperFragmentArguments(photo))
             .show(childFragmentManager)
     }
 

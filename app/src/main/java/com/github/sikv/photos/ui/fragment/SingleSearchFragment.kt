@@ -1,47 +1,38 @@
 package com.github.sikv.photos.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.databinding.FragmentSingleSearchBinding
-import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.service.DownloadService
+import com.github.sikv.photos.ui.FragmentArguments
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagingAdapter
+import com.github.sikv.photos.ui.fragmentArguments
 import com.github.sikv.photos.util.disableChangeAnimations
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.parcel.Parcelize
 import javax.inject.Inject
+
+@Parcelize
+data class SingleSearchFragmentArguments(
+    val photoSource: PhotoSource
+) : FragmentArguments
 
 @AndroidEntryPoint
 class SingleSearchFragment : BaseFragment() {
-
-    companion object {
-        private const val KEY_PHOTO_SOURCE_ID = "photoSourceId"
-
-        fun newInstance(photoSource: PhotoSource): SingleSearchFragment {
-            val args = Bundle()
-            args.putInt(KEY_PHOTO_SOURCE_ID, photoSource.id)
-
-            val fragment = SingleSearchFragment()
-            fragment.arguments = args
-
-            return fragment
-        }
-    }
-
-    private var _binding: FragmentSingleSearchBinding? = null
-    private val binding get() = _binding!!
 
     @Inject
     lateinit var favoritesRepository: FavoritesRepository
@@ -52,7 +43,11 @@ class SingleSearchFragment : BaseFragment() {
     @Inject
     lateinit var glide: RequestManager
 
-    private val viewModel: SearchViewModel by viewModels()
+    private val viewModel: SearchViewModel by activityViewModels()
+    private val args by fragmentArguments<SingleSearchFragmentArguments>()
+
+    private var _binding: FragmentSingleSearchBinding? = null
+    private val binding get() = _binding!!
 
     private val photoActionDispatcher by lazy {
         PhotoActionDispatcher(
@@ -64,16 +59,10 @@ class SingleSearchFragment : BaseFragment() {
         )
     }
 
-    private var photoSource: PhotoSource? = null
-
     private lateinit var photoAdapter: PhotoPagingAdapter<Photo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.getInt(KEY_PHOTO_SOURCE_ID)?.let { photoSourceId ->
-            photoSource = PhotoSource.findById(photoSourceId)
-        }
 
         photoAdapter = PhotoPagingAdapter(
             glide = glide,
@@ -83,11 +72,7 @@ class SingleSearchFragment : BaseFragment() {
         )
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSingleSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -107,7 +92,9 @@ class SingleSearchFragment : BaseFragment() {
         }
 
         addLoadStateListener()
-        observe()
+
+        observeSearchQuery()
+        observeFavoriteToggle()
     }
 
     override fun onDestroyView() {
@@ -116,22 +103,23 @@ class SingleSearchFragment : BaseFragment() {
         _binding = null
     }
 
-    fun searchPhotos(text: String) {
-        photoSource?.let { photoSource ->
-            viewModel.searchPhotos(photoSource, text)?.observe(viewLifecycleOwner, Observer {
-                photoAdapter.submitData(lifecycle, it)
+    private fun observeSearchQuery() {
+        viewModel.searchQuery.observe(viewLifecycleOwner, { query ->
+            viewModel.searchPhotos(args.photoSource, query)?.observe(viewLifecycleOwner, { data ->
+                photoAdapter.submitData(lifecycle, data)
             })
-        }
+        })
     }
 
-    private fun observe() {
-        viewModel.favoriteChangedEvent.observe(viewLifecycleOwner, Observer {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observeFavoriteToggle() {
+        viewModel.favoriteToggled.observe(viewLifecycleOwner, {
             it.getContentIfNotHandled()?.let { photo ->
                 photoAdapter.notifyPhotoChanged(photo)
             }
         })
 
-        viewModel.favoritesChangedEvent.observe(viewLifecycleOwner, Observer {
+        viewModel.favoriteListToggled.observe(viewLifecycleOwner, {
             if (it.canHandle()) {
                 photoAdapter.notifyDataSetChanged()
             }

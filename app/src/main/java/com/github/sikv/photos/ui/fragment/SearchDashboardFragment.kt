@@ -15,6 +15,7 @@ import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
 import com.github.sikv.photos.ui.navigation.NavigationAnimation
+import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.util.applyStatusBarsInsets
 import com.github.sikv.photos.util.scrollToTop
 import com.github.sikv.photos.util.setVisibilityAnimated
@@ -114,7 +115,10 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private fun showSearchFragment(searchText: String? = null) {
-        navigation?.addFragment(SearchFragment.newInstance(searchText), animation = NavigationAnimation.NONE)
+        val fragment = SearchFragment().withArguments(
+            SearchFragmentArguments(searchText)
+        )
+        navigation?.addFragment(fragment)
     }
 
     private fun setListeners() {

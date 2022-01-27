@@ -21,12 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FeedbackFragment : BaseFragment() {
 
-    companion object {
-        fun newInstance(): FeedbackFragment {
-            return FeedbackFragment()
-        }
-    }
-
     private var _binding: FragmentFeedbackBinding? = null
     private val binding get() = _binding!!
 

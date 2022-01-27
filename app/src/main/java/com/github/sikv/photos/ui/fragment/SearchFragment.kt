@@ -8,57 +8,42 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
+import androidx.fragment.app.activityViewModels
 import com.github.sikv.photos.config.ConfigProvider
 import com.github.sikv.photos.databinding.FragmentSearchBinding
-import com.github.sikv.photos.util.changeVisibilityWithAnimation
-import com.github.sikv.photos.util.hideSoftInput
-import com.github.sikv.photos.util.setupToolbarWithBackButton
-import com.github.sikv.photos.util.showSoftInput
+import com.github.sikv.photos.ui.FragmentArguments
+import com.github.sikv.photos.ui.adapter.ViewPagerAdapter
+import com.github.sikv.photos.ui.fragmentArguments
+import com.github.sikv.photos.ui.withArguments
+import com.github.sikv.photos.util.*
+import com.github.sikv.photos.viewmodel.SearchViewModel
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.parcel.Parcelize
 import javax.inject.Inject
+
+@Parcelize
+data class SearchFragmentArguments(
+    val query: String? = null
+) : FragmentArguments
 
 @AndroidEntryPoint
 class SearchFragment : BaseFragment() {
 
-    companion object {
-        private const val KEY_SEARCH_TEXT = "searchText"
-        private const val KEY_LAST_SEARCH_TEXT = "lastSearchText"
-
-        fun newInstance(searchText: String? = null): SearchFragment {
-            val fragment = SearchFragment()
-
-            searchText?.let {
-                val args = Bundle()
-                args.putString(KEY_LAST_SEARCH_TEXT, it)
-
-                fragment.arguments = args
-            }
-
-            return fragment
-        }
-    }
+    override val overrideBackground: Boolean = true
 
     @Inject
     lateinit var configProvider: ConfigProvider
 
+    private val viewModel: SearchViewModel by activityViewModels()
+    private val args by fragmentArguments<SearchFragmentArguments>()
+
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
+
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
 
-    override val overrideBackground: Boolean = true
-
-    private lateinit var viewPagerAdapter: SearchViewPagerAdapter
-
-    private var lastSearchText: String? = null
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -71,11 +56,11 @@ class SearchFragment : BaseFragment() {
             navigationOnClickListener = { navigation?.backPressed() }
         )
 
-        initViewPager {
+        setupViewPager {
             if (savedInstanceState == null) {
-                arguments?.getString(KEY_SEARCH_TEXT)?.let { searchText ->
-                    binding.searchEdit.append(searchText)
-                    searchPhotos(searchText)
+                args.query?.let { query ->
+                    binding.searchEdit.append(query)
+                    performSearch(query)
                 }
 
                 shownKeyboardIfNeeded()
@@ -83,44 +68,21 @@ class SearchFragment : BaseFragment() {
         }
 
         setListeners()
-
         changeClearButtonVisibility(false, withAnimation = false)
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
-        if (savedInstanceState != null) {
-            savedInstanceState.getString(KEY_LAST_SEARCH_TEXT)?.let { text ->
-                searchPhotos(text)
-            }
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        lastSearchText?.let { text ->
-            outState.putSerializable(KEY_LAST_SEARCH_TEXT, text)
-        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 
-    private fun searchPhotos(text: String) {
+    private fun performSearch(text: String) {
         context?.hideSoftInput(binding.searchEdit)
-
-        lastSearchText = text
-
-        viewPagerAdapter.searchPhotos(binding.viewPager, text)
+        viewModel.requestSearch(text)
     }
 
     private fun shownKeyboardIfNeeded() {
-        val showKeyboard = arguments?.getString(KEY_SEARCH_TEXT) == null
+        val showKeyboard = args.query == null
         var keyboardShown = false
 
         if (showKeyboard) {
@@ -153,13 +115,20 @@ class SearchFragment : BaseFragment() {
         }
     }
 
-    private fun initViewPager(after: () -> Unit) {
-        viewPagerAdapter = SearchViewPagerAdapter(childFragmentManager, configProvider)
+    private fun setupViewPager(after: () -> Unit) {
+        val searchSources = configProvider.getSearchSources()
+
+        viewPagerAdapter = ViewPagerAdapter(this, searchSources.size) { position ->
+            SingleSearchFragment()
+                .withArguments(SingleSearchFragmentArguments(searchSources[position]))
+        }
 
         binding.viewPager.adapter = viewPagerAdapter
-        binding.viewPager.offscreenPageLimit = configProvider.getSearchSources().size
+        binding.viewPager.offscreenPageLimit = searchSources.size
 
-        binding.tabLayout.setupWithViewPager(binding.viewPager)
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+            tab.text = searchSources[position].title
+        }.attach()
 
         binding.viewPager.post {
             after()
@@ -169,7 +138,7 @@ class SearchFragment : BaseFragment() {
     private fun setListeners() {
         binding.searchEdit.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                searchPhotos(binding.searchEdit.text.toString())
+                performSearch(binding.searchEdit.text.toString())
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
@@ -190,38 +159,6 @@ class SearchFragment : BaseFragment() {
         binding.searchClearButton.setOnClickListener {
             binding.searchEdit.text?.clear()
             context?.showSoftInput(binding.searchEdit)
-        }
-    }
-
-    private class SearchViewPagerAdapter(
-        fragmentManager: FragmentManager,
-        private val configProvider: ConfigProvider
-    ) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
-        override fun getItem(position: Int): Fragment {
-            return SingleSearchFragment.newInstance(configProvider.getSearchSources()[position])
-        }
-
-        override fun getPageTitle(position: Int): CharSequence {
-            return configProvider.getSearchSources()[position].title
-        }
-
-        override fun getCount(): Int {
-            return configProvider.getSearchSources().size
-        }
-
-        fun searchPhotos(viewPager: ViewPager, text: String) {
-            startUpdate(viewPager)
-
-            for (i in 0 until count) {
-                (instantiateItem(viewPager, i) as? SingleSearchFragment)?.apply {
-                    if (isAdded) {
-                        searchPhotos(text)
-                    }
-                }
-            }
-
-            finishUpdate(viewPager)
         }
     }
 }

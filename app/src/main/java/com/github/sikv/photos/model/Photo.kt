@@ -34,10 +34,6 @@ class PhotoDiffUtil<T : Photo> : DiffUtil.ItemCallback<T>() {
 
 abstract class Photo : Parcelable {
 
-    companion object {
-        const val KEY = "photo"
-    }
-
     /**
      * This SHOULD NOT be used directly. Use FavoritesManager#isFavorite(Photo) instead.
      */
