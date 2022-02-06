@@ -2,8 +2,8 @@ package com.github.sikv.photos.ui
 
 import android.app.Activity
 import android.view.View
-import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.createShareIntent
 import com.github.sikv.photos.service.DownloadService
@@ -23,7 +23,7 @@ import com.github.sikv.photos.util.openUrl
 class PhotoActionDispatcher(
     private val fragment: BaseFragment,
     private val downloadService: DownloadService,
-    private val glide: RequestManager,
+    private val photoLoader: PhotoLoader,
     private val onToggleFavorite: (Photo) -> Unit,
     private val onShowMessage: (String) -> Unit
 ) : OnPhotoActionListener {
@@ -47,7 +47,7 @@ class PhotoActionDispatcher(
 
             OnPhotoActionListener.Action.HOLD -> {
                 if (!this::photoPreviewPopup.isInitialized) {
-                    photoPreviewPopup = PhotoPreviewPopup(getActivity(), glide)
+                    photoPreviewPopup = PhotoPreviewPopup(getActivity(), photoLoader)
                 }
                 photoPreviewPopup.show(view, photo)
             }

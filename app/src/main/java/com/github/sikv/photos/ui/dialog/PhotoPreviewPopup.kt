@@ -3,25 +3,21 @@ package com.github.sikv.photos.ui.dialog
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.view.*
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.PopupWindow
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.github.sikv.photos.R
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.Photo
 
 @SuppressLint("InflateParams", "ClickableViewAccessibility")
 class PhotoPreviewPopup(
     private val context: Context,
-    private val glide: RequestManager
+    private val photoLoader: PhotoLoader
 ) {
 
     private var popupWindow: PopupWindow? = null
@@ -57,21 +53,15 @@ class PhotoPreviewPopup(
     }
 
     fun show(parent: View, photo: Photo) {
-        glide.asBitmap()
-            .load(photo.getPhotoPreviewUrl())
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                    photoPreviewImage?.setImageBitmap(bitmap)
+        photoLoader.load(photo.getPhotoPreviewUrl()) { bitmap ->
+            photoPreviewImage?.setImageBitmap(bitmap)
 
-                    popupWindow?.showAtLocation(parent, Gravity.CENTER, 0, 0)
-                    dimBackground()
+            popupWindow?.showAtLocation(parent, Gravity.CENTER, 0, 0)
+            dimBackground()
 
-                    val animation = AnimationUtils.loadAnimation(context, R.anim.zoom_in)
-                    photoPreviewCard?.startAnimation(animation)
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {}
-            })
+            val animation = AnimationUtils.loadAnimation(context, R.anim.zoom_in)
+            photoPreviewCard?.startAnimation(animation)
+        }
     }
 
     fun isShown(): Boolean = popupWindow?.isShowing ?: false

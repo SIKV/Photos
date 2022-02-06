@@ -9,9 +9,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.databinding.FragmentSingleSearchBinding
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.service.DownloadService
@@ -41,7 +41,7 @@ class SingleSearchFragment : BaseFragment() {
     lateinit var downloadService: DownloadService
 
     @Inject
-    lateinit var glide: RequestManager
+    lateinit var photoLoader: PhotoLoader
 
     private val viewModel: SearchViewModel by activityViewModels()
     private val args by fragmentArguments<SingleSearchFragmentArguments>()
@@ -53,7 +53,7 @@ class SingleSearchFragment : BaseFragment() {
         PhotoActionDispatcher(
             fragment = this,
             downloadService = downloadService,
-            glide = glide,
+            photoLoader = photoLoader,
             onToggleFavorite = viewModel::toggleFavorite,
             onShowMessage = ::showMessage
         )
@@ -65,7 +65,7 @@ class SingleSearchFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
 
         photoAdapter = PhotoPagingAdapter(
-            glide = glide,
+            photoLoader = photoLoader,
             favoritesRepository = favoritesRepository,
             lifecycleScope = lifecycleScope,
             listener = photoActionDispatcher

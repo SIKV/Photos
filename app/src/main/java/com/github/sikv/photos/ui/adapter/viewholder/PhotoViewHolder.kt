@@ -3,12 +3,12 @@ package com.github.sikv.photos.ui.adapter.viewholder
 import android.view.View
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.github.sikv.photos.R
-import com.github.sikv.photos.model.PhotoItemLayoutType
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.PhotoItemLayoutType
 import com.github.sikv.photos.model.getAttributionPlaceholderBackgroundColor
 import com.github.sikv.photos.model.getAttributionPlaceholderTextColor
 import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 class PhotoViewHolder(
     itemView: View,
-    private val glide: RequestManager,
+    private val photoLoader: PhotoLoader,
     private val lifecycleScope: LifecycleCoroutineScope
 ) : RecyclerView.ViewHolder(itemView) {
 
@@ -94,9 +94,7 @@ class PhotoViewHolder(
         itemView.photoImage.setImageDrawable(null)
 
         photo?.let {
-            glide.load(it.getPhotoPreviewUrl())
-                    .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
-                    .into(itemView.photoImage)
+            photoLoader.load(it.getPhotoPreviewUrl(), itemView.photoImage)
         }
 
         photo?.let {
@@ -128,9 +126,7 @@ class PhotoViewHolder(
             return
         }
 
-        glide.load(photo.getPhotoPreviewUrl())
-            .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
-            .into(itemView.photoImage)
+        photoLoader.load(photo.getPhotoPreviewUrl(), itemView.photoImage)
 
         val textColor = photo.getAttributionPlaceholderTextColor(itemView.context)
         val backgroundColor = photo.getAttributionPlaceholderBackgroundColor(itemView.context)
@@ -142,11 +138,11 @@ class PhotoViewHolder(
                 .background(TextPlaceholder.Shape.CIRCLE, backgroundColor)
                 .build()
 
-            glide.load(photo.getPhotoPhotographerImageUrl())
-                .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
-                .transform(CircleCrop())
-                .placeholder(placeholder)
-                .into(itemView.photographerImage)
+            photoLoader.loadWithCircleCrop(
+                photo.getPhotoPhotographerImageUrl(),
+                placeholder,
+                itemView.photographerImage
+            )
         }
     }
 }

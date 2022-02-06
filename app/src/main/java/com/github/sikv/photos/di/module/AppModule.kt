@@ -1,12 +1,12 @@
 package com.github.sikv.photos.di.module
 
 import android.content.Context
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
-import com.github.sikv.photos.manager.AccountManager
-import com.github.sikv.photos.manager.AccountManagerImpl
 import com.github.sikv.photos.config.feature.FeatureFlagRepository
 import com.github.sikv.photos.config.feature.RemoteFeatureFlagRepository
+import com.github.sikv.photos.manager.AccountManager
+import com.github.sikv.photos.manager.AccountManagerImpl
+import com.github.sikv.photos.manager.GlidePhotoLoader
+import com.github.sikv.photos.manager.PhotoLoader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,12 +23,12 @@ class AppModule {
     }
 
     @Provides
-    fun provideGlide(@ApplicationContext context: Context): RequestManager {
-        return Glide.with(context)
+    fun provideAccountManager(accountManager: AccountManagerImpl): AccountManager {
+        return accountManager
     }
 
     @Provides
-    fun provideAccountManager(accountManager: AccountManagerImpl): AccountManager {
-        return accountManager
+    fun providePhotoLoader(@ApplicationContext context: Context): PhotoLoader {
+        return GlidePhotoLoader(context)
     }
 }

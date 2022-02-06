@@ -7,15 +7,15 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.model.PhotoItemLayoutType
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.PhotoDiffUtil
+import com.github.sikv.photos.model.PhotoItemLayoutType
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoViewHolder
 
 class PhotoPagingAdapter<T : Photo>(
-    private val glide: RequestManager,
+    private val photoLoader: PhotoLoader,
     private val favoritesRepository: FavoritesRepository,
     private val lifecycleScope: LifecycleCoroutineScope,
     private val listener: OnPhotoActionListener
@@ -46,7 +46,7 @@ class PhotoPagingAdapter<T : Photo>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(itemLayoutType.layout, parent, false)
-        return PhotoViewHolder(view, glide, lifecycleScope)
+        return PhotoViewHolder(view, photoLoader, lifecycleScope)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {

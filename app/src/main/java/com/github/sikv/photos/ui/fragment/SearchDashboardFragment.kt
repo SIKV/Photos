@@ -8,13 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.databinding.FragmentSearchDashboardBinding
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.manager.VoiceInputManager
 import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
-import com.github.sikv.photos.ui.navigation.NavigationAnimation
 import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.util.applyStatusBarsInsets
 import com.github.sikv.photos.util.scrollToTop
@@ -33,7 +32,7 @@ class SearchDashboardFragment : BaseFragment() {
     lateinit var downloadService: DownloadService
 
     @Inject
-    lateinit var glide: RequestManager
+    lateinit var photoLoader: PhotoLoader
 
     private lateinit var voiceInputManager: VoiceInputManager
 
@@ -45,7 +44,7 @@ class SearchDashboardFragment : BaseFragment() {
         PhotoActionDispatcher(
             fragment = this,
             downloadService = downloadService,
-            glide = glide,
+            photoLoader = photoLoader,
             onToggleFavorite = { /** Don't need to handle this action here. */ },
             onShowMessage = ::showMessage
         )
@@ -144,7 +143,7 @@ class SearchDashboardFragment : BaseFragment() {
     }
 
     private fun init() {
-        recommendedPhotosAdapter = PhotoGridAdapter(glide, photoActionDispatcher) {
+        recommendedPhotosAdapter = PhotoGridAdapter(photoLoader, photoActionDispatcher) {
             viewModel.loadRecommendations()
         }
 

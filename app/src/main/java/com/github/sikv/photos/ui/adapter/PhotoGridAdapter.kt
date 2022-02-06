@@ -6,22 +6,22 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.ui.adapter.viewholder.LoadMoreViewHolder
 import com.github.sikv.photos.ui.adapter.viewholder.PhotoGridViewHolder
 
 data class PhotoGridItem(
-        @LayoutRes
-        val layout: Int,
-        var items: MutableList<Pair<Photo?, Int>> = mutableListOf()
+    @LayoutRes
+    val layout: Int,
+    var items: MutableList<Pair<Photo?, Int>> = mutableListOf()
 )
 
 class PhotoGridAdapter(
-        private val glide: RequestManager,
-        private val listener: OnPhotoActionListener,
-        private val loadMoreCallback: () -> Unit
+    private val photoLoader: PhotoLoader,
+    private val listener: OnPhotoActionListener,
+    private val loadMoreCallback: () -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -50,10 +50,10 @@ class PhotoGridAdapter(
         val items: MutableList<PhotoGridItem> = mutableListOf()
 
         val layouts = listOf(
-                R.layout.item_photo_3_portrait_right,
-                R.layout.item_photo_3_landscape_bottom,
-                R.layout.item_photo_3_portrait_left,
-                R.layout.item_photo_3_landscape_bottom
+            R.layout.item_photo_3_portrait_right,
+            R.layout.item_photo_3_landscape_bottom,
+            R.layout.item_photo_3_portrait_left,
+            R.layout.item_photo_3_landscape_bottom
         )
 
         var layoutIndex = 0
@@ -104,7 +104,7 @@ class PhotoGridAdapter(
         return if (viewType == ITEM_VIEW_TYPE_LOAD_MORE) {
             LoadMoreViewHolder(view)
         } else {
-            PhotoGridViewHolder(view, glide)
+            PhotoGridViewHolder(view, photoLoader)
         }
     }
 

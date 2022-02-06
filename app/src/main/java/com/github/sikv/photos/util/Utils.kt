@@ -8,8 +8,6 @@ import com.github.sikv.photos.R
 import kotlinx.android.synthetic.main.item_option.view.*
 import java.util.*
 
-const val PHOTO_TRANSITION_DURATION = 500
-
 object Utils {
 
     fun getCurrentDateAndTime(): String {

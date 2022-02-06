@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
-import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.databinding.LayoutSetWallpaperBinding
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.service.WallpaperService
 import com.github.sikv.photos.ui.FragmentArguments
@@ -27,14 +27,14 @@ data class SetWallpaperFragmentArguments(
 class SetWallpaperDialog : BottomSheetDialogFragment() {
 
     @Inject
-    lateinit var glide: RequestManager
+    lateinit var photoLoader: PhotoLoader
 
     private val args by fragmentArguments<SetWallpaperFragmentArguments>()
 
     private val wallpaperService: WallpaperService by lazy {
         WallpaperService(
             context = requireActivity(),
-            glide = glide,
+            photoLoader = photoLoader,
             onDownloading = {
                 binding.statusText.setText(R.string.downloading_photo)
 

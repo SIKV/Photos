@@ -9,13 +9,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
-import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.databinding.FragmentPhotosBinding
-import com.github.sikv.photos.model.PhotoItemLayoutType
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.ListLayout
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.PhotoItemLayoutType
 import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoPagingAdapter
@@ -38,7 +38,7 @@ class PhotosFragment : BaseFragment() {
     lateinit var downloadService: DownloadService
 
     @Inject
-    lateinit var glide: RequestManager
+    lateinit var photoLoader: PhotoLoader
 
     private val viewModel: PhotosViewModel by viewModels()
 
@@ -46,7 +46,7 @@ class PhotosFragment : BaseFragment() {
         PhotoActionDispatcher(
             fragment = this,
             downloadService = downloadService,
-            glide = glide,
+            photoLoader = photoLoader,
             onToggleFavorite = viewModel::toggleFavorite,
             onShowMessage = ::showMessage
         )
@@ -58,7 +58,7 @@ class PhotosFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
 
         photoAdapter = PhotoPagingAdapter(
-            glide = glide,
+            photoLoader = photoLoader,
             favoritesRepository = favoritesRepository,
             lifecycleScope = lifecycleScope,
             listener = photoActionDispatcher

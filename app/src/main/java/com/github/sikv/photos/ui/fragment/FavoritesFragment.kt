@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.RequestManager
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.databinding.FragmentFavoritesBinding
-import com.github.sikv.photos.model.PhotoItemLayoutType
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.ListLayout
+import com.github.sikv.photos.model.PhotoItemLayoutType
 import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.PhotoActionDispatcher
 import com.github.sikv.photos.ui.adapter.PhotoListAdapter
@@ -40,7 +40,7 @@ class FavoritesFragment : BaseFragment() {
     lateinit var downloadService: DownloadService
 
     @Inject
-    lateinit var glide: RequestManager
+    lateinit var photoLoader: PhotoLoader
 
     private val viewModel: FavoritesViewModel by viewModels()
 
@@ -48,7 +48,7 @@ class FavoritesFragment : BaseFragment() {
         PhotoActionDispatcher(
             fragment = this,
             downloadService = downloadService,
-            glide = glide,
+            photoLoader = photoLoader,
             onToggleFavorite = viewModel::toggleFavorite,
             onShowMessage = ::showMessage
         )
@@ -60,7 +60,7 @@ class FavoritesFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
 
         photoAdapter = PhotoListAdapter(
-            glide = glide,
+            photoLoader = photoLoader,
             favoritesRepository = favoritesRepository,
             lifecycleScope = lifecycleScope,
             listener = photoActionDispatcher

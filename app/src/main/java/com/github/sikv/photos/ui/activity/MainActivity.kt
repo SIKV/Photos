@@ -6,11 +6,9 @@ import android.os.Bundle
 import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import com.github.sikv.photos.R
 import com.github.sikv.photos.config.feature.FeatureFlagFetcher
 import com.github.sikv.photos.databinding.ActivityMainBinding
-import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.ui.fragment.BaseFragment
 import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
 import com.github.sikv.photos.ui.fragment.SearchFragment
@@ -20,7 +18,6 @@ import com.github.sikv.photos.ui.navigation.OnDestinationChangedListener
 import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.util.changeFragment
 import com.github.sikv.photos.util.getActiveFragment
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.reflect.KClass

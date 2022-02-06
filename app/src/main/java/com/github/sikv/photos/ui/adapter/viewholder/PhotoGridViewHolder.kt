@@ -3,17 +3,15 @@ package com.github.sikv.photos.ui.adapter.viewholder
 import android.view.View
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
 import com.github.sikv.photos.ui.adapter.PhotoGridItem
 import com.github.sikv.photos.util.OnHoldReleaseListener
-import com.github.sikv.photos.util.PHOTO_TRANSITION_DURATION
 import com.github.sikv.photos.util.setOnHoldReleaseListener
 
 class PhotoGridViewHolder(
-        itemView: View,
-        private val glide: RequestManager
+    itemView: View,
+    private val photoLoader: PhotoLoader
 ) : RecyclerView.ViewHolder(itemView) {
 
     fun bind(item: PhotoGridItem, listener: OnPhotoActionListener) {
@@ -25,9 +23,7 @@ class PhotoGridViewHolder(
             imageView.setImageDrawable(null)
 
             pair.first?.let { photo ->
-                glide.load(photo.getPhotoPreviewUrl())
-                        .transition(DrawableTransitionOptions.withCrossFade(PHOTO_TRANSITION_DURATION))
-                        .into(imageView)
+                photoLoader.load(photo.getPhotoPreviewUrl(), imageView)
 
                 imageView.setOnClickListener { view ->
                     listener.onPhotoAction(OnPhotoActionListener.Action.CLICK, photo, view)
