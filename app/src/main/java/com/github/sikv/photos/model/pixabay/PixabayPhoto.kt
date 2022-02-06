@@ -14,7 +14,7 @@ class PixabayPhoto(
     val pageUrl: String,
 
     @SerializedName("imageURL")
-    val imageUrl: String,
+    val originalImageUrl: String,
 
     @SerializedName("fullHDURL")
     val fullHDUrl: String,
@@ -31,9 +31,9 @@ class PixabayPhoto(
 
     override fun getPhotoId(): String = id.toString()
 
-    override fun getPhotoPreviewUrl(): String = imageUrl
+    override fun getPhotoPreviewUrl(): String = largeImageUrl
     override fun getPhotoFullPreviewUrl(): String = fullHDUrl
-    override fun getPhotoDownloadUrl(): String = largeImageUrl
+    override fun getPhotoDownloadUrl(): String = originalImageUrl
     override fun getPhotoShareUrl(): String = pageUrl
 
     override fun getPhotoPhotographerName(): String = user
