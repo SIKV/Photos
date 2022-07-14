@@ -17,7 +17,6 @@ Browse, search, download, and share amazing free photos provided by talented pho
 - [Room](https://developer.android.com/topic/libraries/architecture/room)
 - [Retrofit](https://square.github.io/retrofit)
 - [Kotlin Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
-- [Firebase Authentication](https://firebase.google.com/docs/auth)
 - [Cloud Firestore](https://firebase.google.com/docs/firestore)
 - [Firebase Remote Config](https://firebase.google.com/docs/remote-config)
 - [ML Kit](https://developers.google.com/ml-kit)
@@ -30,5 +29,4 @@ Browse, search, download, and share amazing free photos provided by talented pho
   <img src="../assets/2022_1.png" width="225">
   <img src="../assets/2022_2.png" width="225">
   <img src="../assets/2022_3.png" width="225">
-  <img src="../assets/2022_4.png" width="225">
 </p>
