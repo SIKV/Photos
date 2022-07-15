@@ -69,8 +69,8 @@ class MoreFragment : BaseFragment() {
             observeAppVersion()
         }
 
-        override fun onPreferenceTreeClick(preference: Preference?): Boolean {
-            return when (preference?.key) {
+        override fun onPreferenceTreeClick(preference: Preference): Boolean {
+            return when (preference.key) {
                 getString(R.string._pref_send_feedback) -> {
                     showFragment(FeedbackFragment())
                     return true
