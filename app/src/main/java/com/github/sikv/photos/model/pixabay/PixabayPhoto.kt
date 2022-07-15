@@ -3,7 +3,7 @@ package com.github.sikv.photos.model.pixabay
 import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.model.Photo
 import com.google.gson.annotations.SerializedName
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class PixabayPhoto(

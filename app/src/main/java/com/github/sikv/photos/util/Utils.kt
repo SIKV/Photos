@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.sikv.photos.R
-import kotlinx.android.synthetic.main.item_option.view.*
+import com.github.sikv.photos.databinding.ItemOptionBinding
 import java.util.*
 
 object Utils {
@@ -15,15 +15,15 @@ object Utils {
     }
 
     fun addCancelOption(context: Context?, layout: ViewGroup, cancelClickListener: View.OnClickListener) {
-        val optionLayout = LayoutInflater.from(context).inflate(R.layout.item_option, layout, false)
+        val binding = ItemOptionBinding.inflate(LayoutInflater.from(context), layout, false)
 
-        optionLayout.optionText.text = context?.getString(R.string.cancel)
-        optionLayout.optionText.alpha = 0.5F
+        binding.optionText.text = context?.getString(R.string.cancel)
+        binding.optionText.alpha = 0.5F
 
-        optionLayout.optionSelectedImage.setImageDrawable(null)
+        binding.optionSelectedImage.setImageDrawable(null)
 
-        optionLayout.setOnClickListener(cancelClickListener)
+        binding.root.setOnClickListener(cancelClickListener)
 
-        layout.addView(optionLayout)
+        layout.addView(binding.root)
     }
 }

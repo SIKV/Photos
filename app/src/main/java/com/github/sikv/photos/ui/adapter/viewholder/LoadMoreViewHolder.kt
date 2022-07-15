@@ -2,16 +2,19 @@ package com.github.sikv.photos.ui.adapter.viewholder
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_load_more.view.*
+import com.github.sikv.photos.R
 
 class LoadMoreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(loadingMoreInProgress: Boolean, loadMoreCallback: () -> Unit) {
-        itemView.loadMoreButton.visibility = if (loadingMoreInProgress) View.GONE else View.VISIBLE
-        itemView.progressBar.visibility = if (loadingMoreInProgress) View.VISIBLE else View.GONE
+    private val loadMoreButton = itemView.findViewById<View>(R.id.loadMoreButton)
+    private val progressBar = itemView.findViewById<View>(R.id.progressBar)
 
-        itemView.loadMoreButton.setOnClickListener { view ->
-            itemView.progressBar.visibility = View.VISIBLE
+    fun bind(loadingMoreInProgress: Boolean, loadMoreCallback: () -> Unit) {
+        loadMoreButton.visibility = if (loadingMoreInProgress) View.GONE else View.VISIBLE
+        progressBar.visibility = if (loadingMoreInProgress) View.VISIBLE else View.GONE
+
+        loadMoreButton.setOnClickListener { view ->
+            progressBar.visibility = View.VISIBLE
             view.visibility = View.GONE
 
             loadMoreCallback()

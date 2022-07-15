@@ -65,6 +65,7 @@ class PhotoDetailsFragment : BaseFragment() {
                                     onAttributionPressed = { openAttribution(state.photo) }
                                 )
                             }
+                            else -> { }
                         }
                     }
                 }

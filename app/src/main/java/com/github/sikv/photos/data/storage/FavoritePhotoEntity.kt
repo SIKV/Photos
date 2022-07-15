@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.model.Photo
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = DbConfig.favoritePhotosTableName)
 @Parcelize

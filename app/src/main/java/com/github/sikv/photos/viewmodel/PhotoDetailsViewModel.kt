@@ -39,6 +39,7 @@ class PhotoDetailsViewModel @Inject constructor(
             is PhotoViewState.Ready -> {
                 favoritesRepository.invertFavorite(state.photo)
             }
+            else -> { }
         }
     }
 
@@ -47,6 +48,7 @@ class PhotoDetailsViewModel @Inject constructor(
             is PhotoViewState.Ready -> {
                 downloadService.downloadPhoto(state.photo.getPhotoDownloadUrl())
             }
+            else -> { }
         }
     }
 
@@ -61,6 +63,7 @@ class PhotoDetailsViewModel @Inject constructor(
             is PhotoViewState.Ready -> {
                 mutableViewState.postValue(state.copy(isFavorite = isFavorite))
             }
+            else -> { }
         }
     }
 
