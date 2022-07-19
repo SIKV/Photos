@@ -19,7 +19,7 @@ import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
 @Parcelize

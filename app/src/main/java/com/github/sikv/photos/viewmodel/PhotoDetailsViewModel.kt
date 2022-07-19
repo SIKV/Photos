@@ -1,16 +1,13 @@
 package com.github.sikv.photos.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.compose.state.PhotoViewState
 import com.github.sikv.photos.ui.fragment.PhotoDetailsFragmentArguments
 import com.github.sikv.photos.ui.fragmentArguments
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +15,7 @@ class PhotoDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val favoritesRepository: FavoritesRepository,
     private val downloadService: DownloadService
-) : ViewModel(), FavoritesRepository.Listener {
+) : ViewModel() {
 
     private val mutableViewState = MutableLiveData<PhotoViewState>(PhotoViewState.NoData)
     val viewState: LiveData<PhotoViewState> = mutableViewState
@@ -26,12 +23,26 @@ class PhotoDetailsViewModel @Inject constructor(
     init {
         val photo = savedStateHandle.fragmentArguments<PhotoDetailsFragmentArguments>().photo
 
-        favoritesRepository.subscribe(this)
-
         mutableViewState.value = PhotoViewState.Ready(
             photo = photo,
             isFavorite = favoritesRepository.isFavorite(photo)
         )
+
+        viewModelScope.launch {
+            favoritesRepository.favoriteUpdates().collect { update ->
+                when (update) {
+                    is FavoritesRepository.UpdatePhoto -> {
+                        when (val state = viewState.value) {
+                            is PhotoViewState.Ready -> {
+                                mutableViewState.postValue(state.copy(isFavorite = update.isFavorite))
+                            }
+                            else -> {}
+                        }
+                    }
+                    else -> {}
+                }
+            }
+        }
     }
 
     fun toggleFavorite() {
@@ -39,7 +50,7 @@ class PhotoDetailsViewModel @Inject constructor(
             is PhotoViewState.Ready -> {
                 favoritesRepository.invertFavorite(state.photo)
             }
-            else -> { }
+            else -> {}
         }
     }
 
@@ -48,24 +59,7 @@ class PhotoDetailsViewModel @Inject constructor(
             is PhotoViewState.Ready -> {
                 downloadService.downloadPhoto(state.photo.getPhotoDownloadUrl())
             }
-            else -> { }
+            else -> {}
         }
     }
-
-    override fun onCleared() {
-        super.onCleared()
-
-        favoritesRepository.unsubscribe(this)
-    }
-
-    override fun onFavoriteChanged(photo: Photo, isFavorite: Boolean) {
-        when (val state = viewState.value) {
-            is PhotoViewState.Ready -> {
-                mutableViewState.postValue(state.copy(isFavorite = isFavorite))
-            }
-            else -> { }
-        }
-    }
-
-    override fun onFavoritesChanged() {}
 }

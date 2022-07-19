@@ -1,5 +1,6 @@
 package com.github.sikv.photos.ui.fragment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -7,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
@@ -23,6 +26,7 @@ import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.*
 import com.github.sikv.photos.viewmodel.PhotosViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -127,34 +131,46 @@ class PhotosFragment : BaseFragment() {
         binding.photosRecycler.scrollToTop()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun observe() {
-        viewModel.getCuratedPhotos().observe(viewLifecycleOwner, {
+        viewModel.getCuratedPhotos().observe(viewLifecycleOwner) {
             photoAdapter.submitData(lifecycle, it)
-        })
+        }
 
-        viewModel.favoriteChangedEvent.observe(viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { photo ->
-                photoAdapter.notifyPhotoChanged(photo)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.listLayoutState.collect(::updateListLayout)
             }
-        })
+        }
 
-        viewModel.favoritesChangedEvent.observe(viewLifecycleOwner, {
-            if (it.canHandle()) {
-                photoAdapter.notifyDataSetChanged()
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.favoriteUpdates().collect { update ->
+                    when (update) {
+                        is FavoritesRepository.UpdatePhoto -> {
+                            photoAdapter.notifyPhotoChanged(update.photo)
+                        }
+                        is FavoritesRepository.UpdateAll -> {
+                            photoAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
             }
-        })
-
-        viewModel.listLayoutChanged.observe(viewLifecycleOwner, { listLayout ->
-            updateListLayout(listLayout)
-        })
+        }
     }
 
     private fun addLoadStateListener() {
         photoAdapter.addLoadStateListener { loadState ->
             when (loadState.refresh) {
-                is LoadState.NotLoading -> binding.photosRecycler.setVisibilityAnimated(View.VISIBLE)
-                is LoadState.Loading -> binding.photosRecycler.setVisibilityAnimated(View.GONE)
-                is LoadState.Error -> binding.photosRecycler.setVisibilityAnimated(View.GONE)
+                is LoadState.NotLoading -> {
+                    binding.photosRecycler.setVisibilityAnimated(View.VISIBLE)
+                }
+                is LoadState.Loading -> {
+                    binding.photosRecycler.setVisibilityAnimated(View.GONE)
+                }
+                is LoadState.Error -> {
+                    binding.photosRecycler.setVisibilityAnimated(View.GONE)
+                }
             }
 
             binding.loadingView.updateLoadState(loadState)

@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.databinding.FragmentSingleSearchBinding
@@ -23,7 +25,8 @@ import com.github.sikv.photos.util.disableChangeAnimations
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.parcel.Parcelize
+import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
 
 @Parcelize
@@ -94,7 +97,7 @@ class SingleSearchFragment : BaseFragment() {
         addLoadStateListener()
 
         observeSearchQuery()
-        observeFavoriteToggle()
+        collectFavoriteUpdates()
     }
 
     override fun onDestroyView() {
@@ -104,26 +107,29 @@ class SingleSearchFragment : BaseFragment() {
     }
 
     private fun observeSearchQuery() {
-        viewModel.searchQuery.observe(viewLifecycleOwner, { query ->
-            viewModel.searchPhotos(args.photoSource, query)?.observe(viewLifecycleOwner, { data ->
+        viewModel.searchQuery.observe(viewLifecycleOwner) { query ->
+            viewModel.searchPhotos(args.photoSource, query)?.observe(viewLifecycleOwner) { data ->
                 photoAdapter.submitData(lifecycle, data)
-            })
-        })
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun observeFavoriteToggle() {
-        viewModel.favoriteToggled.observe(viewLifecycleOwner, {
-            it.getContentIfNotHandled()?.let { photo ->
-                photoAdapter.notifyPhotoChanged(photo)
+    private fun collectFavoriteUpdates() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.favoriteUpdates().collect { update ->
+                    when (update) {
+                        is FavoritesRepository.UpdatePhoto -> {
+                            photoAdapter.notifyPhotoChanged(update.photo)
+                        }
+                        is FavoritesRepository.UpdateAll -> {
+                            photoAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
             }
-        })
-
-        viewModel.favoriteListToggled.observe(viewLifecycleOwner, {
-            if (it.canHandle()) {
-                photoAdapter.notifyDataSetChanged()
-            }
-        })
+        }
     }
 
     private fun addLoadStateListener() {

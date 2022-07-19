@@ -6,9 +6,11 @@ import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.storage.FavoritePhotoEntity
 import com.github.sikv.photos.data.storage.FavoritesDao
 import com.github.sikv.photos.data.storage.FavoritesDbQueryBuilder
-import com.github.sikv.photos.model.SortBy
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.SortBy
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,20 +22,16 @@ class FavoritesRepositoryImpl @Inject constructor(
 
     private val scope = CoroutineScope(Job() + Dispatchers.IO)
 
-    private val subscribers = mutableListOf<FavoritesRepository.Listener>()
-
     /**
      * This overrides default value for isFavorite flag for photos.
      * Only if [Add to Favorites], [Remove from Favorites] or [Delete All Favorites] action has been occurred.
      */
     private val favorites = mutableMapOf<Photo, Boolean>()
 
-    override fun subscribe(listener: FavoritesRepository.Listener) {
-        subscribers.add(listener)
-    }
+    private val updateFlow = MutableSharedFlow<FavoritesRepository.Update>()
 
-    override fun unsubscribe(listener: FavoritesRepository.Listener) {
-        subscribers.remove(listener)
+    override fun favoriteUpdates(): Flow<FavoritesRepository.Update> {
+        return updateFlow
     }
 
     override fun getFavorites(sortBy: SortBy): LiveData<List<FavoritePhotoEntity>> {
@@ -51,21 +49,23 @@ class FavoritesRepositoryImpl @Inject constructor(
      */
     override fun invertFavorite(photo: Photo) {
         val favorite = !isFavorite(photo)
-
         favorites[photo] = favorite
 
-        subscribers.forEach {
-            it.onFavoriteChanged(photo, favorite)
-        }
-
-        val favoritePhoto = FavoritePhotoEntity.fromPhoto(photo)
-
         scope.launch {
+            val favoritePhoto = FavoritePhotoEntity.fromPhoto(photo)
+
             if (favorite) {
                 favoritesDao.insert(favoritePhoto)
             } else {
                 favoritesDao.delete(favoritePhoto)
             }
+
+            updateFlow.emit(
+                FavoritesRepository.UpdatePhoto(
+                    photo = photo,
+                    isFavorite = favorite
+                )
+            )
         }
     }
 
@@ -79,10 +79,7 @@ class FavoritesRepositoryImpl @Inject constructor(
                 favorites[it] = false
             }
 
-            subscribers.forEach {
-                it.onFavoritesChanged()
-            }
-
+            updateFlow.emit(FavoritesRepository.UpdateAll)
             true
         } else {
             false
@@ -97,9 +94,7 @@ class FavoritesRepositoryImpl @Inject constructor(
                 favorites[it] = true
             }
 
-            subscribers.forEach {
-                it.onFavoritesChanged()
-            }
+            updateFlow.emit(FavoritesRepository.UpdateAll)
         }
     }
 

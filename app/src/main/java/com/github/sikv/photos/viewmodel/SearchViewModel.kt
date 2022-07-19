@@ -10,11 +10,10 @@ import com.github.sikv.photos.config.ConfigProvider
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.data.source.SearchPhotosPagingSource
-import com.github.sikv.photos.event.Event
-import com.github.sikv.photos.event.VoidEvent
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.PhotoSource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,33 +21,13 @@ class SearchViewModel @Inject constructor(
     private val photosRepository: PhotosRepository,
     private val favoritesRepository: FavoritesRepository,
     private val configProvider: ConfigProvider
-) : ViewModel(), FavoritesRepository.Listener {
+) : ViewModel() {
 
     private val mutableSearchQuery = MutableLiveData<String>()
     val searchQuery: LiveData<String> = mutableSearchQuery
 
-    private val mutableFavoriteToggled = MutableLiveData<Event<Photo>>()
-    val favoriteToggled: LiveData<Event<Photo>> = mutableFavoriteToggled
-
-    private val mutableFavoriteListToggled = MutableLiveData<VoidEvent>()
-    val favoriteListToggled: LiveData<VoidEvent> = mutableFavoriteListToggled
-
-    init {
-        favoritesRepository.subscribe(this)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-
-        favoritesRepository.unsubscribe(this)
-    }
-
-    override fun onFavoriteChanged(photo: Photo, isFavorite: Boolean) {
-        mutableFavoriteToggled.postValue(Event(photo))
-    }
-
-    override fun onFavoritesChanged() {
-        mutableFavoriteListToggled.postValue(VoidEvent())
+    fun favoriteUpdates(): Flow<FavoritesRepository.Update> {
+        return favoritesRepository.favoriteUpdates()
     }
 
     fun requestSearch(text: String) {

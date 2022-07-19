@@ -2,18 +2,22 @@ package com.github.sikv.photos.data.repository
 
 import androidx.lifecycle.LiveData
 import com.github.sikv.photos.data.storage.FavoritePhotoEntity
-import com.github.sikv.photos.model.SortBy
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.SortBy
+import kotlinx.coroutines.flow.Flow
 
 interface FavoritesRepository {
 
-    interface Listener {
-        fun onFavoriteChanged(photo: Photo, isFavorite: Boolean)
-        fun onFavoritesChanged()
-    }
+    sealed interface Update
 
-    fun subscribe(listener: Listener)
-    fun unsubscribe(listener: Listener)
+    data class UpdatePhoto(
+        val photo: Photo,
+        val isFavorite: Boolean
+    ) : Update
+
+    object UpdateAll : Update
+
+    fun favoriteUpdates(): Flow<Update>
 
     fun getFavorites(sortBy: SortBy = SortBy.DATE_ADDED_NEWEST): LiveData<List<FavoritePhotoEntity>>
     fun getRandom(): FavoritePhotoEntity?
