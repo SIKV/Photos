@@ -1,10 +1,8 @@
 package com.github.sikv.photos.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.Pager
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.github.sikv.photos.config.ConfigProvider
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
@@ -26,8 +24,8 @@ class PhotosViewModel @Inject constructor(
     private val configProvider: ConfigProvider
 ) : ViewModel() {
 
-    private val _listLayoutState = MutableStateFlow(preferencesService.getCuratedListLayout())
-    val listLayoutState: StateFlow<ListLayout> = _listLayoutState
+    private val mutableListLayoutState = MutableStateFlow(preferencesService.getCuratedListLayout())
+    val listLayoutState: StateFlow<ListLayout> = mutableListLayoutState
 
     fun favoriteUpdates(): Flow<FavoritesRepository.Update> {
         return favoritesRepository.favoriteUpdates()
@@ -39,15 +37,15 @@ class PhotosViewModel @Inject constructor(
 
     fun updateListLayout(listLayout: ListLayout) {
         preferencesService.setCuratedListLayout(listLayout)
-        _listLayoutState.value = listLayout
+        mutableListLayoutState.value = listLayout
     }
 
-    fun getCuratedPhotos(): LiveData<PagingData<Photo>> {
+    fun getCuratedPhotos(): Flow<PagingData<Photo>> {
         return Pager(
             config = configProvider.getPagingConfig(),
             pagingSourceFactory = {
                 CuratedPhotosPagingSource(photosRepository)
             }
-        ).liveData
+        ).flow
     }
 }

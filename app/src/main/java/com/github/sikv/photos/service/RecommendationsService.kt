@@ -6,13 +6,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-data class RecommendedPhotos(
+data class Recommendations(
     val photos: List<Photo>,
     val moreAvailable: Boolean,
     val reset: Boolean
 )
 
-class RecommendationService @Inject constructor(
+class RecommendationsService @Inject constructor(
     private val favoritesRepository: FavoritesRepository,
     private val imageLabelerService: ImageLabelerService
 ) {

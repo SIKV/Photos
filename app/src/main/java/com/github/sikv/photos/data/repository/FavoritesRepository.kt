@@ -1,6 +1,5 @@
 package com.github.sikv.photos.data.repository
 
-import androidx.lifecycle.LiveData
 import com.github.sikv.photos.data.storage.FavoritePhotoEntity
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.SortBy
@@ -19,7 +18,7 @@ interface FavoritesRepository {
 
     fun favoriteUpdates(): Flow<Update>
 
-    fun getFavorites(sortBy: SortBy = SortBy.DATE_ADDED_NEWEST): LiveData<List<FavoritePhotoEntity>>
+    fun getFavorites(sortBy: SortBy = SortBy.DATE_ADDED_NEWEST): Flow<List<FavoritePhotoEntity>>
     fun getRandom(): FavoritePhotoEntity?
 
     /**

@@ -8,8 +8,8 @@ import com.github.sikv.photos.config.ConfigProvider
 import com.github.sikv.photos.config.feature.FeatureFlag
 import com.github.sikv.photos.config.feature.FeatureFlagProvider
 import com.github.sikv.photos.data.repository.PhotosRepository
-import com.github.sikv.photos.service.RecommendationService
-import com.github.sikv.photos.service.RecommendedPhotos
+import com.github.sikv.photos.service.Recommendations
+import com.github.sikv.photos.service.RecommendationsService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,13 +17,13 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchDashboardViewModel @Inject constructor(
     private val photosRepository: PhotosRepository,
-    private val recommendationService: RecommendationService,
+    private val recommendationService: RecommendationsService,
     private val configProvider: ConfigProvider,
     private val featureFlagProvider: FeatureFlagProvider
 ) : ViewModel() {
 
-    private val recommendedPhotosLoadedMutableEvent = MutableLiveData<RecommendedPhotos>()
-    val recommendedPhotosLoadedEvent: LiveData<RecommendedPhotos> =
+    private val recommendedPhotosLoadedMutableEvent = MutableLiveData<Recommendations>()
+    val recommendedPhotosLoadedEvent: LiveData<Recommendations> =
         recommendedPhotosLoadedMutableEvent
 
     init {
@@ -49,14 +49,14 @@ class SearchDashboardViewModel @Inject constructor(
                 )
 
                 recommendedPhotosLoadedMutableEvent.postValue(
-                    RecommendedPhotos(
+                    Recommendations(
                         photos,
                         recommendation.moreAvailable, reset
                     )
                 )
             } else {
                 recommendedPhotosLoadedMutableEvent.postValue(
-                    RecommendedPhotos(
+                    Recommendations(
                         emptyList(),
                         recommendation.moreAvailable, reset
                     )

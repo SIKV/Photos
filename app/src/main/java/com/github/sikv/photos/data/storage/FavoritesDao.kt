@@ -1,9 +1,9 @@
 package com.github.sikv.photos.data.storage
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.sqlite.db.SupportSQLiteQuery
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoritesDao {
@@ -12,7 +12,7 @@ interface FavoritesDao {
     fun insert(photo: FavoritePhotoEntity)
 
     @RawQuery(observedEntities = [FavoritePhotoEntity::class])
-    fun getPhotos(query: SupportSQLiteQuery): LiveData<List<FavoritePhotoEntity>>
+    fun getPhotos(query: SupportSQLiteQuery): Flow<List<FavoritePhotoEntity>>
 
     @Query("SELECT * FROM ${DbConfig.favoritePhotosTableName} WHERE id=:id AND markedAsDeleted=0")
     fun getById(id: String): FavoritePhotoEntity?

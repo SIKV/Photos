@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -14,9 +17,11 @@ import com.github.sikv.photos.manager.ThemeManager
 import com.github.sikv.photos.util.disableScrollableToolbar
 import com.github.sikv.photos.util.setupToolbar
 import com.github.sikv.photos.util.showFragment
+import com.github.sikv.photos.viewmodel.MoreUiState
 import com.github.sikv.photos.viewmodel.MoreViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -66,7 +71,7 @@ class MoreFragment : BaseFragment() {
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
-            observeAppVersion()
+            collectUiState()
         }
 
         override fun onPreferenceTreeClick(preference: Preference): Boolean {
@@ -86,9 +91,16 @@ class MoreFragment : BaseFragment() {
             }
         }
 
-        private fun observeAppVersion() {
-            viewModel.showAppVersionEvent.observe(viewLifecycleOwner) {
-                findPreference<Preference>(getString(R.string._pref_app_version))?.summary = it.peekContent()
+        private fun collectUiState() {
+            lifecycleScope.launch {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    viewModel.uiState.collect { uiState ->
+                        if (uiState is MoreUiState.Data) {
+                            findPreference<Preference>(getString(R.string._pref_app_version))
+                                ?.summary = uiState.appVersion
+                        }
+                    }
+                }
             }
         }
     }

@@ -1,7 +1,5 @@
 package com.github.sikv.photos.data.repository.impl
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.storage.FavoritePhotoEntity
 import com.github.sikv.photos.data.storage.FavoritesDao
@@ -11,6 +9,7 @@ import com.github.sikv.photos.model.SortBy
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,10 +33,10 @@ class FavoritesRepositoryImpl @Inject constructor(
         return updateFlow
     }
 
-    override fun getFavorites(sortBy: SortBy): LiveData<List<FavoritePhotoEntity>> {
+    override fun getFavorites(sortBy: SortBy): Flow<List<FavoritePhotoEntity>> {
         val query = queryBuilder.buildGetPhotosQuery(sortBy)
 
-        return Transformations.map(favoritesDao.getPhotos(query)) { photos ->
+        return favoritesDao.getPhotos(query).map { photos ->
             photos.onEach { it.favorite = true }
         }
     }

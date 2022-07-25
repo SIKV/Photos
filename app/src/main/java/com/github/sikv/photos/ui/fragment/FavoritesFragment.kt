@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.github.sikv.photos.R
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.databinding.FragmentFavoritesBinding
@@ -21,17 +23,16 @@ import com.github.sikv.photos.ui.custom.toolbar.FragmentToolbar
 import com.github.sikv.photos.util.scrollToTop
 import com.github.sikv.photos.util.setItemLayoutType
 import com.github.sikv.photos.util.setupToolbar
+import com.github.sikv.photos.viewmodel.FavoritesUiState
 import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class FavoritesFragment : BaseFragment() {
-
-    private var _binding: FragmentFavoritesBinding? = null
-    private val binding get() = _binding!!
 
     @Inject
     lateinit var favoritesRepository: FavoritesRepository
@@ -55,6 +56,11 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private lateinit var photoAdapter: PhotoListAdapter
+
+    private var removedSnackbar: Snackbar? = null
+
+    private var _binding: FragmentFavoritesBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +92,7 @@ class FavoritesFragment : BaseFragment() {
         // Default value is not working good. When a photo is removed animation is broken.
         binding.photosRecycler.itemAnimator?.removeDuration = 0
 
-        observe()
+        collectUiState()
     }
 
     override fun onDestroyView() {
@@ -143,32 +149,46 @@ class FavoritesFragment : BaseFragment() {
         binding.photosRecycler.scrollToTop()
     }
 
-    private fun observe() {
-        viewModel.favoritesLiveData.observe(viewLifecycleOwner, {
-            it?.let { photos ->
-                photoAdapter.submitList(photos)
-                binding.noResultsView.isVisible = photos.isEmpty()
+    private fun collectUiState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    updateUiState(uiState)
+                }
             }
-        })
+        }
+    }
 
-        viewModel.removeAllResultEvent.observe(viewLifecycleOwner, { event ->
-            if (event.getContentIfNotHandled() == true) {
-                Snackbar.make(binding.root, R.string.removed, Snackbar.LENGTH_LONG)
-                    .setAction(R.string.undo) {
-                        viewModel.unmarkAllAsRemoved()
-                    }
-                    .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
-                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                            viewModel.removeAllIfNotUndone()
-                        }
-                    })
-                    .show()
+    private fun updateUiState(uiState: FavoritesUiState) {
+        when (uiState) {
+            is FavoritesUiState.Data -> {
+                photoAdapter.submitList(uiState.photos)
+                binding.noResultsView.isVisible = uiState.photos.isEmpty()
+
+                updateListLayout(uiState.listLayout)
+
+                if (uiState.shouldShowRemovedNotification) {
+                    showFavoritesRemovedSnackbar()
+                }
             }
-        })
+        }
+    }
 
-        viewModel.listLayoutChanged.observe(viewLifecycleOwner, { listLayout ->
-            updateListLayout(listLayout)
-        })
+    private fun showFavoritesRemovedSnackbar() {
+        if (removedSnackbar?.isShown == true) {
+            return
+        }
+        removedSnackbar = Snackbar.make(binding.root, R.string.removed, Snackbar.LENGTH_LONG)
+            .setAction(R.string.undo) {
+                viewModel.unmarkAllAsRemoved()
+            }
+            .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    viewModel.removeAllIfNotUndone()
+                }
+            })
+
+        removedSnackbar?.show()
     }
 
     private fun updateListLayout(listLayout: ListLayout) {

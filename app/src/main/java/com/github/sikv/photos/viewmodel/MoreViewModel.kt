@@ -1,21 +1,29 @@
 package com.github.sikv.photos.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.sikv.photos.BuildConfig
-import com.github.sikv.photos.event.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
+
+sealed interface MoreUiState {
+    object Empty : MoreUiState
+
+    data class Data(
+        val appVersion: String
+    ) : MoreUiState
+}
 
 @HiltViewModel
 class MoreViewModel @Inject constructor() : ViewModel() {
 
-    private val showAppVersionMutableEvent = MutableLiveData<Event<String>>()
-    val showAppVersionEvent: LiveData<Event<String>> = showAppVersionMutableEvent
+    private val mutableUiState = MutableStateFlow<MoreUiState>(MoreUiState.Empty)
+    val uiState: StateFlow<MoreUiState> = mutableUiState
 
     init {
-        val appVersion = BuildConfig.VERSION_NAME
-        showAppVersionMutableEvent.postValue(Event(appVersion))
+        mutableUiState.value = MoreUiState.Data(
+            appVersion = BuildConfig.VERSION_NAME
+        )
     }
 }

@@ -1,11 +1,9 @@
 package com.github.sikv.photos.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingData
-import androidx.paging.liveData
 import com.github.sikv.photos.config.ConfigProvider
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
@@ -14,6 +12,8 @@ import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.PhotoSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,18 +23,24 @@ class SearchViewModel @Inject constructor(
     private val configProvider: ConfigProvider
 ) : ViewModel() {
 
-    private val mutableSearchQuery = MutableLiveData<String>()
-    val searchQuery: LiveData<String> = mutableSearchQuery
+    private val mutableSearchQueryFlow = MutableSharedFlow<String>(replay = 1)
+    val searchQueryFlow: Flow<String> = mutableSearchQueryFlow
 
     fun favoriteUpdates(): Flow<FavoritesRepository.Update> {
         return favoritesRepository.favoriteUpdates()
     }
 
-    fun requestSearch(text: String) {
-        mutableSearchQuery.postValue(text)
+    fun toggleFavorite(photo: Photo) {
+        favoritesRepository.invertFavorite(photo)
     }
 
-    fun searchPhotos(photoSource: PhotoSource, query: String): LiveData<PagingData<Photo>>? {
+    fun requestSearch(text: String) {
+        viewModelScope.launch {
+            mutableSearchQueryFlow.emit(text)
+        }
+    }
+
+    fun searchPhotos(photoSource: PhotoSource, query: String): Flow<PagingData<Photo>>? {
         val queryTrimmed = query.trim()
 
         if (queryTrimmed.isEmpty()) {
@@ -46,10 +52,6 @@ class SearchViewModel @Inject constructor(
             pagingSourceFactory = {
                 SearchPhotosPagingSource(photosRepository, photoSource, queryTrimmed)
             }
-        ).liveData
-    }
-
-    fun toggleFavorite(photo: Photo) {
-        favoritesRepository.invertFavorite(photo)
+        ).flow
     }
 }

@@ -32,9 +32,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PhotosFragment : BaseFragment() {
 
-    private var _binding: FragmentPhotosBinding? = null
-    private val binding get() = _binding!!
-
     @Inject
     lateinit var favoritesRepository: FavoritesRepository
 
@@ -57,6 +54,9 @@ class PhotosFragment : BaseFragment() {
     }
 
     private lateinit var photoAdapter: PhotoPagingAdapter<Photo>
+
+    private var _binding: FragmentPhotosBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,7 +90,7 @@ class PhotosFragment : BaseFragment() {
         }
 
         addLoadStateListener()
-        observe()
+        collect()
     }
 
     override fun onDestroyView() {
@@ -132,9 +132,13 @@ class PhotosFragment : BaseFragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    private fun observe() {
-        viewModel.getCuratedPhotos().observe(viewLifecycleOwner) {
-            photoAdapter.submitData(lifecycle, it)
+    private fun collect() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.getCuratedPhotos().collect {
+                    photoAdapter.submitData(lifecycle, it)
+                }
+            }
         }
 
         lifecycleScope.launch {

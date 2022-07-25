@@ -49,9 +49,6 @@ class SingleSearchFragment : BaseFragment() {
     private val viewModel: SearchViewModel by activityViewModels()
     private val args by fragmentArguments<SingleSearchFragmentArguments>()
 
-    private var _binding: FragmentSingleSearchBinding? = null
-    private val binding get() = _binding!!
-
     private val photoActionDispatcher by lazy {
         PhotoActionDispatcher(
             fragment = this,
@@ -63,6 +60,9 @@ class SingleSearchFragment : BaseFragment() {
     }
 
     private lateinit var photoAdapter: PhotoPagingAdapter<Photo>
+
+    private var _binding: FragmentSingleSearchBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +96,7 @@ class SingleSearchFragment : BaseFragment() {
 
         addLoadStateListener()
 
-        observeSearchQuery()
+        collectSearchQuery()
         collectFavoriteUpdates()
     }
 
@@ -106,10 +106,14 @@ class SingleSearchFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun observeSearchQuery() {
-        viewModel.searchQuery.observe(viewLifecycleOwner) { query ->
-            viewModel.searchPhotos(args.photoSource, query)?.observe(viewLifecycleOwner) { data ->
-                photoAdapter.submitData(lifecycle, data)
+    private fun collectSearchQuery() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchQueryFlow.collect { query ->
+                    viewModel.searchPhotos(args.photoSource, query)?.collect { data ->
+                        photoAdapter.submitData(lifecycle, data)
+                    }
+                }
             }
         }
     }

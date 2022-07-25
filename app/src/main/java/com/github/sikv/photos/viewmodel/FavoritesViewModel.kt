@@ -1,19 +1,29 @@
 package com.github.sikv.photos.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.storage.FavoritePhotoEntity
-import com.github.sikv.photos.model.SortBy
-import com.github.sikv.photos.event.Event
 import com.github.sikv.photos.model.ListLayout
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.SortBy
 import com.github.sikv.photos.service.PreferencesService
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.util.getString
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+sealed interface FavoritesUiState {
+    data class Data(
+        val photos: List<FavoritePhotoEntity>,
+        val listLayout: ListLayout,
+        val shouldShowRemovedNotification: Boolean
+    ) : FavoritesUiState
+}
 
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
@@ -22,39 +32,39 @@ class FavoritesViewModel @Inject constructor(
     private val preferencesService: PreferencesService
 ) : AndroidViewModel(application) {
 
-    private val favoritesNewest: LiveData<List<FavoritePhotoEntity>>
-    private val favoritesOldest: LiveData<List<FavoritePhotoEntity>>
-
-    private val favoritesMediatorLiveData = MediatorLiveData<List<FavoritePhotoEntity>>()
-    val favoritesLiveData: LiveData<List<FavoritePhotoEntity>> = favoritesMediatorLiveData
-
     private var sortBy = SortBy.DATE_ADDED_NEWEST
-
-    private val removeAllResultMutableEvent = MutableLiveData<Event<Boolean>>()
-    val removeAllResultEvent: LiveData<Event<Boolean>> = removeAllResultMutableEvent
-
-    private val listLayoutChangedMutable = MutableLiveData<ListLayout>()
-    val listLayoutChanged: LiveData<ListLayout> = listLayoutChangedMutable
 
     private var removeAllUndone = false
 
+    private val mutableUiState = MutableStateFlow<FavoritesUiState>(
+        FavoritesUiState.Data(
+            photos = emptyList(),
+            listLayout = preferencesService.getFavoritesListLayout(),
+            shouldShowRemovedNotification = false
+        )
+    )
+    val uiState: StateFlow<FavoritesUiState> = mutableUiState
+
     init {
-        favoritesNewest = favoritesRepository.getFavorites(SortBy.DATE_ADDED_NEWEST)
-        favoritesOldest = favoritesRepository.getFavorites(SortBy.DATE_ADDED_OLDEST)
+        emitFavorites()
+    }
 
-        favoritesMediatorLiveData.addSource(favoritesNewest) { result ->
-            if (sortBy == SortBy.DATE_ADDED_NEWEST) {
-                favoritesMediatorLiveData.value = result
+    private fun updateUiState(update: (currentUiState: FavoritesUiState.Data) -> FavoritesUiState.Data) {
+        val stateValue = mutableUiState.value
+
+        if (stateValue is FavoritesUiState.Data) {
+            mutableUiState.value = update(stateValue)
+        }
+    }
+
+    private fun emitFavorites() {
+        viewModelScope.launch {
+            favoritesRepository.getFavorites(sortBy).collect { photos ->
+                updateUiState { currentUiState ->
+                    currentUiState.copy(photos = photos)
+                }
             }
         }
-
-        favoritesMediatorLiveData.addSource(favoritesOldest) { result ->
-            if (sortBy == SortBy.DATE_ADDED_OLDEST) {
-                favoritesMediatorLiveData.value = result
-            }
-        }
-
-        listLayoutChangedMutable.value = preferencesService.getFavoritesListLayout()
     }
 
     fun toggleFavorite(photo: Photo) {
@@ -69,7 +79,9 @@ class FavoritesViewModel @Inject constructor(
         viewModelScope.launch {
             val markedAllAsRemoved = favoritesRepository.markAllAsRemoved()
 
-            removeAllResultMutableEvent.value = Event(markedAllAsRemoved)
+            updateUiState { currentUiState ->
+                currentUiState.copy(shouldShowRemovedNotification = markedAllAsRemoved)
+            }
             removeAllUndone = false
         }
     }
@@ -80,6 +92,9 @@ class FavoritesViewModel @Inject constructor(
     fun unmarkAllAsRemoved() {
         favoritesRepository.unmarkAllAsRemoved()
 
+        updateUiState { currentUiState ->
+            currentUiState.copy(shouldShowRemovedNotification = false)
+        }
         removeAllUndone = true
     }
 
@@ -94,7 +109,10 @@ class FavoritesViewModel @Inject constructor(
 
     fun updateListLayout(listLayout: ListLayout) {
         preferencesService.setFavoritesListLayout(listLayout)
-        listLayoutChangedMutable.value = listLayout
+
+        updateUiState { currentUiState ->
+            currentUiState.copy(listLayout = listLayout)
+        }
     }
 
     fun createSortByDialog(): OptionsBottomSheetDialog {
@@ -103,17 +121,9 @@ class FavoritesViewModel @Inject constructor(
 
         return OptionsBottomSheetDialog.newInstance(options, selectedOptionIndex) { index ->
             val selectedSortBy = SortBy.values()[index]
-
-            when (selectedSortBy) {
-                SortBy.DATE_ADDED_NEWEST -> favoritesNewest.value?.let {
-                    favoritesMediatorLiveData.value = it
-                }
-                SortBy.DATE_ADDED_OLDEST -> favoritesOldest.value?.let {
-                    favoritesMediatorLiveData.value = it
-                }
-            }
-
             sortBy = selectedSortBy
+
+            emitFavorites()
         }
     }
 }

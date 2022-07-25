@@ -15,7 +15,10 @@ import com.github.sikv.photos.ui.FragmentArguments
 import com.github.sikv.photos.ui.adapter.ViewPagerAdapter
 import com.github.sikv.photos.ui.fragmentArguments
 import com.github.sikv.photos.ui.withArguments
-import com.github.sikv.photos.util.*
+import com.github.sikv.photos.util.changeVisibilityWithAnimation
+import com.github.sikv.photos.util.hideSoftInput
+import com.github.sikv.photos.util.setupToolbarWithBackButton
+import com.github.sikv.photos.util.showSoftInput
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,6 +76,7 @@ class SearchFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
     }
 

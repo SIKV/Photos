@@ -6,7 +6,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.github.sikv.photos.R
 import com.github.sikv.photos.databinding.FragmentFeedbackBinding
 import com.github.sikv.photos.model.RequestStatus
@@ -15,20 +18,23 @@ import com.github.sikv.photos.util.hideSoftInput
 import com.github.sikv.photos.util.resetErrorWhenTextChanged
 import com.github.sikv.photos.util.setupToolbarWithBackButton
 import com.github.sikv.photos.util.showSoftInput
+import com.github.sikv.photos.viewmodel.FeedbackUiState
 import com.github.sikv.photos.viewmodel.FeedbackViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class FeedbackFragment : BaseFragment() {
-
-    private var _binding: FragmentFeedbackBinding? = null
-    private val binding get() = _binding!!
 
     private val viewModel: FeedbackViewModel by viewModels()
 
     override val overrideBackground: Boolean = true
 
     private var sendMenuItem: MenuItem? = null
+
+    private var _binding: FragmentFeedbackBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +55,7 @@ class FeedbackFragment : BaseFragment() {
 
         context?.showSoftInput(binding.emailEdit)
 
-        observe()
+        collectUiState()
 
         binding.emailEdit.resetErrorWhenTextChanged(binding.emailInputLayout)
         binding.descriptionEdit.resetErrorWhenTextChanged(binding.descriptionInputLayout)
@@ -85,36 +91,42 @@ class FeedbackFragment : BaseFragment() {
             ).build()
     }
 
-    private fun observe() {
-        viewModel.sendFeedbackStatusEvent.observe(viewLifecycleOwner, Observer { event ->
-            event?.getContentIfNotHandled()?.let { requestStatus ->
-                when (requestStatus) {
-                    is RequestStatus.InProgress -> {
-                        sendMenuItem?.setActionView(R.layout.layout_action_progress)
-                    }
-
-                    is RequestStatus.Done -> {
-                        sendMenuItem?.actionView = null
-
-                        showMessage(requestStatus.message)
-
-                        if (requestStatus.success) {
-                            navigation?.backPressed()
-                        } else {
-                            activity?.hideSoftInput()
-                        }
-                    }
-
-                    is RequestStatus.ValidationError -> {
-                        when (requestStatus.invalidInputIndex) {
-                            1 -> binding.emailInputLayout.error = requestStatus.message
-                            2 -> binding.descriptionInputLayout.error = requestStatus.message
-                            else -> {
-                            }
-                        }
+    private fun collectUiState() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect { uiState ->
+                    if (uiState is FeedbackUiState.Data) {
+                        updateRequestStatus(uiState.requestStatus)
                     }
                 }
             }
-        })
+        }
+    }
+
+    private fun updateRequestStatus(requestStatus: RequestStatus) {
+        when (requestStatus) {
+            is RequestStatus.InProgress -> {
+                sendMenuItem?.setActionView(R.layout.layout_action_progress)
+            }
+            is RequestStatus.Done -> {
+                sendMenuItem?.actionView = null
+
+                showMessage(requestStatus.message)
+
+                if (requestStatus.success) {
+                    navigation?.backPressed()
+                } else {
+                    activity?.hideSoftInput()
+                }
+            }
+            is RequestStatus.ValidationError -> {
+                when (requestStatus.invalidInputIndex) {
+                    1 -> binding.emailInputLayout.error = requestStatus.message
+                    2 -> binding.descriptionInputLayout.error = requestStatus.message
+                    else -> {
+                    }
+                }
+            }
+        }
     }
 }
