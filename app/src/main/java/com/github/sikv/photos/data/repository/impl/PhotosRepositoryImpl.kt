@@ -1,17 +1,15 @@
 package com.github.sikv.photos.data.repository.impl
 
 import com.github.sikv.photos.api.ApiClient
-import com.github.sikv.photos.config.ConfigProvider
 import com.github.sikv.photos.data.repository.PhotosRepository
-import com.github.sikv.photos.model.PhotoSource
 import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.model.PhotoSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class PhotosRepositoryImpl @Inject constructor(
-    private val apiClient: ApiClient,
-    private val configProvider: ConfigProvider
+    private val apiClient: ApiClient
 ) : PhotosRepository {
 
     override suspend fun getPhoto(id: String, source: PhotoSource): Photo? {
@@ -51,9 +49,10 @@ class PhotosRepositoryImpl @Inject constructor(
         }
     }
 
-    // TODO refactor
     override suspend fun searchPhotos(query: String, limit: Int): List<Photo> {
         return withContext(Dispatchers.IO) {
+
+            // TODO Implement correct division
             val limitForEachSource = limit / 3
 
             val photos = mutableListOf<Photo>()

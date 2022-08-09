@@ -24,5 +24,5 @@ class ConfigProvider @Inject constructor() {
         )
     }
 
-    fun getRecommendationsLimit(): Int = 10
+    fun getRecommendationsLimit(): Int = 24
 }

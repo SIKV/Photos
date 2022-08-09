@@ -104,6 +104,8 @@ fun PlaceholderImage(
     placeholder.value?.let { bitmap ->
         Image(
             imageModel = bitmap,
+            contentScale =  ContentScale.Crop,
+            circularReveal = CircularReveal(duration = 1000),
             modifier = modifier
         )
     }
@@ -114,7 +116,7 @@ fun NetworkImage(
     imageUrl: String,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Crop,
-    circularReveal: CircularReveal = CircularReveal(duration = 1000)
+    circularReveal: CircularReveal? = CircularReveal(duration = 1000)
 ) {
     Image(
         modifier = modifier,
@@ -127,9 +129,9 @@ fun NetworkImage(
 @Composable
 private fun Image(
     imageModel: Any,
-    modifier: Modifier = Modifier,
-    contentScale: ContentScale = ContentScale.Crop,
-    circularReveal: CircularReveal = CircularReveal(duration = 1000)
+    contentScale: ContentScale,
+    circularReveal: CircularReveal?,
+    modifier: Modifier = Modifier
 ) {
     GlideImage(
         modifier = modifier,

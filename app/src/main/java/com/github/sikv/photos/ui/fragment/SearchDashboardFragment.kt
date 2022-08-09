@@ -5,50 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.sikv.photos.R
+import com.github.sikv.photos.config.feature.FeatureFlag
+import com.github.sikv.photos.config.feature.FeatureFlagProvider
 import com.github.sikv.photos.databinding.FragmentSearchDashboardBinding
-import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.manager.VoiceInputManager
-import com.github.sikv.photos.service.DownloadService
-import com.github.sikv.photos.ui.PhotoActionDispatcher
-import com.github.sikv.photos.ui.adapter.PhotoGridAdapter
 import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.util.applyStatusBarsInsets
-import com.github.sikv.photos.util.scrollToTop
-import com.github.sikv.photos.util.setVisibilityAnimated
-import com.github.sikv.photos.viewmodel.SearchDashboardViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchDashboardFragment : BaseFragment() {
 
-    private var _binding: FragmentSearchDashboardBinding? = null
-    private val binding get() = _binding!!
-
     @Inject
-    lateinit var downloadService: DownloadService
-
-    @Inject
-    lateinit var photoLoader: PhotoLoader
+    lateinit var featureFlagProvider: FeatureFlagProvider
 
     private lateinit var voiceInputManager: VoiceInputManager
 
-    private val viewModel: SearchDashboardViewModel by viewModels()
-
-    private lateinit var recommendedPhotosAdapter: PhotoGridAdapter
-
-    private val photoActionDispatcher by lazy {
-        PhotoActionDispatcher(
-            fragment = this,
-            downloadService = downloadService,
-            photoLoader = photoLoader,
-            onToggleFavorite = { /** Don't need to handle this action here. */ },
-            onShowMessage = ::showMessage
-        )
-    }
+    private var _binding: FragmentSearchDashboardBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +42,15 @@ class SearchDashboardFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchDashboardBinding.inflate(inflater, container, false)
+
+        if (savedInstanceState == null) {
+            if (featureFlagProvider.isFeatureEnabled(FeatureFlag.RECOMMENDATIONS)) {
+                childFragmentManager.beginTransaction()
+                    .replace(R.id.contentContainer, RecommendationsFragment())
+                    .commit()
+            }
+        }
+
         return binding.root
     }
 
@@ -74,10 +59,7 @@ class SearchDashboardFragment : BaseFragment() {
 
         binding.toolbar.applyStatusBarsInsets()
 
-        init()
         setListeners()
-
-        observe()
     }
 
     override fun onDestroyView() {
@@ -86,32 +68,7 @@ class SearchDashboardFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onScrollToTop() {
-        binding.recommendedPhotosRecycler.scrollToTop()
-    }
-
-    private fun observe() {
-        viewModel.recommendedPhotosLoadedEvent.observe(viewLifecycleOwner, { recommended ->
-            binding.pullRefreshLayout.finishRefreshing()
-
-            if (recommended.reset) {
-                recommendedPhotosAdapter.clear()
-            }
-
-            if (recommended.photos.isEmpty() && !recommendedPhotosAdapter.hasItems()) {
-                binding.recommendedPhotosRecycler.setVisibilityAnimated(View.GONE)
-                binding.noResultsView.isVisible = true
-            } else {
-                binding.recommendedPhotosRecycler.setVisibilityAnimated(View.VISIBLE)
-                binding.noResultsView.isVisible = false
-
-                recommendedPhotosAdapter.addItems(
-                    recommended.photos,
-                    showLoadMoreOption = recommended.moreAvailable
-                )
-            }
-        })
-    }
+    override fun onScrollToTop() {}
 
     private fun showSearchFragment(searchText: String? = null) {
         val fragment = SearchFragment().withArguments(
@@ -132,24 +89,5 @@ class SearchDashboardFragment : BaseFragment() {
         binding.voiceSearchButton.setOnClickListener {
             voiceInputManager.startSpeechRecognizer()
         }
-
-        binding.noResultsView.setActionButtonClickListener {
-            viewModel.loadRecommendations(reset = true)
-        }
-
-        binding.pullRefreshLayout.onRefresh = {
-            viewModel.loadRecommendations(reset = true)
-        }
-    }
-
-    private fun init() {
-        recommendedPhotosAdapter = PhotoGridAdapter(photoLoader, photoActionDispatcher) {
-            viewModel.loadRecommendations()
-        }
-
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-        binding.recommendedPhotosRecycler.layoutManager = layoutManager
-        binding.recommendedPhotosRecycler.adapter = recommendedPhotosAdapter
     }
 }

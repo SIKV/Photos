@@ -1,16 +1,9 @@
 package com.github.sikv.photos.service
 
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.model.Photo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
-
-data class Recommendations(
-    val photos: List<Photo>,
-    val moreAvailable: Boolean,
-    val reset: Boolean
-)
 
 class RecommendationsService @Inject constructor(
     private val favoritesRepository: FavoritesRepository,
@@ -26,7 +19,6 @@ class RecommendationsService @Inject constructor(
         return withContext(Dispatchers.IO) {
             favoritesRepository.getRandom()?.let { randomFavorite ->
                 val labels = imageLabelerService.processImage(randomFavorite.getPhotoPreviewUrl())
-
                 if (labels.isEmpty()) {
                     Recommendation(null, true)
                 } else {
