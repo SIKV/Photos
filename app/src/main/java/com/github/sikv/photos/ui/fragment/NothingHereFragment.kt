@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
-import com.github.sikv.photos.ui.compose.NothingHereScreen
+import com.github.sikv.photos.ui.screen.NothingHereScreen
 import com.google.android.material.composethemeadapter.MdcTheme
 
 class NothingHereFragment : BaseFragment() {

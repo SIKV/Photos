@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.compose
+package com.github.sikv.photos.ui.screen
 
 import android.graphics.drawable.BitmapDrawable
 import androidx.annotation.ColorInt

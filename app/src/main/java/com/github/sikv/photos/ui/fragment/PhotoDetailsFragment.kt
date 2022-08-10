@@ -6,24 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
-import androidx.compose.runtime.State
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.createShareIntent
 import com.github.sikv.photos.ui.FragmentArguments
-import com.github.sikv.photos.ui.compose.PhotoDetailsScreen
-import com.github.sikv.photos.ui.compose.state.PhotoViewState
 import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
 import com.github.sikv.photos.ui.dialog.SetWallpaperFragmentArguments
+import com.github.sikv.photos.ui.screen.PhotoDetailsScreen
 import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.viewmodel.PhotoDetailsViewModel
+import com.github.sikv.photos.viewmodel.PhotoUiState
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PhotoDetailsFragmentArguments(
@@ -49,11 +48,13 @@ class PhotoDetailsFragment : BaseFragment() {
             MdcTheme {
                 ProvideWindowInsets {
                     Surface {
-                        val viewState: State<PhotoViewState> =
-                            viewModel.viewState.observeAsState(PhotoViewState.NoData)
+                        val uiState = viewModel.uiState.collectAsState()
 
-                        when (val state = viewState.value) {
-                            is PhotoViewState.Ready -> {
+                        when (val state = uiState.value) {
+                            PhotoUiState.NoData -> {
+                                // Don't need to handle NoData state.
+                            }
+                            is PhotoUiState.Ready -> {
                                 PhotoDetailsScreen(
                                     photo = state.photo,
                                     onBackPressed = { navigation?.backPressed() },
@@ -65,7 +66,6 @@ class PhotoDetailsFragment : BaseFragment() {
                                     onAttributionPressed = { openAttribution(state.photo) }
                                 )
                             }
-                            else -> { }
                         }
                     }
                 }

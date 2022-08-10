@@ -8,8 +8,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.ui.compose.RecommendationsLoadingScreen
-import com.github.sikv.photos.ui.compose.RecommendationsScreen
+import com.github.sikv.photos.ui.screen.RecommendationsLoadingScreen
+import com.github.sikv.photos.ui.screen.RecommendationsScreen
 import com.github.sikv.photos.ui.navigation.NavigationAnimation
 import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.viewmodel.RecommendationsUiState
@@ -33,7 +33,6 @@ class RecommendationsFragment : BaseFragment() {
         )
         setContent {
             MdcTheme {
-                // TODO
                 val uiState = viewModel.uiState.collectAsState()
 
                 when (val state = uiState.value) {
