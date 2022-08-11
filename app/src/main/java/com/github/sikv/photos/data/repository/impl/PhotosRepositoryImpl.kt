@@ -17,35 +17,33 @@ class PhotosRepositoryImpl @Inject constructor(
             PhotoSource.PEXELS -> apiClient.pexelsClient.getPhoto(id)
             PhotoSource.UNSPLASH -> apiClient.unsplashClient.getPhoto(id)
             PhotoSource.PIXABAY -> apiClient.pixabayClient.getPhoto(id).hits.firstOrNull()
-
-            else -> throw NotImplementedError()
+            PhotoSource.UNSPECIFIED -> throw NotImplementedError()
         }
     }
 
     override suspend fun getCuratedPhotos(page: Int, perPage: Int): List<Photo> {
-        return apiClient.pexelsClient.getCuratedPhotos(page, perPage).photos
+        return apiClient.pexelsClient
+            .getCuratedPhotos(page + getPageNumberComplement(PhotoSource.PEXELS), perPage)
+            .photos
     }
 
-    override suspend fun searchPhotos(
-        query: String,
-        page: Int,
-        perPage: Int,
-        source: PhotoSource
-    ): List<Photo> {
-        return when (source) {
-            PhotoSource.PEXELS -> apiClient.pexelsClient.searchPhotos(query, page, perPage).photos
-            PhotoSource.UNSPLASH -> apiClient.unsplashClient.searchPhotos(
-                query,
-                page,
-                perPage
-            ).results
-            PhotoSource.PIXABAY -> apiClient.pixabayClient.searchPhotos(
-                query,
-                page + 1,
-                perPage
-            ).hits
+    override suspend fun searchPhotos(query: String, page: Int, perPage: Int, source: PhotoSource): List<Photo> {
+        val pageWithComplement = page + getPageNumberComplement(source)
 
-            else -> throw NotImplementedError()
+        return when (source) {
+            PhotoSource.PEXELS -> apiClient.pexelsClient
+                .searchPhotos(query, pageWithComplement, perPage)
+                .photos
+
+            PhotoSource.UNSPLASH -> apiClient.unsplashClient
+                .searchPhotos(query, pageWithComplement, perPage)
+                .results
+
+            PhotoSource.PIXABAY -> apiClient.pixabayClient
+                .searchPhotos(query, pageWithComplement, perPage)
+                .hits
+
+            PhotoSource.UNSPECIFIED -> throw NotImplementedError()
         }
     }
 
@@ -81,6 +79,15 @@ class PhotosRepositoryImpl @Inject constructor(
             }
 
             photos.shuffled()
+        }
+    }
+
+    private fun getPageNumberComplement(source: PhotoSource): Int {
+        return when (source) {
+            PhotoSource.PEXELS -> 1
+            PhotoSource.UNSPLASH -> 0
+            PhotoSource.PIXABAY -> 1
+            PhotoSource.UNSPECIFIED -> 0
         }
     }
 }
