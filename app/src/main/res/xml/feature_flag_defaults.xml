@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <defaultsMap>
     <entry>
+        <key>searchSourcePexels</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>searchSourceUnsplash</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>searchSourcePixabay</key>
+        <value>true</value>
+    </entry>
+    <entry>
         <key>recommendations</key>
         <value>true</value>
     </entry>

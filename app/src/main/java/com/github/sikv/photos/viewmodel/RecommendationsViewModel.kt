@@ -50,15 +50,27 @@ class RecommendationsViewModel @Inject constructor(
             if (recommendation.query != null) {
                 setLoadingState(refresh)
 
-                val photos = photosRepository.searchPhotos(
-                    recommendation.query,
-                    configProvider.getRecommendationsLimit()
+                val photos = searchPhotosWithRandomSearchSource(
+                    query = recommendation.query,
+                    limit = configProvider.getRecommendationsLimit()
                 )
 
                 appendPhotos(photos)
             } else {
                 appendPhotos(emptyList())
             }
+        }
+    }
+
+    private suspend fun searchPhotosWithRandomSearchSource(query: String, limit: Int): List<Photo> {
+        val searchSources = configProvider.getSearchSources()
+
+        return if (searchSources.isEmpty()) {
+            emptyList()
+        } else {
+            photosRepository
+                .searchPhotos(query, 0, limit, searchSources.random())
+                .shuffled()
         }
     }
 

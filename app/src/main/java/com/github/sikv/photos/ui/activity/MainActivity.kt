@@ -90,6 +90,7 @@ class MainActivity : BaseActivity() {
         super.onDestroy()
     }
 
+    // TODO Hide [Search] tab if ConfigProvider.getSearchSources() returns 0.
     private fun setupNavigation() {
         binding.bottomNavigationView.selectedItemId = initialFragmentId
 

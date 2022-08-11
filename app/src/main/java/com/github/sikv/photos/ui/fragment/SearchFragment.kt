@@ -120,19 +120,21 @@ class SearchFragment : BaseFragment() {
     }
 
     private fun setupViewPager(after: () -> Unit) {
-        val searchSources = configProvider.getSearchSources()
+        val searchSources = configProvider.getSearchSources().toList()
 
-        viewPagerAdapter = ViewPagerAdapter(this, searchSources.size) { position ->
-            SingleSearchFragment()
-                .withArguments(SingleSearchFragmentArguments(searchSources[position]))
+        if (searchSources.isNotEmpty()) {
+            viewPagerAdapter = ViewPagerAdapter(this, searchSources.size) { position ->
+                SingleSearchFragment()
+                    .withArguments(SingleSearchFragmentArguments(searchSources[position]))
+            }
+
+            binding.viewPager.adapter = viewPagerAdapter
+            binding.viewPager.offscreenPageLimit = searchSources.size
+
+            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+                tab.text = searchSources[position].title
+            }.attach()
         }
-
-        binding.viewPager.adapter = viewPagerAdapter
-        binding.viewPager.offscreenPageLimit = searchSources.size
-
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = searchSources[position].title
-        }.attach()
 
         binding.viewPager.post {
             after()
