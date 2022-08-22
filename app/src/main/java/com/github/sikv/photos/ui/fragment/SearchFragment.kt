@@ -6,7 +6,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.activityViewModels
 import com.github.sikv.photos.config.ConfigProvider
@@ -14,6 +13,7 @@ import com.github.sikv.photos.databinding.FragmentSearchBinding
 import com.github.sikv.photos.ui.FragmentArguments
 import com.github.sikv.photos.ui.adapter.ViewPagerAdapter
 import com.github.sikv.photos.ui.fragmentArguments
+import com.github.sikv.photos.ui.navigation.OnBackPressedListener
 import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.util.changeVisibilityWithAnimation
 import com.github.sikv.photos.util.hideSoftInput
@@ -56,7 +56,9 @@ class SearchFragment : BaseFragment() {
 
         setupToolbarWithBackButton(
             title = null,
-            navigationOnClickListener = { navigation?.backPressed() }
+            navigationOnClickListener = {
+                navigation?.backPressed()
+            }
         )
 
         setupViewPager {
@@ -72,11 +74,16 @@ class SearchFragment : BaseFragment() {
 
         setListeners()
         changeClearButtonVisibility(false, withAnimation = false)
+
+        navigation?.setOnBackPressedListener(object : OnBackPressedListener {
+            override fun onBackPressed() {
+                viewModel.clearSearch()
+            }
+        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 
@@ -94,16 +101,17 @@ class SearchFragment : BaseFragment() {
                 keyboardShown = requireActivity().showSoftInput(binding.searchEdit)
             }
 
-            binding.searchEdit.viewTreeObserver.addOnWindowFocusChangeListener(object :
-                ViewTreeObserver.OnWindowFocusChangeListener {
-                override fun onWindowFocusChanged(hasFocus: Boolean) {
-                    if (hasFocus && !keyboardShown) {
-                        keyboardShown = requireActivity().showSoftInput(binding.searchEdit)
-                    }
-
-                    binding.searchEdit.viewTreeObserver?.removeOnWindowFocusChangeListener(this)
-                }
-            })
+            // TODO Fix crash.
+//            binding.searchEdit.viewTreeObserver.addOnWindowFocusChangeListener(object :
+//                ViewTreeObserver.OnWindowFocusChangeListener {
+//                override fun onWindowFocusChanged(hasFocus: Boolean) {
+//                    if (hasFocus && !keyboardShown) {
+//                        keyboardShown = requireActivity().showSoftInput(binding.searchEdit)
+//                    }
+//
+//                    binding.searchEdit.viewTreeObserver?.removeOnWindowFocusChangeListener(this)
+//                }
+//            })
         }
     }
 

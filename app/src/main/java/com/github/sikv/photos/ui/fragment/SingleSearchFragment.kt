@@ -16,6 +16,7 @@ import com.github.sikv.photos.databinding.FragmentSingleSearchBinding
 import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.PhotoSource
+import com.github.sikv.photos.model.SearchQuery
 import com.github.sikv.photos.service.DownloadService
 import com.github.sikv.photos.ui.FragmentArguments
 import com.github.sikv.photos.ui.PhotoActionDispatcher
@@ -25,6 +26,7 @@ import com.github.sikv.photos.util.disableChangeAnimations
 import com.github.sikv.photos.util.setVisibilityAnimated
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
@@ -107,21 +109,21 @@ class SingleSearchFragment : BaseFragment() {
     }
 
     private fun collectSearchQuery() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.searchQueryFlow.collect { query ->
-                    viewModel.searchPhotos(args.photoSource, query)?.collect { data ->
-                        photoAdapter.submitData(lifecycle, data)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchQueryState
+                    .filterNotNull()
+                    .collect { searchQuery ->
+                        searchPhotos(searchQuery)
                     }
-                }
             }
         }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     private fun collectFavoriteUpdates() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.favoriteUpdates().collect { update ->
                     when (update) {
                         is FavoritesRepository.UpdatePhoto -> {
@@ -131,6 +133,16 @@ class SingleSearchFragment : BaseFragment() {
                             photoAdapter.notifyDataSetChanged()
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun searchPhotos(searchQuery: SearchQuery) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.searchPhotos(args.photoSource, searchQuery)?.collect { data ->
+                    photoAdapter.submitData(lifecycle, data)
                 }
             }
         }

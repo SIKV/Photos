@@ -7,4 +7,5 @@ interface Navigation {
     fun backPressed(): Boolean
     fun backToRoot(): Fragment?
     fun setOnDestinationChangedListener(destinationChangedListener: OnDestinationChangedListener?)
+    fun setOnBackPressedListener(backPressedListener: OnBackPressedListener?)
 }

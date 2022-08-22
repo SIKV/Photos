@@ -12,6 +12,7 @@ class NavigationDispatcher(
 ) : Navigation {
 
     private var destinationChangedListener: OnDestinationChangedListener? = null
+    private var backPressedListener: OnBackPressedListener? = null
 
     override fun addFragment(fragment: Fragment, animation: NavigationAnimation) {
         val fm = this.fragment.childFragmentManager
@@ -52,7 +53,9 @@ class NavigationDispatcher(
 
         return if (fm.backStackEntryCount > 1) {
             fm.popBackStack()
+
             destinationChangedListener?.onDestinationChanged(fm.getActiveFragment())
+            backPressedListener?.onBackPressed()
             true
         } else {
             false
@@ -67,12 +70,18 @@ class NavigationDispatcher(
         }
 
         val rootFragment = fm.fragments.firstOrNull()
+
         destinationChangedListener?.onDestinationChanged(rootFragment)
+        backPressedListener?.onBackPressed()
 
         return rootFragment
     }
 
     override fun setOnDestinationChangedListener(destinationChangedListener: OnDestinationChangedListener?) {
         this.destinationChangedListener = destinationChangedListener
+    }
+
+    override fun setOnBackPressedListener(backPressedListener: OnBackPressedListener?) {
+        this.backPressedListener = backPressedListener
     }
 }
