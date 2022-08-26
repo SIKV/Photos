@@ -20,19 +20,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: gradle
-        
-    - name: Create key file
-      uses: "finnp/create-file-action@master"
-      env:
-        FILE_NAME: "app/PhotosGitHubKey"
-        FILE_DATA: ${{ secrets.DEV_KEY }}
-        
-    - name: Create keystore.properties
-      uses: "finnp/create-file-action@master"
-      env:
-        FILE_NAME: "keystore.properties"
-        FILE_DATA: ${{ secrets.DEV_KEYSTORE_PROPERTIES }}
-        
+
     - name: Update keys.c
       run: echo '${{ secrets.DEV_KEYS }}' > app/src/main/jni/keys.c
       
@@ -41,11 +29,17 @@ jobs:
       env:
         FILE_NAME: "app/google-services.json"
         FILE_DATA: ${{ secrets.DEV_GOOGLE_SERVICES }}
+
+    - name: Create keystore file
+      uses: "finnp/create-file-action@master"
+      env:
+        FILE_NAME: "app/${{ secrets.DEV_KEYSTORE_FILENAME }}"
+        FILE_BASE64: ${{ secrets.DEV_KEYSTORE }}
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew assembleDevRelease
+      run: ./gradlew assembleDevRelease -PreleaseKeyAlias='${{ secrets.DEV_KEY_ALIAS }}' -PreleaseKeyPassword='${{ secrets.DEV_KEY_PASSWORD }}' -PreleaseStoreFile='${{ secrets.DEV_KEYSTORE_FILENAME }}' -PreleaseStorePassword='${{ secrets.DEV_KEYSTORE_PASSWORD }}'
       
     - name: Upload artifact
       uses: actions/upload-artifact@v2

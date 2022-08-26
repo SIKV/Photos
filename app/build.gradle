@@ -8,10 +8,10 @@ plugins {
     id 'com.google.android.gms.oss-licenses-plugin'
 }
 
-def keystorePropertiesFile = rootProject.file('keystore.properties')
-def keystoreProperties = new Properties()
-
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def releaseKeyAlias = hasProperty('releaseKeyAlias') ? property('releaseKeyAlias') : null
+def releaseKeyPassword = hasProperty('releaseKeyPassword') ? property('releaseKeyPassword') : null
+def releaseStoreFile = hasProperty('releaseStoreFile') ? property('releaseStoreFile') : null
+def releaseStorePassword = hasProperty('releaseStorePassword') ? property('releaseStorePassword') : null
 
 android {
     compileSdkVersion 32
@@ -27,10 +27,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            keyAlias releaseKeyAlias
+            keyPassword releaseKeyPassword
+            storeFile releaseStoreFile ? file(releaseStoreFile) : null
+            storePassword releaseStorePassword
         }
     }
 
