@@ -5,7 +5,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ApiClient @Inject constructor(
-        val pexelsClient: PexelsClient,
-        val unsplashClient: UnsplashClient,
-        val pixabayClient: PixabayClient
+    val pexelsClient: PexelsClient,
+    val unsplashClient: UnsplashClient,
+    val pixabayClient: PixabayClient
 )

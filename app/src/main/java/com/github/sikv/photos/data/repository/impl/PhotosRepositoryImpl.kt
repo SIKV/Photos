@@ -25,7 +25,12 @@ class PhotosRepositoryImpl @Inject constructor(
             .photos
     }
 
-    override suspend fun searchPhotos(query: String, page: Int, perPage: Int, source: PhotoSource): List<Photo> {
+    override suspend fun searchPhotos(
+        query: String,
+        page: Int,
+        perPage: Int,
+        source: PhotoSource
+    ): List<Photo> {
         val pageWithComplement = page + getPageNumberComplement(source)
 
         return when (source) {

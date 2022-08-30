@@ -25,7 +25,10 @@ class VoiceInputManager(
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
 
-        getText = activity.activityResultRegistry.register(key, ActivityResultContracts.StartActivityForResult()) { result ->
+        getText = activity.activityResultRegistry.register(
+            key,
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val spokenText = result.data
                     ?.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS)?.let { results ->

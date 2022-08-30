@@ -12,7 +12,9 @@ interface UnsplashApi {
     suspend fun getPhoto(@Path("id") id: String): UnsplashPhoto
 
     @GET("search/photos")
-    suspend fun searchPhotos(@Query("query") query: String,
-                             @Query("page") page: Int,
-                             @Query("per_page") perPage: Int): UnsplashSearchResponse
+    suspend fun searchPhotos(
+        @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
+    ): UnsplashSearchResponse
 }

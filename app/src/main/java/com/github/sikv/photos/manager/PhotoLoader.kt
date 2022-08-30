@@ -9,7 +9,8 @@ interface PhotoLoader {
 
     suspend fun load(url: String?): Bitmap?
 
-    fun load(url: String?,
+    fun load(
+        url: String?,
         onFailed: (() -> Unit)? = null,
         onCleared: (() -> Unit)? = null,
         onPhotoReady: (Bitmap) -> Unit

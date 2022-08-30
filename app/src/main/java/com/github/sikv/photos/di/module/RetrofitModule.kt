@@ -43,37 +43,37 @@ class RetrofitModule {
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
         return OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .addInterceptor { chain ->
-                    when (photoSource) {
-                        PhotoSource.PEXELS, PhotoSource.UNSPLASH -> {
-                            val request = chain.request()
-                                    .newBuilder()
-                                    .addHeader("Authorization", key)
-                                    .build()
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor { chain ->
+                when (photoSource) {
+                    PhotoSource.PEXELS, PhotoSource.UNSPLASH -> {
+                        val request = chain.request()
+                            .newBuilder()
+                            .addHeader("Authorization", key)
+                            .build()
 
-                            chain.proceed(request)
-                        }
-
-                        PhotoSource.PIXABAY -> {
-                            val httpUrl = chain.request()
-                                    .url
-                                    .newBuilder()
-                                    .addQueryParameter("key", key)
-                                    .build()
-
-                            val request = chain.request()
-                                    .newBuilder()
-                                    .url(httpUrl)
-                                    .build()
-
-                            chain.proceed(request)
-                        }
-
-                        else -> chain.proceed(chain.request())
+                        chain.proceed(request)
                     }
+
+                    PhotoSource.PIXABAY -> {
+                        val httpUrl = chain.request()
+                            .url
+                            .newBuilder()
+                            .addQueryParameter("key", key)
+                            .build()
+
+                        val request = chain.request()
+                            .newBuilder()
+                            .url(httpUrl)
+                            .build()
+
+                        chain.proceed(request)
+                    }
+
+                    else -> chain.proceed(chain.request())
                 }
-                .build()
+            }
+            .build()
     }
 
     @Provides
@@ -98,29 +98,29 @@ class RetrofitModule {
     @PexelsRetrofit
     fun providePexelsRetrofit(@PexelsRetrofit client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(PEXELS_BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(PEXELS_BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 
     @Provides
     @UnsplashRetrofit
     fun provideUnsplashRetrofit(@UnsplashRetrofit client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(UNSPLASH_BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(UNSPLASH_BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 
     @Provides
     @PixabayRetrofit
     fun providePixabayRetrofit(@PixabayRetrofit client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-                .baseUrl(PIXABAY_BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl(PIXABAY_BASE_URL)
+            .client(client)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 }

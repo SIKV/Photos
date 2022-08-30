@@ -22,9 +22,13 @@ class RoomModule {
     @Provides
     @Singleton
     fun provideFavoritesDatabase(@ApplicationContext context: Context): FavoritesDb {
-        return Room.databaseBuilder(context.applicationContext, FavoritesDb::class.java, FAVORITES_DB)
-                .fallbackToDestructiveMigration()
-                .build()
+        return Room.databaseBuilder(
+            context.applicationContext,
+            FavoritesDb::class.java,
+            FAVORITES_DB
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Provides

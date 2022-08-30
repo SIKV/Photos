@@ -10,7 +10,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 class FeedbackRepositoryImpl @Inject constructor(
-        private val accountManager: AccountManager
+    private val accountManager: AccountManager
 ) : FeedbackRepository {
 
     companion object {
@@ -21,14 +21,14 @@ class FeedbackRepositoryImpl @Inject constructor(
         return suspendCoroutine { continuation ->
             accountManager.signInAnonymously {
                 FirebaseFirestore.getInstance()
-                        .collection(COLLECTION_FEEDBACK)
-                        .document(Utils.getCurrentDateAndTime())
-                        .set(feedback)
-                        .addOnSuccessListener {
-                            continuation.resume(true)
-                        }.addOnFailureListener {
-                            continuation.resume(false)
-                        }
+                    .collection(COLLECTION_FEEDBACK)
+                    .document(Utils.getCurrentDateAndTime())
+                    .set(feedback)
+                    .addOnSuccessListener {
+                        continuation.resume(true)
+                    }.addOnFailureListener {
+                        continuation.resume(false)
+                    }
             }
         }
     }
