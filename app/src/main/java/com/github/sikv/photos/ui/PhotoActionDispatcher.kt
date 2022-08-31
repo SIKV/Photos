@@ -1,13 +1,14 @@
 package com.github.sikv.photos.ui
 
+import android.Manifest
 import android.app.Activity
 import android.view.View
 import com.github.sikv.photos.R
+import com.github.sikv.photos.manager.PermissionManager
 import com.github.sikv.photos.manager.PhotoLoader
 import com.github.sikv.photos.model.Photo
 import com.github.sikv.photos.model.createShareIntent
 import com.github.sikv.photos.service.DownloadService
-import com.github.sikv.photos.ui.activity.BaseActivity
 import com.github.sikv.photos.ui.adapter.OnPhotoActionListener
 import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
 import com.github.sikv.photos.ui.dialog.PhotoPreviewPopup
@@ -18,7 +19,9 @@ import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
 import com.github.sikv.photos.ui.fragment.PhotoDetailsFragmentArguments
 import com.github.sikv.photos.ui.navigation.NavigationAnimation
 import com.github.sikv.photos.util.copyText
+import com.github.sikv.photos.util.openAppSettings
 import com.github.sikv.photos.util.openUrl
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class PhotoActionDispatcher(
     private val fragment: BaseFragment,
@@ -27,6 +30,8 @@ class PhotoActionDispatcher(
     private val onToggleFavorite: (Photo) -> Unit,
     private val onShowMessage: (String) -> Unit
 ) : OnPhotoActionListener {
+
+    private val permissionManager = PermissionManager(fragment)
 
     private lateinit var photoPreviewPopup: PhotoPreviewPopup
 
@@ -77,10 +82,27 @@ class PhotoActionDispatcher(
             }
 
             OnPhotoActionListener.Action.DOWNLOAD -> {
-                (getActivity() as? BaseActivity)?.requestWriteExternalStoragePermission {
-                    downloadService.downloadPhoto(photo.getPhotoDownloadUrl())
-                    onShowMessage(getActivity().getString(R.string.downloading_photo))
-                }
+                downloadPhoto(photo)
+            }
+        }
+    }
+
+    private fun downloadPhoto(photo: Photo) {
+        // TODO Refactor to not request WRITE_EXTERNAL_STORAGE for all Android versions.
+        permissionManager.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) { granted ->
+            if (granted) {
+                downloadService.downloadPhoto(photo.getPhotoDownloadUrl())
+                onShowMessage(getActivity().getString(R.string.downloading_photo))
+            } else {
+                MaterialAlertDialogBuilder(getActivity())
+                    .setTitle(R.string.storage_permission)
+                    .setMessage(R.string.storage_permission_description)
+                    .setPositiveButton(R.string.open_settings) { _, _ ->
+                        getActivity().openAppSettings()
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .create()
+                    .show()
             }
         }
     }

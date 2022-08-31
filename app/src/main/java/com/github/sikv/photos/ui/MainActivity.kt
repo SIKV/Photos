@@ -1,8 +1,9 @@
-package com.github.sikv.photos.ui.activity
+package com.github.sikv.photos.ui
 
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -15,7 +16,6 @@ import com.github.sikv.photos.ui.fragment.SearchFragment
 import com.github.sikv.photos.ui.fragment.SearchFragmentArguments
 import com.github.sikv.photos.ui.fragment.root.*
 import com.github.sikv.photos.ui.navigation.OnDestinationChangedListener
-import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.util.changeFragment
 import com.github.sikv.photos.util.getActiveFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +23,7 @@ import javax.inject.Inject
 import kotlin.reflect.KClass
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var featureFlagFetcher: FeatureFlagFetcher

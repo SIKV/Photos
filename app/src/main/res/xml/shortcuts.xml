@@ -12,7 +12,7 @@
         <intent
             android:action="com.github.sikv.photos.action.SHORTCUT_SEARCH"
             android:targetPackage="com.github.sikv.photos"
-            android:targetClass="com.github.sikv.photos.ui.activity.MainActivity" />
+            android:targetClass="com.github.sikv.photos.ui.MainActivity" />
 
     </shortcut>
 
