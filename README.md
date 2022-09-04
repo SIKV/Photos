@@ -17,12 +17,14 @@ Browse, search, download, and share amazing free photos provided by talented pho
 - [Room](https://developer.android.com/topic/libraries/architecture/room)
 - [Retrofit](https://square.github.io/retrofit)
 - [Kotlin Coroutines](https://kotlinlang.org/docs/reference/coroutines-overview.html)
+- [Kotlin Flows](https://developer.android.com/kotlin/flow)
 - [Cloud Firestore](https://firebase.google.com/docs/firestore)
 - [Firebase Remote Config](https://firebase.google.com/docs/remote-config)
 - [ML Kit](https://developers.google.com/ml-kit)
 - [Glide](https://github.com/bumptech/glide)
 - [Chrome Custom Tabs](https://developer.chrome.com/multidevice/android/customtabs)
 - [Preference](https://developer.android.com/jetpack/androidx/releases/preference)
+- [Macrobenchmark](https://developer.android.com/topic/performance/benchmarking/benchmarking-overview)
 
 # Screenshots
 <p>
