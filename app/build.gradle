@@ -48,19 +48,15 @@ android {
                 debugSymbolLevel = 'FULL'
             }
             signingConfig signingConfigs.release
-            debuggable true
+        }
+        benchmark {
+            initWith buildTypes.release
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
         }
     }
 
-    flavorDimensions 'default'
-
-    productFlavors {
-        dev {
-            applicationIdSuffix '.dev'
-            versionNameSuffix '-dev'
-        }
-        prod {}
-    }
+    with flavorConfig
 
     externalNativeBuild {
         ndkBuild {

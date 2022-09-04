@@ -1,12 +1,26 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-buildscript { 
+buildscript {
     ext.kotlin_version = '1.7.0'
+
+    ext.flavorConfig = {
+        flavorDimensions 'version'
+
+        productFlavors {
+            dev {
+                dimension 'version'
+                applicationIdSuffix '.dev'
+                versionNameSuffix '-dev'
+            }
+            prod {
+                dimension 'version'
+            }
+        }
+    }
 
     repositories {
         google()
         mavenCentral()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.4'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
