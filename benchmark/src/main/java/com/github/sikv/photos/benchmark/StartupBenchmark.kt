@@ -8,6 +8,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+private const val ITERATIONS = 5
+
 @RunWith(AndroidJUnit4::class)
 class StartupBenchmark {
     @get:Rule
@@ -17,10 +19,12 @@ class StartupBenchmark {
     fun startup() = benchmarkRule.measureRepeated(
         packageName = TARGET_PACKAGE,
         metrics = listOf(StartupTimingMetric()),
-        iterations = 5,
-        startupMode = StartupMode.COLD
+        iterations = ITERATIONS,
+        startupMode = StartupMode.COLD,
+        setupBlock = {
+            pressHome()
+        }
     ) {
-        pressHome()
         startActivityAndWait()
     }
 }
