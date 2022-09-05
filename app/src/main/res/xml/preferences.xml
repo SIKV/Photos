@@ -2,15 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/ThemeEntries"
-            android:entryValues="@array/ThemeEntryValues"
-            android:icon="@drawable/ic_brush_24dp"
-            android:key="@string/_pref_theme"
-            android:title="@string/theme"
-            app:useSimpleSummaryProvider="true" />
+    <ListPreference
+        android:defaultValue="0"
+        android:entries="@array/ThemeEntries"
+        android:entryValues="@array/ThemeEntryValues"
+        android:icon="@drawable/ic_brush_24dp"
+        android:key="@string/_pref_theme"
+        android:title="@string/theme"
+        app:useSimpleSummaryProvider="true" />
 
     <PreferenceCategory app:allowDividerAbove="true">
         <Preference
