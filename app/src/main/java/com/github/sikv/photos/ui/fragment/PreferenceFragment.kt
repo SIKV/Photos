@@ -3,6 +3,7 @@ package com.github.sikv.photos.ui.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,8 +12,8 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.R
+import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.manager.ThemeManager
-import com.github.sikv.photos.util.showFragment
 import com.github.sikv.photos.viewmodel.MoreUiState
 import com.github.sikv.photos.viewmodel.MoreViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -47,7 +48,9 @@ class PreferenceFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         return when (preference.key) {
             getString(R.string._pref_send_feedback) -> {
-                showFragment(FeedbackFragment())
+
+                showFragment(com.github.sikv.photos.feedback.FeedbackFragment())
+
                 return true
             }
             getString(R.string._pref_open_source_licences) -> {
@@ -73,4 +76,8 @@ class PreferenceFragment : PreferenceFragmentCompat() {
             }
         }
     }
+}
+
+private fun PreferenceFragmentCompat.showFragment(fragment: Fragment) {
+    (parentFragment as? BaseFragment)?.navigation?.addFragment(fragment)
 }

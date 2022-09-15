@@ -3,14 +3,11 @@ package com.github.sikv.photos.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.data.storage.FavoritePhotoEntity
-import com.github.sikv.photos.model.ListLayout
-import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.model.SortBy
-import com.github.sikv.photos.service.PreferencesService
-import com.github.sikv.photos.ui.dialog.OptionsBottomSheetDialog
-import com.github.sikv.photos.util.getString
+import com.github.sikv.photos.domain.ListLayout
+import com.github.sikv.photos.domain.Photo
+import com.github.sikv.photos.domain.SortBy
+import com.github.sikv.photos.common.PreferencesService
+import com.github.sikv.photos.common.ui.OptionsBottomSheetDialog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,7 +16,7 @@ import javax.inject.Inject
 
 sealed interface FavoritesUiState {
     data class Data(
-        val photos: List<FavoritePhotoEntity>,
+        val photos: List<com.github.sikv.photos.persistence.FavoritePhotoEntity>,
         val listLayout: ListLayout,
         val shouldShowRemovedNotification: Boolean
     ) : FavoritesUiState
@@ -28,7 +25,7 @@ sealed interface FavoritesUiState {
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     application: Application,
-    private val favoritesRepository: FavoritesRepository,
+    private val favoritesRepository: com.github.sikv.photos.data.repository.FavoritesRepository,
     private val preferencesService: PreferencesService
 ) : AndroidViewModel(application) {
 
@@ -116,7 +113,7 @@ class FavoritesViewModel @Inject constructor(
     }
 
     fun createSortByDialog(): OptionsBottomSheetDialog {
-        val options = SortBy.values().map { getString(it.text) }.toList()
+        val options = SortBy.values().map { "KEK" }.toList() // TODO Fix
         val selectedOptionIndex = SortBy.values().indexOf(sortBy)
 
         return OptionsBottomSheetDialog.newInstance(options, selectedOptionIndex) { index ->

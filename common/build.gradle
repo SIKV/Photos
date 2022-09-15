@@ -1,0 +1,19 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+dependencies {
+    implementation project(":domain")
+
+    implementation deps.appcompat
+    implementation deps.lifecycle_common
+
+    implementation deps.inject
+    implementation deps.hilt_android
+
+    implementation deps.firebase_auth
+    implementation deps.play_services_auth
+
+    implementation deps.glide
+}

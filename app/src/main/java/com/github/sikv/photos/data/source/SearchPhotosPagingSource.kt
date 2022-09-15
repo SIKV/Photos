@@ -3,11 +3,11 @@ package com.github.sikv.photos.data.source
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.github.sikv.photos.data.repository.PhotosRepository
-import com.github.sikv.photos.model.PhotoSource
-import com.github.sikv.photos.model.Photo
+import com.github.sikv.photos.domain.PhotoSource
+import com.github.sikv.photos.domain.Photo
 
 class SearchPhotosPagingSource(
-    private val photosRepository: PhotosRepository,
+    private val photosRepository: com.github.sikv.photos.data.repository.PhotosRepository,
     private val photoSource: PhotoSource,
     private val searchQuery: String
 ) : PagingSource<Int, Photo>() {

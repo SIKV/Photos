@@ -8,17 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.activityViewModels
+import com.github.sikv.photos.common.ui.hideSoftInput
+import com.github.sikv.photos.common.ui.setupToolbarWithBackButton
+import com.github.sikv.photos.common.ui.showSoftInput
 import com.github.sikv.photos.config.ConfigProvider
 import com.github.sikv.photos.databinding.FragmentSearchBinding
-import com.github.sikv.photos.ui.FragmentArguments
+import com.github.sikv.photos.navigation.args.FragmentArguments
+import com.github.sikv.photos.navigation.args.fragmentArguments
+import com.github.sikv.photos.navigation.args.withArguments
 import com.github.sikv.photos.ui.adapter.ViewPagerAdapter
-import com.github.sikv.photos.ui.fragmentArguments
-import com.github.sikv.photos.ui.navigation.OnBackPressedListener
-import com.github.sikv.photos.ui.withArguments
 import com.github.sikv.photos.util.changeVisibilityWithAnimation
-import com.github.sikv.photos.util.hideSoftInput
-import com.github.sikv.photos.util.setupToolbarWithBackButton
-import com.github.sikv.photos.util.showSoftInput
 import com.github.sikv.photos.viewmodel.SearchViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +30,7 @@ data class SearchFragmentArguments(
 ) : FragmentArguments
 
 @AndroidEntryPoint
-class SearchFragment : BaseFragment() {
+class SearchFragment : com.github.sikv.photos.common.ui.BaseFragment() {
 
     override val overrideBackground: Boolean = true
 
@@ -75,7 +74,8 @@ class SearchFragment : BaseFragment() {
         setListeners()
         changeClearButtonVisibility(false, withAnimation = false)
 
-        navigation?.setOnBackPressedListener(object : OnBackPressedListener {
+        navigation?.setOnBackPressedListener(object :
+            com.github.sikv.photos.navigation.OnBackPressedListener {
             override fun onBackPressed() {
                 viewModel.clearSearch()
             }

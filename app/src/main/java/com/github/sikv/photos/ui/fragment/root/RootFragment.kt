@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.github.sikv.photos.R
-import com.github.sikv.photos.ui.navigation.Navigation
-import com.github.sikv.photos.ui.navigation.NavigationAnimation
-import com.github.sikv.photos.ui.navigation.NavigationDispatcher
-import com.github.sikv.photos.ui.navigation.NavigationProvider
+import com.github.sikv.photos.navigation.Navigation
+import com.github.sikv.photos.navigation.NavigationAnimation
+import com.github.sikv.photos.navigation.NavigationDispatcher
+import com.github.sikv.photos.navigation.NavigationProvider
 
-abstract class RootFragment : Fragment(), NavigationProvider {
+abstract class RootFragment : Fragment(), com.github.sikv.photos.navigation.NavigationProvider {
 
-    private val navigation: Navigation by lazy {
-        NavigationDispatcher(this, R.id.fragmentContainer)
+    private val navigation: com.github.sikv.photos.navigation.Navigation by lazy {
+        com.github.sikv.photos.navigation.NavigationDispatcher(this, R.id.fragmentContainer)
     }
 
     private var delayedFragment: Fragment? = null
@@ -27,10 +27,10 @@ abstract class RootFragment : Fragment(), NavigationProvider {
         super.onViewCreated(view, savedInstanceState)
 
         if (savedInstanceState == null) {
-            provideNavigation().addFragment(provideRootFragment(), animation = NavigationAnimation.NONE)
+            provideNavigation().addFragment(provideRootFragment(), animation = com.github.sikv.photos.navigation.NavigationAnimation.NONE)
 
             delayedFragment?.let {
-                provideNavigation().addFragment(it, animation = NavigationAnimation.NONE)
+                provideNavigation().addFragment(it, animation = com.github.sikv.photos.navigation.NavigationAnimation.NONE)
             }
         }
     }
@@ -39,7 +39,7 @@ abstract class RootFragment : Fragment(), NavigationProvider {
         delayedFragment = fragment
     }
 
-    override fun provideNavigation(): Navigation {
+    override fun provideNavigation(): com.github.sikv.photos.navigation.Navigation {
         return navigation
     }
 

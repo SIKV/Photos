@@ -12,7 +12,7 @@
         android:paddingVertical="@dimen/photoRecyclerVerticalPadding"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    <com.github.sikv.photos.ui.custom.PhotoItemLoadingView
+    <com.github.sikv.photo.list.ui.PhotoItemLoadingView
         android:id="@+id/loadingView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         android:layout_gravity="center"
         app:dataSourceType="search" />
 
-    <com.github.sikv.photos.ui.custom.LoadingErrorView
+    <com.github.sikv.photos.common.ui.LoadingErrorView
         android:id="@+id/loadingErrorView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

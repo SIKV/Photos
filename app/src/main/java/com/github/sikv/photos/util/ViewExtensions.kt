@@ -1,6 +1,5 @@
 package com.github.sikv.photos.util
 
-import android.animation.Animator
 import android.graphics.Typeface
 import android.text.Editable
 import android.text.SpannableString
@@ -11,34 +10,14 @@ import android.text.style.ClickableSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import android.view.View
-import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.TextView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
-import com.github.sikv.photos.model.PhotoItemLayoutType
+import com.github.sikv.photo.list.ui.PhotoItemLayoutType
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
-/**
- * View
- */
-fun View.applyStatusBarsInsets() {
-    ViewCompat.setOnApplyWindowInsetsListener(this) { view, windowInsets ->
-        val insets = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-
-        view.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            topMargin = insets.top
-            leftMargin = insets.left
-            rightMargin = insets.right
-        }
-        windowInsets
-    }
-}
 
 fun View.changeVisibilityWithAnimation(visibility: Int) {
     val duration = 100L
@@ -75,51 +54,13 @@ fun View.changeVisibilityWithAnimation(visibility: Int) {
     }
 }
 
-fun View.setVisibilityAnimated(newVisibility: Int, duration: Long = 500L) {
-    animate()
-            .alpha(if (newVisibility == View.VISIBLE) 1.0F else 0.0F)
-            .setDuration(duration)
-            .setListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(animator: Animator?) { }
 
-                override fun onAnimationEnd(animator: Animator?) {
-                    if (newVisibility != View.VISIBLE) {
-                        visibility = View.GONE
-                    }
-                }
 
-                override fun onAnimationCancel(animator: Animator?) { }
 
-                override fun onAnimationStart(animator: Animator?) {
-                    if (newVisibility == View.VISIBLE) {
-                        visibility = View.VISIBLE
-                    }
-                }
-            })
-}
 
-fun View.favoriteAnimation() {
-    startAnimation(AnimUtils.getScaleAnimation(0F, 1.1F, 0F, 1.1F))
-}
 
-/**
- * RecyclerView
- */
-fun RecyclerView.scrollToTop() {
-    this.smoothScrollToPosition(0)
-}
 
-fun RecyclerView.disableChangeAnimations() {
-    (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
-}
 
-fun RecyclerView.setItemLayoutType(itemLayoutType: PhotoItemLayoutType) {
-    layoutManager = GridLayoutManager(context, itemLayoutType.spanCount)
-    setPadding(0, itemLayoutType.recyclerVerticalPadding, 0, itemLayoutType.recyclerVerticalPadding)
-
-    // Invalidate view holders
-    adapter = adapter
-}
 
 /**
  * TextView

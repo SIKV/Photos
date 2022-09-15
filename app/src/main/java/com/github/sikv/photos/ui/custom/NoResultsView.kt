@@ -70,7 +70,8 @@ class NoResultsView : FrameLayout {
             }
             // Favorites
             1 -> {
-                imageView.setImageResource(R.drawable.ic_favorite_border_24dp)
+                // TODO WILL BE MOVE TO :common-ui
+//                imageView.setImageResource(R.drawable.ic_favorite_border_24dp)
                 titleText.setText(R.string.no_favorites)
                 descriptionText.setText(R.string.no_favorites_description)
                 actionButton.isVisible = false

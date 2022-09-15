@@ -15,10 +15,11 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.github.sikv.photo.list.ui.getAttributionPlaceholderBackgroundColor
+import com.github.sikv.photo.list.ui.getAttributionPlaceholderTextColor
 import com.github.sikv.photos.R
-import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.model.getAttributionPlaceholderBackgroundColor
-import com.github.sikv.photos.model.getAttributionPlaceholderTextColor
+import com.github.sikv.photos.common.ui.*
+import com.github.sikv.photos.domain.Photo
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
@@ -180,8 +181,8 @@ private fun Attribution(
         } else {
             PlaceholderImage(
                 text = photo.getPhotoPhotographerName().first().uppercaseChar().toString(),
-                textColor = photo.getAttributionPlaceholderTextColor(LocalContext.current),
-                backgroundColor = photo.getAttributionPlaceholderBackgroundColor(LocalContext.current),
+                textColor = getAttributionPlaceholderTextColor(LocalContext.current),
+                backgroundColor = getAttributionPlaceholderBackgroundColor(LocalContext.current),
                 modifier = modifier
             )
         }

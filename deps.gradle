@@ -1,0 +1,63 @@
+ext.deps = [
+        appcompat : 'androidx.appcompat:appcompat:1.4.2',
+        material : 'com.google.android.material:material:1.7.0-alpha02',
+
+        lifecycle_common : 'androidx.lifecycle:lifecycle-common-java8:2.5.0',
+        lifecycle_viewmodel_ktx : 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0',
+        lifecycle_extensions : 'androidx.lifecycle:lifecycle-extensions:2.2.0',
+        lifecycle_runtime_ktx : 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1',
+
+        core_ktx : 'androidx.core:core-ktx:1.8.0',
+        fragment_ktx : 'androidx.fragment:fragment-ktx:1.5.2',
+        constraintlayout : 'androidx.constraintlayout:constraintlayout:2.1.4',
+        recyclerview : 'androidx.recyclerview:recyclerview:1.2.1',
+
+        // Compose
+        compose_ui : 'androidx.compose.ui:ui:1.2.1',
+        activity_compose : 'androidx.activity:activity-compose:1.5.0',
+        compose_ui_tooling : 'androidx.compose.ui:ui-tooling:1.1.1',
+        lifecycle_viewmodel_compose : 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0',
+        compose_runtime_livedata : 'androidx.compose.runtime:runtime-livedata:1.1.1',
+        compose_material : 'androidx.compose.material:material:1.1.1',
+        compose_theme_adapter : 'com.google.android.material:compose-theme-adapter:1.1.14',
+        accompanist_insets : 'com.google.accompanist:accompanist-insets:0.21.4-beta',
+
+        // Hilt
+        hilt_android : 'com.google.dagger:hilt-android:2.42',
+        hilt_compiler : 'com.google.dagger:hilt-compiler:2.42',
+
+        // Retrofit
+        retrofit2 : 'com.squareup.retrofit2:retrofit:2.9.0',
+        retrofit2_converter_gson : 'com.squareup.retrofit2:converter-gson:2.9.0',
+        okhttp3_logging : 'com.squareup.okhttp3:logging-interceptor:4.8.1',
+
+        // Remote Config
+        firebase_config : 'com.google.firebase:firebase-config-ktx:21.1.2',
+        firebase_analytics : 'com.google.firebase:firebase-analytics:21.1.1',
+
+        // Firestore
+        firebase_firestore : 'com.google.firebase:firebase-firestore:24.2.1',
+
+        // Coroutines
+        coroutines_core : 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1',
+        coroutines_android : 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1',
+
+        // Room
+        room_runtime : 'androidx.room:room-runtime:2.4.2',
+        room_compiler : 'androidx.room:room-compiler:2.4.2',
+        room_ktx : 'androidx.room:room-ktx:2.4.2',
+
+        // Auth
+        firebase_auth : 'com.google.firebase:firebase-auth:21.0.6',
+        play_services_auth : 'com.google.android.gms:play-services-auth:20.2.0',
+
+        // Paging
+        paging_runtime_ktx : 'androidx.paging:paging-runtime-ktx:3.1.1',
+
+        // Others
+        inject : 'javax.inject:javax.inject:1',
+        gson : 'com.google.code.gson:gson:2.8.9',
+        glide : 'com.github.skydoves:landscapist-glide:1.4.1',
+        image_labeling: 'com.google.mlkit:image-labeling:17.0.7',
+        browser : 'androidx.browser:browser:1.4.0',
+]

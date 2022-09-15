@@ -6,17 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.github.sikv.photos.R
-import com.github.sikv.photos.config.feature.FeatureFlag
-import com.github.sikv.photos.config.feature.FeatureFlagProvider
+import com.github.sikv.photos.common.VoiceInputManager
+import com.github.sikv.photos.common.ui.applyStatusBarsInsets
+import com.github.sikv.photos.config.FeatureFlag
+import com.github.sikv.photos.config.FeatureFlagProvider
 import com.github.sikv.photos.databinding.FragmentSearchDashboardBinding
-import com.github.sikv.photos.manager.VoiceInputManager
-import com.github.sikv.photos.ui.withArguments
-import com.github.sikv.photos.util.applyStatusBarsInsets
+import com.github.sikv.photos.navigation.args.withArguments
+import com.github.sikv.photos.recommendations.RecommendationsFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchDashboardFragment : BaseFragment() {
+class SearchDashboardFragment : com.github.sikv.photos.common.ui.BaseFragment() {
 
     @Inject
     lateinit var featureFlagProvider: FeatureFlagProvider

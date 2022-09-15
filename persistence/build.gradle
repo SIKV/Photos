@@ -1,0 +1,20 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
+}
+
+dependencies {
+    implementation project(':domain')
+
+    implementation deps.inject
+
+    api deps.room_runtime
+    kapt deps.room_compiler
+    api deps.room_ktx
+
+    implementation deps.hilt_android
+    kapt deps.hilt_compiler
+}

@@ -1,0 +1,5 @@
+<resources>
+    <string name="no_recommendations">No Recommendations</string>
+    <string name="no_recommendations_description">Add some photos to your Favorites list to get recommendations</string>
+    <string name="refresh">Refresh</string>
+</resources>

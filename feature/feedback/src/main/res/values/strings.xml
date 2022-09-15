@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="feedback_sent">Feedback sent</string>
+    <string name="error_sending_feedback">Error sending feedback</string>
+    <string name="enter_valid_email">Please enter valid email</string>
+    <string name="enter_some_text">Please enter some text here</string>
+    <string name="submit">Submit</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="send_feedback_description">Leave app feedback or share your ideas</string>
+</resources>

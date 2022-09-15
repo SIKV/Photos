@@ -14,12 +14,8 @@ def releaseStoreFile = hasProperty('releaseStoreFile') ? property('releaseStoreF
 def releaseStorePassword = hasProperty('releaseStorePassword') ? property('releaseStorePassword') : null
 
 android {
-    compileSdkVersion 32
-
     defaultConfig {
         applicationId 'com.github.sikv.photos'
-        minSdkVersion 21
-        targetSdkVersion 32
         versionCode 1
         versionName '1.0'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -58,21 +54,6 @@ android {
 
     with flavorConfig
 
-    externalNativeBuild {
-        ndkBuild {
-            path 'src/main/jni/Android.mk'
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-
     buildFeatures {
         compose true
         viewBinding true
@@ -89,6 +70,19 @@ kapt {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(':domain')
+    implementation project(':api')
+    implementation project(":config")
+    implementation project(":data")
+    implementation project(":common")
+    implementation project(":common-ui")
+    implementation project(":photo-list-ui")
+    implementation project(':navigation')
+    implementation project(":feature:recommendations")
+    implementation project(":feature:curated-photos")
+    implementation project(":feature:feedback")
+    implementation project(":feature:wallpaper")
 
     testImplementation 'junit:junit:4.13.2'
 
@@ -121,12 +115,7 @@ dependencies {
     // Hilt
     implementation 'com.google.dagger:hilt-android:2.42'
     kapt 'com.google.dagger:hilt-compiler:2.42'
-
-    // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.8.1'
-
+    
     // Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
@@ -134,32 +123,11 @@ dependencies {
     // Paging
     implementation 'androidx.paging:paging-runtime-ktx:3.1.1'
 
-    // Room
-    implementation 'androidx.room:room-runtime:2.4.2'
-    kapt 'androidx.room:room-compiler:2.4.2'
-    implementation 'androidx.room:room-ktx:2.4.2'
-
-    // Firebase
-    // Auth
-    implementation 'com.google.firebase:firebase-auth:21.0.6'
-    implementation 'com.google.android.gms:play-services-auth:20.2.0'
-    // Firestore
-    implementation 'com.google.firebase:firebase-firestore:24.2.1'
-    // Remote Config
-    implementation 'com.google.firebase:firebase-config-ktx:21.1.1'
-    implementation 'com.google.firebase:firebase-analytics:21.1.0'
-
-    // ML Kit
-    implementation 'com.google.mlkit:image-labeling:17.0.7'
-
     // Glide (with Jetpack Compose support)
     implementation 'com.github.skydoves:landscapist-glide:1.4.1'
 
     // Preferences
     implementation 'androidx.preference:preference-ktx:1.2.0'
-
-    // Chrome Custom Tabs
-    implementation 'androidx.browser:browser:1.4.0'
 
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 

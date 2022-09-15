@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="slideAnimationsDuration">250</integer>
-
-    <integer name="feedbackEmailMaxLength">100</integer>
-    <integer name="feedbackDescriptionMaxLength">500</integer>
 </resources>

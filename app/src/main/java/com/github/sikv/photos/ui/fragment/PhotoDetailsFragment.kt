@@ -9,29 +9,26 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
-import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.model.createShareIntent
-import com.github.sikv.photos.ui.FragmentArguments
-import com.github.sikv.photos.ui.dialog.SetWallpaperDialog
-import com.github.sikv.photos.ui.dialog.SetWallpaperFragmentArguments
+import com.github.sikv.photos.common.ui.BaseFragment
+import com.github.sikv.photos.common.ui.openUrl
+import com.github.sikv.photos.data.createShareIntent
+import com.github.sikv.photos.domain.Photo
+import com.github.sikv.photos.navigation.args.SetWallpaperFragmentArguments
+import com.github.sikv.photos.navigation.route.SetWallpaperRoute
 import com.github.sikv.photos.ui.screen.PhotoDetailsScreen
-import com.github.sikv.photos.ui.withArguments
-import com.github.sikv.photos.util.openUrl
 import com.github.sikv.photos.viewmodel.PhotoDetailsViewModel
 import com.github.sikv.photos.viewmodel.PhotoUiState
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-data class PhotoDetailsFragmentArguments(
-    val photo: Photo
-) : FragmentArguments
+import javax.inject.Inject
 
 @OptIn(ExperimentalMaterialApi::class)
 @AndroidEntryPoint
 class PhotoDetailsFragment : BaseFragment() {
+
+    @Inject
+    lateinit var setWallpaperRoute: SetWallpaperRoute
 
     private val viewModel: PhotoDetailsViewModel by viewModels()
 
@@ -78,9 +75,7 @@ class PhotoDetailsFragment : BaseFragment() {
     }
 
     private fun setWallpaper(photo: Photo) {
-        SetWallpaperDialog()
-            .withArguments(SetWallpaperFragmentArguments(photo))
-            .show(childFragmentManager)
+        setWallpaperRoute.present(childFragmentManager, SetWallpaperFragmentArguments(photo))
     }
 
     private fun openAttribution(photo: Photo) {

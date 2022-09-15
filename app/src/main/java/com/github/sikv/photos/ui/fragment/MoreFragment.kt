@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.sikv.photos.R
-import com.github.sikv.photos.util.disableScrollableToolbar
-import com.github.sikv.photos.util.setupToolbar
+import com.github.sikv.photos.common.ui.disableScrollableToolbar
+import com.github.sikv.photos.common.ui.setupToolbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MoreFragment : BaseFragment() {
+class MoreFragment : com.github.sikv.photos.common.ui.BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

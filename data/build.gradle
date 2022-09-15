@@ -1,0 +1,21 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':api')
+    implementation project(":config")
+    api project(":persistence") // TODO Fix
+
+    implementation deps.inject
+
+    implementation deps.hilt_android
+    kapt deps.hilt_compiler
+
+    implementation deps.coroutines_core
+    implementation deps.coroutines_android
+}

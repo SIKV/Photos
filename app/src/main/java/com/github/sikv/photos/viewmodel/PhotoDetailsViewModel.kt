@@ -1,11 +1,12 @@
 package com.github.sikv.photos.viewmodel
 
-import androidx.lifecycle.*
-import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.model.Photo
-import com.github.sikv.photos.service.DownloadService
-import com.github.sikv.photos.ui.fragment.PhotoDetailsFragmentArguments
-import com.github.sikv.photos.ui.fragmentArguments
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.github.sikv.photos.domain.Photo
+import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
+import com.github.sikv.photos.navigation.args.fragmentArguments
+import com.github.sikv.photos.common.DownloadService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,7 +26,7 @@ sealed interface PhotoUiState {
 @HiltViewModel
 class PhotoDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val favoritesRepository: FavoritesRepository,
+    private val favoritesRepository: com.github.sikv.photos.data.repository.FavoritesRepository,
     private val downloadService: DownloadService
 ) : ViewModel() {
 
@@ -43,7 +44,7 @@ class PhotoDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             favoritesRepository.favoriteUpdates().collect { update ->
                 when (update) {
-                    is FavoritesRepository.UpdatePhoto -> {
+                    is com.github.sikv.photos.data.repository.FavoritesRepository.UpdatePhoto -> {
                         when (val state = uiState.value) {
                             is PhotoUiState.Ready -> {
                                 mutableUiState.value = state.copy(isFavorite = update.isFavorite)
@@ -69,7 +70,11 @@ class PhotoDetailsViewModel @Inject constructor(
     fun downloadPhoto() {
         when (val state = uiState.value) {
             is PhotoUiState.Ready -> {
-                downloadService.downloadPhoto(state.photo.getPhotoDownloadUrl())
+                downloadService.downloadPhoto(
+                    photoUrl = state.photo.getPhotoDownloadUrl(),
+                    notificationTitle = "Photos", // TODO Fix
+                    notificationDescription = "Downloading photo" // TODO Fix
+                )
             }
             else -> {}
         }

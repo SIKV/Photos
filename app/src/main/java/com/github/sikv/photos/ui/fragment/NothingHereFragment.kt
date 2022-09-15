@@ -8,7 +8,7 @@ import androidx.compose.ui.platform.ComposeView
 import com.github.sikv.photos.ui.screen.NothingHereScreen
 import com.google.android.material.composethemeadapter.MdcTheme
 
-class NothingHereFragment : BaseFragment() {
+class NothingHereFragment : com.github.sikv.photos.common.ui.BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -8,8 +8,3 @@ import androidx.lifecycle.AndroidViewModel
 fun AndroidViewModel.getString(@StringRes id: Int): String {
     return getApplication<Application>().resources.getString(id)
 }
-
-fun String?.isValidEmail(): Boolean {
-    val email = this
-    return !email.isNullOrBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
-}

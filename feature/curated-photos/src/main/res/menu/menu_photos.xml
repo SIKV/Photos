@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/itemViewList"
+        android:title="@string/list"
+        android:icon="@drawable/ic_view_list_24dp"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/itemViewGrid"
+        android:title="@string/grid"
+        android:icon="@drawable/ic_view_grid_24dp"
+        app:showAsAction="ifRoom" />
+
+</menu>
