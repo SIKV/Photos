@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.screen
+package com.github.sikv.photos.photo.details
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,11 +15,9 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.github.sikv.photo.list.ui.getAttributionPlaceholderBackgroundColor
-import com.github.sikv.photo.list.ui.getAttributionPlaceholderTextColor
-import com.github.sikv.photos.R
 import com.github.sikv.photos.common.ui.*
 import com.github.sikv.photos.domain.Photo
+import com.github.sikv.photos.ui.screen.currentFraction
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
@@ -214,7 +212,7 @@ private fun PrimaryActions(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_file_download_24dp),
-                contentDescription = stringResource(id = R.string.cd_download),
+                contentDescription = stringResource(id = R.string.content_description_download),
                 modifier = Modifier.size(ButtonDefaults.IconSize)
             )
             Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
@@ -228,7 +226,7 @@ private fun PrimaryActions(
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_wallpaper),
-                contentDescription = stringResource(id = R.string.cd_set_wallpaper),
+                contentDescription = stringResource(id = R.string.content_description_set_wallpaper),
                 modifier = Modifier.size(ButtonDefaults.IconSize)
             )
             Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
@@ -246,7 +244,7 @@ private fun SecondaryActions(
     Row {
         ActionIconButton(
             icon = R.drawable.ic_share_24dp,
-            contentDescription = R.string.cd_share,
+            contentDescription = R.string.content_description_share,
             onClick = onSharePressed
         )
 
@@ -258,7 +256,7 @@ private fun SecondaryActions(
 
         ActionIconButton(
             icon = favoriteIcon,
-            contentDescription = R.string.cd_toggle_favorite,
+            contentDescription = R.string.content_description_toggle_favorite,
             iconTint = if (isFavorite) colorResource(id = R.color.colorRed) else null,
             onClick = onToggleFavorite
         )

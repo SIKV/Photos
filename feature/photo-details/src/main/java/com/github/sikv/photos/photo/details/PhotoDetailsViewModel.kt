@@ -1,4 +1,4 @@
-package com.github.sikv.photos.viewmodel
+package com.github.sikv.photos.photo.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -7,6 +7,7 @@ import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
 import com.github.sikv.photos.navigation.args.fragmentArguments
 import com.github.sikv.photos.common.DownloadService
+import com.github.sikv.photos.data.repository.FavoritesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,9 +25,9 @@ sealed interface PhotoUiState {
 }
 
 @HiltViewModel
-class PhotoDetailsViewModel @Inject constructor(
+internal class PhotoDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val favoritesRepository: com.github.sikv.photos.data.repository.FavoritesRepository,
+    private val favoritesRepository: FavoritesRepository,
     private val downloadService: DownloadService
 ) : ViewModel() {
 
@@ -44,7 +45,7 @@ class PhotoDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             favoritesRepository.favoriteUpdates().collect { update ->
                 when (update) {
-                    is com.github.sikv.photos.data.repository.FavoritesRepository.UpdatePhoto -> {
+                    is FavoritesRepository.UpdatePhoto -> {
                         when (val state = uiState.value) {
                             is PhotoUiState.Ready -> {
                                 mutableUiState.value = state.copy(isFavorite = update.isFavorite)

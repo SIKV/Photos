@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.github.sikv.photos.FeatureFlagFetcher
 import com.github.sikv.photos.R
 import com.github.sikv.photos.databinding.ActivityMainBinding
-import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
+import com.github.sikv.photos.photo.details.PhotoDetailsFragment
 import com.github.sikv.photos.ui.fragment.SearchFragment
 import com.github.sikv.photos.ui.fragment.SearchFragmentArguments
 import com.github.sikv.photos.ui.fragment.root.*
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
     private val destinationChangedListener = object:
         com.github.sikv.photos.navigation.OnDestinationChangedListener {
         override fun onDestinationChanged(fragment: Fragment?) {
-            val bottomNavigationVisible = fragment !is PhotoDetailsFragment
+            val bottomNavigationVisible = fragment !is com.github.sikv.photos.photo.details.PhotoDetailsFragment
             binding.bottomNavigationView.isVisible = bottomNavigationVisible
         }
     }

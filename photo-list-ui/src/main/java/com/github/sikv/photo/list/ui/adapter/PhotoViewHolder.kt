@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.sikv.photo.list.ui.*
 import com.github.sikv.photos.common.PhotoLoader
 import com.github.sikv.photos.common.ui.TextPlaceholder
+import com.github.sikv.photos.common.ui.getAttributionPlaceholderBackgroundColor
+import com.github.sikv.photos.common.ui.getAttributionPlaceholderTextColor
 import com.github.sikv.photos.domain.Photo
 import kotlinx.coroutines.launch
 

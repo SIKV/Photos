@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.fragment
+package com.github.sikv.photos.photo.details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,9 +15,6 @@ import com.github.sikv.photos.data.createShareIntent
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.navigation.args.SetWallpaperFragmentArguments
 import com.github.sikv.photos.navigation.route.SetWallpaperRoute
-import com.github.sikv.photos.ui.screen.PhotoDetailsScreen
-import com.github.sikv.photos.viewmodel.PhotoDetailsViewModel
-import com.github.sikv.photos.viewmodel.PhotoUiState
 import com.google.accompanist.insets.ProvideWindowInsets
 import com.google.android.material.composethemeadapter.MdcTheme
 import dagger.hilt.android.AndroidEntryPoint

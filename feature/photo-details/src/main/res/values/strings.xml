@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="content_description_download">Download</string>
+    <string name="content_description_set_wallpaper">Set wallpaper</string>
+    <string name="content_description_toggle_favorite">Toggle favorite</string>
+    <string name="content_description_share">Share</string>
+
+    <string name="wallpaper">Wallpaper</string>
+    <string name="download">Download</string>
+</resources>

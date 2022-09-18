@@ -5,7 +5,7 @@ import com.github.sikv.photos.navigation.NavigationAnimation
 import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
 import com.github.sikv.photos.navigation.args.withArguments
 import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
-import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
+import com.github.sikv.photos.photo.details.PhotoDetailsFragment
 import javax.inject.Inject
 
 class PhotoDetailsRouteImpl @Inject constructor() : PhotoDetailsRoute {

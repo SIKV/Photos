@@ -2,8 +2,9 @@ package com.github.sikv.photos.config
 
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
+import javax.inject.Inject
 
-class RemoteFeatureFlagRepository : FeatureFlagRepository {
+class RemoteFeatureFlagRepository @Inject constructor() : FeatureFlagRepository {
 
     private val remoteConfig = Firebase.remoteConfig
 

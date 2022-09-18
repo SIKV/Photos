@@ -1,12 +1,6 @@
-package com.github.sikv.photos.di
+package com.github.sikv.photos.common
 
 import android.content.Context
-import com.github.sikv.photos.common.GlidePhotoLoader
-import com.github.sikv.photos.config.FeatureFlagRepository
-import com.github.sikv.photos.config.RemoteFeatureFlagRepository
-import com.github.sikv.photos.common.PhotoLoader
-import com.github.sikv.photos.common.AccountManager
-import com.github.sikv.photos.common.AccountManagerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,12 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class AppModule {
-
-    @Provides
-    fun provideFeatureFlagRepository(): FeatureFlagRepository {
-        return RemoteFeatureFlagRepository()
-    }
+class CommonModule {
 
     @Provides
     fun provideAccountManager(accountManager: AccountManagerImpl): AccountManager {

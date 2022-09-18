@@ -6,7 +6,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 
 // https://proandroiddev.com/how-to-animate-bottomsheet-content-using-jetpack-compose-3eab972b3bdc
 @OptIn(ExperimentalMaterialApi::class)
-val BottomSheetState.currentFraction: Float
+internal val BottomSheetState.currentFraction: Float
     get() {
         val fraction = progress.fraction
         val targetValue = targetValue

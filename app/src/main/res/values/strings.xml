@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Photos</string>
 
-
     <!-- Preferences -->
     <string name="_pref_theme" translatable="false">PreferenceTheme</string>
     <string name="_pref_send_feedback" translatable="false">PreferenceSendFeedback</string>
@@ -36,7 +35,6 @@
     <string name="cn_load_more_button">Load more button</string>
     <string name="share">Share</string>
 
-    <string name="wallpaper">Wallpaper</string>
     <string name="favorite">Favorite</string>
     <string name="favorites">Favorites</string>
     <string name="more">More</string>
@@ -56,19 +54,13 @@
     <string name="help">Help</string>
 
     <string name="cancel">Cancel</string>
-    <string name="download">Download</string>
     <string name="downloading_photo">Downloading photo…</string>
     <string name="error_downloading_photo">Error downloading photo</string>
-
 
     <string name="app_version">App Version</string>
     <string name="open_source_licences">Open Source Licences</string>
     <string name="signing_in">Signing in, please wait…</string>
     <string name="error_signing_in">Error signing in</string>
-
-
-
-
 
     <string name="no_recommendations">No Recommendations</string>
     <string name="no_recommendations_description">Add some photos to your Favorites list to get recommendations</string>
@@ -81,10 +73,7 @@
 
     <!-- Content descriptions -->
     <string name="cd_back">Back</string>
-    <string name="cd_toggle_favorite">Toggle favorite</string>
-    <string name="cd_share">Share</string>
-    <string name="cd_download">Download</string>
-    <string name="cd_set_wallpaper">Set wallpaper</string>
+
     <string name="cd_loading_error">Loading error</string>
     <string name="cd_no_results_found">No results found</string>
 

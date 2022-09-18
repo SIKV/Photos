@@ -22,12 +22,6 @@ fun RecyclerView.setItemLayoutType(itemLayoutType: PhotoItemLayoutType) {
     adapter = adapter
 }
 
-fun getAttributionPlaceholderTextColor(context: Context): Int = MaterialColors
-    .getColor(context, R.attr.colorOnPrimaryContainer, Color.WHITE)
-
-fun getAttributionPlaceholderBackgroundColor(context: Context): Int = MaterialColors
-    .getColor(context, R.attr.colorPrimaryContainer, Color.BLACK)
-
 fun View.favoriteAnimation() {
     startAnimation(getScaleAnimation(0F, 1.1F, 0F, 1.1F))
 }

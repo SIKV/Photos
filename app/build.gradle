@@ -79,6 +79,7 @@ dependencies {
     implementation project(":common-ui")
     implementation project(":photo-list-ui")
     implementation project(':navigation')
+    implementation project(":feature:photo-details")
     implementation project(":feature:recommendations")
     implementation project(":feature:curated-photos")
     implementation project(":feature:feedback")
