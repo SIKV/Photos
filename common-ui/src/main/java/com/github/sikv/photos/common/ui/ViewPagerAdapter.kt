@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.adapter
+package com.github.sikv.photos.common.ui
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

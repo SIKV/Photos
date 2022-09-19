@@ -1,4 +1,4 @@
-package com.github.sikv.photos.util
+package com.github.sikv.photos.common.ui
 
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation

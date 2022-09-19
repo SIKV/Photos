@@ -46,7 +46,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:contentDescription="@string/cn_clear_button"
+                    android:contentDescription="@string/content_description_clear"
                     android:src="@drawable/ic_close_22dp"
                     android:background="?selectableItemBackground" />
 

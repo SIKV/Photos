@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.fragment
+package com.github.sikv.photos.search
 
 import android.os.Bundle
 import android.text.Editable
@@ -8,26 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.activityViewModels
-import com.github.sikv.photos.common.ui.hideSoftInput
-import com.github.sikv.photos.common.ui.setupToolbarWithBackButton
-import com.github.sikv.photos.common.ui.showSoftInput
+import com.github.sikv.photos.common.ui.*
 import com.github.sikv.photos.config.ConfigProvider
-import com.github.sikv.photos.databinding.FragmentSearchBinding
-import com.github.sikv.photos.navigation.args.FragmentArguments
+import com.github.sikv.photos.navigation.args.SearchFragmentArguments
+import com.github.sikv.photos.navigation.args.SingleSearchFragmentArguments
 import com.github.sikv.photos.navigation.args.fragmentArguments
 import com.github.sikv.photos.navigation.args.withArguments
-import com.github.sikv.photos.ui.adapter.ViewPagerAdapter
-import com.github.sikv.photos.util.changeVisibilityWithAnimation
-import com.github.sikv.photos.viewmodel.SearchViewModel
+import com.github.sikv.photos.search.databinding.FragmentSearchBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
-
-@Parcelize
-data class SearchFragmentArguments(
-    val query: String? = null
-) : FragmentArguments
 
 @AndroidEntryPoint
 class SearchFragment : com.github.sikv.photos.common.ui.BaseFragment() {

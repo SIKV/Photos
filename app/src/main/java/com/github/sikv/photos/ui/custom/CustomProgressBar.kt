@@ -6,7 +6,7 @@ import android.view.animation.Animation
 import android.widget.ProgressBar
 import androidx.appcompat.content.res.AppCompatResources
 import com.github.sikv.photos.R
-import com.github.sikv.photos.util.AnimUtils
+import com.github.sikv.photos.common.ui.AnimUtils
 
 class CustomProgressBar : ProgressBar {
 
@@ -40,7 +40,8 @@ class CustomProgressBar : ProgressBar {
                     override fun onAnimationRepeat(animation: Animation?) { }
 
                     override fun onAnimationEnd(animation: Animation?) {
-                        startAnimation(AnimUtils.getScaleAnimation(animScale, 1F, animScale, 1F,
+                        startAnimation(
+                            AnimUtils.getScaleAnimation(animScale, 1F, animScale, 1F,
                                 duration = SET_STATE_ANIMATION_DURATION))
                     }
                 })

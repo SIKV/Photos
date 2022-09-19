@@ -18,12 +18,12 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/photoRecyclerVerticalPadding" />
 
-    <com.github.sikv.photos.ui.custom.NoResultsView
+    <TextView
         android:id="@+id/noResultsView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:dataSourceType="search" />
+        android:text="@string/no_search_results" />
 
     <com.github.sikv.photos.common.ui.LoadingErrorView
         android:id="@+id/loadingErrorView"

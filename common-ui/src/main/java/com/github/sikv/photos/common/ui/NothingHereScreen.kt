@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.screen
+package com.github.sikv.photos.common.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize

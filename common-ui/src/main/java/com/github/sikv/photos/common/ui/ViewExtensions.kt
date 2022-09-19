@@ -5,6 +5,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
@@ -37,6 +38,41 @@ fun View.setVisibilityAnimated(newVisibility: Int, duration: Long = 500L) {
                 }
             }
         })
+}
+
+fun View.changeVisibilityWithAnimation(visibility: Int) {
+    val duration = 100L
+
+    if (visibility == View.VISIBLE) {
+        val animation = AnimUtils.getScaleAnimation(0F, 1.1F, 0F, 1.1F, duration = duration)
+
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {
+                this@changeVisibilityWithAnimation.visibility = View.VISIBLE
+            }
+
+            override fun onAnimationRepeat(animation: Animation?) { }
+
+            override fun onAnimationEnd(animation: Animation?) { }
+        })
+
+        startAnimation(animation)
+
+    } else {
+        val animation = AnimUtils.getScaleAnimation(1F, 0F, 1F, 0F, duration = duration)
+
+        animation.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) { }
+
+            override fun onAnimationRepeat(animation: Animation?) { }
+
+            override fun onAnimationEnd(animation: Animation?) {
+                this@changeVisibilityWithAnimation.visibility = View.INVISIBLE
+            }
+        })
+
+        startAnimation(animation)
+    }
 }
 
 fun View.applyStatusBarsInsets() {

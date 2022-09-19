@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.fragment
+package com.github.sikv.photos.search
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import com.github.sikv.photo.list.ui.PhotoActionDispatcher
 import com.github.sikv.photo.list.ui.adapter.PhotoPagingAdapter
 import com.github.sikv.photo.list.ui.updateLoadState
 import com.github.sikv.photos.common.DownloadService
@@ -19,25 +20,17 @@ import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.common.ui.disableChangeAnimations
 import com.github.sikv.photos.common.ui.setVisibilityAnimated
 import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.databinding.FragmentSingleSearchBinding
 import com.github.sikv.photos.domain.Photo
-import com.github.sikv.photos.domain.PhotoSource
 import com.github.sikv.photos.domain.SearchQuery
-import com.github.sikv.photos.navigation.args.FragmentArguments
+import com.github.sikv.photos.navigation.args.SingleSearchFragmentArguments
 import com.github.sikv.photos.navigation.args.fragmentArguments
 import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
 import com.github.sikv.photos.navigation.route.SetWallpaperRoute
-import com.github.sikv.photos.viewmodel.SearchViewModel
+import com.github.sikv.photos.search.databinding.FragmentSingleSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
-import kotlinx.parcelize.Parcelize
 import javax.inject.Inject
-
-@Parcelize
-data class SingleSearchFragmentArguments(
-    val photoSource: PhotoSource
-) : FragmentArguments
 
 @AndroidEntryPoint
 class SingleSearchFragment : BaseFragment() {
@@ -61,7 +54,7 @@ class SingleSearchFragment : BaseFragment() {
     private val args by fragmentArguments<SingleSearchFragmentArguments>()
 
     private val photoActionDispatcher by lazy {
-        com.github.sikv.photo.list.ui.PhotoActionDispatcher(
+        PhotoActionDispatcher(
             fragment = this,
             downloadService = downloadService,
             photoLoader = photoLoader,
@@ -137,10 +130,10 @@ class SingleSearchFragment : BaseFragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.favoriteUpdates().collect { update ->
                     when (update) {
-                        is com.github.sikv.photos.data.repository.FavoritesRepository.UpdatePhoto -> {
+                        is FavoritesRepository.UpdatePhoto -> {
                             photoAdapter.notifyPhotoChanged(update.photo)
                         }
-                        is com.github.sikv.photos.data.repository.FavoritesRepository.UpdateAll -> {
+                        is FavoritesRepository.UpdateAll -> {
                             photoAdapter.notifyDataSetChanged()
                         }
                     }

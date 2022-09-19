@@ -84,6 +84,7 @@ dependencies {
     implementation project(":feature:curated-photos")
     implementation project(":feature:feedback")
     implementation project(":feature:wallpaper")
+    implementation project(":feature:search")
 
     testImplementation 'junit:junit:4.13.2'
 
