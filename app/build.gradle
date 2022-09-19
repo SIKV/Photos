@@ -85,6 +85,7 @@ dependencies {
     implementation project(":feature:feedback")
     implementation project(":feature:wallpaper")
     implementation project(":feature:search")
+    implementation project(":feature:favorites")
 
     testImplementation 'junit:junit:4.13.2'
 

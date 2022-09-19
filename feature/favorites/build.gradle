@@ -1,0 +1,29 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':data')
+    implementation project(':common')
+    implementation project(':common-ui')
+    implementation project(':navigation')
+    implementation project(':photo-list-ui')
+
+    implementation deps.material
+    implementation deps.fragment_ktx
+    implementation deps.lifecycle_viewmodel_ktx
+
+    implementation deps.inject
+    kapt deps.hilt_compiler
+    implementation deps.hilt_android
+}

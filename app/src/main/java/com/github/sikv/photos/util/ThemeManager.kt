@@ -1,4 +1,4 @@
-package com.github.sikv.photos.manager
+package com.github.sikv.photos.util
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate

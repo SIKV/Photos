@@ -1,13 +1,16 @@
-package com.github.sikv.photos.viewmodel
+package com.github.sikv.photos.favorites
 
 import android.app.Application
+import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.sikv.photos.common.PreferencesService
+import com.github.sikv.photos.common.ui.OptionsBottomSheetDialog
+import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.domain.ListLayout
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.domain.SortBy
-import com.github.sikv.photos.common.PreferencesService
-import com.github.sikv.photos.common.ui.OptionsBottomSheetDialog
+import com.github.sikv.photos.persistence.FavoritePhotoEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +19,7 @@ import javax.inject.Inject
 
 sealed interface FavoritesUiState {
     data class Data(
-        val photos: List<com.github.sikv.photos.persistence.FavoritePhotoEntity>,
+        val photos: List<FavoritePhotoEntity>,
         val listLayout: ListLayout,
         val shouldShowRemovedNotification: Boolean
     ) : FavoritesUiState
@@ -25,7 +28,7 @@ sealed interface FavoritesUiState {
 @HiltViewModel
 class FavoritesViewModel @Inject constructor(
     application: Application,
-    private val favoritesRepository: com.github.sikv.photos.data.repository.FavoritesRepository,
+    private val favoritesRepository: FavoritesRepository,
     private val preferencesService: PreferencesService
 ) : AndroidViewModel(application) {
 
@@ -113,7 +116,7 @@ class FavoritesViewModel @Inject constructor(
     }
 
     fun createSortByDialog(): OptionsBottomSheetDialog {
-        val options = SortBy.values().map { "KEK" }.toList() // TODO Fix
+        val options = SortBy.values().map { getString(it.getTitle()) }.toList()
         val selectedOptionIndex = SortBy.values().indexOf(sortBy)
 
         return OptionsBottomSheetDialog.newInstance(options, selectedOptionIndex) { index ->
@@ -123,4 +126,16 @@ class FavoritesViewModel @Inject constructor(
             emitFavorites()
         }
     }
+}
+
+@StringRes
+private fun SortBy.getTitle(): Int {
+    return when (this) {
+        SortBy.DATE_ADDED_NEWEST -> R.string.date_added_newest
+        SortBy.DATE_ADDED_OLDEST -> R.string.date_added_oldest
+    }
+}
+
+private fun AndroidViewModel.getString(@StringRes id: Int): String {
+    return getApplication<Application>().resources.getString(id)
 }

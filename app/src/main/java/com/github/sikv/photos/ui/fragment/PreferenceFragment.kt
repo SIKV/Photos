@@ -13,7 +13,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.github.sikv.photos.R
 import com.github.sikv.photos.common.ui.BaseFragment
-import com.github.sikv.photos.manager.ThemeManager
+import com.github.sikv.photos.util.ThemeManager
 import com.github.sikv.photos.viewmodel.MoreUiState
 import com.github.sikv.photos.viewmodel.MoreViewModel
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity

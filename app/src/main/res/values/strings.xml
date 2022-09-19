@@ -39,16 +39,12 @@
     <string name="favorites">Favorites</string>
     <string name="more">More</string>
 
-
-    <string name="remove_all">Remove all</string>
     <string name="home">Home</string>
     <string name="photos">Photos</string>
     <string name="list">List</string>
     <string name="grid">Grid</string>
     <string name="search">Search</string>
 
-    <string name="removed">Removed</string>
-    <string name="undo">Undo </string>
     <string name="theme">Theme</string>
     <string name="help">Help</string>
 
@@ -61,16 +57,8 @@
     <string name="signing_in">Signing in, please wait…</string>
     <string name="error_signing_in">Error signing in</string>
 
-
-    <string name="no_favorites">No Favorites</string>
-
-    <string name="sort_by">Sort by</string>
-    <string name="date_added_newest">Date added (newest)</string>
-    <string name="date_added_oldest">Date added (oldest)</string>
-
     <!-- Content descriptions -->
     <string name="cd_back">Back</string>
 
     <string name="cd_loading_error">Loading error</string>
-
 </resources>

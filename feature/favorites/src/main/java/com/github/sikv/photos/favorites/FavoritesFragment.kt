@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.fragment
+package com.github.sikv.photos.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,18 +13,16 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.github.sikv.photo.list.ui.PhotoActionDispatcher
 import com.github.sikv.photo.list.ui.adapter.PhotoListAdapter
 import com.github.sikv.photo.list.ui.setItemLayoutType
-import com.github.sikv.photos.R
 import com.github.sikv.photos.common.DownloadService
 import com.github.sikv.photos.common.PhotoLoader
 import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.common.ui.scrollToTop
 import com.github.sikv.photos.common.ui.setupToolbar
-import com.github.sikv.photos.databinding.FragmentFavoritesBinding
+import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.domain.ListLayout
+import com.github.sikv.photos.favorites.databinding.FragmentFavoritesBinding
 import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
 import com.github.sikv.photos.navigation.route.SetWallpaperRoute
-import com.github.sikv.photos.viewmodel.FavoritesUiState
-import com.github.sikv.photos.viewmodel.FavoritesViewModel
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +33,7 @@ import javax.inject.Inject
 class FavoritesFragment : BaseFragment() {
 
     @Inject
-    lateinit var favoritesRepository: com.github.sikv.photos.data.repository.FavoritesRepository
+    lateinit var favoritesRepository: FavoritesRepository
 
     @Inject
     lateinit var downloadService: DownloadService
