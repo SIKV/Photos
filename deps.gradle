@@ -54,10 +54,14 @@ ext.deps = [
         // Paging
         paging_runtime_ktx : 'androidx.paging:paging-runtime-ktx:3.1.1',
 
+        // Preference
+        preference_ktx : 'androidx.preference:preference-ktx:1.2.0',
+
         // Others
         inject : 'javax.inject:javax.inject:1',
         gson : 'com.google.code.gson:gson:2.8.9',
         glide : 'com.github.skydoves:landscapist-glide:1.4.1',
         image_labeling: 'com.google.mlkit:image-labeling:17.0.7',
         browser : 'androidx.browser:browser:1.4.0',
+        oss_licenses : 'com.google.android.gms:play-services-oss-licenses:17.0.0',
 ]

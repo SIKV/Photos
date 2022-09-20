@@ -1,9 +1,8 @@
-package com.github.sikv.photos.ui.fragment
+package com.github.sikv.photos.preferences
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,11 +10,8 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.github.sikv.photos.R
 import com.github.sikv.photos.common.ui.BaseFragment
-import com.github.sikv.photos.util.ThemeManager
-import com.github.sikv.photos.viewmodel.MoreUiState
-import com.github.sikv.photos.viewmodel.MoreViewModel
+import com.github.sikv.photos.navigation.route.FeedbackRoute
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -27,7 +23,10 @@ class PreferenceFragment : PreferenceFragmentCompat() {
     @Inject
     lateinit var themeManager: ThemeManager
 
-    private val viewModel: MoreViewModel by viewModels()
+    @Inject
+    lateinit var feedbackRoute: FeedbackRoute
+
+    private val viewModel: PreferenceViewModel by viewModels()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
@@ -48,9 +47,7 @@ class PreferenceFragment : PreferenceFragmentCompat() {
     override fun onPreferenceTreeClick(preference: Preference): Boolean {
         return when (preference.key) {
             getString(R.string._pref_send_feedback) -> {
-
-                showFragment(com.github.sikv.photos.feedback.FeedbackFragment())
-
+                feedbackRoute.present((parentFragment as? BaseFragment)?.navigation)
                 return true
             }
             getString(R.string._pref_open_source_licences) -> {
@@ -76,8 +73,4 @@ class PreferenceFragment : PreferenceFragmentCompat() {
             }
         }
     }
-}
-
-private fun PreferenceFragmentCompat.showFragment(fragment: Fragment) {
-    (parentFragment as? BaseFragment)?.navigation?.addFragment(fragment)
 }

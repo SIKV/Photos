@@ -1,7 +1,6 @@
-package com.github.sikv.photos.viewmodel
+package com.github.sikv.photos.preferences
 
 import androidx.lifecycle.ViewModel
-import com.github.sikv.photos.BuildConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,14 +15,14 @@ sealed interface MoreUiState {
 }
 
 @HiltViewModel
-class MoreViewModel @Inject constructor() : ViewModel() {
+internal class PreferenceViewModel @Inject constructor() : ViewModel() {
 
     private val mutableUiState = MutableStateFlow<MoreUiState>(MoreUiState.Empty)
     val uiState: StateFlow<MoreUiState> = mutableUiState
 
     init {
         mutableUiState.value = MoreUiState.Data(
-            appVersion = BuildConfig.VERSION_NAME
+            appVersion = "" // TODO Fix
         )
     }
 }

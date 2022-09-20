@@ -1,9 +1,8 @@
-package com.github.sikv.photos.util
+package com.github.sikv.photos.preferences
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-import com.github.sikv.photos.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

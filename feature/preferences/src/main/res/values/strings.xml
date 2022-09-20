@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="_pref_theme" translatable="false">PreferenceTheme</string>
+    <string name="_pref_send_feedback" translatable="false">PreferenceSendFeedback</string>
+    <string name="_pref_open_source_licences" translatable="false">PreferenceOpenSourceLicences</string>
+    <string name="_pref_app_version" translatable="false">PreferenceAppVersion</string>
+
+    <string name="theme">Theme</string>
+    <string name="open_source_licences">Open Source Licences</string>
+    <string name="send_feedback">Send Feedback</string>
+    <string name="app_version">App Version</string>
+</resources>
