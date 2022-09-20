@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.android.gms.oss-licenses-plugin'
@@ -55,12 +54,7 @@ android {
     with flavorConfig
 
     buildFeatures {
-        compose true
         viewBinding true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0'
     }
 }
 
@@ -71,22 +65,32 @@ kapt {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(':domain')
     implementation project(':api')
+    implementation project(':domain')
     implementation project(":config")
     implementation project(":data")
     implementation project(":common")
     implementation project(":common-ui")
-    implementation project(":photo-list-ui")
     implementation project(':navigation')
-    implementation project(":feature:photo-details")
-    implementation project(":feature:recommendations")
+    implementation project(":photo-list-ui")
     implementation project(":feature:curated-photos")
-    implementation project(":feature:feedback")
+    implementation project(":feature:photo-details")
     implementation project(":feature:wallpaper")
     implementation project(":feature:search")
     implementation project(":feature:favorites")
+    implementation project(":feature:recommendations")
     implementation project(":feature:preferences")
+    implementation project(":feature:feedback")
+
+    implementation deps.appcompat
+    implementation deps.material
+    implementation deps.viewpager2
+
+    implementation deps.hilt_android
+    kapt deps.hilt_compiler
+
+    // https://stackoverflow.com/a/60492942/7064179
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 
     testImplementation 'junit:junit:4.13.2'
 
@@ -95,41 +99,4 @@ dependencies {
     androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'com.linkedin.dexmaker:dexmaker-mockito:2.28.1'
-
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.5.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.0'
-
-    implementation 'androidx.appcompat:appcompat:1.4.2'
-    implementation 'com.google.android.material:material:1.7.0-alpha02'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-
-    // Compose
-    implementation 'androidx.activity:activity-compose:1.5.0'
-    implementation 'androidx.compose.ui:ui-tooling:1.1.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.0'
-    implementation 'androidx.compose.runtime:runtime-livedata:1.1.1'
-    implementation 'androidx.compose.material:material:1.1.1'
-    implementation 'com.google.android.material:compose-theme-adapter:1.1.14'
-    implementation 'com.google.accompanist:accompanist-insets:0.21.4-beta'
-
-    // Hilt
-    implementation 'com.google.dagger:hilt-android:2.42'
-    kapt 'com.google.dagger:hilt-compiler:2.42'
-    
-    // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1'
-
-    // Paging
-    implementation 'androidx.paging:paging-runtime-ktx:3.1.1'
-
-    // Glide (with Jetpack Compose support)
-    implementation 'com.github.skydoves:landscapist-glide:1.4.1'
-
-    // https://stackoverflow.com/a/60492942/7064179
-    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
 }

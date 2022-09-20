@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.github.sikv.photos.preferences" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.github.sikv.photos.preferences">
+
+    <application>
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/AppTheme.OssLicenses" />
+    </application>
+
+</manifest>

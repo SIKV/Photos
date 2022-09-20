@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.dialog
+package com.github.sikv.photos.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

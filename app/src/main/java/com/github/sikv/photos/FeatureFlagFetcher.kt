@@ -3,7 +3,7 @@ package com.github.sikv.photos
 import androidx.appcompat.app.AppCompatActivity
 import com.github.sikv.photos.config.FeatureFlagRepository
 import com.github.sikv.photos.common.PreferencesService
-import com.github.sikv.photos.ui.dialog.FullScreenLoadingDialog
+import com.github.sikv.photos.ui.FullScreenLoadingDialog
 import javax.inject.Inject
 import javax.inject.Singleton
 

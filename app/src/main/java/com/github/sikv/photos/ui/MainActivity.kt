@@ -9,7 +9,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.github.sikv.photos.FeatureFlagFetcher
 import com.github.sikv.photos.R
+import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.databinding.ActivityMainBinding
+import com.github.sikv.photos.navigation.OnDestinationChangedListener
 import com.github.sikv.photos.navigation.args.SearchFragmentArguments
 import com.github.sikv.photos.navigation.args.withArguments
 import com.github.sikv.photos.photo.details.PhotoDetailsFragment
@@ -39,8 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val destinationChangedListener = object:
-        com.github.sikv.photos.navigation.OnDestinationChangedListener {
+    private val destinationChangedListener = object : OnDestinationChangedListener {
         override fun onDestinationChanged(fragment: Fragment?) {
             val bottomNavigationVisible = fragment !is PhotoDetailsFragment
             binding.bottomNavigationView.isVisible = bottomNavigationVisible
@@ -86,7 +87,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         setOnDestinationChangedListener(null)
-
         super.onDestroy()
     }
 
@@ -137,12 +137,12 @@ class MainActivity : AppCompatActivity() {
             val fragment = supportFragmentManager.findFragmentByTag(tag) as? RootFragment
 
             if (fragment?.isAdded == true) {
-                (fragment.provideNavigation().backToRoot() as? com.github.sikv.photos.common.ui.BaseFragment)?.onScrollToTop()
+                (fragment.provideNavigation().backToRoot() as? BaseFragment)?.onScrollToTop()
             }
         }
     }
 
-    private fun setOnDestinationChangedListener(destinationChangedListener: com.github.sikv.photos.navigation.OnDestinationChangedListener?) {
+    private fun setOnDestinationChangedListener(destinationChangedListener: OnDestinationChangedListener?) {
         supportFragmentManager.fragments.forEach { fragment ->
             val navigation = (fragment as? RootFragment)?.provideNavigation()
             navigation?.setOnDestinationChangedListener(destinationChangedListener)

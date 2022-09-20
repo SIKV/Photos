@@ -11,10 +11,10 @@ import com.github.sikv.photos.navigation.NavigationAnimation
 import com.github.sikv.photos.navigation.NavigationDispatcher
 import com.github.sikv.photos.navigation.NavigationProvider
 
-abstract class RootFragment : Fragment(), com.github.sikv.photos.navigation.NavigationProvider {
+abstract class RootFragment : Fragment(), NavigationProvider {
 
-    private val navigation: com.github.sikv.photos.navigation.Navigation by lazy {
-        com.github.sikv.photos.navigation.NavigationDispatcher(this, R.id.fragmentContainer)
+    private val navigation: Navigation by lazy {
+        NavigationDispatcher(this, R.id.fragmentContainer)
     }
 
     private var delayedFragment: Fragment? = null
@@ -27,10 +27,10 @@ abstract class RootFragment : Fragment(), com.github.sikv.photos.navigation.Navi
         super.onViewCreated(view, savedInstanceState)
 
         if (savedInstanceState == null) {
-            provideNavigation().addFragment(provideRootFragment(), animation = com.github.sikv.photos.navigation.NavigationAnimation.NONE)
+            provideNavigation().addFragment(provideRootFragment(), animation = NavigationAnimation.NONE)
 
             delayedFragment?.let {
-                provideNavigation().addFragment(it, animation = com.github.sikv.photos.navigation.NavigationAnimation.NONE)
+                provideNavigation().addFragment(it, animation = NavigationAnimation.NONE)
             }
         }
     }
@@ -39,7 +39,7 @@ abstract class RootFragment : Fragment(), com.github.sikv.photos.navigation.Navi
         delayedFragment = fragment
     }
 
-    override fun provideNavigation(): com.github.sikv.photos.navigation.Navigation {
+    override fun provideNavigation(): Navigation {
         return navigation
     }
 

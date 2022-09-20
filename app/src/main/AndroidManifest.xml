@@ -41,10 +41,6 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/AppTheme.OssLicenses" />
-
     </application>
 
 </manifest>
