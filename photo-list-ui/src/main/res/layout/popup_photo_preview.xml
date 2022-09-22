@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:scaleType="fitCenter"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/content_description_photo_preview" />
+        android:contentDescription="@string/cd_photo_preview" />
 
 </com.google.android.material.card.MaterialCardView>

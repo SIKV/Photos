@@ -1,0 +1,10 @@
+<!-- https://www.iconfinder.com/iconsets/basic-ui-2-line -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="32"
+    android:viewportHeight="32">
+    <path
+        android:fillColor="?colorOnSurface"
+        android:pathData="M2,29A1.12,1.12 0,0 1,1.69 29,1 1,0 0,1 1,28V27A19,19 0,0 1,17 8.24V4a1,1 0,0 1,1.6 -0.8l12,9a1,1 0,0 1,0 1.6l-12,9A1,1 0,0 1,17 22V18.25A18.66,18.66 0,0 0,4.93 25.67L2.81,28.59A1,1 0,0 1,2 29ZM19,6V9.12a1,1 0,0 1,-0.89 1,17 17,0 0,0 -15,14.6l0.16,-0.21A20.68,20.68 0,0 1,17.9 16.11a1,1 0,0 1,0.77 0.26,1 1,0 0,1 0.33,0.74V20l9.33,-7Z" />
+</vector>

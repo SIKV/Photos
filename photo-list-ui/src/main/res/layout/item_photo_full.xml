@@ -18,7 +18,7 @@
             android:layout_width="@dimen/photoItemFullPhotographerImageSize"
             android:layout_height="@dimen/photoItemFullPhotographerImageSize"
             android:layout_centerVertical="true"
-            android:contentDescription="@string/cn_photographer_photo"
+            android:contentDescription="@string/cd_photographer_photo"
             tools:background="?colorOnSurface" />
 
         <LinearLayout
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:contentDescription="@string/cn_options_button"
+            android:contentDescription="@string/cd_options_button"
             android:src="@drawable/ic_more_vert_24dp" />
 
     </RelativeLayout>
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPlaceholder"
-        android:contentDescription="@string/cn_photo"
+        android:contentDescription="@string/cd_photo"
         android:scaleType="centerCrop" />
 
     <RelativeLayout
@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:contentDescription="@string/cn_favorite_button"
+            android:contentDescription="@string/cd_favorite_button"
             android:src="@drawable/ic_favorite_border_24dp" />
 
         <ImageButton
@@ -92,7 +92,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/photoItemFullActionsSpacing"
             android:layout_toEndOf="@id/favoriteButton"
-            android:contentDescription="@string/cn_share_button"
+            android:contentDescription="@string/cd_share_button"
             android:paddingBottom="3dp"
             android:src="@drawable/ic_share_24dp" />
 
@@ -103,9 +103,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:contentDescription="@string/cn_download_button"
+            android:contentDescription="@string/cd_download_button"
             android:src="@drawable/ic_file_download_24dp" />
 
     </RelativeLayout>
-
 </LinearLayout>

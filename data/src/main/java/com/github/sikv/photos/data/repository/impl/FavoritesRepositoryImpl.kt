@@ -1,6 +1,5 @@
 package com.github.sikv.photos.data.repository.impl
 
-import androidx.sqlite.db.SupportSQLiteQuery
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.domain.SortBy
