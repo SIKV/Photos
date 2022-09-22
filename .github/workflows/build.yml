@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -22,8 +21,8 @@ jobs:
         cache: gradle
 
     - name: Update keys.c
-      run: echo '${{ secrets.DEV_KEYS }}' > app/src/main/jni/keys.c
-      
+      run: echo '${{ secrets.DEV_KEYS }}' > api/src/main/jni/keys.c
+
     - name: Create google-services.json
       uses: "finnp/create-file-action@master"
       env:
