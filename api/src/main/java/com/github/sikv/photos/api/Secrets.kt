@@ -1,6 +1,6 @@
 package com.github.sikv.photos.api
 
-object Secrets {
+internal object Secrets {
 
     init {
         System.loadLibrary("keys")
