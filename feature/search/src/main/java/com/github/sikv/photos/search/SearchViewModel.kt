@@ -9,7 +9,6 @@ import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.domain.PhotoSource
-import com.github.sikv.photos.domain.SearchQuery
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +17,7 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(
+internal class SearchViewModel @Inject constructor(
     private val photosRepository: PhotosRepository,
     private val favoritesRepository: FavoritesRepository,
     private val configProvider: ConfigProvider

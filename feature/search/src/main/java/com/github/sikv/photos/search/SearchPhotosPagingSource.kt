@@ -6,7 +6,7 @@ import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.domain.PhotoSource
 
-class SearchPhotosPagingSource(
+internal class SearchPhotosPagingSource(
     private val photosRepository: PhotosRepository,
     private val photoSource: PhotoSource,
     private val searchQuery: String

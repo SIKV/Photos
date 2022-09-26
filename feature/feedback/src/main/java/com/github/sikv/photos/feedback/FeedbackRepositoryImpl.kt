@@ -1,13 +1,14 @@
 package com.github.sikv.photos.feedback
 
 import com.github.sikv.photos.common.AccountManager
+import com.github.sikv.photos.feedback.domain.Feedback
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class FeedbackRepositoryImpl @Inject constructor(
+internal class FeedbackRepositoryImpl @Inject constructor(
     private val accountManager: AccountManager
 ) : FeedbackRepository {
 

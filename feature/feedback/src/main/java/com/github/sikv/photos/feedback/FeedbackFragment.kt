@@ -11,8 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.github.sikv.photos.common.ui.*
 import com.github.sikv.photos.common.ui.toolbar.FragmentToolbar
-import com.github.sikv.photos.domain.RequestStatus
 import com.github.sikv.photos.feedback.databinding.FragmentFeedbackBinding
+import com.github.sikv.photos.feedback.domain.RequestStatus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

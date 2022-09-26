@@ -1,4 +1,4 @@
-package com.github.sikv.photos.domain
+package com.github.sikv.photos.feedback.domain
 
 sealed class RequestStatus {
     object InProgress : RequestStatus()

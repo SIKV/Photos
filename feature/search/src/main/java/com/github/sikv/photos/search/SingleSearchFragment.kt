@@ -21,7 +21,6 @@ import com.github.sikv.photos.common.ui.disableChangeAnimations
 import com.github.sikv.photos.common.ui.setVisibilityAnimated
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.domain.Photo
-import com.github.sikv.photos.domain.SearchQuery
 import com.github.sikv.photos.navigation.args.SingleSearchFragmentArguments
 import com.github.sikv.photos.navigation.args.fragmentArguments
 import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
@@ -33,7 +32,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SingleSearchFragment : BaseFragment() {
+internal class SingleSearchFragment : BaseFragment() {
 
     @Inject
     lateinit var favoritesRepository: FavoritesRepository

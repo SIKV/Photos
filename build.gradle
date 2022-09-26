@@ -1,5 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.7.0'
+    ext.compose_kotlin_compiler = '1.2.0'
 
     ext.flavorConfig = {
         flavorDimensions 'version'
@@ -9,19 +10,6 @@ buildscript {
                 dimension 'version'
                 applicationIdSuffix '.dev'
                 versionNameSuffix '-dev'
-            }
-            prod {
-                dimension 'version'
-            }
-        }
-    }
-
-    ext.libFlavorConfig = {
-        flavorDimensions 'version'
-
-        productFlavors {
-            dev {
-                dimension 'version'
             }
             prod {
                 dimension 'version'

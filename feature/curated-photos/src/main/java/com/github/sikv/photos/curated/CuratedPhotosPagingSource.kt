@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.domain.Photo
 
-class CuratedPhotosPagingSource(
+internal class CuratedPhotosPagingSource(
     private val photosRepository: PhotosRepository,
 ) : PagingSource<Int, Photo>() {
 

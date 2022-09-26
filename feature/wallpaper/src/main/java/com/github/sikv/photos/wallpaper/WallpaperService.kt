@@ -14,7 +14,7 @@ import java.io.File
 
 private const val FILE_PROVIDER = "com.github.sikv.photos.fileprovider"
 
-class WallpaperService(
+internal class WallpaperService(
     private val context: Activity,
     private val photoLoader: PhotoLoader,
     private val onDownloading: () -> Unit,

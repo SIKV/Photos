@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment : com.github.sikv.photos.common.ui.BaseFragment() {
+class SearchFragment : BaseFragment() {
 
     override val overrideBackground: Boolean = true
 

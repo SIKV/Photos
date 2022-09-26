@@ -25,7 +25,7 @@ annotation class PixabayRetrofit
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RetrofitModule {
+internal class RetrofitModule {
 
     companion object {
         private const val PEXELS_BASE_URL = "https://api.pexels.com/v1/"

@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class CuratedPhotosViewModel @Inject constructor(
+internal class CuratedPhotosViewModel @Inject constructor(
     private val photosRepository: PhotosRepository,
     private val favoritesRepository: FavoritesRepository,
     private val preferencesService: PreferencesService,

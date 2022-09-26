@@ -5,7 +5,8 @@ import android.util.Patterns
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.common.PreferencesService
-import com.github.sikv.photos.domain.RequestStatus
+import com.github.sikv.photos.feedback.domain.Feedback
+import com.github.sikv.photos.feedback.domain.RequestStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +22,7 @@ sealed interface FeedbackUiState {
 }
 
 @HiltViewModel
-class FeedbackViewModel @Inject constructor(
+internal class FeedbackViewModel @Inject constructor(
     application: Application,
     private val feedbackRepository: FeedbackRepository,
     private val preferencesService: PreferencesService

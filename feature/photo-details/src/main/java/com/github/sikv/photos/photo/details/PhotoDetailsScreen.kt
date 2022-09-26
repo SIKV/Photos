@@ -17,13 +17,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.sikv.photos.common.ui.*
 import com.github.sikv.photos.domain.Photo
-import com.github.sikv.photos.ui.screen.currentFraction
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
 @ExperimentalMaterialApi
 @Composable
-fun PhotoDetailsScreen(
+internal fun PhotoDetailsScreen(
     photo: Photo,
     onBackPressed: () -> Unit,
     isFavorite: Boolean,

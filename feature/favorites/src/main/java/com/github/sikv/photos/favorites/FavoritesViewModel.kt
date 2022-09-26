@@ -26,7 +26,7 @@ sealed interface FavoritesUiState {
 }
 
 @HiltViewModel
-class FavoritesViewModel @Inject constructor(
+internal class FavoritesViewModel @Inject constructor(
     application: Application,
     private val favoritesRepository: FavoritesRepository,
     private val preferencesService: PreferencesService

@@ -1,4 +1,4 @@
-package com.github.sikv.photos.ui.screen
+package com.github.sikv.photos.photo.details
 
 import androidx.compose.material.BottomSheetState
 import androidx.compose.material.BottomSheetValue
