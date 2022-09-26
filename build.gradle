@@ -1,5 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.7.0'
+    ext.compose_kotlin_compiler = '1.2.0'
 
     ext.flavorConfig = {
         flavorDimensions 'version'
@@ -37,6 +38,32 @@ allprojects {
     }
 }
 
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            android {
+                compileSdk 32
+
+                defaultConfig {
+                    minSdk 23
+                    targetSdk 32
+                }
+
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_1_8
+                    targetCompatibility JavaVersion.VERSION_1_8
+                }
+
+                kotlinOptions {
+                    jvmTarget = '1.8'
+                }
+            }
+        }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+apply from: 'deps.gradle'

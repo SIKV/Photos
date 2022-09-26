@@ -7,15 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import com.github.sikv.photos.FeatureFlagFetcher
 import com.github.sikv.photos.R
-import com.github.sikv.photos.config.feature.FeatureFlagFetcher
+import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.databinding.ActivityMainBinding
-import com.github.sikv.photos.ui.fragment.BaseFragment
-import com.github.sikv.photos.ui.fragment.PhotoDetailsFragment
-import com.github.sikv.photos.ui.fragment.SearchFragment
-import com.github.sikv.photos.ui.fragment.SearchFragmentArguments
+import com.github.sikv.photos.navigation.OnDestinationChangedListener
+import com.github.sikv.photos.navigation.args.SearchFragmentArguments
+import com.github.sikv.photos.navigation.args.withArguments
+import com.github.sikv.photos.photo.details.PhotoDetailsFragment
+import com.github.sikv.photos.search.SearchFragment
 import com.github.sikv.photos.ui.fragment.root.*
-import com.github.sikv.photos.ui.navigation.OnDestinationChangedListener
 import com.github.sikv.photos.util.changeFragment
 import com.github.sikv.photos.util.getActiveFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val destinationChangedListener = object: OnDestinationChangedListener {
+    private val destinationChangedListener = object : OnDestinationChangedListener {
         override fun onDestinationChanged(fragment: Fragment?) {
             val bottomNavigationVisible = fragment !is PhotoDetailsFragment
             binding.bottomNavigationView.isVisible = bottomNavigationVisible
@@ -86,7 +87,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         setOnDestinationChangedListener(null)
-
         super.onDestroy()
     }
 

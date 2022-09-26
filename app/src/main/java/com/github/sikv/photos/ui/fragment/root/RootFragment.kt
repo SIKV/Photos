@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.github.sikv.photos.R
-import com.github.sikv.photos.ui.navigation.Navigation
-import com.github.sikv.photos.ui.navigation.NavigationAnimation
-import com.github.sikv.photos.ui.navigation.NavigationDispatcher
-import com.github.sikv.photos.ui.navigation.NavigationProvider
+import com.github.sikv.photos.navigation.Navigation
+import com.github.sikv.photos.navigation.NavigationAnimation
+import com.github.sikv.photos.navigation.NavigationDispatcher
+import com.github.sikv.photos.navigation.NavigationProvider
 
 abstract class RootFragment : Fragment(), NavigationProvider {
 

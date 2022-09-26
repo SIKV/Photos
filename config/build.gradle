@@ -1,0 +1,17 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+dependencies {
+    implementation project(':domain')
+
+    implementation deps.inject
+    implementation deps.hilt_android
+    kapt deps.hilt_compiler
+
+    implementation deps.firebase_config
+    implementation deps.firebase_analytics
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/photoItemMinHorizontalMargin"
+    android:layout_marginBottom="@dimen/photoItemMinBottomMargin">
+
+    <com.github.sikv.photos.common.ui.SquareImageView
+        android:id="@+id/photoImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/cd_photo"
+        android:background="@color/colorPlaceholder" />
+
+</FrameLayout>

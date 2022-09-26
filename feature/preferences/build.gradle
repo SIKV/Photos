@@ -1,0 +1,20 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+dependencies {
+    implementation project(':common-ui')
+    implementation project(':navigation')
+
+    api deps.preference_ktx
+    implementation deps.oss_licenses
+
+    implementation deps.fragment_ktx
+
+    implementation deps.inject
+    kapt deps.hilt_compiler
+    implementation deps.hilt_android
+}

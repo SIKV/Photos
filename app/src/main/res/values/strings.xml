@@ -1,103 +1,19 @@
 <resources>
     <string name="app_name">Photos</string>
 
-    <string name="_file_provider" translatable="false">com.github.sikv.photos.fileprovider</string>
-
-    <!-- Preferences -->
-    <string name="_pref_theme" translatable="false">PreferenceTheme</string>
-    <string name="_pref_send_feedback" translatable="false">PreferenceSendFeedback</string>
-    <string name="_pref_open_source_licences" translatable="false">PreferenceOpenSourceLicences</string>
-    <string name="_pref_app_version" translatable="false">PreferenceAppVersion</string>
-
     <string name="_shortcut_search" translatable="false">search</string>
     <string name="_shortcut_action_search" translatable="false">com.github.sikv.photos.action.SHORTCUT_SEARCH</string>
 
-    <string name="those_icons" translatable="false">Those Icons</string>
-    <string name="freepik" translatable="false">Freepik</string>
-    <string name="flaticon" translatable="false">www.flaticon.com</string>
-
-    <string name="cn_photo">Photo</string>
     <string name="cn_app_icon">App icon</string>
-    <string name="cn_photographer_photo">Photographer photo</string>
-    <string name="cn_photo_preview">Photo preview</string>
     <string name="cn_search_icon">Search icon</string>
-    <string name="cn_favorite_icon">Favorite icon</string>
-    <string name="cn_image_icon">Image icon</string>
-    <string name="cn_favorite_button">Favorite button</string>
-    <string name="cn_options_button">Options button</string>
-    <string name="cn_share_button">Share button</string>
-    <string name="cn_download_button">Download button</string>
-    <string name="cn_clear_button">Clear button</string>
     <string name="cn_voice_input_button">Voice input button</string>
-    <string name="cn_item_icon">Item icon</string>
-    <string name="cn_navigate_next_icon">Navigate next icon</string>
-    <string name="cn_photographer_image">Photographer image</string>
-    <string name="cn_cloud_image">Cloud image</string>
-    <string name="cn_item_selected_image">Item selected image</string>
-    <string name="cn_load_more_button">Load more button</string>
+
     <string name="share">Share</string>
-    <string name="set_wallpaper">Set Wallpaper</string>
-    <string name="wallpaper">Wallpaper</string>
-    <string name="favorite">Favorite</string>
     <string name="favorites">Favorites</string>
     <string name="more">More</string>
-    <string name="no_results_found">No Results Found</string>
-    <string name="no_results_found_description">Try something similar or more general</string>
-    <string name="loading_error">Loading Error</string>
-    <string name="general_error_description">Please check your Internet connection\nor try again later</string>
-    <string name="remove_all">Remove all</string>
+
     <string name="home">Home</string>
     <string name="photos">Photos</string>
-    <string name="list">List</string>
-    <string name="grid">Grid</string>
+
     <string name="search">Search</string>
-    <string name="search_for_photos">Search for photos</string>
-    <string name="removed">Removed</string>
-    <string name="undo">Undo </string>
-    <string name="theme">Theme</string>
-    <string name="help">Help</string>
-    <string name="send_feedback">Send Feedback</string>
-    <string name="feedback_sent">Feedback sent</string>
-    <string name="error_sending_feedback">Error sending feedback</string>
-    <string name="cancel">Cancel</string>
-    <string name="download">Download</string>
-    <string name="downloading_photo">Downloading photo…</string>
-    <string name="error_downloading_photo">Error downloading photo</string>
-    <string name="setting_wallpaper">Setting wallpaper…</string>
-    <string name="error_setting_wallpaper">Error setting wallpaper</string>
-    <string name="try_again">Try Again</string>
-    <string name="app_version">App Version</string>
-    <string name="open_source_licences">Open Source Licences</string>
-    <string name="signing_in">Signing in, please wait…</string>
-    <string name="error_signing_in">Error signing in</string>
-    <string name="submit">Submit</string>
-    <string name="enter_your_email">Enter your email</string>
-    <string name="send_feedback_description">Leave app feedback or share your ideas</string>
-    <string name="storage_permission">Storage permission</string>
-    <string name="storage_permission_description">Storage permission is required to download photos.</string>
-    <string name="open_settings">Open Settings</string>
-    <string name="enter_valid_email">Please enter valid email</string>
-    <string name="enter_some_text">Please enter some text here</string>
-    <string name="copy_link">Copy Link</string>
-    <string name="photo_link">Photo link</string>
-    <string name="link_copied">Link copied</string>
-    <string name="no_recommendations">No Recommendations</string>
-    <string name="no_recommendations_description">Add some photos to your Favorites list to get recommendations</string>
-    <string name="refresh">Refresh</string>
-    <string name="no_favorites">No Favorites</string>
-    <string name="no_favorites_description">Photos marked as favorite are shown here</string>
-    <string name="sort_by">Sort by</string>
-    <string name="date_added_newest">Date added (newest)</string>
-    <string name="date_added_oldest">Date added (oldest)</string>
-
-    <!-- Content descriptions -->
-    <string name="cd_photo_loading">Photo loading</string>
-    <string name="cd_back">Back</string>
-    <string name="cd_toggle_favorite">Toggle favorite</string>
-    <string name="cd_share">Share</string>
-    <string name="cd_download">Download</string>
-    <string name="cd_set_wallpaper">Set wallpaper</string>
-    <string name="cd_loading_error">Loading error</string>
-    <string name="cd_no_results_found">No results found</string>
-
 </resources>

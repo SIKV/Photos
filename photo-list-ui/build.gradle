@@ -1,0 +1,17 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':common')
+    implementation project(':common-ui')
+    implementation project(':data')
+    implementation project(':navigation')
+
+    implementation deps.material
+    implementation deps.recyclerview
+    implementation deps.lifecycle_runtime_ktx
+    implementation deps.paging_runtime_ktx
+}

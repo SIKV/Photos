@@ -41,20 +41,6 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
-        <activity
-            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/AppTheme.OssLicenses" />
-
-        <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.github.sikv.photos.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
-
     </application>
 
 </manifest>

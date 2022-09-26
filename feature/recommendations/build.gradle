@@ -1,0 +1,40 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    buildFeatures {
+        compose true
+        viewBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_kotlin_compiler
+    }
+}
+
+dependencies {
+    implementation project(':domain')
+    implementation project(':data')
+    implementation project(':navigation')
+    implementation project(':config')
+    implementation project(":common")
+    implementation project(':common-ui')
+
+    implementation deps.fragment_ktx
+    implementation deps.lifecycle_viewmodel_ktx
+    implementation deps.compose_material
+    implementation deps.lifecycle_viewmodel_compose
+    implementation deps.compose_theme_adapter
+
+    implementation deps.inject
+    kapt deps.hilt_compiler
+    implementation deps.hilt_android
+
+    implementation deps.coroutines_core
+
+    implementation deps.image_labeling
+}

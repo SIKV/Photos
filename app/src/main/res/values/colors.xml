@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="launcherBackground">#181818</color>
-
-    <color name="colorOverlay">#AA000000</color>
-    <color name="colorRipple">#353535</color>
-    <color name="colorRippleLight">#BCBCBC</color>
-    <color name="colorPlaceholder">#EEEEEE</color>
-
-    <color name="colorRed">#EF4141</color>
 </resources>
