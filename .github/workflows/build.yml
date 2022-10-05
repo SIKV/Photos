@@ -3,7 +3,8 @@ name: Build
 on:
   push:
     branches: [ master ]
-  pull_request:
+  pull_request_target:
+    types: [ labeled ]
     branches: [ master ]
 
 jobs:
