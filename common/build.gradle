@@ -18,5 +18,6 @@ dependencies {
     implementation deps.firebase_auth
     implementation deps.play_services_auth
 
-    implementation deps.glide
+    implementation deps.landscapist_glide
+    implementation deps.landscapist_animation
 }

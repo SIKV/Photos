@@ -101,7 +101,6 @@ private fun Recommendations(
                 }
                 NetworkImage(
                     imageUrl = photos[index].getPhotoPreviewUrl(),
-                    circularReveal = null,
                     modifier = Modifier
                         .aspectRatio(1f)
                         .clickable {

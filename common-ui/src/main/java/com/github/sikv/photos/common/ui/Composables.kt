@@ -23,7 +23,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.skydoves.landscapist.CircularReveal
+import com.skydoves.landscapist.ImageOptions
+import com.skydoves.landscapist.animation.circular.CircularRevealPlugin
+import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.glide.GlideImage
 
 @Composable
@@ -103,7 +105,7 @@ fun PlaceholderImage(
         Image(
             imageModel = bitmap,
             contentScale =  ContentScale.Crop,
-            circularReveal = CircularReveal(duration = 1000),
+            revealDuration = 1000,
             modifier = modifier
         )
     }
@@ -114,13 +116,13 @@ fun NetworkImage(
     imageUrl: String,
     modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Crop,
-    circularReveal: CircularReveal? = CircularReveal(duration = 1000)
+    revealDuration: Int? = null
 ) {
     Image(
         modifier = modifier,
         imageModel = imageUrl,
         contentScale = contentScale,
-        circularReveal = circularReveal
+        revealDuration = revealDuration,
     )
 }
 
@@ -128,13 +130,19 @@ fun NetworkImage(
 private fun Image(
     imageModel: Any,
     contentScale: ContentScale,
-    circularReveal: CircularReveal?,
+    revealDuration: Int?,
     modifier: Modifier = Modifier
 ) {
     GlideImage(
         modifier = modifier,
         imageModel = imageModel,
-        contentScale = contentScale,
-        circularReveal = circularReveal
+        imageOptions = ImageOptions(
+            contentScale = contentScale,
+        ),
+        component = rememberImageComponent {
+            if (revealDuration != null) {
+                add(CircularRevealPlugin(duration = revealDuration))
+            }
+        },
     )
 }

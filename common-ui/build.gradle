@@ -23,5 +23,7 @@ dependencies {
     implementation deps.compose_material
     implementation deps.core_ktx
     implementation deps.browser
-    api deps.glide
+
+    api deps.landscapist_glide
+    api deps.landscapist_animation
 }

@@ -20,6 +20,9 @@ import com.github.sikv.photos.domain.Photo
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 
+private val sheetPeekHeight = 196.dp
+private const val imageRevealDuration = 1000
+
 @ExperimentalMaterialApi
 @Composable
 internal fun PhotoDetailsScreen(
@@ -36,8 +39,6 @@ internal fun PhotoDetailsScreen(
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed)
     )
-
-    val sheetPeekHeight = 196.dp
     val sheetRadius = (24 - (24 * scaffoldState.bottomSheetState.currentFraction)).dp
 
     BottomSheetScaffold(
@@ -64,6 +65,7 @@ internal fun PhotoDetailsScreen(
         ) {
             NetworkImage(
                 imageUrl = photo.getPhotoFullPreviewUrl(),
+                revealDuration = imageRevealDuration,
                 modifier = Modifier
                     .fillMaxSize()
             )
@@ -173,6 +175,7 @@ private fun Attribution(
         if (photographerImageUrl != null) {
             NetworkImage(
                 imageUrl = photographerImageUrl,
+                revealDuration = imageRevealDuration,
                 modifier = modifier
             )
         } else {
