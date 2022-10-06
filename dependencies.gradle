@@ -60,7 +60,7 @@ ext.deps = [
 
         // Others
         inject : 'javax.inject:javax.inject:1',
-        gson : 'com.google.code.gson:gson:2.8.9',
+        gson : 'com.google.code.gson:gson:2.9.1',
         glide : 'com.github.skydoves:landscapist-glide:1.4.1',
         image_labeling: 'com.google.mlkit:image-labeling:17.0.7',
         browser : 'androidx.browser:browser:1.4.0',
