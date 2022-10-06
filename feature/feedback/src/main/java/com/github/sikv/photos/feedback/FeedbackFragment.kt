@@ -69,7 +69,7 @@ class FeedbackFragment : BaseFragment() {
                 ),
                 listOf(
                     object : MenuItem.OnMenuItemClickListener {
-                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                        override fun onMenuItemClick(menuItem: MenuItem): Boolean {
                             sendMenuItem = menuItem
 
                             viewModel.send(

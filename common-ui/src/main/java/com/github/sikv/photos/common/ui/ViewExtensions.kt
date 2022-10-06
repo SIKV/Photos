@@ -22,17 +22,17 @@ fun View.setVisibilityAnimated(newVisibility: Int, duration: Long = 500L) {
         .alpha(if (newVisibility == View.VISIBLE) 1.0F else 0.0F)
         .setDuration(duration)
         .setListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animator: Animator?) { }
+            override fun onAnimationRepeat(animator: Animator) { }
 
-            override fun onAnimationEnd(animator: Animator?) {
+            override fun onAnimationEnd(animator: Animator) {
                 if (newVisibility != View.VISIBLE) {
                     visibility = View.GONE
                 }
             }
 
-            override fun onAnimationCancel(animator: Animator?) { }
+            override fun onAnimationCancel(animator: Animator) { }
 
-            override fun onAnimationStart(animator: Animator?) {
+            override fun onAnimationStart(animator: Animator) {
                 if (newVisibility == View.VISIBLE) {
                     visibility = View.VISIBLE
                 }

@@ -120,14 +120,14 @@ class CuratedPhotosFragment : BaseFragment() {
                 ),
                 listOf(
                     object : MenuItem.OnMenuItemClickListener {
-                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                        override fun onMenuItemClick(menuItem: MenuItem): Boolean {
                             viewModel.updateListLayout(ListLayout.LIST)
                             return true
                         }
                     },
 
                     object : MenuItem.OnMenuItemClickListener {
-                        override fun onMenuItemClick(menuItem: MenuItem?): Boolean {
+                        override fun onMenuItemClick(menuItem: MenuItem): Boolean {
                             viewModel.updateListLayout(ListLayout.GRID)
                             return true
                         }
