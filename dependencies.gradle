@@ -20,7 +20,7 @@ ext.deps = [
         lifecycle_viewmodel_compose : 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1',
         compose_runtime_livedata : 'androidx.compose.runtime:runtime-livedata:1.1.1',
         compose_material : 'androidx.compose.material:material:1.1.1',
-        compose_theme_adapter : 'com.google.android.material:compose-theme-adapter:1.1.14',
+        compose_theme_adapter : 'com.google.android.material:compose-theme-adapter:1.1.19',
         accompanist_insets : 'com.google.accompanist:accompanist-insets:0.21.4-beta',
 
         // Hilt
