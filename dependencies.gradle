@@ -16,7 +16,7 @@ ext.deps = [
         // Compose
         compose_ui : 'androidx.compose.ui:ui:1.2.1',
         activity_compose : 'androidx.activity:activity-compose:1.6.0',
-        compose_ui_tooling : 'androidx.compose.ui:ui-tooling:1.1.1',
+        compose_ui_tooling : 'androidx.compose.ui:ui-tooling:1.2.1',
         lifecycle_viewmodel_compose : 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1',
         compose_runtime_livedata : 'androidx.compose.runtime:runtime-livedata:1.1.1',
         compose_material : 'androidx.compose.material:material:1.1.1',
