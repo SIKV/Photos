@@ -41,7 +41,7 @@ ext.deps = [
 
         // Coroutines
         coroutines_core : 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1',
-        coroutines_android : 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1',
+        coroutines_android : 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4',
 
         // Room
         room_runtime : 'androidx.room:room-runtime:2.4.3',
