@@ -46,7 +46,7 @@ ext.deps = [
         // Room
         room_runtime : 'androidx.room:room-runtime:2.4.3',
         room_compiler : 'androidx.room:room-compiler:2.4.2',
-        room_ktx : 'androidx.room:room-ktx:2.4.2',
+        room_ktx : 'androidx.room:room-ktx:2.4.3',
 
         // Auth
         firebase_auth : 'com.google.firebase:firebase-auth:21.0.8',
