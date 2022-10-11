@@ -30,7 +30,7 @@ ext.deps = [
         // Retrofit
         retrofit2 : 'com.squareup.retrofit2:retrofit:2.9.0',
         retrofit2_converter_gson : 'com.squareup.retrofit2:converter-gson:2.9.0',
-        okhttp3_logging : 'com.squareup.okhttp3:logging-interceptor:4.8.1',
+        okhttp3_logging : 'com.squareup.okhttp3:logging-interceptor:4.10.0',
 
         // Remote Config
         firebase_config : 'com.google.firebase:firebase-config-ktx:21.1.2',
