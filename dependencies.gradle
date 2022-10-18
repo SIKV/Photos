@@ -60,7 +60,7 @@ ext.deps = [
 
         // Landscapist
         landscapist_glide : 'com.github.skydoves:landscapist-glide:2.0.0',
-        landscapist_animation : 'com.github.skydoves:landscapist-animation:2.0.0',
+        landscapist_animation : 'com.github.skydoves:landscapist-animation:2.0.2',
 
         // Others
         inject : 'javax.inject:javax.inject:1',
