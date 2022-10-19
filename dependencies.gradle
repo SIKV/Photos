@@ -49,7 +49,7 @@ ext.deps = [
         room_ktx : 'androidx.room:room-ktx:2.4.3',
 
         // Auth
-        firebase_auth : 'com.google.firebase:firebase-auth:21.0.8',
+        firebase_auth : 'com.google.firebase:firebase-auth:21.1.0',
         play_services_auth : 'com.google.android.gms:play-services-auth:20.2.0',
 
         // Paging
