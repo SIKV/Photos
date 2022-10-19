@@ -59,7 +59,7 @@ ext.deps = [
         preference_ktx : 'androidx.preference:preference-ktx:1.2.0',
 
         // Landscapist
-        landscapist_glide : 'com.github.skydoves:landscapist-glide:2.0.0',
+        landscapist_glide : 'com.github.skydoves:landscapist-glide:2.0.2',
         landscapist_animation : 'com.github.skydoves:landscapist-animation:2.0.2',
 
         // Others
