@@ -64,6 +64,7 @@ fun DragIndicator(
 
 @Composable
 fun ActionIconButton(
+    modifier: Modifier = Modifier,
     @DrawableRes icon: Int,
     @StringRes contentDescription: Int,
     iconTint: Color? = null,
@@ -71,7 +72,7 @@ fun ActionIconButton(
     onClick: () -> Unit
 ) {
     IconButton(
-        modifier = Modifier
+        modifier = modifier
             .background(color = color ?: Color.Transparent, shape = CircleShape),
         onClick = onClick
     ) {
