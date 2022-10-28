@@ -27,7 +27,6 @@ dependencies {
     implementation deps.lifecycle_viewmodel_ktx
     implementation deps.compose_material
     implementation deps.compose_theme_adapter
-    implementation deps.accompanist_insets
 
     implementation deps.inject
     kapt deps.hilt_compiler

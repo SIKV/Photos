@@ -24,8 +24,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.github.sikv.photos.common.ui.*
 import com.github.sikv.photos.domain.Photo
-import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsPadding
 
 private val sheetPeekHeight = 196.dp
 private const val imageRevealDuration = 1000
