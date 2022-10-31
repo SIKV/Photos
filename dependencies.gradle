@@ -37,7 +37,7 @@ ext.deps = [
         okhttp3_logging : 'com.squareup.okhttp3:logging-interceptor:4.10.0',
 
         // Remote Config
-        firebase_config : 'com.google.firebase:firebase-config-ktx:21.1.2',
+        firebase_config : 'com.google.firebase:firebase-config-ktx:21.2.0',
         firebase_analytics : 'com.google.firebase:firebase-analytics:21.1.1',
 
         // Firestore
