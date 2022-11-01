@@ -1,45 +1,66 @@
 package com.github.sikv.photos.feedback
 
-import android.app.Application
 import android.util.Patterns
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.common.PreferencesService
+import com.github.sikv.photos.feedback.data.FeedbackRepository
 import com.github.sikv.photos.feedback.domain.Feedback
 import com.github.sikv.photos.feedback.domain.RequestStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-sealed interface FeedbackUiState {
-    object Empty : FeedbackUiState
-
-    data class Data(
-        val requestStatus: RequestStatus
-    ) : FeedbackUiState
-}
+data class FeedbackUiState(
+    val email: String?,
+    val description: String?,
+    val requestStatus: RequestStatus
+)
 
 @HiltViewModel
 internal class FeedbackViewModel @Inject constructor(
-    application: Application,
     private val feedbackRepository: FeedbackRepository,
     private val preferencesService: PreferencesService
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
-    private val mutableUiState = MutableStateFlow<FeedbackUiState>(FeedbackUiState.Empty)
+    private val mutableUiState = MutableStateFlow(
+        FeedbackUiState(
+            email = null,
+            description = null,
+            requestStatus = RequestStatus.Idle
+        )
+    )
     val uiState: StateFlow<FeedbackUiState> = mutableUiState
 
-    fun send(email: String?, description: String?) {
+    fun emailChanged(email: String) {
+        mutableUiState.update { state ->
+            state.copy(email = email)
+        }
+    }
+
+    fun descriptionChanged(feedback: String) {
+        mutableUiState.update { state ->
+            state.copy(description = feedback)
+        }
+    }
+
+    fun submit() {
+        val email = uiState.value.email
+        val description = uiState.value.description
+
         if (!email.isValidEmail()) {
-            val error = getApplication<Application>().getString(R.string.enter_valid_email)
-            updateState(RequestStatus.ValidationError(error, 1))
+            mutableUiState.update { state ->
+                state.copy(requestStatus = RequestStatus.InvalidEmail)
+            }
             return
         }
         if (description.isNullOrBlank()) {
-            val error = getApplication<Application>().getString(R.string.enter_some_text)
-            updateState(RequestStatus.ValidationError(error, 2))
+            mutableUiState.update { state ->
+                state.copy(requestStatus = RequestStatus.InvalidDescription)
+            }
             return
         }
 
@@ -49,28 +70,16 @@ internal class FeedbackViewModel @Inject constructor(
             description
         )
 
-        updateState(RequestStatus.InProgress)
+        mutableUiState.update { state ->
+            state.copy(requestStatus = RequestStatus.InProgress)
+        }
 
         viewModelScope.launch {
             val sent = feedbackRepository.sendFeedback(feedback)
-
-            val messageId =
-                if (sent) R.string.feedback_sent else R.string.error_sending_feedback
-            val message = getApplication<Application>().getString(messageId)
-
-            updateState(
-                RequestStatus.Done(
-                    success = sent,
-                    message = message
-                )
-            )
+            mutableUiState.update { state ->
+                state.copy(requestStatus = if (sent) RequestStatus.Success else RequestStatus.Error)
+            }
         }
-    }
-
-    private fun updateState(requestStatus: RequestStatus) {
-        mutableUiState.value = FeedbackUiState.Data(
-            requestStatus = requestStatus
-        )
     }
 }
 

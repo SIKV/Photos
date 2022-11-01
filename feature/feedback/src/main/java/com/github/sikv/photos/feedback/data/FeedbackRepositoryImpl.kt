@@ -1,4 +1,4 @@
-package com.github.sikv.photos.feedback
+package com.github.sikv.photos.feedback.data
 
 import com.github.sikv.photos.common.AccountManager
 import com.github.sikv.photos.feedback.domain.Feedback

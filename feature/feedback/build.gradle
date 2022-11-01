@@ -7,7 +7,12 @@ plugins {
 
 android {
     buildFeatures {
+        compose true
         viewBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_kotlin_compiler
     }
 }
 
@@ -19,6 +24,8 @@ dependencies {
 
     implementation deps.material
     implementation deps.fragment_ktx
+    implementation deps.compose_material3
+    implementation deps.compose_theme_adapter3
     implementation deps.lifecycle_viewmodel_ktx
 
     implementation deps.inject
