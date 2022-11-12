@@ -23,7 +23,6 @@ Browse, search, download, and share amazing free photos provided by talented pho
 - [ML Kit](https://developers.google.com/ml-kit)
 - [Glide](https://github.com/bumptech/glide)
 - [Chrome Custom Tabs](https://developer.chrome.com/multidevice/android/customtabs)
-- [Preference](https://developer.android.com/jetpack/androidx/releases/preference)
 - [Macrobenchmark](https://developer.android.com/topic/performance/benchmarking/benchmarking-overview)
 
 # Screenshots
