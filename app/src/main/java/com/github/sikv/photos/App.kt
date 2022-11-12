@@ -1,7 +1,7 @@
 package com.github.sikv.photos
 
 import android.app.Application
-import com.github.sikv.photos.preferences.ThemeManager
+import com.github.sikv.photos.thememanager.ThemeManager
 import com.google.android.material.color.DynamicColors
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
@@ -22,7 +22,7 @@ class App : Application() {
 
         instance = this
 
-        themeManager.applyTheme()
+        themeManager.applyTheme(themeManager.getCurrentTheme())
         DynamicColors.applyToActivitiesIfAvailable(this)
     }
 }

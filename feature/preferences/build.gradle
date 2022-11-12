@@ -5,16 +5,30 @@ plugins {
     id 'dagger.hilt.android.plugin'
 }
 
+android {
+    buildFeatures {
+        compose true
+        viewBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_kotlin_compiler
+    }
+}
+
 dependencies {
     implementation project(':common-ui')
     implementation project(':navigation')
+    implementation project(':theme-manager')
 
-    api deps.preference_ktx
-    implementation deps.oss_licenses
-
+    implementation deps.material
     implementation deps.fragment_ktx
+    implementation deps.compose_material3
+    implementation deps.compose_theme_adapter3
 
     implementation deps.inject
     kapt deps.hilt_compiler
     implementation deps.hilt_android
+
+    implementation deps.oss_licenses
 }

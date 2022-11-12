@@ -1,0 +1,14 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+dependencies {
+    implementation deps.appcompat
+
+    implementation deps.inject
+    kapt deps.hilt_compiler
+    implementation deps.hilt_android
+}
