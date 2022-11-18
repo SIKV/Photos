@@ -42,6 +42,10 @@ jobs:
         
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
+    - name: Check lint
+      run: ./gradlew lintDevRelease
+
     - name: Build with Gradle
       run: ./gradlew assembleDevRelease -PreleaseKeyAlias='${{ secrets.DEV_KEY_ALIAS }}' -PreleaseKeyPassword='${{ secrets.DEV_KEY_PASSWORD }}' -PreleaseStoreFile='${{ secrets.DEV_KEYSTORE_FILENAME }}' -PreleaseStorePassword='${{ secrets.DEV_KEYSTORE_PASSWORD }}'
       
