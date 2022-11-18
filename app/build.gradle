@@ -56,6 +56,13 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    lintOptions {
+        checkAllWarnings true
+        warningsAsErrors true
+        abortOnError true
+        baseline file('lint-baseline.xml')
+    }
 }
 
 kapt {
