@@ -3,6 +3,7 @@ package com.github.sikv.photos.ui
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.isVisible
@@ -56,6 +57,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                handleBackPress()
+            }
+        })
+
         featureFlagFetcher.fetch(this) {
             when (intent.action) {
                 getString(R.string._shortcut_action_search) -> {
@@ -75,12 +82,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        if ((supportFragmentManager.getActiveFragment() as? RootFragment)?.provideNavigation()?.backPressed() == false) {
+    // FYI: Marked as public because of Lint 'Synthetic Accessor' error.
+    fun handleBackPress() {
+        if ((supportFragmentManager.getActiveFragment() as? RootFragment)?.provideNavigation()
+                ?.backPressed() == false
+        ) {
             if (isInitialFragmentSelected()) {
                 selectInitialFragment()
             } else {
-                super.onBackPressed()
+                finish()
             }
         }
     }
