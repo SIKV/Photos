@@ -41,4 +41,4 @@
 }
 
 # Keep model classes
--keep class com.github.sikv.photos.model.** { *; }
+-keep class com.github.sikv.photos.domain.** { *; }
