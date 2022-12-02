@@ -7,14 +7,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class PexelsPhoto(
+    @SerializedName("id")
+    val id: String,
+
     @SerializedName("url")
     val url: String,
-
-    @SerializedName("width")
-    val width: Int,
-
-    @SerializedName("height")
-    val height: Int,
 
     @SerializedName("photographer")
     val photographer: String,
@@ -26,12 +23,7 @@ class PexelsPhoto(
     val src: PexelsSrc
 ) : Photo() {
 
-    override fun getPhotoId(): String {
-        return url.substring(
-            url.substring(0, url.length - 1).lastIndexOf("-") + 1,
-            url.lastIndexOf("/")
-        )
-    }
+    override fun getPhotoId(): String = id
 
     override fun getPhotoPreviewUrl(): String = src.large
     override fun getPhotoFullPreviewUrl(): String = src.large
