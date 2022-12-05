@@ -29,7 +29,7 @@ ext.deps = [
 
         // Hilt
         hilt_android : 'com.google.dagger:hilt-android:2.44',
-        hilt_compiler : 'com.google.dagger:hilt-compiler:2.44',
+        hilt_compiler : 'com.google.dagger:hilt-compiler:2.44.2',
 
         // Retrofit
         retrofit2 : 'com.squareup.retrofit2:retrofit:2.9.0',
