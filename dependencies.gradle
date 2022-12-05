@@ -60,7 +60,7 @@ ext.deps = [
         paging_runtime_ktx : 'androidx.paging:paging-runtime-ktx:3.1.1',
 
         // Landscapist
-        landscapist_glide : 'com.github.skydoves:landscapist-glide:2.0.2',
+        landscapist_glide : 'com.github.skydoves:landscapist-glide:2.1.0',
         landscapist_animation : 'com.github.skydoves:landscapist-animation:2.0.2',
 
         // Others
