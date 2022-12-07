@@ -11,7 +11,7 @@ import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
 import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
-import com.google.android.material.composethemeadapter.MdcTheme
+import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -33,29 +33,23 @@ class RecommendationsFragment : BaseFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         setContent {
-            MdcTheme {
+            Mdc3Theme {
                 val uiState = viewModel.uiState.collectAsState()
 
-                when (val state = uiState.value) {
-                    is RecommendationsUiState.Loading -> {
-                        RecommendationsLoadingScreen()
+                RecommendationsScreen(
+                    isRefreshing = uiState.value.isLoading,
+                    photos = uiState.value.photos,
+                    onPhotoPressed = { photo ->
+                        openPhotoDetails(photo)
+                    },
+                    isNextPageLoading = uiState.value.isNextPageLoading,
+                    onLoadMore = {
+                        viewModel.loadRecommendations()
+                    },
+                    onRefresh = {
+                        viewModel.loadRecommendations(refresh = true)
                     }
-                    is RecommendationsUiState.Data -> {
-                        RecommendationsScreen(
-                            photos = state.photos,
-                            onPhotoPressed = { photo ->
-                                openPhotoDetails(photo)
-                            },
-                            isNextPageLoading = state.isNextPageLoading,
-                            onLoadMore = {
-                                viewModel.loadRecommendations()
-                            },
-                            onRefresh = {
-                                viewModel.loadRecommendations(refresh = true)
-                            }
-                        )
-                    }
-                }
+                )
             }
         }
     }

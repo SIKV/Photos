@@ -26,9 +26,13 @@ dependencies {
 
     implementation deps.fragment_ktx
     implementation deps.lifecycle_viewmodel_ktx
+
+    // Used for PullRefresh.
     implementation deps.compose_material
+
+    implementation deps.compose_material3
+    implementation deps.compose_theme_adapter3
     implementation deps.lifecycle_viewmodel_compose
-    implementation deps.compose_theme_adapter
 
     implementation deps.inject
     kapt deps.hilt_compiler

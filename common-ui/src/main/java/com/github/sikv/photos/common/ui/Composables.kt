@@ -6,6 +6,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -116,6 +117,7 @@ fun PlaceholderImage(
 fun NetworkImage(
     imageUrl: String,
     modifier: Modifier = Modifier,
+    loading: @Composable (BoxScope.() -> Unit)? = null,
     contentScale: ContentScale = ContentScale.Crop,
     revealDuration: Int? = null
 ) {
@@ -124,6 +126,7 @@ fun NetworkImage(
         imageModel = imageUrl,
         contentScale = contentScale,
         revealDuration = revealDuration,
+        loading = loading,
     )
 }
 
@@ -132,11 +135,12 @@ private fun Image(
     imageModel: Any,
     contentScale: ContentScale,
     revealDuration: Int?,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    loading: @Composable (BoxScope.() -> Unit)? = null
 ) {
     GlideImage(
         modifier = modifier,
-        imageModel = imageModel,
+        imageModel = { imageModel },
         imageOptions = ImageOptions(
             contentScale = contentScale,
         ),
@@ -144,6 +148,9 @@ private fun Image(
             if (revealDuration != null) {
                 add(CircularRevealPlugin(duration = revealDuration))
             }
+        },
+        loading = {
+            loading?.invoke(this)
         },
     )
 }
