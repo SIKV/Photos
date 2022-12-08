@@ -1,6 +1,4 @@
-package com.github.sikv.photos.common
-
-import com.github.sikv.photos.domain.LoginStatus
+package com.github.sikv.photos.account
 
 interface AccountManager {
 

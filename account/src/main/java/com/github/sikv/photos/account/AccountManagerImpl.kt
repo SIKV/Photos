@@ -1,11 +1,8 @@
-package com.github.sikv.photos.common
+package com.github.sikv.photos.account
 
-import com.github.sikv.photos.domain.LoginStatus
 import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class AccountManagerImpl @Inject constructor() : AccountManager {
 
     private val subscribers = mutableListOf<AccountManager.Listener>()

@@ -1,6 +1,6 @@
 package com.github.sikv.photos.feedback.data
 
-import com.github.sikv.photos.common.AccountManager
+import com.github.sikv.photos.account.AccountManager
 import com.github.sikv.photos.feedback.domain.Feedback
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.*

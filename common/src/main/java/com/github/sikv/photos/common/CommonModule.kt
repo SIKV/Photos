@@ -12,11 +12,6 @@ import dagger.hilt.components.SingletonComponent
 class CommonModule {
 
     @Provides
-    fun provideAccountManager(accountManager: AccountManagerImpl): AccountManager {
-        return accountManager
-    }
-
-    @Provides
     fun providePhotoLoader(@ApplicationContext context: Context): PhotoLoader {
         return GlidePhotoLoader(context)
     }
