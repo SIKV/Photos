@@ -2,19 +2,22 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
     id 'dagger.hilt.android.plugin'
 }
 
 dependencies {
     implementation project(':domain')
     implementation project(':api')
-    implementation project(":config")
-    api project(":persistence") // TODO Fix
+    implementation project(':config')
 
     implementation deps.inject
-
     implementation deps.hilt_android
     kapt deps.hilt_compiler
+
+    api deps.room_runtime
+    kapt deps.room_compiler
+    api deps.room_ktx
 
     implementation deps.coroutines_core
     implementation deps.coroutines_android

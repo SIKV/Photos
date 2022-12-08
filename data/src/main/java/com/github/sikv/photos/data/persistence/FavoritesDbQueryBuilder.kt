@@ -1,8 +1,8 @@
-package com.github.sikv.photos.persistence
+package com.github.sikv.photos.data.persistence
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
-import com.github.sikv.photos.domain.SortBy
+import com.github.sikv.photos.data.SortBy
 import javax.inject.Inject
 
 class FavoritesDbQueryBuilder @Inject constructor() {

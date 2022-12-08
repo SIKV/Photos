@@ -9,8 +9,8 @@ import com.github.sikv.photos.common.ui.OptionsBottomSheetDialog
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.domain.ListLayout
 import com.github.sikv.photos.domain.Photo
-import com.github.sikv.photos.domain.SortBy
-import com.github.sikv.photos.persistence.FavoritePhotoEntity
+import com.github.sikv.photos.data.SortBy
+import com.github.sikv.photos.data.persistence.FavoritePhotoEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

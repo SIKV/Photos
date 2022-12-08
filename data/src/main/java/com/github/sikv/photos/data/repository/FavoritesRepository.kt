@@ -1,8 +1,8 @@
 package com.github.sikv.photos.data.repository
 
 import com.github.sikv.photos.domain.Photo
-import com.github.sikv.photos.domain.SortBy
-import com.github.sikv.photos.persistence.FavoritePhotoEntity
+import com.github.sikv.photos.data.SortBy
+import com.github.sikv.photos.data.persistence.FavoritePhotoEntity
 import kotlinx.coroutines.flow.Flow
 
 interface FavoritesRepository {

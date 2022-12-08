@@ -1,4 +1,4 @@
-package com.github.sikv.photos.persistence
+package com.github.sikv.photos.data.persistence
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

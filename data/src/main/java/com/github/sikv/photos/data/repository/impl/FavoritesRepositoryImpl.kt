@@ -2,10 +2,10 @@ package com.github.sikv.photos.data.repository.impl
 
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.domain.Photo
-import com.github.sikv.photos.domain.SortBy
-import com.github.sikv.photos.persistence.FavoritePhotoEntity
-import com.github.sikv.photos.persistence.FavoritesDao
-import com.github.sikv.photos.persistence.FavoritesDbQueryBuilder
+import com.github.sikv.photos.data.SortBy
+import com.github.sikv.photos.data.persistence.FavoritePhotoEntity
+import com.github.sikv.photos.data.persistence.FavoritesDao
+import com.github.sikv.photos.data.persistence.FavoritesDbQueryBuilder
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow

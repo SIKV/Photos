@@ -1,4 +1,4 @@
-package com.github.sikv.photos.domain
+package com.github.sikv.photos.data
 
 enum class SortBy {
     DATE_ADDED_NEWEST,
