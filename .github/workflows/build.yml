@@ -53,4 +53,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: photos-dev-release.apk
-        path: app/build/outputs/apk/dev/release/app-dev-release.apk
+        path: app/build/outputs/apk/dev/releaseDebuggable/app-dev-releaseDebuggable.apk
