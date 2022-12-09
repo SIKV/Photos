@@ -47,7 +47,7 @@ jobs:
       run: ./gradlew lintDevRelease
 
     - name: Build with Gradle
-      run: ./gradlew assembleDevRelease -PreleaseKeyAlias='${{ secrets.DEV_KEY_ALIAS }}' -PreleaseKeyPassword='${{ secrets.DEV_KEY_PASSWORD }}' -PreleaseStoreFile='${{ secrets.DEV_KEYSTORE_FILENAME }}' -PreleaseStorePassword='${{ secrets.DEV_KEYSTORE_PASSWORD }}'
+      run: ./gradlew assembleDevReleaseDebuggable -PreleaseKeyAlias='${{ secrets.DEV_KEY_ALIAS }}' -PreleaseKeyPassword='${{ secrets.DEV_KEY_PASSWORD }}' -PreleaseStoreFile='${{ secrets.DEV_KEYSTORE_FILENAME }}' -PreleaseStorePassword='${{ secrets.DEV_KEYSTORE_PASSWORD }}'
       
     - name: Upload artifact
       uses: actions/upload-artifact@v2

@@ -44,6 +44,10 @@ android {
             }
             signingConfig signingConfigs.release
         }
+        releaseDebuggable {
+            initWith buildTypes.release
+            debuggable true
+        }
         benchmark {
             initWith buildTypes.release
             signingConfig signingConfigs.debug
