@@ -46,6 +46,7 @@ android {
         }
         releaseDebuggable {
             initWith buildTypes.release
+            matchingFallbacks = ['release']
             debuggable true
         }
         benchmark {
