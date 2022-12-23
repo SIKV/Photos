@@ -17,9 +17,9 @@ dependencies {
     implementation project(':common-ui')
     implementation project(':navigation')
 
-    implementation deps.material
+    implementation libs.material
 
-    implementation deps.inject
-    kapt deps.hilt_compiler
-    implementation deps.hilt_android
+    implementation libs.inject
+    kapt libs.hilt.compiler
+    implementation libs.hilt.android
 }

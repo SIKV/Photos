@@ -97,12 +97,12 @@ dependencies {
     implementation project(":feature:preferences")
     implementation project(":feature:feedback")
 
-    implementation deps.appcompat
-    implementation deps.material
-    implementation deps.viewpager2
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    implementation libs.androidx.viewpager2
 
-    implementation deps.hilt_android
-    kapt deps.hilt_compiler
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
     // https://stackoverflow.com/a/60492942/7064179
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'

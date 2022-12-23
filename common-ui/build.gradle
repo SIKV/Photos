@@ -11,19 +11,19 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion compose_kotlin_compiler
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
 }
 
 dependencies {
     implementation project(':navigation')
 
-    implementation deps.appcompat
-    implementation deps.material
-    implementation deps.compose_material
-    implementation deps.core_ktx
-    implementation deps.browser
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    implementation libs.androidx.compose.material
+    implementation libs.androidx.core
+    implementation libs.androidx.browser
 
-    api deps.landscapist_glide
-    api deps.landscapist_animation
+    api libs.landscapist.glide
+    api libs.landscapist.animation
 }

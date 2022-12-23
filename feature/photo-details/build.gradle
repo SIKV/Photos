@@ -12,7 +12,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion compose_kotlin_compiler
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
 }
 
@@ -23,12 +23,12 @@ dependencies {
     implementation project(":common-ui")
     implementation project(':navigation')
 
-    implementation deps.fragment_ktx
-    implementation deps.lifecycle_viewmodel_ktx
-    implementation deps.compose_material
-    implementation deps.compose_theme_adapter
+    implementation libs.androidx.fragment
+    implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.androidx.compose.material
+    implementation libs.material.composeThemeAdapter
 
-    implementation deps.inject
-    kapt deps.hilt_compiler
-    implementation deps.hilt_android
+    implementation libs.inject
+    kapt libs.hilt.compiler
+    implementation libs.hilt.android
 }

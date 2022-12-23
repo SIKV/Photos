@@ -8,10 +8,10 @@ plugins {
 dependencies {
     implementation project(':domain')
 
-    implementation deps.inject
-    implementation deps.hilt_android
-    kapt deps.hilt_compiler
+    implementation libs.inject
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
-    implementation deps.firebase_config
-    implementation deps.firebase_analytics
+    implementation libs.firebase.config
+    implementation libs.firebase.analytics
 }

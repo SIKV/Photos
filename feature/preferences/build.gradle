@@ -12,7 +12,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion compose_kotlin_compiler
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
 }
 
@@ -21,14 +21,14 @@ dependencies {
     implementation project(':navigation')
     implementation project(':theme-manager')
 
-    implementation deps.material
-    implementation deps.fragment_ktx
-    implementation deps.compose_material3
-    implementation deps.compose_theme_adapter3
+    implementation libs.material
+    implementation libs.androidx.fragment
+    implementation libs.androidx.compose.material3
+    implementation libs.material3.composeThemeAdapter
 
-    implementation deps.inject
-    kapt deps.hilt_compiler
-    implementation deps.hilt_android
+    implementation libs.inject
+    kapt libs.hilt.compiler
+    implementation libs.hilt.android
 
-    implementation deps.oss_licenses
+    implementation libs.playServices.ossLicenses
 }

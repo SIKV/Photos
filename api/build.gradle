@@ -16,12 +16,10 @@ android {
 dependencies {
     implementation project(':domain')
 
-    implementation deps.inject
+    implementation libs.inject
 
-    api deps.retrofit2
-    api deps.retrofit2_converter_gson
-    api deps.okhttp3_logging
+    api libs.bundles.retrofit2
 
-    implementation deps.hilt_android
-    kapt deps.hilt_compiler
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 }

@@ -11,14 +11,14 @@ dependencies {
     implementation project(':api')
     implementation project(':config')
 
-    implementation deps.inject
-    implementation deps.hilt_android
-    kapt deps.hilt_compiler
+    implementation libs.inject
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
-    api deps.room_runtime
-    kapt deps.room_compiler
-    api deps.room_ktx
+    api libs.room.runtime
+    kapt libs.room.compiler
+    api libs.room.ktx
 
-    implementation deps.coroutines_core
-    implementation deps.coroutines_android
+    implementation libs.coroutines.core
+    implementation libs.coroutines.android
 }

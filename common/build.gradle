@@ -8,13 +8,13 @@ plugins {
 dependencies {
     implementation project(":domain")
 
-    implementation deps.appcompat
-    implementation deps.lifecycle_common
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.lifecycle.common
 
-    implementation deps.inject
-    implementation deps.hilt_android
-    kapt deps.hilt_compiler
+    implementation libs.inject
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
 
-    implementation deps.landscapist_glide
-    implementation deps.landscapist_animation
+    implementation libs.landscapist.glide
+    implementation libs.landscapist.animation
 }

@@ -10,8 +10,8 @@ dependencies {
     implementation project(':data')
     implementation project(':navigation')
 
-    implementation deps.material
-    implementation deps.recyclerview
-    implementation deps.lifecycle_runtime_ktx
-    implementation deps.paging_runtime_ktx
+    implementation libs.material
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.androidx.paging.runtime
 }

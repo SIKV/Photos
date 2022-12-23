@@ -19,11 +19,11 @@ dependencies {
     implementation project(':navigation')
     implementation project(':photo-list-ui')
 
-    implementation deps.material
-    implementation deps.fragment_ktx
-    implementation deps.lifecycle_viewmodel_ktx
+    implementation libs.material
+    implementation libs.androidx.fragment
+    implementation libs.androidx.lifecycle.viewmodel
 
-    implementation deps.inject
-    kapt deps.hilt_compiler
-    implementation deps.hilt_android
+    implementation libs.inject
+    kapt libs.hilt.compiler
+    implementation libs.hilt.android
 }
