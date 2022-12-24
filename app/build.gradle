@@ -13,11 +13,24 @@ def releaseStoreFile = hasProperty('releaseStoreFile') ? property('releaseStoreF
 def releaseStorePassword = hasProperty('releaseStorePassword') ? property('releaseStorePassword') : null
 
 android {
+    compileSdk project.compileSdk
+
     defaultConfig {
         applicationId 'com.github.sikv.photos'
         versionCode 1
         versionName '1.0'
+        minSdk project.minSdk
+        targetSdk project.targetSdk
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 
     signingConfigs {
@@ -56,7 +69,7 @@ android {
         }
     }
 
-    with flavorConfig
+    with project.flavorConfig
 
     buildFeatures {
         viewBinding true

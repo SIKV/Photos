@@ -4,7 +4,14 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk project.compileSdk
+
+    defaultConfig {
+        minSdk project.minSdk
+        targetSdk project.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -13,13 +20,6 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-
-    defaultConfig {
-        minSdk 23
-        targetSdk 32
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -33,7 +33,7 @@ android {
         }
     }
 
-    with flavorConfig
+    with project.flavorConfig
 
     targetProjectPath = ":app"
     experimentalProperties["android.experimental.self-instrumenting"] = true

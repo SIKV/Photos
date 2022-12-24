@@ -1,15 +1,21 @@
 buildscript {
-    ext.flavorConfig = {
-        flavorDimensions 'version'
+    project.ext {
+        compileSdk = 33
+        minSdk = 23
+        targetSdk = 33
 
-        productFlavors {
-            dev {
-                dimension 'version'
-                applicationIdSuffix '.dev'
-                versionNameSuffix '-dev'
-            }
-            prod {
-                dimension 'version'
+        flavorConfig = {
+            flavorDimensions 'version'
+
+            productFlavors {
+                dev {
+                    dimension 'version'
+                    applicationIdSuffix '.dev'
+                    versionNameSuffix '-dev'
+                }
+                prod {
+                    dimension 'version'
+                }
             }
         }
     }
@@ -32,30 +38,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-    }
-}
-
-subprojects {
-    afterEvaluate { project ->
-        if (project.hasProperty('android')) {
-            android {
-                compileSdk 33
-
-                defaultConfig {
-                    minSdk 23
-                    targetSdk 33
-                }
-
-                compileOptions {
-                    sourceCompatibility JavaVersion.VERSION_1_8
-                    targetCompatibility JavaVersion.VERSION_1_8
-                }
-
-                kotlinOptions {
-                    jvmTarget = '1.8'
-                }
-            }
-        }
     }
 }
 
