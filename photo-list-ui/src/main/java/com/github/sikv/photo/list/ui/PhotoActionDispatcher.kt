@@ -2,6 +2,7 @@ package com.github.sikv.photo.list.ui
 
 import android.Manifest
 import android.app.Activity
+import android.os.Build
 import android.view.View
 import com.github.sikv.photos.common.DownloadService
 import com.github.sikv.photos.common.PermissionManager
@@ -77,28 +78,38 @@ class PhotoActionDispatcher(
     }
 
     private fun downloadPhoto(photo: Photo) {
-        // TODO Refactor to not request WRITE_EXTERNAL_STORAGE for all Android versions.
-        permissionManager.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) { granted ->
-            if (granted) {
-                downloadService.downloadPhoto(
-                    photoUrl = photo.getPhotoDownloadUrl(),
-                    notificationTitle = "Photos", // TODO Fix
-                    notificationDescription = "Downloading photo" // TODO Fix
-                )
-                onShowMessage(getActivity().getString(R.string.downloading_photo))
-            } else {
-                MaterialAlertDialogBuilder(getActivity())
-                    .setTitle(R.string.storage_permission)
-                    .setMessage(R.string.storage_permission_description)
-                    .setPositiveButton(R.string.open_settings) { _, _ ->
-                        getActivity().openAppSettings()
-                    }
-                    .setNegativeButton(R.string.cancel, null)
-                    .create()
-                    .show()
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+            // No need to request WRITE_EXTERNAL_STORAGE permission on Android 11 and higher
+            downloadPhotoInternal(photo)
+        } else {
+            // Request WRITE_EXTERNAL_STORAGE permission on Android 10 and lower
+            permissionManager.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) { granted ->
+                if (granted) {
+                    downloadPhotoInternal(photo)
+                } else {
+                    MaterialAlertDialogBuilder(getActivity())
+                        .setTitle(R.string.storage_permission)
+                        .setMessage(R.string.storage_permission_description)
+                        .setPositiveButton(R.string.open_settings) { _, _ ->
+                            getActivity().openAppSettings()
+                        }
+                        .setNegativeButton(R.string.cancel, null)
+                        .create()
+                        .show()
+                }
             }
         }
     }
+
+    private fun downloadPhotoInternal(photo: Photo) {
+        downloadService.downloadPhoto(
+            photoUrl = photo.getPhotoDownloadUrl(),
+            notificationTitle = "Photos", // TODO Fix
+            notificationDescription = "Downloading photo" // TODO Fix
+        )
+        onShowMessage(getActivity().getString(R.string.downloading_photo))
+    }
+
 
     override fun onPhotoActionParentRelease() {
         if (this::photoPreviewPopup.isInitialized && photoPreviewPopup.isShown()) {
