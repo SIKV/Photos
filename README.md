@@ -1,3 +1,5 @@
+## 🚧 Work in progress
+
 ![Build](https://github.com/SIKV/Photos/workflows/Build/badge.svg)
 
 Browse, search, download, and share amazing free photos provided by talented photographers on [Pexels](https://www.pexels.com), [Unsplash](https://unsplash.com), and [Pixabay](https://pixabay.com).
@@ -9,7 +11,7 @@ Browse, search, download, and share amazing free photos provided by talented pho
 - Download and share
 - Set any photo as your device wallpaper
 
-# Technologies
+## Technologies
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture)
 - [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
@@ -25,7 +27,7 @@ Browse, search, download, and share amazing free photos provided by talented pho
 - [Chrome Custom Tabs](https://developer.chrome.com/multidevice/android/customtabs)
 - [Macrobenchmark](https://developer.android.com/topic/performance/benchmarking/benchmarking-overview)
 
-# Screenshots
+## Screenshots
 <p>
   <img src="../assets/2022_1.png" width="225">
   <img src="../assets/2022_2.png" width="225">
