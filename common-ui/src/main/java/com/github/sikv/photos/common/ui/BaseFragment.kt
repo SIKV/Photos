@@ -11,6 +11,7 @@ import com.github.sikv.photos.navigation.Navigation
 import com.github.sikv.photos.navigation.NavigationProvider
 import com.google.android.material.color.MaterialColors
 
+@Deprecated("Use Jetpack Compose")
 abstract class BaseFragment : Fragment() {
 
     private var toolbar: FragmentToolbar? = null
