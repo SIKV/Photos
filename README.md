@@ -1,4 +1,4 @@
->The purpose of this project is to try out modern Android technologies and approaches that help create better apps.<br>It is not intended to be released on Google Play or other stores. However, you can easily download the APK on the Actions page.
+>The purpose of this project is to try out modern Android technologies and approaches that help create better apps. It is not intended to be released on Google Play or other stores. However, you can easily download the APK on the Actions page.
 
 ![Build](https://github.com/SIKV/Photos/workflows/Build/badge.svg)
 
