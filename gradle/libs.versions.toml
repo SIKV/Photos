@@ -51,7 +51,7 @@ coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = "1.6.4" }
 
 firebase-config = { group = "com.google.firebase", name = "firebase-config-ktx", version = "21.2.0" }
-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version = "21.1.1" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version = "21.2.1" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version = "24.4.1" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version = "21.1.0" }
 
