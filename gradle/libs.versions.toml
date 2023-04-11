@@ -7,7 +7,7 @@ material = "1.8.0-alpha02"
 lifecycle = "2.5.1"
 retrofit2 = "2.9.0"
 room = "2.4.3"
-landscapist = "2.0.2"
+landscapist = "2.1.10"
 
 [libraries]
 android-gradle = { group = "com.android.tools.build", name = "gradle", version = "7.3.1" }
