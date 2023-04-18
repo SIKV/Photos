@@ -6,7 +6,7 @@ appcompat = "1.5.1"
 material = "1.8.0-alpha02"
 lifecycle = "2.5.1"
 retrofit2 = "2.9.0"
-room = "2.4.3"
+room = "2.5.1"
 landscapist = "2.0.2"
 
 [libraries]
