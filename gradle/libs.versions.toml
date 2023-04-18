@@ -53,7 +53,7 @@ coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutin
 firebase-config = { group = "com.google.firebase", name = "firebase-config-ktx", version = "21.2.0" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version = "21.2.1" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version = "24.4.1" }
-firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version = "21.1.0" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version = "21.3.0" }
 
 retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit2" }
 retrofit2-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit2" }
