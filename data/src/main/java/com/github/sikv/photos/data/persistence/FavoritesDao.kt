@@ -1,14 +1,13 @@
 package com.github.sikv.photos.data.persistence
 
 import androidx.room.*
-import androidx.room.OnConflictStrategy.REPLACE
 import androidx.sqlite.db.SupportSQLiteQuery
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface FavoritesDao {
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(photo: FavoritePhotoEntity)
 
     @RawQuery(observedEntities = [FavoritePhotoEntity::class])

@@ -1,3 +1,5 @@
+@file:Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+
 package com.github.sikv.photos.photo.details
 
 import androidx.compose.material.BottomSheetState
@@ -8,8 +10,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 @OptIn(ExperimentalMaterialApi::class)
 internal val BottomSheetState.currentFraction: Float
     get() {
-        val fraction = progress.fraction
-        val targetValue = targetValue
+        val fraction = progress
+        val targetValue = swipeableState.targetValue
         val currentValue = currentValue
 
         return when {
