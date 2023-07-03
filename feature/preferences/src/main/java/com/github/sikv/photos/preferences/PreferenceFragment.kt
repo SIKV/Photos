@@ -10,8 +10,8 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
 import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.navigation.route.FeedbackRoute
+import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
-import com.google.android.material.composethemeadapter3.Mdc3Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

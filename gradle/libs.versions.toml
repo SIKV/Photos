@@ -15,8 +15,7 @@ kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin",
 google-services = { group = "com.google.gms", name = "google-services", version = "4.3.15" }
 
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-material-composeThemeAdapter = { group = "com.google.android.material", name = "compose-theme-adapter", version = "1.2.1" }
-material3-composeThemeAdapter = { group = "com.google.android.material", name = "compose-theme-adapter-3", version = "1.1.1" }
+accompanist-themeadapter-material3 = { group = "com.google.accompanist", name = "accompanist-themeadapter-material3", version = "0.31.5-beta" }
 
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 androidx-core = { group = "androidx.core", name = "core-ktx", version = "1.10.1" }

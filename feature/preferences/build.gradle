@@ -23,7 +23,7 @@ dependencies {
     implementation libs.material
     implementation libs.androidx.fragment
     implementation libs.androidx.compose.material3
-    implementation libs.material3.composeThemeAdapter
+    implementation libs.accompanist.themeadapter.material3
 
     implementation libs.inject
     kapt libs.hilt.compiler

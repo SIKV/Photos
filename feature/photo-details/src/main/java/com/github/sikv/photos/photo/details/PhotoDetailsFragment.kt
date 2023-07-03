@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Surface
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
@@ -15,7 +15,7 @@ import com.github.sikv.photos.data.createShareIntent
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.navigation.args.SetWallpaperFragmentArguments
 import com.github.sikv.photos.navigation.route.SetWallpaperRoute
-import com.google.android.material.composethemeadapter.MdcTheme
+import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,7 +38,7 @@ class PhotoDetailsFragment : BaseFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         setContent {
-            MdcTheme {
+            Mdc3Theme {
                 Surface {
                     val uiState = viewModel.uiState.collectAsState()
 

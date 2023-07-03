@@ -30,7 +30,7 @@ dependencies {
     implementation libs.androidx.compose.material
 
     implementation libs.androidx.compose.material3
-    implementation libs.material3.composeThemeAdapter
+    implementation libs.accompanist.themeadapter.material3
     implementation libs.androidx.lifecycle.viewmodel.compose
 
     implementation libs.inject

@@ -25,7 +25,8 @@ dependencies {
     implementation libs.androidx.fragment
     implementation libs.androidx.lifecycle.viewmodel
     implementation libs.androidx.compose.material
-    implementation libs.material.composeThemeAdapter
+    implementation libs.androidx.compose.material3
+    implementation libs.accompanist.themeadapter.material3
 
     implementation libs.inject
     kapt libs.hilt.compiler

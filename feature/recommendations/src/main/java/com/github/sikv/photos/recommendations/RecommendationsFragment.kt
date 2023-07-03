@@ -11,7 +11,7 @@ import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
 import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
-import com.google.android.material.composethemeadapter3.Mdc3Theme
+import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
