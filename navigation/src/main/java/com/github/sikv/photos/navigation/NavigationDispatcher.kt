@@ -13,7 +13,7 @@ private fun Activity.hideSoftInput() {
 }
 
 private fun FragmentManager.getActiveFragment(): Fragment? {
-    fragments.forEach { fragment ->
+    fragments.iterator().forEach { fragment ->
         if (fragment.isVisible) {
             return fragment
         }

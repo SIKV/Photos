@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
 fun FragmentManager.getActiveFragment(): Fragment? {
-    fragments.forEach { fragment ->
+    fragments.iterator().forEach { fragment ->
         if (fragment.isVisible) {
             return fragment
         }

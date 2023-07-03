@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setOnDestinationChangedListener(destinationChangedListener: OnDestinationChangedListener?) {
-        supportFragmentManager.fragments.forEach { fragment ->
+        supportFragmentManager.fragments.iterator().forEach { fragment ->
             val navigation = (fragment as? RootFragment)?.provideNavigation()
             navigation?.setOnDestinationChangedListener(destinationChangedListener)
         }

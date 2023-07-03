@@ -18,7 +18,7 @@ internal fun PreferenceScreen(
     onPreferencePress: (PreferenceAction) -> Unit
 ) {
     Column {
-        preferences.forEach { item ->
+        preferences.iterator().forEach { item ->
             when (item) {
                 is PreferenceItem.Item -> PreferenceItem(
                     item = item,
