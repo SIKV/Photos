@@ -17,9 +17,13 @@ import com.github.sikv.photos.navigation.args.SearchFragmentArguments
 import com.github.sikv.photos.navigation.args.withArguments
 import com.github.sikv.photos.photo.details.PhotoDetailsFragment
 import com.github.sikv.photos.search.SearchFragment
-import com.github.sikv.photos.ui.fragment.root.*
+import com.github.sikv.photos.ui.fragment.root.FavoritesRootFragment
+import com.github.sikv.photos.ui.fragment.root.HomeRootFragment
+import com.github.sikv.photos.ui.fragment.root.MoreRootFragment
+import com.github.sikv.photos.ui.fragment.root.RootFragment
+import com.github.sikv.photos.ui.fragment.root.SearchRootFragment
 import com.github.sikv.photos.util.changeFragment
-import com.github.sikv.photos.util.getActiveFragment
+import com.github.sikv.photos.util.getActiveRootFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.reflect.KClass
@@ -44,8 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     private val destinationChangedListener = object : OnDestinationChangedListener {
         override fun onDestinationChanged(fragment: Fragment?) {
-            val bottomNavigationVisible = fragment !is PhotoDetailsFragment
-            binding.bottomNavigationView.isVisible = bottomNavigationVisible
+            handleBottomNavigationVisibility(fragment)
         }
     }
 
@@ -79,12 +82,14 @@ class MainActivity : AppCompatActivity() {
 
             setNavigationListener()
             setOnDestinationChangedListener(destinationChangedListener)
+
+            handleBottomNavigationVisibility()
         }
     }
 
     // FYI: Marked as public because of Lint 'Synthetic Accessor' error.
     fun handleBackPress() {
-        if ((supportFragmentManager.getActiveFragment() as? RootFragment)?.provideNavigation()
+        if ((supportFragmentManager.getActiveRootFragment() as? RootFragment)?.provideNavigation()
                 ?.backPressed() == false
         ) {
             if (isInitialFragmentSelected()) {
@@ -133,10 +138,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun handleBottomNavigationVisibility(fragment: Fragment?) {
+        // Hide bottom navigation if [Photo Details] is opened.
+        val bottomNavigationVisible = fragment !is PhotoDetailsFragment
+        binding.bottomNavigationView.isVisible = bottomNavigationVisible
+    }
+
+    private fun handleBottomNavigationVisibility() {
+        supportFragmentManager.fragments.forEach { rootFragment ->
+            if (!rootFragment.isHidden) {
+                // Check the current fragment.
+                handleBottomNavigationVisibility(rootFragment.childFragmentManager.fragments.lastOrNull())
+            }
+        }
+    }
+
     private fun setNavigationListener() {
         binding.bottomNavigationView.setOnItemSelectedListener { menuItem ->
             supportFragmentManager.changeFragment(
-                hideFragmentTag = supportFragmentManager.getActiveFragment()?.customTag(),
+                hideFragmentTag = supportFragmentManager.getActiveRootFragment()?.customTag(),
                 showFragmentTag = fragmentsTag[menuItem.itemId]
             )
             true

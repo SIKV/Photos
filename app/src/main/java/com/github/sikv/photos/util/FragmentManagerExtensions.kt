@@ -3,7 +3,7 @@ package com.github.sikv.photos.util
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 
-fun FragmentManager.getActiveFragment(): Fragment? {
+fun FragmentManager.getActiveRootFragment(): Fragment? {
     fragments.iterator().forEach { fragment ->
         if (fragment.isVisible) {
             return fragment
