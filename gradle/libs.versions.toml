@@ -47,7 +47,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 
 coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version = "1.7.1" }
-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = "1.7.1" }
+coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version = "1.7.2" }
 
 firebase-config = { group = "com.google.firebase", name = "firebase-config-ktx", version = "21.4.0" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version = "21.3.0" }
