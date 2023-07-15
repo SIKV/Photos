@@ -138,14 +138,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleBottomNavigationVisibility(fragment: Fragment?) {
+    fun handleBottomNavigationVisibility(fragment: Fragment?) {
         // Hide bottom navigation if [Photo Details] is opened.
         val bottomNavigationVisible = fragment !is PhotoDetailsFragment
         binding.bottomNavigationView.isVisible = bottomNavigationVisible
     }
 
     private fun handleBottomNavigationVisibility() {
-        supportFragmentManager.fragments.forEach { rootFragment ->
+        supportFragmentManager.fragments.iterator().forEach { rootFragment ->
             if (!rootFragment.isHidden) {
                 // Check the current fragment.
                 handleBottomNavigationVisibility(rootFragment.childFragmentManager.fragments.lastOrNull())
