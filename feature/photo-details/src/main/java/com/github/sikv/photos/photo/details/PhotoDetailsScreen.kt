@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -142,16 +143,16 @@ private fun ActionableContent(
 }
 
 @Composable
-private fun Attribution(
+private fun RowScope.Attribution(
     photo: Photo,
     onAttributionPressed: () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .clip(CircleShape)
             .clickable { onAttributionPressed() }
             .padding(end = 8.dp)
+            .weight(1f)
     ) {
         val photographerImageUrl = photo.getPhotoPhotographerImageUrl()
 
