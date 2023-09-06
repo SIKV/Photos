@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
@@ -19,7 +19,6 @@ import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-@OptIn(ExperimentalMaterialApi::class)
 @AndroidEntryPoint
 class PhotoDetailsFragment : BaseFragment() {
 
