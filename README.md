@@ -1,3 +1,6 @@
+> This project is developed for educational and experimental purposes only. Its primary goal is to try out modern Android development technologies and approaches that help create better apps.
+
+
 ![Build](https://github.com/SIKV/Photos/workflows/Build/badge.svg)
 
 Browse, search, download, and share amazing free photos provided by talented photographers on [Pexels](https://www.pexels.com), [Unsplash](https://unsplash.com), and [Pixabay](https://pixabay.com).
