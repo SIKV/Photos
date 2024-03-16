@@ -32,11 +32,12 @@ internal class PreferenceViewModel @Inject constructor(
             preferences = listOf(
                 createThemePreferenceItem(themeManager.getCurrentTheme()),
                 PreferenceItem.Divider,
-                PreferenceItem.Item(
-                    action = PreferenceAction.SendFeedback,
-                    icon = R.drawable.ic_bubble_24dp,
-                    title = getString(R.string.send_feedback)
-                ),
+                // TODO: Disabled for Dev release.
+//                PreferenceItem.Item(
+//                    action = PreferenceAction.SendFeedback,
+//                    icon = R.drawable.ic_bubble_24dp,
+//                    title = getString(R.string.send_feedback)
+//                ),
                 PreferenceItem.Item(
                     action = PreferenceAction.OpenSourceLicenses,
                     icon = R.drawable.ic_code_24dp,

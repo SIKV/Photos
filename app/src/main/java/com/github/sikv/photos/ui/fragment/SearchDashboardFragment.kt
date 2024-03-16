@@ -19,6 +19,7 @@ import com.github.sikv.photos.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+// TODO: Move to a separate module.
 @AndroidEntryPoint
 class SearchDashboardFragment : BaseFragment() {
 

@@ -11,6 +11,7 @@ import com.github.sikv.photos.common.ui.setupToolbar
 import com.github.sikv.photos.preferences.PreferenceFragment
 import dagger.hilt.android.AndroidEntryPoint
 
+// TODO: Move to a separate module.
 @AndroidEntryPoint
 class MoreFragment : BaseFragment() {
 
