@@ -30,7 +30,8 @@ Browse, search, download, and share amazing free photos provided by talented pho
 
 ## Screenshots
 <p>
-  <img src="../assets/2022_1.png" width="225">
-  <img src="../assets/2022_2.png" width="225">
-  <img src="../assets/2022_3.png" width="225">
+  <img src="../assets/Screen1.png" width="225">
+  <img src="../assets/Screen2.png" width="225">
+  <img src="../assets/Screen3.png" width="225">
+  <img src="../assets/Screen5.png" width="225">
 </p>
