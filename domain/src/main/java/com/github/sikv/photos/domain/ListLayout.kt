@@ -1,5 +1,6 @@
 package com.github.sikv.photos.domain
 
+// TODO: Should NOT be located in domain module.
 enum class ListLayout(val spanCount: Int) {
     LIST(1),
     GRID(3);

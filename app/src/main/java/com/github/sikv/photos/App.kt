@@ -12,15 +12,8 @@ class App : Application() {
     @Inject
     lateinit var themeManager: ThemeManager
 
-    companion object {
-        lateinit var instance: App
-            private set
-    }
-
     override fun onCreate() {
         super.onCreate()
-
-        instance = this
 
         themeManager.applyTheme(themeManager.getCurrentTheme())
         DynamicColors.applyToActivitiesIfAvailable(this)

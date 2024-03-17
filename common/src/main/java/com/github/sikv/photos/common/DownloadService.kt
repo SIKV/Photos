@@ -20,7 +20,7 @@ class DownloadService @Inject constructor(
         saveTo: String = Environment.DIRECTORY_PICTURES
     ) {
         val request = DownloadManager.Request(Uri.parse(photoUrl))
-        val filename = System.currentTimeMillis().toString() + ".jpeg"
+        val filename = System.currentTimeMillis().toString() + ".jpeg" // TODO: Should use .PNG?
 
         request
             .setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)

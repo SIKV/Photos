@@ -94,6 +94,7 @@ private fun NoRecommendations(
     }
 }
 
+// TODO: This grid is a bit laggy during scrolling. Need to improve its performance.
 @Composable
 private fun Recommendations(
     photos: List<Photo>,

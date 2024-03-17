@@ -34,18 +34,24 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class CuratedPhotosFragment : BaseFragment() {
 
+    // TODO: This is used only for PhotoPagingAdapter.
+    // PhotoPagingAdapter should be refactored to not use FavoritesRepository.
     @Inject
     lateinit var favoritesRepository: FavoritesRepository
 
+    // TODO: This is used only for PhotoActionDispatcher.
+    // PhotoActionDispatcher should be refactored to inject DownloadService directly.
     @Inject
     lateinit var downloadService: DownloadService
 
+    // TODO: Same as for DownloadService.
     @Inject
     lateinit var photoLoader: PhotoLoader
 
     @Inject
     lateinit var photoDetailsRoute: PhotoDetailsRoute
 
+    // TODO: Same as for DownloadService.
     @Inject
     lateinit var setWallpaperRoute: SetWallpaperRoute
 
@@ -161,10 +167,10 @@ class CuratedPhotosFragment : BaseFragment() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.favoriteUpdates().collect { update ->
                     when (update) {
-                        is com.github.sikv.photos.data.repository.FavoritesRepository.UpdatePhoto -> {
+                        is FavoritesRepository.UpdatePhoto -> {
                             photoAdapter.notifyPhotoChanged(update.photo)
                         }
-                        is com.github.sikv.photos.data.repository.FavoritesRepository.UpdateAll -> {
+                        is FavoritesRepository.UpdateAll -> {
                             photoAdapter.notifyDataSetChanged()
                         }
                     }

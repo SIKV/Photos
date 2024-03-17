@@ -14,6 +14,7 @@ import com.github.sikv.photos.common.PhotoLoader
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.domain.Photo
 
+// TODO: FavoritesRepository SHOULD NOT be used here.
 class PhotoPagingAdapter<T : Photo>(
     private val photoLoader: PhotoLoader,
     private val favoritesRepository: FavoritesRepository,

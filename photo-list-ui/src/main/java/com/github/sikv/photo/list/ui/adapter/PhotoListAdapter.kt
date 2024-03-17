@@ -14,6 +14,7 @@ import com.github.sikv.photos.common.PhotoLoader
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.data.repository.FavoritesRepository
 
+// TODO: FavoritesRepository SHOULD NOT be used here.
 class PhotoListAdapter(
     private val photoLoader: PhotoLoader,
     private val favoritesRepository: FavoritesRepository,
