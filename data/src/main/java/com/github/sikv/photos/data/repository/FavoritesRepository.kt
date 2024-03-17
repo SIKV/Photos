@@ -26,9 +26,9 @@ interface FavoritesRepository {
      */
     fun invertFavorite(photo: Photo)
 
-    suspend fun markAllAsRemoved(): Boolean
-    fun unmarkAllAsRemoved()
-    fun removeAll()
+    suspend fun markAllAsDeleted(): Boolean
+    suspend fun unmarkAllAsDeleted()
+    suspend fun deleteAllMarked()
 
     /**
      * Used to get [photo]'s isFavorite flag. If [photo] is contained in [favorites] map

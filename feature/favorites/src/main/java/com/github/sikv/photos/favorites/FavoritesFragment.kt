@@ -11,6 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.github.sikv.photo.list.ui.PhotoActionDispatcher
+import com.github.sikv.photo.list.ui.PhotoItemLayoutType
 import com.github.sikv.photo.list.ui.adapter.PhotoListAdapter
 import com.github.sikv.photo.list.ui.setItemLayoutType
 import com.github.sikv.photos.common.DownloadService
@@ -18,6 +19,7 @@ import com.github.sikv.photos.common.PhotoLoader
 import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.common.ui.scrollToTop
 import com.github.sikv.photos.common.ui.setupToolbar
+import com.github.sikv.photos.common.ui.toolbar.FragmentToolbar
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.domain.ListLayout
 import com.github.sikv.photos.favorites.databinding.FragmentFavoritesBinding
@@ -107,8 +109,8 @@ class FavoritesFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onCreateToolbar(): com.github.sikv.photos.common.ui.toolbar.FragmentToolbar {
-        return com.github.sikv.photos.common.ui.toolbar.FragmentToolbar.Builder()
+    override fun onCreateToolbar(): FragmentToolbar {
+        return FragmentToolbar.Builder()
             .withId(R.id.toolbar)
             .withMenu(R.menu.menu_favorites)
             .withMenuItems(
@@ -190,7 +192,7 @@ class FavoritesFragment : BaseFragment() {
             }
             .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    viewModel.removeAllIfNotUndone()
+                    viewModel.removeAllMarked()
                 }
             })
 
@@ -198,7 +200,7 @@ class FavoritesFragment : BaseFragment() {
     }
 
     private fun updateListLayout(listLayout: ListLayout) {
-        val itemLayoutType = com.github.sikv.photo.list.ui.PhotoItemLayoutType.findBySpanCount(listLayout.spanCount)
+        val itemLayoutType = PhotoItemLayoutType.findBySpanCount(listLayout.spanCount)
 
         photoAdapter.setItemLayoutType(itemLayoutType)
         binding.photosRecycler.setItemLayoutType(itemLayoutType)

@@ -1,15 +1,19 @@
 package com.github.sikv.photos.data.repository.impl
 
-import com.github.sikv.photos.data.repository.FavoritesRepository
-import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.data.SortBy
 import com.github.sikv.photos.data.persistence.FavoritePhotoEntity
 import com.github.sikv.photos.data.persistence.FavoritesDao
 import com.github.sikv.photos.data.persistence.FavoritesDbQueryBuilder
-import kotlinx.coroutines.*
+import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.domain.Photo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -68,7 +72,7 @@ class FavoritesRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun markAllAsRemoved(): Boolean = withContext(Dispatchers.IO) {
+    override suspend fun markAllAsDeleted(): Boolean = withContext(Dispatchers.IO) {
         val count = favoritesDao.getCount()
 
         if (count > 0) {
@@ -85,22 +89,18 @@ class FavoritesRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun unmarkAllAsRemoved() {
-        scope.launch {
-            favoritesDao.unmarkAllAsDeleted()
+    override suspend fun unmarkAllAsDeleted() = withContext(Dispatchers.IO) {
+        favoritesDao.unmarkAllAsDeleted()
 
-            favorites.keys.forEach {
-                favorites[it] = true
-            }
-
-            updateFlow.emit(FavoritesRepository.UpdateAll)
+        favorites.keys.forEach {
+            favorites[it] = true
         }
+
+        updateFlow.emit(FavoritesRepository.UpdateAll)
     }
 
-    override fun removeAll() {
-        scope.launch {
-            favoritesDao.deleteAll()
-        }
+    override suspend fun deleteAllMarked() = withContext(Dispatchers.IO) {
+        favoritesDao.deleteAllMarked()
     }
 
     /**

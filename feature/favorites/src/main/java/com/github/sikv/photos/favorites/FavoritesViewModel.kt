@@ -6,11 +6,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.common.PreferencesService
 import com.github.sikv.photos.common.ui.OptionsBottomSheetDialog
+import com.github.sikv.photos.data.SortBy
+import com.github.sikv.photos.data.persistence.FavoritePhotoEntity
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.domain.ListLayout
 import com.github.sikv.photos.domain.Photo
-import com.github.sikv.photos.data.SortBy
-import com.github.sikv.photos.data.persistence.FavoritePhotoEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,8 +33,6 @@ internal class FavoritesViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
 
     private var sortBy = SortBy.DATE_ADDED_NEWEST
-
-    private var removeAllUndone = false
 
     private val mutableUiState = MutableStateFlow<FavoritesUiState>(
         FavoritesUiState.Data(
@@ -77,12 +75,11 @@ internal class FavoritesViewModel @Inject constructor(
      */
     fun markAllAsRemoved() {
         viewModelScope.launch {
-            val markedAllAsRemoved = favoritesRepository.markAllAsRemoved()
+            val markedAllAsRemoved = favoritesRepository.markAllAsDeleted()
 
             updateUiState { currentUiState ->
                 currentUiState.copy(shouldShowRemovedNotification = markedAllAsRemoved)
             }
-            removeAllUndone = false
         }
     }
 
@@ -90,20 +87,25 @@ internal class FavoritesViewModel @Inject constructor(
      * Undoes "Remove all" action.
      */
     fun unmarkAllAsRemoved() {
-        favoritesRepository.unmarkAllAsRemoved()
+        viewModelScope.launch {
+            favoritesRepository.unmarkAllAsDeleted()
 
-        updateUiState { currentUiState ->
-            currentUiState.copy(shouldShowRemovedNotification = false)
+            updateUiState { currentUiState ->
+                currentUiState.copy(shouldShowRemovedNotification = false)
+            }
         }
-        removeAllUndone = true
     }
 
     /**
      * Deletes photos from the Favorites database if "Remove all" action hasn't been undone.
      */
-    fun removeAllIfNotUndone() {
-        if (!removeAllUndone) {
-            favoritesRepository.removeAll()
+    fun removeAllMarked() {
+        viewModelScope.launch {
+            favoritesRepository.deleteAllMarked()
+
+            updateUiState { currentUiState ->
+                currentUiState.copy(shouldShowRemovedNotification = false)
+            }
         }
     }
 

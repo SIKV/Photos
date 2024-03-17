@@ -31,6 +31,6 @@ interface FavoritesDao {
     @Delete
     fun delete(photo: FavoritePhotoEntity)
 
-    @Query("DELETE from ${DbConfig.favoritePhotosTableName}")
-    fun deleteAll()
+    @Query("DELETE from ${DbConfig.favoritePhotosTableName} WHERE markedAsDeleted=1")
+    fun deleteAllMarked()
 }
