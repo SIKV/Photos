@@ -36,6 +36,7 @@ android {
     with project.flavorConfig
 
     targetProjectPath = ":app"
+    namespace 'com.github.sikv.photos.benchmark'
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 
