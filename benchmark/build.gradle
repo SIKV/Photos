@@ -4,22 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk project.compileSdk
+    namespace 'com.github.sikv.photos.benchmark'
+    compileSdk 34
 
     defaultConfig {
-        minSdk project.minSdk
-        targetSdk project.targetSdk
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = '1.8'
+        minSdk 23
+        targetSdk 34
     }
 
     buildTypes {
@@ -33,10 +23,29 @@ android {
         }
     }
 
-    with project.flavorConfig
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    flavorDimensions = ['version']
+
+    productFlavors {
+        dev {
+            dimension 'version'
+            applicationIdSuffix '.dev'
+            versionNameSuffix '-dev'
+        }
+        prod {
+            dimension 'version'
+        }
+    }
 
     targetProjectPath = ":app"
-    namespace 'com.github.sikv.photos.benchmark'
     experimentalProperties["android.experimental.self-instrumenting"] = true
 }
 

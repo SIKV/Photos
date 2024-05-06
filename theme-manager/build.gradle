@@ -1,28 +1,12 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.kotlin.kapt
+    alias libs.plugins.hilt
 }
 
 android {
     namespace 'com.github.sikv.photos.thememanager'
-
-    compileSdk project.compileSdk
-
-    defaultConfig {
-        minSdk project.minSdk
-        targetSdk project.targetSdk
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = '17'
-    }
 }
 
 dependencies {

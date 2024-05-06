@@ -1,7 +1,7 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    alias libs.plugins.android.library
+    alias libs.plugins.kotlin.android
+    alias libs.plugins.kotlin.kapt
 }
 
 android {
@@ -14,22 +14,6 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
-    }
-
-    compileSdk project.compileSdk
-
-    defaultConfig {
-        minSdk project.minSdk
-        targetSdk project.targetSdk
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = '17'
     }
 }
 
