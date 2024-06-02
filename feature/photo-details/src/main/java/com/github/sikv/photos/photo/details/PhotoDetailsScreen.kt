@@ -246,6 +246,7 @@ private fun SecondaryActions(
     }
 }
 
+// TODO: Use FavoriteButton from compose-ui module.
 @Composable
 private fun FavoriteButton(
     isFavorite: Boolean,

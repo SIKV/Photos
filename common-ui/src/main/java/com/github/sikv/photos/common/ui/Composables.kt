@@ -31,6 +31,8 @@ import com.skydoves.landscapist.animation.circular.CircularRevealPlugin
 import com.skydoves.landscapist.components.rememberImageComponent
 import com.skydoves.landscapist.glide.GlideImage
 
+// TODO: Move to compose-ui module.
+
 @Composable
 fun TransparentTopAppBar(
     onBackPressed: () -> Unit,

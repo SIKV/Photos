@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="photos">Photos</string>
+    <string name="downloading_photo">Downloading photo…</string>
+    <string name="storage_permission">Storage permission</string>
+    <string name="storage_permission_description">Storage permission is required to download photos.</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="set_wallpaper">Set Wallpaper</string>
+    <string name="copy_link">Copy Link</string>
+    <string name="photo_link">Photo link</string>
+    <string name="link_copied">Link copied</string>
+</resources>

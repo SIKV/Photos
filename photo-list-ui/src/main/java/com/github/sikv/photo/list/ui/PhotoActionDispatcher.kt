@@ -16,7 +16,7 @@ import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
 import com.github.sikv.photos.navigation.route.SetWallpaperRoute
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-// TODO: Use DI here.
+@Deprecated("Use photo-usecase module")
 class PhotoActionDispatcher(
     private val fragment: BaseFragment,
     private val downloadService: DownloadService,

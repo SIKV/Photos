@@ -5,7 +5,7 @@ import com.github.sikv.photos.data.SortBy
 import com.github.sikv.photos.data.persistence.FavoritePhotoEntity
 import kotlinx.coroutines.flow.Flow
 
-// TODO: This repository should be refactored (simplified).
+@Deprecated("Use FavoritesRepository2")
 interface FavoritesRepository {
 
     sealed interface Update

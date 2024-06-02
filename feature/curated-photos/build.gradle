@@ -9,7 +9,12 @@ android {
     namespace 'com.github.sikv.photos.curated'
 
     buildFeatures {
+        compose true
         viewBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
 }
 
@@ -19,15 +24,23 @@ dependencies {
     implementation project(':config')
     implementation project(':common')
     implementation project(':common-ui')
+    implementation project(':compose-ui')
     implementation project(':navigation')
     implementation project(':photo-list-ui')
+    implementation project(':photo-usecase')
 
     implementation libs.material
     implementation libs.androidx.fragment
+
+    implementation libs.androidx.compose.material3
+    implementation libs.accompanist.themeadapter.material3
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.lifecycle.runtime.compose
 
     implementation libs.inject
     kapt libs.hilt.compiler
     implementation libs.hilt.android
 
     implementation libs.androidx.paging.runtime
+    implementation libs.androidx.paging.compose
 }
