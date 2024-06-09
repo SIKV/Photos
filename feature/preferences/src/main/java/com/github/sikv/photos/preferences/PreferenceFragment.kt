@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.navigation.route.FeedbackRoute
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
@@ -52,7 +53,7 @@ class PreferenceFragment : BaseFragment() {
                 viewModel.createChangeThemeDialog().show(childFragmentManager)
             }
             PreferenceAction.SendFeedback -> {
-                feedbackRoute.present((parentFragment as? BaseFragment)?.navigation)
+                feedbackRoute.present(findNavController())
             }
             PreferenceAction.OpenSourceLicenses -> {
                 startActivity(Intent(context, OssLicensesMenuActivity::class.java))

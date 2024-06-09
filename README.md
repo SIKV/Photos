@@ -16,6 +16,7 @@ Browse, search, download, and share amazing free photos provided by talented pho
 - [Jetpack Compose](https://developer.android.com/jetpack/compose)
 - [Android Architecture Components](https://developer.android.com/topic/libraries/architecture)
 - [Hilt](https://developer.android.com/training/dependency-injection/hilt-android)
+- [Navigation Component](https://developer.android.com/guide/navigation)
 - [Paging 3](https://developer.android.com/topic/libraries/architecture/paging/v3-overview)
 - [Room](https://developer.android.com/topic/libraries/architecture/room)
 - [Retrofit](https://square.github.io/retrofit)

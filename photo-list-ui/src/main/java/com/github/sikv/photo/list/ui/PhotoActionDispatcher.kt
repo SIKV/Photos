@@ -4,10 +4,15 @@ import android.Manifest
 import android.app.Activity
 import android.os.Build
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.github.sikv.photos.common.DownloadService
 import com.github.sikv.photos.common.PermissionManager
 import com.github.sikv.photos.common.PhotoLoader
-import com.github.sikv.photos.common.ui.*
+import com.github.sikv.photos.common.ui.BaseFragment
+import com.github.sikv.photos.common.ui.OptionsBottomSheetDialog
+import com.github.sikv.photos.common.ui.copyText
+import com.github.sikv.photos.common.ui.openAppSettings
+import com.github.sikv.photos.common.ui.openUrl
 import com.github.sikv.photos.data.createShareIntent
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
@@ -38,7 +43,7 @@ class PhotoActionDispatcher(
     override fun onPhotoAction(action: OnPhotoActionListener.Action, photo: Photo, view: View) {
         when (action) {
             OnPhotoActionListener.Action.CLICK -> {
-                photoDetailsRoute.present(fragment.navigation, PhotoDetailsFragmentArguments(photo))
+                photoDetailsRoute.present(fragment.findNavController(), PhotoDetailsFragmentArguments(photo))
             }
 
             OnPhotoActionListener.Action.HOLD -> {

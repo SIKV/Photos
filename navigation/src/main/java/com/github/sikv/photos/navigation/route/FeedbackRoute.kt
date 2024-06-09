@@ -1,7 +1,7 @@
 package com.github.sikv.photos.navigation.route
 
-import com.github.sikv.photos.navigation.Navigation
+import androidx.navigation.NavController
 
 interface FeedbackRoute {
-    fun present(navigation: Navigation?)
+    fun present(navController: NavController)
 }

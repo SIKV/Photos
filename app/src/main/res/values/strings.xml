@@ -16,4 +16,9 @@
     <string name="photos">Photos</string>
 
     <string name="search">Search</string>
+
+    <string name="curated_photos">Curated photos</string>
+    <string name="search_dashboard">Search dashboard</string>
+    <string name="photo_details">Photo details</string>
+    <string name="feedback">Feedback</string>
 </resources>

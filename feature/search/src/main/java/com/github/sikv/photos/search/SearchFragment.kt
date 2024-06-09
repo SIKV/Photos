@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.github.sikv.photos.common.ui.*
 import com.github.sikv.photos.config.ConfigProvider
 import com.github.sikv.photos.navigation.args.SearchFragmentArguments
@@ -46,7 +47,7 @@ class SearchFragment : BaseFragment() {
         setupToolbarWithBackButton(
             title = null,
             navigationOnClickListener = {
-                navigation?.backPressed()
+                findNavController().popBackStack()
             }
         )
 
@@ -64,12 +65,13 @@ class SearchFragment : BaseFragment() {
         setListeners()
         changeClearButtonVisibility(false, withAnimation = false)
 
-        navigation?.setOnBackPressedListener(object :
-            com.github.sikv.photos.navigation.OnBackPressedListener {
-            override fun onBackPressed() {
-                viewModel.clearSearch()
-            }
-        })
+        // TODO: Fix this.
+//        navigation?.setOnBackPressedListener(object :
+//            com.github.sikv.photos.navigation.OnBackPressedListener {
+//            override fun onBackPressed() {
+//                viewModel.clearSearch()
+//            }
+//        })
     }
 
     override fun onDestroyView() {

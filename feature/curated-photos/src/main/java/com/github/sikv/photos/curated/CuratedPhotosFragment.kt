@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.github.sikv.photos.common.ui.BaseFragment
+import androidx.navigation.fragment.findNavController
 import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
 import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
@@ -14,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CuratedPhotosFragment : BaseFragment() {
+class CuratedPhotosFragment : Fragment() {
 
     @Inject
     lateinit var photoDetailsRoute: PhotoDetailsRoute
@@ -30,10 +31,11 @@ class CuratedPhotosFragment : BaseFragment() {
             setContent {
                 Mdc3Theme {
                     CuratedPhotosScreen(
-                        viewModel = viewModel,
-                        onOpenPhotoDetails = { photo ->
-                            photoDetailsRoute.present(navigation, PhotoDetailsFragmentArguments(photo))
-                        })
+                        onGoToPhotoDetails = { photo ->
+                            photoDetailsRoute.present(findNavController(), PhotoDetailsFragmentArguments(photo))
+                        },
+                        viewModel = viewModel
+                    )
                 }
             }
         }

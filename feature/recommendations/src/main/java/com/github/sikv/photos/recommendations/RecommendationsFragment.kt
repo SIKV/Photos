@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
@@ -55,6 +56,6 @@ class RecommendationsFragment : BaseFragment() {
     }
 
     private fun openPhotoDetails(photo: Photo) {
-        photoDetailsRoute.present(navigation, PhotoDetailsFragmentArguments(photo))
+        photoDetailsRoute.present(this.findNavController(), PhotoDetailsFragmentArguments(photo))
     }
 }

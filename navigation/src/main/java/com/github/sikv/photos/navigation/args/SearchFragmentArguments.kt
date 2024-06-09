@@ -4,5 +4,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class SearchFragmentArguments(
-    val query: String? = null
+    val query: String? = null,
 ) : FragmentArguments

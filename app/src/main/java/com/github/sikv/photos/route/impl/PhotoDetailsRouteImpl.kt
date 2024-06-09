@@ -1,21 +1,15 @@
 package com.github.sikv.photos.route.impl
 
-import com.github.sikv.photos.navigation.Navigation
-import com.github.sikv.photos.navigation.NavigationAnimation
+import androidx.navigation.NavController
+import com.github.sikv.photos.R
 import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
-import com.github.sikv.photos.navigation.args.withArguments
+import com.github.sikv.photos.navigation.navigate
 import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
-import com.github.sikv.photos.photo.details.PhotoDetailsFragment
 import javax.inject.Inject
 
 class PhotoDetailsRouteImpl @Inject constructor() : PhotoDetailsRoute {
 
-    override fun present(navigation: Navigation?, args: PhotoDetailsFragmentArguments) {
-        val photoDetailsFragment = PhotoDetailsFragment()
-            .withArguments(args)
-
-        navigation?.addFragment(photoDetailsFragment,
-            animation = NavigationAnimation.SLIDE_V
-        )
+    override fun present(navController: NavController, args: PhotoDetailsFragmentArguments) {
+        navController.navigate(R.id.navigateToPhotoDetails, args)
     }
 }

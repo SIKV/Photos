@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.github.sikv.photos.common.ui.BaseFragment
+import androidx.navigation.fragment.findNavController
 import com.github.sikv.photos.common.ui.openUrl
 import com.github.sikv.photos.data.createShareIntent
 import com.github.sikv.photos.domain.Photo
@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhotoDetailsFragment : BaseFragment() {
+class PhotoDetailsFragment : Fragment() {
 
     @Inject
     lateinit var setWallpaperRoute: SetWallpaperRoute
@@ -36,6 +36,7 @@ class PhotoDetailsFragment : BaseFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
+
         setContent {
             Mdc3Theme {
                 Surface {
@@ -48,7 +49,7 @@ class PhotoDetailsFragment : BaseFragment() {
                         is PhotoUiState.Ready -> {
                             PhotoDetailsScreen(
                                 photo = state.photo,
-                                onBackPressed = { navigation?.backPressed() },
+                                onBackPressed = { findNavController().popBackStack() },
                                 isFavorite = state.isFavorite,
                                 onToggleFavorite = { viewModel.toggleFavorite() },
                                 onSharePressed = { sharePhoto(state.photo) },

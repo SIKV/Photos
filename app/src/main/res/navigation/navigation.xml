@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation"
+    app:startDestination="@id/home">
+
+    <fragment
+        android:id="@+id/home"
+        android:name="com.github.sikv.photos.curated.CuratedPhotosFragment"
+        android:label="@string/curated_photos" />
+
+    <fragment
+        android:id="@+id/searchDashboard"
+        android:name="com.github.sikv.photos.ui.fragment.SearchDashboardFragment"
+        android:label="@string/search_dashboard" />
+
+    <fragment
+        android:id="@+id/favorites"
+        android:name="com.github.sikv.photos.favorites.FavoritesFragment"
+        android:label="@string/favorites" />
+
+    <fragment
+        android:id="@+id/more"
+        android:name="com.github.sikv.photos.ui.fragment.MoreFragment"
+        android:label="@string/more" />
+
+    <fragment
+        android:id="@+id/search"
+        android:name="com.github.sikv.photos.search.SearchFragment"
+        android:label="@string/search">
+
+        <argument
+            android:name="args"
+            app:argType="com.github.sikv.photos.navigation.args.SearchFragmentArguments" />
+
+    </fragment>
+
+    <action
+        android:id="@+id/navigateToSearch"
+        app:destination="@id/search" />
+
+    <fragment
+        android:id="@+id/photoDetails"
+        android:name="com.github.sikv.photos.photo.details.PhotoDetailsFragment"
+        android:label="@string/photo_details">
+
+        <argument
+            android:name="args"
+            app:argType="com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments" />
+
+    </fragment>
+
+    <action
+        android:id="@+id/navigateToPhotoDetails"
+        app:destination="@id/photoDetails"
+        app:enterAnim="@anim/slide_in_bottom"
+        app:exitAnim="@anim/slide_out_top"
+        app:popEnterAnim="@anim/slide_in_bottom"
+        app:popExitAnim="@anim/slide_out_top" />
+
+    <fragment
+        android:id="@+id/feedback"
+        android:name="com.github.sikv.photos.feedback.FeedbackFragment"
+        android:label="@string/feedback" />
+
+    <action
+        android:id="@+id/navigateToFeedback"
+        app:destination="@id/feedback"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_right"
+        app:popExitAnim="@anim/slide_out_left" />
+
+</navigation>

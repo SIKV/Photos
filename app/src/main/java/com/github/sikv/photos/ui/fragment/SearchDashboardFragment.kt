@@ -5,26 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.github.sikv.photos.R
 import com.github.sikv.photos.common.VoiceInputManager
-import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.common.ui.applyStatusBarsInsets
 import com.github.sikv.photos.config.FeatureFlag
 import com.github.sikv.photos.config.FeatureFlagProvider
 import com.github.sikv.photos.databinding.FragmentSearchDashboardBinding
 import com.github.sikv.photos.navigation.args.SearchFragmentArguments
-import com.github.sikv.photos.navigation.args.withArguments
+import com.github.sikv.photos.navigation.route.SearchRoute
 import com.github.sikv.photos.recommendations.RecommendationsFragment
-import com.github.sikv.photos.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 // TODO: Move to a separate module.
+
 @AndroidEntryPoint
-class SearchDashboardFragment : BaseFragment() {
+class SearchDashboardFragment : Fragment() {
 
     @Inject
     lateinit var featureFlagProvider: FeatureFlagProvider
+
+    @Inject
+    lateinit var searchRoute: SearchRoute
 
     private lateinit var voiceInputManager: VoiceInputManager
 
@@ -69,17 +73,11 @@ class SearchDashboardFragment : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 
-    override fun onScrollToTop() {}
-
     private fun showSearchFragment(searchText: String? = null) {
-        val fragment = SearchFragment().withArguments(
-            SearchFragmentArguments(searchText)
-        )
-        navigation?.addFragment(fragment)
+        searchRoute.present(findNavController(), SearchFragmentArguments(searchText))
     }
 
     private fun setListeners() {

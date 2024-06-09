@@ -7,8 +7,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.github.sikv.photos.common.ui.toolbar.FragmentToolbar
 import com.github.sikv.photos.common.ui.toolbar.FragmentToolbarManager
-import com.github.sikv.photos.navigation.Navigation
-import com.github.sikv.photos.navigation.NavigationProvider
 import com.google.android.material.color.MaterialColors
 
 @Deprecated("Use Jetpack Compose")
@@ -18,20 +16,6 @@ abstract class BaseFragment : Fragment() {
     private var fragmentToolbarManager: FragmentToolbarManager? = null
 
     protected open val overrideBackground = false
-
-    val navigation: Navigation?
-        get() {
-            var parent = parentFragment
-
-            while (parent != null) {
-                if (parent is NavigationProvider) {
-                    return (parent as NavigationProvider).provideNavigation()
-                } else {
-                    parent = parent.parentFragment
-                }
-            }
-            return null
-        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

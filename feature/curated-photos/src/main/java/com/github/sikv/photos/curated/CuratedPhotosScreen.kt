@@ -23,8 +23,8 @@ import com.github.sikv.photos.domain.Photo
 
 @Composable
 internal fun CuratedPhotosScreen(
+    onGoToPhotoDetails: (Photo) -> Unit,
     viewModel: CuratedPhotosViewModel,
-    onOpenPhotoDetails: (Photo) -> Unit,
 ) {
     val photos = viewModel.getCuratedPhotos().collectAsLazyPagingItems()
     val listLayout by viewModel.listLayoutState.collectAsStateWithLifecycle()
@@ -44,7 +44,7 @@ internal fun CuratedPhotosScreen(
                         photo = photo,
                         listLayout = listLayout,
                         viewModel = viewModel,
-                        onOpenPhotoDetails = onOpenPhotoDetails
+                        onGoToPhotoDetails = onGoToPhotoDetails
                     )
                 }
             }
@@ -57,7 +57,7 @@ private fun Photo(
     photo: Photo,
     listLayout: ListLayout,
     viewModel: CuratedPhotosViewModel,
-    onOpenPhotoDetails: (Photo) -> Unit
+    onGoToPhotoDetails: (Photo) -> Unit
 ) {
     val context = LocalContext.current
     val isFavorite by viewModel.isFavorite(photo).collectAsStateWithLifecycle(initialValue = false)
@@ -68,7 +68,7 @@ private fun Photo(
                 photo = photo,
                 isFavorite = isFavorite,
                 onClick = {
-                    onOpenPhotoDetails(photo)
+                    onGoToPhotoDetails(photo)
                 },
                 onAttributionClick = {
                    viewModel.onPhotoAttributionClick(context.findActivity(), photo)
@@ -91,7 +91,7 @@ private fun Photo(
             PhotoItemCompact(
                 photo = photo,
                 onClick = {
-                    onOpenPhotoDetails(photo)
+                    onGoToPhotoDetails(photo)
                 }
             )
         }

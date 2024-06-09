@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import com.github.sikv.photos.common.ui.BaseFragment
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +40,7 @@ class FeedbackFragment : BaseFragment() {
                         onEmailChanged = viewModel::emailChanged,
                         onDescriptionChanged = viewModel::descriptionChanged,
                         onSubmitPressed = viewModel::submit,
-                        onBackPressed = { navigation?.backPressed() }
+                        onBackPressed = { findNavController().popBackStack() }
                     )
                 }
             }

@@ -7,7 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 
 interface FragmentArguments : Parcelable {
     companion object {
-        const val KEY = "FragmentArguments"
+        const val KEY = "args"
     }
 }
 
