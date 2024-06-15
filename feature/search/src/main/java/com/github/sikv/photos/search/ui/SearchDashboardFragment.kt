@@ -1,25 +1,24 @@
-package com.github.sikv.photos.ui.fragment
+package com.github.sikv.photos.search.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.Surface
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.github.sikv.photos.R
 import com.github.sikv.photos.common.VoiceInputManager
-import com.github.sikv.photos.common.ui.applyStatusBarsInsets
 import com.github.sikv.photos.config.FeatureFlag
 import com.github.sikv.photos.config.FeatureFlagProvider
-import com.github.sikv.photos.databinding.FragmentSearchDashboardBinding
+import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
 import com.github.sikv.photos.navigation.args.SearchFragmentArguments
+import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
 import com.github.sikv.photos.navigation.route.SearchRoute
-import com.github.sikv.photos.recommendations.RecommendationsFragment
+import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-
-// TODO: Move to a separate module.
 
 @AndroidEntryPoint
 class SearchDashboardFragment : Fragment() {
@@ -28,12 +27,12 @@ class SearchDashboardFragment : Fragment() {
     lateinit var featureFlagProvider: FeatureFlagProvider
 
     @Inject
+    lateinit var photoDetailsRoute: PhotoDetailsRoute
+
+    @Inject
     lateinit var searchRoute: SearchRoute
 
     private lateinit var voiceInputManager: VoiceInputManager
-
-    private var _binding: FragmentSearchDashboardBinding? = null
-    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,48 +48,35 @@ class SearchDashboardFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSearchDashboardBinding.inflate(inflater, container, false)
-
-        if (savedInstanceState == null) {
-            if (featureFlagProvider.isFeatureEnabled(FeatureFlag.RECOMMENDATIONS)) {
-                childFragmentManager.beginTransaction()
-                    .replace(R.id.contentContainer, RecommendationsFragment())
-                    .commit()
+    ): View = ComposeView(requireContext()).apply {
+        layoutParams = ViewGroup.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
+        setContent {
+            Mdc3Theme {
+                Surface {
+                    SearchDashboardScreen(
+                        onSearchClick = {
+                            showSearchFragment()
+                        },
+                        onVoiceSearchClick = {
+                            voiceInputManager.startSpeechRecognizer()
+                        },
+                        onPhotoClick = { photo ->
+                            photoDetailsRoute.present(
+                                findNavController(),
+                                PhotoDetailsFragmentArguments(photo)
+                            )
+                        },
+                        recommendationsEnabled = featureFlagProvider.isFeatureEnabled(FeatureFlag.RECOMMENDATIONS)
+                    )
+                }
             }
         }
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.toolbar.applyStatusBarsInsets()
-
-        setListeners()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun showSearchFragment(searchText: String? = null) {
         searchRoute.present(findNavController(), SearchFragmentArguments(searchText))
-    }
-
-    private fun setListeners() {
-        binding.searchButton.setOnClickListener {
-            showSearchFragment()
-        }
-
-        binding.searchText.setOnClickListener {
-            showSearchFragment()
-        }
-
-        binding.voiceSearchButton.setOnClickListener {
-            voiceInputManager.startSpeechRecognizer()
-        }
     }
 }

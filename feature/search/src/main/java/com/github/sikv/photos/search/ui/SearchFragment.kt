@@ -1,4 +1,4 @@
-package com.github.sikv.photos.search
+package com.github.sikv.photos.search.ui
 
 import android.os.Bundle
 import android.text.Editable
@@ -15,6 +15,7 @@ import com.github.sikv.photos.navigation.args.SearchFragmentArguments
 import com.github.sikv.photos.navigation.args.SingleSearchFragmentArguments
 import com.github.sikv.photos.navigation.args.fragmentArguments
 import com.github.sikv.photos.navigation.args.withArguments
+import com.github.sikv.photos.search.SearchViewModel
 import com.github.sikv.photos.search.databinding.FragmentSearchBinding
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint

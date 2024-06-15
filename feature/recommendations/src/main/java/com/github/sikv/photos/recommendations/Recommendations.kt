@@ -2,7 +2,13 @@ package com.github.sikv.photos.recommendations
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -10,8 +16,14 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -19,45 +31,50 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.sikv.photos.common.ui.NetworkImage
 import com.github.sikv.photos.common.ui.rememberViewInteropNestedScrollConnection
 import com.github.sikv.photos.domain.Photo
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun RecommendationsScreen(
-    isRefreshing: Boolean,
-    photos: List<Photo>,
-    onPhotoPressed: (Photo) -> Unit,
-    isNextPageLoading: Boolean,
-    onLoadMore: () -> Unit,
-    onRefresh: () -> Unit,
+fun Recommendations(
     modifier: Modifier = Modifier,
+    viewModel: RecommendationsViewModel = hiltViewModel(),
+    onPhotoClick: (Photo) -> Unit,
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     Surface(
         modifier = modifier,
     ) {
-        if (!isRefreshing && !isNextPageLoading && photos.isEmpty()) {
+        if (!uiState.isLoading && !uiState.isNextPageLoading && uiState.photos.isEmpty()) {
             NoRecommendations(
-                onRefreshPressed = onRefresh
+                onRefreshPressed = {
+                    viewModel.loadRecommendations(refresh = true)
+                }
             )
         } else {
             val pullRefreshState = rememberPullRefreshState(
-                refreshing = isRefreshing,
-                onRefresh = onRefresh
+                refreshing = uiState.isLoading,
+                onRefresh = {
+                    viewModel.loadRecommendations(refresh = true)
+                }
             )
             Box(
                 modifier = Modifier
                     .pullRefresh(pullRefreshState)
             ) {
                 Recommendations(
-                    photos = photos,
-                    onPhotoPressed = onPhotoPressed,
-                    isNextPageLoading = isNextPageLoading,
-                    onLoadMore = onLoadMore,
+                    photos = uiState.photos,
+                    onPhotoClick = onPhotoClick,
+                    isNextPageLoading = uiState.isNextPageLoading,
+                    onLoadMore = {
+                        viewModel.loadRecommendations()
+                    },
                 )
                 PullRefreshIndicator(
-                    refreshing = isRefreshing,
+                    refreshing = uiState.isLoading,
                     state =  pullRefreshState,
                     modifier = Modifier
                         .align(Alignment.TopCenter),
@@ -98,7 +115,7 @@ private fun NoRecommendations(
 @Composable
 private fun Recommendations(
     photos: List<Photo>,
-    onPhotoPressed: (Photo) -> Unit,
+    onPhotoClick: (Photo) -> Unit,
     isNextPageLoading: Boolean,
     onLoadMore: () -> Unit,
     cellsCount: Int = 3,
@@ -127,7 +144,7 @@ private fun Recommendations(
                     modifier = Modifier
                         .aspectRatio(1f)
                         .clickable {
-                            onPhotoPressed(photos[index])
+                            onPhotoClick(photos[index])
                         }
                 )
             }

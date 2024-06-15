@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/searchDashboard"
-        android:name="com.github.sikv.photos.ui.fragment.SearchDashboardFragment"
+        android:name="com.github.sikv.photos.search.ui.SearchDashboardFragment"
         android:label="@string/search_dashboard" />
 
     <fragment
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/search"
-        android:name="com.github.sikv.photos.search.SearchFragment"
+        android:name="com.github.sikv.photos.search.ui.SearchFragment"
         android:label="@string/search">
 
         <argument

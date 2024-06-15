@@ -1,4 +1,4 @@
-package com.github.sikv.photos.search
+package com.github.sikv.photos.search.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -25,6 +25,8 @@ import com.github.sikv.photos.navigation.args.SingleSearchFragmentArguments
 import com.github.sikv.photos.navigation.args.fragmentArguments
 import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
 import com.github.sikv.photos.navigation.route.SetWallpaperRoute
+import com.github.sikv.photos.search.SearchQuery
+import com.github.sikv.photos.search.SearchViewModel
 import com.github.sikv.photos.search.databinding.FragmentSingleSearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.filterNotNull

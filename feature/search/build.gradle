@@ -9,7 +9,12 @@ android {
     namespace 'com.github.sikv.photos.search'
 
     buildFeatures {
+        compose true
         viewBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
 }
 
@@ -19,15 +24,22 @@ dependencies {
     implementation project(':config')
     implementation project(':common')
     implementation project(':common-ui')
+    implementation project(':compose-ui')
     implementation project(':navigation')
     implementation project(':photo-list-ui')
+    implementation project(':feature:recommendations')
 
     implementation libs.material
     implementation libs.androidx.fragment
 
+    implementation libs.androidx.compose.material3
+    implementation libs.accompanist.themeadapter.material3
+    implementation libs.androidx.lifecycle.viewmodel.compose
+
     implementation libs.inject
     kapt libs.hilt.compiler
     implementation libs.hilt.android
+    implementation libs.androidx.hilt.navigation.compose
 
     implementation libs.androidx.paging.runtime
 }

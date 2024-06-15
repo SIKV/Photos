@@ -10,7 +10,6 @@ android {
 
     buildFeatures {
         compose true
-        viewBinding true
     }
 
     composeOptions {
@@ -26,19 +25,18 @@ dependencies {
     implementation project(":common")
     implementation project(':common-ui')
 
-    implementation libs.androidx.fragment
     implementation libs.androidx.lifecycle.viewmodel
 
     // Used for PullRefresh.
     implementation libs.androidx.compose.material
 
     implementation libs.androidx.compose.material3
-    implementation libs.accompanist.themeadapter.material3
     implementation libs.androidx.lifecycle.viewmodel.compose
 
     implementation libs.inject
     kapt libs.hilt.compiler
     implementation libs.hilt.android
+    implementation libs.androidx.hilt.navigation.compose
 
     implementation libs.coroutines.core
 

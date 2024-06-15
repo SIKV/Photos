@@ -3,4 +3,6 @@
     <string name="content_description_clear">Clear</string>
     <string name="search_for_photos">Search for photos</string>
     <string name="no_search_results">No Results Found. Try something similar or more general</string>
+    <string name="search">Search</string>
+    <string name="voice_search">Voice search</string>
 </resources>
