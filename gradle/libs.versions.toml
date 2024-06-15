@@ -73,7 +73,7 @@ gson = { group = "com.google.code.gson", name = "gson", version = "2.9.1" }
 landscapist-glide = { group = "com.github.skydoves", name = "landscapist-glide", version.ref = "landscapist" }
 landscapist-animation = { group = "com.github.skydoves", name = "landscapist-animation", version.ref = "landscapist" }
 
-mlkit-imageLabeling = { group = "com.google.mlkit", name = "image-labeling", version = "17.0.7" }
+mlkit-imageLabeling = { group = "com.google.mlkit", name = "image-labeling", version = "17.0.8" }
 
 playServices-auth = { group = "com.google.android.gms", name = "play-services-auth", version = "20.5.0" }
 playServices-ossLicenses = { group = "com.google.android.gms", name = "play-services-oss-licenses", version = "17.0.1" }
