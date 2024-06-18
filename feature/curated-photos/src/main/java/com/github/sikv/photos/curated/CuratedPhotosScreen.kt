@@ -4,6 +4,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
@@ -18,7 +19,6 @@ import com.github.sikv.photos.compose.ui.Scaffold
 import com.github.sikv.photos.domain.ListLayout
 import com.github.sikv.photos.domain.Photo
 
-// TODO: Add scrollable toolbar.
 // TODO: Add loading indicator.
 
 @Composable
@@ -30,7 +30,7 @@ internal fun CuratedPhotosScreen(
     val listLayout by viewModel.listLayoutState.collectAsStateWithLifecycle()
 
     Scaffold(
-        title = stringResource(id = R.string.photos),
+        title = { Text(stringResource(id = R.string.photos)) },
         actions = {
             SwitchLayoutAction(viewModel = viewModel)
         }
