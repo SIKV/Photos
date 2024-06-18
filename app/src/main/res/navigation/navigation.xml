@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/more"
-        android:name="com.github.sikv.photos.ui.fragment.MoreFragment"
+        android:name="com.github.sikv.photos.preferences.PreferenceFragment"
         android:label="@string/more" />
 
     <fragment

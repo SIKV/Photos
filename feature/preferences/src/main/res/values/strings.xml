@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="more">More</string>
     <string name="theme">Theme</string>
     <string name="send_feedback">Send Feedback</string>
     <string name="open_source_licences">Open Source Licences</string>

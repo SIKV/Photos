@@ -11,23 +11,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import com.github.sikv.photos.compose.ui.Scaffold
 
 @Composable
 internal fun PreferenceScreen(
     preferences: List<PreferenceItem>,
     onPreferencePress: (PreferenceAction) -> Unit
 ) {
-    Column {
-        preferences.iterator().forEach { item ->
-            when (item) {
-                is PreferenceItem.Item -> PreferenceItem(
-                    item = item,
-                    onPress = { onPreferencePress(item.action) }
-                )
-                is PreferenceItem.Divider -> Divider(
-                    modifier = Modifier
-                        .padding(dimensionResource(id = R.dimen.paddingOne))
-                )
+    Scaffold(
+        title = { Text(text = stringResource(id = R.string.more)) }
+    ) {
+        Column {
+            preferences.iterator().forEach { item ->
+                when (item) {
+                    is PreferenceItem.Item -> PreferenceItem(
+                        item = item,
+                        onPress = { onPreferencePress(item.action) }
+                    )
+
+                    is PreferenceItem.Divider -> Divider(
+                        modifier = Modifier
+                            .padding(dimensionResource(id = R.dimen.paddingOne))
+                    )
+                }
             }
         }
     }

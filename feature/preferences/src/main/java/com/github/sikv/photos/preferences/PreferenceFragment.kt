@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.github.sikv.photos.common.ui.BaseFragment
 import com.github.sikv.photos.navigation.route.FeedbackRoute
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PreferenceFragment : BaseFragment() {
+class PreferenceFragment : Fragment() {
 
     @Inject
     lateinit var feedbackRoute: FeedbackRoute

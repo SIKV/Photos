@@ -20,6 +20,7 @@ android {
 
 dependencies {
     implementation project(':common-ui')
+    implementation project(':compose-ui')
     implementation project(':navigation')
     implementation project(':theme-manager')
 
