@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.github.sikv.photo.usecase.PhotoActionsUseCase
 import com.github.sikv.photos.navigation.args.PhotoDetailsFragmentArguments
 import com.github.sikv.photos.navigation.route.PhotoDetailsRoute
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
@@ -20,7 +20,8 @@ class CuratedPhotosFragment : Fragment() {
     @Inject
     lateinit var photoDetailsRoute: PhotoDetailsRoute
 
-    private val viewModel: CuratedPhotosViewModel by viewModels()
+    @Inject
+    lateinit var photoActionsUseCase: PhotoActionsUseCase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return ComposeView(requireContext()).apply {
@@ -31,10 +32,19 @@ class CuratedPhotosFragment : Fragment() {
             setContent {
                 Mdc3Theme {
                     CuratedPhotosScreen(
-                        onGoToPhotoDetails = { photo ->
+                        onPhotoClick = { photo ->
                             photoDetailsRoute.present(findNavController(), PhotoDetailsFragmentArguments(photo))
                         },
-                        viewModel = viewModel
+                        onPhotoAttributionClick = photoActionsUseCase::photoAttributionClick,
+                        onPhotoActionsClick = { photo ->
+                            photoActionsUseCase.openMoreActions(requireNotNull(activity), photo)
+                        },
+                        onSharePhotoClick = { photo ->
+                            photoActionsUseCase.sharePhoto(requireNotNull(activity), photo)
+                        },
+                        onDownloadPhotoClick = { photo ->
+                            photoActionsUseCase.downloadPhoto(requireNotNull(activity), photo)
+                        }
                     )
                 }
             }

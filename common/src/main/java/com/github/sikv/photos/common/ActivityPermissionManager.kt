@@ -2,13 +2,13 @@ package com.github.sikv.photos.common
 
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import java.util.UUID
 
 class ActivityPermissionManager(
-    private val activity: AppCompatActivity
+    private val activity: FragmentActivity
 ) : DefaultLifecycleObserver {
 
     private val key = UUID.randomUUID().toString()

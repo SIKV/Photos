@@ -2,7 +2,7 @@ package com.github.sikv.photo.usecase
 
 import android.Manifest
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.github.sikv.photos.common.ActivityPermissionManager
 import com.github.sikv.photos.common.DownloadService
 import com.github.sikv.photos.common.ui.openAppSettings
@@ -14,7 +14,7 @@ class DownloadPhotoUseCase @Inject constructor(
     private val downloadService: DownloadService
 ) {
 
-    fun download(activity: AppCompatActivity, photo: Photo, onShowMessage: (String) -> Unit) {
+    fun download(activity: FragmentActivity, photo: Photo, onShowMessage: (String) -> Unit) {
         val permissionManager = ActivityPermissionManager(activity)
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
@@ -41,7 +41,7 @@ class DownloadPhotoUseCase @Inject constructor(
     }
 
     private fun downloadPhotoInternal(
-        activity: AppCompatActivity,
+        activity: FragmentActivity,
         photo: Photo,
         onShowMessage: (String) -> Unit
     ) {
