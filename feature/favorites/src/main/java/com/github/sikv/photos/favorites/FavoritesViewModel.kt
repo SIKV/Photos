@@ -7,35 +7,29 @@ import androidx.lifecycle.viewModelScope
 import com.github.sikv.photos.common.PreferencesService
 import com.github.sikv.photos.common.ui.OptionsBottomSheetDialog
 import com.github.sikv.photos.data.SortBy
-import com.github.sikv.photos.data.persistence.FavoritePhotoEntity
-import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.data.repository.FavoritesRepository2
 import com.github.sikv.photos.domain.ListLayout
 import com.github.sikv.photos.domain.Photo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-sealed interface FavoritesUiState {
-    data class Data(
-        val photos: List<FavoritePhotoEntity>,
-        val listLayout: ListLayout,
-        val shouldShowRemovedNotification: Boolean
-    ) : FavoritesUiState
-}
 
 @HiltViewModel
 internal class FavoritesViewModel @Inject constructor(
     application: Application,
-    private val favoritesRepository: FavoritesRepository,
+    private val favoritesRepository: FavoritesRepository2,
     private val preferencesService: PreferencesService
 ) : AndroidViewModel(application) {
 
     private var sortBy = SortBy.DATE_ADDED_NEWEST
 
-    private val mutableUiState = MutableStateFlow<FavoritesUiState>(
-        FavoritesUiState.Data(
+    private val mutableUiState = MutableStateFlow(
+        FavoritesUiState(
             photos = emptyList(),
             listLayout = preferencesService.getFavoritesListLayout(),
             shouldShowRemovedNotification = false
@@ -47,26 +41,27 @@ internal class FavoritesViewModel @Inject constructor(
         emitFavorites()
     }
 
-    private fun updateUiState(update: (currentUiState: FavoritesUiState.Data) -> FavoritesUiState.Data) {
-        val stateValue = mutableUiState.value
+    fun isFavorite(photo: Photo): Flow<Boolean> {
+        return favoritesRepository.getFavorites()
+            .map { photos ->
+                photos.contains(photo)
+            }
+    }
 
-        if (stateValue is FavoritesUiState.Data) {
-            mutableUiState.value = update(stateValue)
+    fun toggleFavorite(photo: Photo) {
+        viewModelScope.launch {
+            favoritesRepository.invertFavorite(photo)
         }
     }
 
     private fun emitFavorites() {
         viewModelScope.launch {
             favoritesRepository.getFavorites(sortBy).collect { photos ->
-                updateUiState { currentUiState ->
-                    currentUiState.copy(photos = photos)
+                mutableUiState.update { state ->
+                    state.copy(photos = photos)
                 }
             }
         }
-    }
-
-    fun toggleFavorite(photo: Photo) {
-        favoritesRepository.invertFavorite(photo)
     }
 
     /**
@@ -77,8 +72,8 @@ internal class FavoritesViewModel @Inject constructor(
         viewModelScope.launch {
             val markedAllAsRemoved = favoritesRepository.markAllAsDeleted()
 
-            updateUiState { currentUiState ->
-                currentUiState.copy(shouldShowRemovedNotification = markedAllAsRemoved)
+            mutableUiState.update { state ->
+                state.copy(shouldShowRemovedNotification = markedAllAsRemoved)
             }
         }
     }
@@ -90,8 +85,8 @@ internal class FavoritesViewModel @Inject constructor(
         viewModelScope.launch {
             favoritesRepository.unmarkAllAsDeleted()
 
-            updateUiState { currentUiState ->
-                currentUiState.copy(shouldShowRemovedNotification = false)
+            mutableUiState.update { state ->
+                state.copy(shouldShowRemovedNotification = false)
             }
         }
     }
@@ -103,26 +98,29 @@ internal class FavoritesViewModel @Inject constructor(
         viewModelScope.launch {
             favoritesRepository.deleteAllMarked()
 
-            updateUiState { currentUiState ->
-                currentUiState.copy(shouldShowRemovedNotification = false)
+            mutableUiState.update { state ->
+                state.copy(shouldShowRemovedNotification = false)
             }
         }
     }
 
-    fun updateListLayout(listLayout: ListLayout) {
-        preferencesService.setFavoritesListLayout(listLayout)
-
-        updateUiState { currentUiState ->
-            currentUiState.copy(listLayout = listLayout)
+    fun switchListLayout() {
+        mutableUiState.update { state ->
+            val switchedListLayout =  when (state.listLayout) {
+                ListLayout.LIST -> ListLayout.GRID
+                ListLayout.GRID -> ListLayout.LIST
+            }
+            preferencesService.setFavoritesListLayout(switchedListLayout)
+            state.copy(listLayout = switchedListLayout)
         }
     }
 
     fun createSortByDialog(): OptionsBottomSheetDialog {
-        val options = SortBy.values().map { getString(it.getTitle()) }.toList()
-        val selectedOptionIndex = SortBy.values().indexOf(sortBy)
+        val options = SortBy.entries.map { getString(it.getTitle()) }.toList()
+        val selectedOptionIndex = SortBy.entries.indexOf(sortBy)
 
         return OptionsBottomSheetDialog.newInstance(options, selectedOptionIndex) { index ->
-            val selectedSortBy = SortBy.values()[index]
+            val selectedSortBy = SortBy.entries[index]
             sortBy = selectedSortBy
 
             emitFavorites()

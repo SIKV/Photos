@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="more">More</string>
     <string name="favorites">Favorites</string>
     <string name="sort_by">Sort by</string>
     <string name="date_added_newest">Date added (newest)</string>
@@ -7,5 +8,5 @@
     <string name="remove_all">Remove all</string>
     <string name="no_favorites">No Favorites</string>
     <string name="removed">Removed</string>
-    <string name="undo">Undo </string>
+    <string name="undo">Undo</string>
 </resources>

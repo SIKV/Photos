@@ -19,6 +19,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 fun Scaffold(
     title: @Composable () -> Unit,
     actions: @Composable RowScope.() -> Unit = {},
+    snackbarHost: @Composable () -> Unit = {},
     content: @Composable BoxScope.() -> Unit
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -31,6 +32,7 @@ fun Scaffold(
                 scrollBehavior = scrollBehavior
             )
         },
+        snackbarHost = snackbarHost,
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         modifier = Modifier
             .nestedScroll(scrollBehavior.nestedScrollConnection)

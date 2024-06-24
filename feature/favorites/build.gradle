@@ -10,6 +10,11 @@ android {
 
     buildFeatures {
         viewBinding true
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
 }
 
@@ -18,14 +23,22 @@ dependencies {
     implementation project(':data')
     implementation project(':common')
     implementation project(':common-ui')
+    implementation project(':compose-ui')
+    implementation project(':photo-usecase')
     implementation project(':navigation')
     implementation project(':photo-list-ui')
 
     implementation libs.material
     implementation libs.androidx.fragment
+
+    implementation libs.androidx.compose.material3
+    implementation libs.accompanist.themeadapter.material3
     implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.lifecycle.runtime.compose
 
     implementation libs.inject
     kapt libs.hilt.compiler
     implementation libs.hilt.android
+    implementation libs.androidx.hilt.navigation.compose
 }
