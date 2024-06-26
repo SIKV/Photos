@@ -5,16 +5,11 @@
     <string name="_shortcut_action_search" translatable="false">com.github.sikv.photos.action.SHORTCUT_SEARCH</string>
 
     <string name="cn_app_icon">App icon</string>
-    <string name="cn_search_icon">Search icon</string>
-    <string name="cn_voice_input_button">Voice input button</string>
 
-    <string name="share">Share</string>
     <string name="favorites">Favorites</string>
     <string name="more">More</string>
-
     <string name="home">Home</string>
     <string name="photos">Photos</string>
-
     <string name="search">Search</string>
 
     <string name="curated_photos">Curated photos</string>
