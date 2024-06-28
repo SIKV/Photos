@@ -8,13 +8,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.github.sikv.photos.compose.ui.DynamicPhotoItem
 import com.github.sikv.photos.compose.ui.Scaffold
 import com.github.sikv.photos.compose.ui.SwitchLayoutAction
 import com.github.sikv.photos.domain.Photo
-
-// TODO: Add loading indicator.
 
 @Composable
 internal fun CuratedPhotosScreen(
@@ -25,7 +24,9 @@ internal fun CuratedPhotosScreen(
     onDownloadPhotoClick: (Photo) -> Unit,
     viewModel: CuratedPhotosViewModel = hiltViewModel(),
 ) {
-    val photos = viewModel.getCuratedPhotos().collectAsLazyPagingItems()
+    val photos = viewModel.curatedPhotos.collectAsLazyPagingItems()
+    val loadState = photos.loadState.refresh
+
     val listLayout by viewModel.listLayoutState.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -37,24 +38,37 @@ internal fun CuratedPhotosScreen(
             )
         }
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(listLayout.spanCount)
-        ) {
-            items(photos.itemCount) { index ->
-                photos[index]?.let { photo ->
-                    val isFavorite by viewModel.isFavorite(photo).collectAsStateWithLifecycle(initialValue = false)
+        when (loadState) {
+            is LoadState.Loading -> {
+                // TODO: Implement.
+                Text(text = "Loading...")
+            }
+            is LoadState.Error -> {
+                // TODO: Implement.
+                Text(text = "Error!")
+            }
+            is LoadState.NotLoading -> {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(listLayout.spanCount)
+                ) {
+                    items(photos.itemCount) { index ->
+                        photos[index]?.let { photo ->
+                            val isFavorite by viewModel.isFavorite(photo)
+                                .collectAsStateWithLifecycle(initialValue = false)
 
-                    DynamicPhotoItem(
-                        photo = photo,
-                        isFavorite = isFavorite,
-                        listLayout = listLayout,
-                        onPhotoClick = onPhotoClick,
-                        onPhotoAttributionClick = onPhotoAttributionClick,
-                        onPhotoActionsClick = onPhotoActionsClick,
-                        onToggleFavoriteClick = viewModel::toggleFavorite,
-                        onSharePhotoClick = onSharePhotoClick,
-                        onDownloadPhotoClick = onDownloadPhotoClick
-                    )
+                            DynamicPhotoItem(
+                                photo = photo,
+                                isFavorite = isFavorite,
+                                listLayout = listLayout,
+                                onPhotoClick = onPhotoClick,
+                                onPhotoAttributionClick = onPhotoAttributionClick,
+                                onPhotoActionsClick = onPhotoActionsClick,
+                                onToggleFavoriteClick = viewModel::toggleFavorite,
+                                onSharePhotoClick = onSharePhotoClick,
+                                onDownloadPhotoClick = onDownloadPhotoClick
+                            )
+                        }
+                    }
                 }
             }
         }

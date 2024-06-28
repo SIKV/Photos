@@ -2,6 +2,7 @@ package com.github.sikv.photos.curated
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.github.sikv.photos.data.Result
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.domain.Photo
 
@@ -13,16 +14,20 @@ internal class CuratedPhotosPagingSource(
         val initialPosition = 0
         val position = params.key ?: initialPosition
 
-        return try {
-            val photos = photosRepository.getCuratedPhotos(position, params.loadSize)
+        val photosResult = photosRepository.getCuratedPhotos(position, params.loadSize)
 
-            LoadResult.Page(
-                data = photos,
-                prevKey = if (position == initialPosition) null else position - 1,
-                nextKey = if (photos.isEmpty()) null else position + 1
-            )
-        } catch (e: Exception) {
-            return LoadResult.Error(e)
+        return when (photosResult) {
+            is Result.Success -> {
+                LoadResult.Page(
+                    data = photosResult.data,
+                    prevKey = if (position == initialPosition) null else position - 1,
+                    nextKey = if (photosResult.data.isEmpty()) null else position + 1
+                )
+            }
+
+            is Result.Error -> {
+                LoadResult.Error(photosResult.exception)
+            }
         }
     }
 
