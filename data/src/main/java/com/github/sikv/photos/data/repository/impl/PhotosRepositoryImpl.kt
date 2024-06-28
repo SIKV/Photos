@@ -1,6 +1,7 @@
 package com.github.sikv.photos.data.repository.impl
 
 import com.github.sikv.photos.api.client.ApiClient
+import com.github.sikv.photos.data.Result
 import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.domain.Photo
@@ -23,13 +24,30 @@ class PhotosRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCuratedPhotos(page: Int, perPage: Int): List<Photo> {
-        return apiClient.pexelsClient
-            .getCuratedPhotos(page + getPageNumberComplement(PhotoSource.PEXELS), perPage)
-            .photos
-            .onEach { photo ->
-                favoritesRepository.populateFavorite(photo)
+    /**
+     * Uses Network First (stale-if-error) caching strategy (only for page 0).
+     */
+    override suspend fun getCuratedPhotos(page: Int, perPage: Int): Result<List<Photo>> {
+        try {
+            val photos = apiClient.pexelsClient
+                .getCuratedPhotos(page + getPageNumberComplement(PhotoSource.PEXELS), perPage)
+                .photos
+                .onEach { photo ->
+                    favoritesRepository.populateFavorite(photo)
+                }
+
+            if (page == 0) {
+                // TODO: Store in cache.
             }
+            return Result.Success(photos)
+        } catch (e: Exception) {
+            if (page == 0) {
+                // TODO: Read cache and return result.
+                return Result.Error(e)
+            } else {
+                return Result.Error(e)
+            }
+        }
     }
 
     override suspend fun searchPhotos(
