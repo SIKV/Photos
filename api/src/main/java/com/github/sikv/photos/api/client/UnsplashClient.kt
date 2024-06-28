@@ -1,8 +1,8 @@
 package com.github.sikv.photos.api.client
 
 import com.github.sikv.photos.api.UnsplashApi
-import com.github.sikv.photos.domain.unsplash.UnsplashPhoto
-import com.github.sikv.photos.domain.unsplash.UnsplashSearchResponse
+import com.github.sikv.photos.api.domain.unsplash.UnsplashPhoto
+import com.github.sikv.photos.api.domain.unsplash.UnsplashSearchResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 

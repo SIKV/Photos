@@ -1,4 +1,4 @@
-package com.github.sikv.photos.domain.pexels
+package com.github.sikv.photos.api.domain.pexels
 
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.domain.PhotoSource
@@ -34,5 +34,4 @@ class PexelsPhoto(
     override fun getPhotoPhotographerUrl(): String = photographerUrl
 
     override fun getPhotoSource(): PhotoSource = PhotoSource.PEXELS
-    override fun isLocalPhoto(): Boolean = false
 }

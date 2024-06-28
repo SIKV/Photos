@@ -1,4 +1,4 @@
-package com.github.sikv.photos.domain.pexels
+package com.github.sikv.photos.api.domain.pexels
 
 import com.google.gson.annotations.SerializedName
 

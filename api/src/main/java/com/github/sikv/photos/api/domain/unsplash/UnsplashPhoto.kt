@@ -1,4 +1,4 @@
-package com.github.sikv.photos.domain.unsplash
+package com.github.sikv.photos.api.domain.unsplash
 
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.domain.PhotoSource
@@ -32,5 +32,4 @@ class UnsplashPhoto(
     override fun getPhotoPhotographerUrl(): String? = user.portfolioUrl
 
     override fun getPhotoSource(): PhotoSource = PhotoSource.UNSPLASH
-    override fun isLocalPhoto(): Boolean = false
 }

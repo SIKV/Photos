@@ -1,7 +1,7 @@
 package com.github.sikv.photos.api
 
-import com.github.sikv.photos.domain.unsplash.UnsplashPhoto
-import com.github.sikv.photos.domain.unsplash.UnsplashSearchResponse
+import com.github.sikv.photos.api.domain.unsplash.UnsplashPhoto
+import com.github.sikv.photos.api.domain.unsplash.UnsplashSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

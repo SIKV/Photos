@@ -58,5 +58,4 @@ class FavoritePhotoEntity(
     override fun getPhotoPhotographerUrl(): String? = photographerUrl
 
     override fun getPhotoSource(): PhotoSource = source
-    override fun isLocalPhoto(): Boolean = true
 }

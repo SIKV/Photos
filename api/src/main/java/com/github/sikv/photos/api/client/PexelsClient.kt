@@ -1,9 +1,9 @@
 package com.github.sikv.photos.api.client
 
 import com.github.sikv.photos.api.PexelsApi
-import com.github.sikv.photos.domain.pexels.PexelsCuratedPhotosResponse
-import com.github.sikv.photos.domain.pexels.PexelsPhoto
-import com.github.sikv.photos.domain.pexels.PexelsSearchResponse
+import com.github.sikv.photos.api.domain.pexels.PexelsCuratedPhotosResponse
+import com.github.sikv.photos.api.domain.pexels.PexelsPhoto
+import com.github.sikv.photos.api.domain.pexels.PexelsSearchResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 

@@ -22,8 +22,6 @@ abstract class Photo : Parcelable {
 
     open fun getPhotoSource(): PhotoSource = PhotoSource.UNSPECIFIED
 
-    abstract fun isLocalPhoto(): Boolean
-
     override fun equals(other: Any?): Boolean {
         return if (other !is Photo) {
             false

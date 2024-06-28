@@ -1,6 +1,6 @@
 package com.github.sikv.photos.api
 
-import com.github.sikv.photos.domain.pixabay.PixabaySearchResponse
+import com.github.sikv.photos.api.domain.pixabay.PixabaySearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

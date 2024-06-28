@@ -1,4 +1,4 @@
-package com.github.sikv.photos.domain.pixabay
+package com.github.sikv.photos.api.domain.pixabay
 
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.domain.PhotoSource
@@ -40,5 +40,4 @@ class PixabayPhoto(
     override fun getPhotoPhotographerImageUrl(): String = userImageUrl
 
     override fun getPhotoSource(): PhotoSource = PhotoSource.PIXABAY
-    override fun isLocalPhoto(): Boolean = false
 }
