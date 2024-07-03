@@ -5,4 +5,5 @@
     <string name="download">Download</string>
     <string name="more">More</string>
     <string name="switch_layout">Switch layout</string>
+    <string name="navigate_back">Navigate back</string>
 </resources>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="content_description_clear">Clear</string>
+    <string name="clear">Clear</string>
     <string name="search_for_photos">Search for photos</string>
-    <string name="no_search_results">No Results Found. Try something similar or more general</string>
+    <string name="no_search_results">No Results Found. Try something similar or more general.</string>
     <string name="search">Search</string>
     <string name="voice_search">Voice search</string>
+    <string name="error">Something went wrong. Please try again.</string>
 </resources>
