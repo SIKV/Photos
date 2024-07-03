@@ -27,6 +27,7 @@ dependencies {
     implementation project(':compose-ui')
     implementation project(':navigation')
     implementation project(':photo-list-ui')
+    implementation project(':photo-usecase')
     implementation project(':feature:recommendations')
 
     implementation libs.material
@@ -35,6 +36,7 @@ dependencies {
     implementation libs.androidx.compose.material3
     implementation libs.accompanist.themeadapter.material3
     implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.lifecycle.runtime.compose
 
     implementation libs.inject
     kapt libs.hilt.compiler
@@ -42,4 +44,5 @@ dependencies {
     implementation libs.androidx.hilt.navigation.compose
 
     implementation libs.androidx.paging.runtime
+    implementation libs.androidx.paging.compose
 }

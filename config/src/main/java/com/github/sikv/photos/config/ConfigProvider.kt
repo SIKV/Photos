@@ -9,8 +9,8 @@ class ConfigProvider @Inject constructor(
     private val featureFlagProvider: FeatureFlagProvider
 ) {
 
-    fun getSearchSources(): Set<PhotoSource> {
-        val sources = mutableSetOf<PhotoSource>()
+    fun getSearchSources(): List<PhotoSource> {
+        val sources = mutableListOf<PhotoSource>()
 
         if (featureFlagProvider.isFeatureEnabled(FeatureFlag.SEARCH_SOURCE_PEXELS)) {
             sources.add(PhotoSource.PEXELS)
