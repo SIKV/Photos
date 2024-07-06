@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="photoGridRecyclerVerticalPadding">2.5dp</dimen>
-    <dimen name="photoRecyclerVerticalPadding">16dp</dimen>
-</resources>

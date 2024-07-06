@@ -101,7 +101,6 @@ dependencies {
     implementation(project(":common-ui"))
     implementation(project(":navigation"))
     implementation(project(":theme-manager"))
-    implementation(project(":photo-list-ui"))
     implementation(project(":feature:curated-photos"))
     implementation(project(":feature:photo-details"))
     implementation(project(":feature:wallpaper"))

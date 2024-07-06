@@ -26,7 +26,6 @@ dependencies {
     implementation project(':common-ui')
     implementation project(':compose-ui')
     implementation project(':navigation')
-    implementation project(':photo-list-ui')
     implementation project(':photo-usecase')
 
     implementation libs.material

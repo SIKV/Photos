@@ -26,7 +26,6 @@ dependencies {
     implementation project(':compose-ui')
     implementation project(':photo-usecase')
     implementation project(':navigation')
-    implementation project(':photo-list-ui')
 
     implementation libs.material
     implementation libs.androidx.fragment
