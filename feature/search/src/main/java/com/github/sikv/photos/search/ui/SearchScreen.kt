@@ -3,6 +3,7 @@ package com.github.sikv.photos.search.ui
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,10 +14,14 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -24,6 +29,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -35,9 +42,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
@@ -57,7 +66,7 @@ import com.github.sikv.photos.search.SearchUiState
 import com.github.sikv.photos.search.SearchViewModel
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun SearchScreen(
     onBackClick: () -> Unit,
@@ -74,14 +83,20 @@ internal fun SearchScreen(
     val pagerState = rememberPagerState(pageCount = { uiState.photoSources.size })
     val selectedTabIndex by remember { derivedStateOf { pagerState.currentPage } }
 
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
     Scaffold(
         topBar = {
             TopBar(
                 onBackClick = onBackClick,
                 uiState = uiState,
+                scrollBehavior = scrollBehavior,
                 viewModel = viewModel
             )
-        }
+        },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        modifier = Modifier
+            .nestedScroll(scrollBehavior.nestedScrollConnection)
     ) { padding ->
         Column(modifier = Modifier
             .fillMaxWidth()
@@ -96,7 +111,8 @@ internal fun SearchScreen(
                             scope.launch {
                                 pagerState.animateScrollToPage(index)
                             }
-                        }
+                        },
+                        unselectedContentColor = MaterialTheme.colorScheme.onBackground,
                     )
                 }
             }
@@ -119,6 +135,7 @@ internal fun SearchScreen(
 private fun TopBar(
     onBackClick: () -> Unit,
     uiState: SearchUiState,
+    scrollBehavior: TopAppBarScrollBehavior,
     viewModel: SearchViewModel
 ) {
     val focusRequester = remember { FocusRequester() }
@@ -180,7 +197,8 @@ private fun TopBar(
                 listLayout = uiState.listLayout,
                 onSwitchLayoutClick = viewModel::switchListLayout
             )
-        }
+        },
+        scrollBehavior = scrollBehavior,
     )
 }
 
@@ -201,7 +219,7 @@ private fun SearchContent(
         val photos = uiState.photos[photoSource]?.collectAsLazyPagingItems()
 
         if (photos == null) {
-            // TODO: Display 'Start search' text.
+            // Display 'Start search' state if needed.
         } else {
             when (photos.loadState.refresh) {
                 is LoadState.Error -> Error()
