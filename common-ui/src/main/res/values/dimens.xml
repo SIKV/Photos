@@ -3,17 +3,4 @@
     <dimen name="paddingOne">8dp</dimen>
     <dimen name="paddingTwo">16dp</dimen>
     <dimen name="paddingThree">24dp</dimen>
-    <dimen name="paddingFour">32dp</dimen>
-
-    <!-- TODO Refactor -->
-    <dimen name="photoRecyclerVerticalPadding">16dp</dimen>
-    <dimen name="photoItemFullPhotographerImageSize">36dp</dimen>
-    <dimen name="photoItemFullHeaderSpacing">12dp</dimen>
-    <dimen name="photoItemFullHeaderMarginBottom">12dp</dimen>
-    <dimen name="photoItemFullContentMarginHorizontal">12dp</dimen>
-    <dimen name="photoItemFullActionsMarginTop">12dp</dimen>
-    <dimen name="photoItemFullActionsSpacing">24dp</dimen>
-    <dimen name="photoItemFullMarginBottom">38dp</dimen>
-    <dimen name="photoItemMinBottomMargin">3dp</dimen>
-    <dimen name="photoItemMinHorizontalMargin">1.5dp</dimen>
 </resources>

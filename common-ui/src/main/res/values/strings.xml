@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="content_description_back">Back</string>
-    <string name="content_description_photo_loading">Photo loading</string>
     <string name="content_description_item_selected_image">Item selected image</string>
 
     <string name="loading_error">Loading Error</string>
     <string name="general_error_description">Please check your Internet connection\nor try again later</string>
     <string name="try_again">Try Again</string>
-
-    <string name="list">List</string>
-    <string name="grid">Grid</string>
 
     <string name="cancel">Cancel</string>
 </resources>
