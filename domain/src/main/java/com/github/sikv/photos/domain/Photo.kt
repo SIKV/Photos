@@ -4,11 +4,6 @@ import android.os.Parcelable
 
 abstract class Photo : Parcelable {
 
-    /**
-     * This SHOULD NOT be used directly. Use FavoritesManager#isFavorite(Photo) instead.
-     */
-    var favorite: Boolean = false
-
     abstract fun getPhotoId(): String
 
     abstract fun getPhotoPreviewUrl(): String

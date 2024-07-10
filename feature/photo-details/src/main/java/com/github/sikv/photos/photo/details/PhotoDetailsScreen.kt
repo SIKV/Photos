@@ -45,6 +45,8 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.github.sikv.photos.common.ui.ActionIconButton
 import com.github.sikv.photos.common.ui.NetworkImage
 import com.github.sikv.photos.common.ui.PlaceholderImage
@@ -60,36 +62,44 @@ private const val unFavoriteAnimationDuration = 400
 
 @Composable
 internal fun PhotoDetailsScreen(
-    photo: Photo,
-    onBackPressed: () -> Unit,
-    isFavorite: Boolean,
-    onToggleFavorite: () -> Unit,
-    onSharePressed: () -> Unit,
-    onDownloadPressed: () -> Unit,
-    onSetWallpaperPressed: () -> Unit,
-    onAttributionPressed: () -> Unit,
+    onBackClick: () -> Unit,
+    onPhotoAttributionClick: (Photo) -> Unit,
+    onSharePhotoClick: (Photo) -> Unit,
+    onDownloadPhotoClick: (Photo) -> Unit,
+    onSetWallpaperClick: (Photo) -> Unit,
+    viewModel: PhotoDetailsViewModel = hiltViewModel()
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     Box {
         NetworkImage(
-            imageUrl = photo.getPhotoFullPreviewUrl(),
+            imageUrl = uiState.photo.getPhotoFullPreviewUrl(),
             revealDuration = imageRevealDuration,
             modifier = Modifier
                 .fillMaxSize()
         )
         TransparentTopAppBar(
-            onBackPressed = onBackPressed,
+            onBackPressed = onBackClick,
             modifier = Modifier
                 .statusBarsPadding()
                 .padding(8.dp)
         )
         ActionableContent(
-            photo = photo,
-            isFavorite = isFavorite,
-            onToggleFavorite = onToggleFavorite,
-            onSharePressed = onSharePressed,
-            onDownloadPressed = onDownloadPressed,
-            onSetWallpaperPressed = onSetWallpaperPressed,
-            onAttributionPressed = onAttributionPressed,
+            photo = uiState.photo,
+            isFavorite = uiState.isFavorite,
+            onToggleFavorite = viewModel::toggleFavorite,
+            onShareClick = {
+                onSharePhotoClick(uiState.photo)
+            },
+            onDownloadClick = {
+                onDownloadPhotoClick(uiState.photo)
+            },
+            onSetWallpaperClick = {
+                onSetWallpaperClick(uiState.photo)
+            },
+            onAttributionClick = {
+                onPhotoAttributionClick(uiState.photo)
+            },
             modifier = Modifier
                 .navigationBarsPadding()
                 .padding(12.dp)
@@ -107,10 +117,10 @@ private fun ActionableContent(
     photo: Photo,
     isFavorite: Boolean,
     onToggleFavorite: () -> Unit,
-    onSharePressed: () -> Unit,
-    onDownloadPressed: () -> Unit,
-    onSetWallpaperPressed: () -> Unit,
-    onAttributionPressed: () -> Unit,
+    onShareClick: () -> Unit,
+    onDownloadClick: () -> Unit,
+    onSetWallpaperClick: () -> Unit,
+    onAttributionClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -124,20 +134,20 @@ private fun ActionableContent(
         ) {
             Attribution(
                 photo = photo,
-                onAttributionPressed = onAttributionPressed
+                onAttributionClick = onAttributionClick
             )
             SecondaryActions(
                 isFavorite = isFavorite,
                 onToggleFavorite = onToggleFavorite,
-                onSharePressed = onSharePressed
+                onSharePressed = onShareClick
             )
         }
 
         Spacer(modifier = Modifier.height(32.dp))
 
         PrimaryActions(
-            onDownloadPressed = onDownloadPressed,
-            onSetWallpaperPressed = onSetWallpaperPressed
+            onDownloadPressed = onDownloadClick,
+            onSetWallpaperPressed = onSetWallpaperClick
         )
     }
 }
@@ -145,12 +155,12 @@ private fun ActionableContent(
 @Composable
 private fun RowScope.Attribution(
     photo: Photo,
-    onAttributionPressed: () -> Unit
+    onAttributionClick: () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .clickable { onAttributionPressed() }
+            .clickable { onAttributionClick() }
             .padding(end = 8.dp)
             .weight(1f)
     ) {

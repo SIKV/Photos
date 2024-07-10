@@ -4,16 +4,10 @@ import com.github.sikv.photos.data.SortBy
 import com.github.sikv.photos.data.persistence.FavoritePhotoEntity
 import com.github.sikv.photos.data.persistence.FavoritesDao
 import com.github.sikv.photos.data.persistence.FavoritesDbQueryBuilder
-import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.FavoritesRepository2
 import com.github.sikv.photos.domain.Photo
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -44,9 +38,7 @@ class FavoritesRepository2Impl @Inject constructor(
 
     override fun getFavorites(sortBy: SortBy): Flow<List<FavoritePhotoEntity>> {
         val query = queryBuilder.buildGetPhotosQuery(sortBy)
-        return favoritesDao.getPhotos(query).map { photos ->
-            photos.onEach { it.favorite = true }
-        }
+        return favoritesDao.getPhotos(query)
     }
 
     override fun getRandom(): FavoritePhotoEntity? = favoritesDao.getRandom()

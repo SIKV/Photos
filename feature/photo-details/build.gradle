@@ -24,13 +24,16 @@ dependencies {
     implementation project(":common")
     implementation project(":common-ui")
     implementation project(':navigation')
+    implementation project(':photo-usecase')
 
     implementation libs.androidx.fragment
     implementation libs.androidx.lifecycle.viewmodel
+    implementation libs.androidx.lifecycle.runtime.compose
     implementation libs.androidx.compose.material3
     implementation libs.accompanist.themeadapter.material3
 
     implementation libs.inject
     kapt libs.hilt.compiler
     implementation libs.hilt.android
+    implementation libs.androidx.hilt.navigation.compose
 }

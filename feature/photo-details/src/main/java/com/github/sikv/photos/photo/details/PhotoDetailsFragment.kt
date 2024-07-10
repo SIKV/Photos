@@ -5,16 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.github.sikv.photos.common.ui.openUrl
-import com.github.sikv.photos.data.createShareIntent
-import com.github.sikv.photos.domain.Photo
-import com.github.sikv.photos.navigation.args.SetWallpaperFragmentArguments
-import com.github.sikv.photos.navigation.route.SetWallpaperRoute
+import androidx.navigation.findNavController
+import com.github.sikv.photo.usecase.PhotoActionsUseCase
 import com.google.accompanist.themeadapter.material3.Mdc3Theme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -23,9 +17,7 @@ import javax.inject.Inject
 class PhotoDetailsFragment : Fragment() {
 
     @Inject
-    lateinit var setWallpaperRoute: SetWallpaperRoute
-
-    private val viewModel: PhotoDetailsViewModel by viewModels()
+    lateinit var photoActionsUseCase: PhotoActionsUseCase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,43 +28,26 @@ class PhotoDetailsFragment : Fragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-
         setContent {
             Mdc3Theme {
                 Surface {
-                    val uiState = viewModel.uiState.collectAsState()
-
-                    when (val state = uiState.value) {
-                        PhotoUiState.NoData -> {
-                            // Don't need to handle NoData state.
+                    PhotoDetailsScreen(
+                        onBackClick = {
+                            findNavController().popBackStack()
+                        },
+                        onPhotoAttributionClick = photoActionsUseCase::photoAttributionClick,
+                        onSharePhotoClick = { photo ->
+                            photoActionsUseCase.sharePhoto(requireNotNull(activity), photo)
+                        },
+                        onDownloadPhotoClick = { photo ->
+                            photoActionsUseCase.downloadPhoto(requireNotNull(activity), photo)
+                        },
+                        onSetWallpaperClick = { photo ->
+                            photoActionsUseCase.setWallpaper(requireNotNull(activity), photo)
                         }
-                        is PhotoUiState.Ready -> {
-                            PhotoDetailsScreen(
-                                photo = state.photo,
-                                onBackPressed = { findNavController().popBackStack() },
-                                isFavorite = state.isFavorite,
-                                onToggleFavorite = { viewModel.toggleFavorite() },
-                                onSharePressed = { sharePhoto(state.photo) },
-                                onDownloadPressed = { viewModel.downloadPhoto() },
-                                onSetWallpaperPressed = { setWallpaper(state.photo) },
-                                onAttributionPressed = { openAttribution(state.photo) }
-                            )
-                        }
-                    }
+                    )
                 }
             }
         }
-    }
-
-    private fun sharePhoto(photo: Photo) {
-        startActivity(photo.createShareIntent())
-    }
-
-    private fun setWallpaper(photo: Photo) {
-        setWallpaperRoute.present(childFragmentManager, SetWallpaperFragmentArguments(photo))
-    }
-
-    private fun openAttribution(photo: Photo) {
-        requireContext().openUrl(photo.getPhotoShareUrl())
     }
 }

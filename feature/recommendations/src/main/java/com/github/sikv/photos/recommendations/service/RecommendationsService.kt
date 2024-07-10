@@ -1,12 +1,12 @@
 package com.github.sikv.photos.recommendations.service
 
-import com.github.sikv.photos.data.repository.FavoritesRepository
+import com.github.sikv.photos.data.repository.FavoritesRepository2
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RecommendationsService @Inject constructor(
-    private val favoritesRepository: FavoritesRepository,
+    private val favoritesRepository: FavoritesRepository2,
     private val imageLabelerService: ImageLabelerService
 ) {
 

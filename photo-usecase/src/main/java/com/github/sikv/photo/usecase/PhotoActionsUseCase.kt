@@ -44,6 +44,10 @@ class PhotoActionsUseCase @Inject constructor(
         }
     }
 
+    fun setWallpaper(activity: FragmentActivity, photo: Photo) {
+        setWallpaperRoute.present(activity.supportFragmentManager, SetWallpaperFragmentArguments(photo))
+    }
+
     fun openMoreActions(activity: FragmentActivity, photo: Photo) {
         val options = listOf(
             context.getString(R.string.set_wallpaper),
