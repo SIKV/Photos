@@ -1,7 +1,6 @@
 package com.github.sikv.photos.data.repository.impl
 
 import com.github.sikv.photos.api.client.ApiClient
-import com.github.sikv.photos.data.repository.FavoritesRepository
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.domain.PhotoSource
@@ -9,7 +8,6 @@ import javax.inject.Inject
 
 class PhotosRepositoryImpl @Inject constructor(
     private val apiClient: ApiClient,
-    private val favoritesRepository: FavoritesRepository
 ) : PhotosRepository {
 
     override suspend fun getPhoto(id: String, source: PhotoSource): Photo? {
@@ -18,8 +16,6 @@ class PhotosRepositoryImpl @Inject constructor(
             PhotoSource.UNSPLASH -> apiClient.unsplashClient.getPhoto(id)
             PhotoSource.PIXABAY -> apiClient.pixabayClient.getPhoto(id).hits.firstOrNull()
             PhotoSource.UNSPECIFIED -> throw NotImplementedError()
-        }?.apply {
-            favoritesRepository.populateFavorite(this)
         }
     }
 
@@ -27,9 +23,6 @@ class PhotosRepositoryImpl @Inject constructor(
         return apiClient.pexelsClient
             .getCuratedPhotos(page + getPageNumberComplement(PhotoSource.PEXELS), perPage)
             .photos
-            .onEach { photo ->
-                favoritesRepository.populateFavorite(photo)
-            }
     }
 
     override suspend fun searchPhotos(
@@ -54,8 +47,6 @@ class PhotosRepositoryImpl @Inject constructor(
                 .hits
 
             PhotoSource.UNSPECIFIED -> throw NotImplementedError()
-        }.onEach { photo ->
-            favoritesRepository.populateFavorite(photo)
         }
     }
 
