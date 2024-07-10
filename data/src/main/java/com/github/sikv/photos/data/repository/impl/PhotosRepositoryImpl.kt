@@ -19,10 +19,27 @@ class PhotosRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCuratedPhotos(page: Int, perPage: Int): List<Photo> {
-        return apiClient.pexelsClient
-            .getCuratedPhotos(page + getPageNumberComplement(PhotoSource.PEXELS), perPage)
-            .photos
+    /**
+     * Uses Network First (stale-if-error) caching strategy (only for page 0).
+     */
+    override suspend fun getCuratedPhotos(page: Int, perPage: Int): Result<List<Photo>> {
+        try {
+            val photos = apiClient.pexelsClient
+                .getCuratedPhotos(page + getPageNumberComplement(PhotoSource.PEXELS), perPage)
+                .photos
+
+            if (page == 0) {
+                // TODO: Store in cache.
+            }
+            return Result.Success(photos)
+        } catch (e: Exception) {
+            if (page == 0) {
+                // TODO: Read cache and return result.
+                return Result.Error(e)
+            } else {
+                return Result.Error(e)
+            }
+        }
     }
 
     override suspend fun searchPhotos(
