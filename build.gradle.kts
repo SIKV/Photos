@@ -22,6 +22,7 @@ plugins {
     alias(libs.plugins.kotlin.parcelize) apply false
     alias(libs.plugins.hilt) apply false
     alias(libs.plugins.gms) apply false
+    alias(libs.plugins.protobuf) apply false
 }
 
 fun BaseExtension.baseConfig() {

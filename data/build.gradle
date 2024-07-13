@@ -4,6 +4,7 @@ plugins {
     alias libs.plugins.kotlin.kapt
     alias libs.plugins.kotlin.parcelize
     alias libs.plugins.hilt
+    alias libs.plugins.protobuf
 }
 
 android {
@@ -25,4 +26,22 @@ dependencies {
 
     implementation libs.coroutines.core
     implementation libs.coroutines.android
+
+    implementation libs.androidx.datastore
+    implementation libs.protobuf.javalite
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.19.4"
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java {
+                    option 'lite'
+                }
+            }
+        }
+    }
 }
