@@ -1,19 +1,27 @@
 package com.github.sikv.photos.curated
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.github.sikv.photos.compose.ui.DynamicPhotoItem
 import com.github.sikv.photos.compose.ui.Scaffold
+import com.github.sikv.photos.compose.ui.ShimmerPhotoItem
 import com.github.sikv.photos.compose.ui.SwitchLayoutAction
 import com.github.sikv.photos.domain.Photo
+
+private const val loadingItemCount = 12
 
 @Composable
 internal fun CuratedPhotosScreen(
@@ -40,12 +48,25 @@ internal fun CuratedPhotosScreen(
     ) {
         when (loadState) {
             is LoadState.Loading -> {
-                // TODO: Implement.
-                Text(text = "Loading...")
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(listLayout.spanCount)
+                ) {
+                    items(loadingItemCount) {
+                        ShimmerPhotoItem(listLayout)
+                    }
+                }
             }
             is LoadState.Error -> {
-                // TODO: Implement.
-                Text(text = "Error!")
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.error),
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
             is LoadState.NotLoading -> {
                 LazyVerticalGrid(
