@@ -21,7 +21,8 @@ abstract class Photo : Parcelable {
         return if (other !is Photo) {
             false
         } else {
-            this.getPhotoId() == other.getPhotoId()
+            this.getPhotoId() == other.getPhotoId() &&
+                    this.getPhotoSource() == other.getPhotoSource()
         }
     }
 

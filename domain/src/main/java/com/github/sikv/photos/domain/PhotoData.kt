@@ -2,8 +2,11 @@ package com.github.sikv.photos.domain
 
 import kotlinx.parcelize.Parcelize
 
+// Do not use data class here.
+// Because it will override equals() and hashCode() methods,
+// that are already implemented in Photo interface.
 @Parcelize
-data class PhotoData(
+class PhotoData(
     val id: String,
     val previewUrl: String,
     val fullPreviewUrl: String,
