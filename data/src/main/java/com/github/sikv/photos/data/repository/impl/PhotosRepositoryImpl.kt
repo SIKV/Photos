@@ -1,6 +1,8 @@
 package com.github.sikv.photos.data.repository.impl
 
 import com.github.sikv.photos.api.client.ApiClient
+import com.github.sikv.photos.data.Result
+import com.github.sikv.photos.data.cache.CuratedPhotosCache
 import com.github.sikv.photos.data.repository.PhotosRepository
 import com.github.sikv.photos.domain.Photo
 import com.github.sikv.photos.domain.PhotoSource
@@ -8,6 +10,7 @@ import javax.inject.Inject
 
 class PhotosRepositoryImpl @Inject constructor(
     private val apiClient: ApiClient,
+    private val curatedPhotosCache: CuratedPhotosCache,
 ) : PhotosRepository {
 
     override suspend fun getPhoto(id: String, source: PhotoSource): Photo? {
@@ -19,10 +22,31 @@ class PhotosRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getCuratedPhotos(page: Int, perPage: Int): List<Photo> {
-        return apiClient.pexelsClient
-            .getCuratedPhotos(page + getPageNumberComplement(PhotoSource.PEXELS), perPage)
-            .photos
+    /**
+     * Uses Network First (stale-if-error) caching strategy (only for page 0).
+     */
+    override suspend fun getCuratedPhotos(page: Int, perPage: Int): Result<List<Photo>> {
+        try {
+            val photos = apiClient.pexelsClient
+                .getCuratedPhotos(page + getPageNumberComplement(PhotoSource.PEXELS), perPage)
+                .photos
+
+            if (page == 0) {
+                curatedPhotosCache.update(photos)
+            }
+            return Result.Success(photos)
+        } catch (e: Exception) {
+            if (page == 0) {
+                val cachedPhotos = curatedPhotosCache.getPhotos()
+                return if (cachedPhotos.isNotEmpty()) {
+                    Result.Success(cachedPhotos)
+                } else {
+                    Result.Error(e)
+                }
+            } else {
+                return Result.Error(e)
+            }
+        }
     }
 
     override suspend fun searchPhotos(

@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+
+option java_package = "com.github.sikv.photos.data";
+option java_multiple_files = true;
+
+enum PhotoSourceDTO {
+  UNKNOWN = 0;
+  PEXELS = 1;
+  UNSPLASH = 2;
+  PIXABAY = 3;
+}
+
+message PhotoDTO {
+  string id = 1;
+  string preview_url = 2;
+  string full_preview_url = 3;
+  string download_url = 4;
+  string share_url = 5;
+  string photographer_name = 6;
+  google.protobuf.StringValue photographer_image_url = 7;
+  google.protobuf.StringValue photographer_url = 8;
+  PhotoSourceDTO source = 9;
+}
+
+message PhotosDTO {
+  repeated PhotoDTO photos = 1;
+}
