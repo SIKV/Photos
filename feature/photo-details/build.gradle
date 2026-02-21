@@ -1,7 +1,7 @@
 plugins {
     alias libs.plugins.android.library
-    alias libs.plugins.kotlin.android
-    alias libs.plugins.kotlin.kapt
+    alias libs.plugins.kotlin.compose
+    alias libs.plugins.kotlin.ksp
     alias libs.plugins.hilt
 }
 
@@ -11,10 +11,6 @@ android {
     buildFeatures {
         compose true
         viewBinding true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.composeCompiler.get()
     }
 }
 
@@ -33,7 +29,7 @@ dependencies {
     implementation libs.accompanist.themeadapter.material3
 
     implementation libs.inject
-    kapt libs.hilt.compiler
+    ksp libs.hilt.compiler
     implementation libs.hilt.android
     implementation libs.androidx.hilt.navigation.compose
 }

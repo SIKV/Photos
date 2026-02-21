@@ -1,18 +1,17 @@
 plugins {
     alias libs.plugins.android.library
-    alias libs.plugins.kotlin.android
-    alias libs.plugins.kotlin.kapt
+    alias libs.plugins.kotlin.ksp
     alias libs.plugins.hilt
 }
 
 android {
-    namespace 'com.github.sikv.photos.account'
+    namespace = 'com.github.sikv.photos.account'
 }
 
 dependencies {
     implementation libs.inject
     implementation libs.hilt.android
-    kapt libs.hilt.compiler
+    ksp libs.hilt.compiler
 
     implementation libs.firebase.auth
     implementation libs.playServices.auth

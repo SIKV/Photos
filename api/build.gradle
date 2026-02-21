@@ -1,17 +1,16 @@
 plugins {
     alias libs.plugins.android.library
-    alias libs.plugins.kotlin.android
     alias libs.plugins.kotlin.parcelize
-    alias libs.plugins.kotlin.kapt
+    alias libs.plugins.kotlin.ksp
     alias libs.plugins.hilt
 }
 
 android {
-    namespace 'com.github.sikv.photos.api'
+    namespace = 'com.github.sikv.photos.api'
 
     externalNativeBuild {
         ndkBuild {
-            path 'src/main/jni/Android.mk'
+            path = 'src/main/jni/Android.mk'
         }
     }
 }
@@ -24,5 +23,5 @@ dependencies {
     api libs.bundles.retrofit2
 
     implementation libs.hilt.android
-    kapt libs.hilt.compiler
+    ksp libs.hilt.compiler
 }

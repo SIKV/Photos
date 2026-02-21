@@ -68,7 +68,6 @@ fun FavoriteButton(
     val tint: Color by animateColorAsState(
         targetValue = tintColor,
         animationSpec = tween(favoriteAnimationDuration),
-        label = "Favorite button color animation",
     )
 
     ActionIconButton(
