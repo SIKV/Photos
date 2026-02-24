@@ -29,7 +29,7 @@ fun PluginContainer.applyBaseConfig(project: Project) {
                 project.extensions.configure<ApplicationExtension> {
                     compileSdk = 36
                     defaultConfig {
-                        minSdk = 23
+                        minSdk = 24
                     }
                     compileOptions {
                         sourceCompatibility = JavaVersion.VERSION_17
@@ -41,7 +41,7 @@ fun PluginContainer.applyBaseConfig(project: Project) {
                 project.extensions.configure<LibraryExtension> {
                     compileSdk = 36
                     defaultConfig {
-                        minSdk = 23
+                        minSdk = 24
                     }
                     compileOptions {
                         sourceCompatibility = JavaVersion.VERSION_17
