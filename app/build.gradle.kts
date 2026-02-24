@@ -80,9 +80,8 @@ android {
         checkAllWarnings = true
         warningsAsErrors = true
         abortOnError = true
-        baseline = file("lint-baseline.xml")
         disable += "InvalidPackage"
-        disable += "UseTomlInstead"
+        disable += "GradleDependency"
     }
 }
 
