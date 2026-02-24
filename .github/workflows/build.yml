@@ -50,7 +50,7 @@ jobs:
       run: ./gradlew assembleDevRelease -PreleaseKeyAlias='${{ secrets.DEV_KEY_ALIAS }}' -PreleaseKeyPassword='${{ secrets.DEV_KEY_PASSWORD }}' -PreleaseStoreFile='${{ secrets.DEV_KEYSTORE_FILENAME }}' -PreleaseStorePassword='${{ secrets.DEV_KEYSTORE_PASSWORD }}'
       
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: photos-dev-release.apk
         path: app/build/outputs/apk/dev/release/app-dev-release.apk
