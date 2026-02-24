@@ -11,7 +11,7 @@ retrofit2 = "3.0.0"
 room = "2.8.4"
 gms = "4.4.4"
 ossLicensesPlugin = "0.10.10"
-landscapist = "2.1.9" # Do not update until "Sealed classes are not supported as program classes" error fixed.
+landscapist = "2.9.5" # Do not update until "Sealed classes are not supported as program classes" error fixed.
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradle" }
