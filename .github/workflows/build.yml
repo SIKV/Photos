@@ -17,13 +17,12 @@ jobs:
 
     steps:
     
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v6
     - name: set up JDK
-      uses: actions/setup-java@v2
+      uses: actions/setup-java@v5
       with:
         java-version: '17'
-        distribution: 'adopt'
-        cache: gradle
+        distribution: 'zulu'
 
     - name: Update keys.c
       run: echo '${{ secrets.DEV_KEYS }}' > api/src/main/jni/keys.c
