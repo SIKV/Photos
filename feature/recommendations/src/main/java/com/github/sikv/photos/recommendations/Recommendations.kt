@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -111,7 +112,6 @@ private fun NoRecommendations(
     }
 }
 
-// TODO: This grid is a bit laggy during scrolling. Need to improve its performance.
 @Composable
 private fun Recommendations(
     photos: List<Photo>,
@@ -128,12 +128,21 @@ private fun Recommendations(
         modifier = Modifier
             .nestedScroll(rememberViewInteropNestedScrollConnection()),
         content = {
-            items(photos.size) { index ->
+            items(
+                count = photos.size,
+                key = { index ->
+                    val photo = photos[index]
+                    "${photo.getPhotoSource()}_${photo.getPhotoId()}"
+                },
+            ) { index ->
+                val photo = photos[index]
                 if (index == photos.lastIndex && !isNextPageLoading) {
-                    onLoadMore()
+                    LaunchedEffect(Unit) {
+                        onLoadMore()
+                    }
                 }
                 NetworkImage(
-                    imageUrl = photos[index].getPhotoPreviewUrl(),
+                    imageUrl = photo.getPhotoPreviewUrl(),
                     loading = {
                         Box(
                             modifier = Modifier
@@ -144,7 +153,7 @@ private fun Recommendations(
                     modifier = Modifier
                         .aspectRatio(1f)
                         .clickable {
-                            onPhotoClick(photos[index])
+                            onPhotoClick(photo)
                         }
                 )
             }
