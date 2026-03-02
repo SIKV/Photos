@@ -7,5 +7,5 @@ import com.github.sikv.photos.domain.Photo
 interface PhotosRepository {
     suspend fun getPhoto(id: String, source: PhotoSource): Photo?
     suspend fun getCuratedPhotos(page: Int, perPage: Int): Result<List<Photo>>
-    suspend fun searchPhotos(query: String, page: Int, perPage: Int, source: PhotoSource): List<Photo>
+    suspend fun searchPhotos(query: String, page: Int, perPage: Int, source: PhotoSource): Result<List<Photo>>
 }

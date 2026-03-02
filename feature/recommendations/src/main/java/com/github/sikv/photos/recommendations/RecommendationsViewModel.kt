@@ -63,9 +63,11 @@ class RecommendationsViewModel @Inject constructor(
         return if (searchSources.isEmpty()) {
             emptyList()
         } else {
-            photosRepository
+            val photos = photosRepository
                 .searchPhotos(query, 0, limit, searchSources.random())
-                .shuffled()
+                .resultOrNull() ?: emptyList()
+
+            photos.shuffled()
         }
     }
 

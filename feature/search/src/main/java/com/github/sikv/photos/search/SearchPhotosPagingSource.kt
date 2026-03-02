@@ -19,6 +19,7 @@ internal class SearchPhotosPagingSource(
         return try {
             val photos = photosRepository
                 .searchPhotos(searchQuery, position, params.loadSize, photoSource)
+                .resultOrNull() ?: emptyList()
 
             LoadResult.Page(
                 data = photos,

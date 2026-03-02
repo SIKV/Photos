@@ -54,23 +54,25 @@ class PhotosRepositoryImpl @Inject constructor(
         page: Int,
         perPage: Int,
         source: PhotoSource
-    ): List<Photo> {
-        val pageWithComplement = page + getPageNumberComplement(source)
+    ): Result<List<Photo>> {
+        try {
+            val pageWithComplement = page + getPageNumberComplement(source)
 
-        return when (source) {
-            PhotoSource.PEXELS -> apiClient.pexelsClient
-                .searchPhotos(query, pageWithComplement, perPage)
-                .photos
-
-            PhotoSource.UNSPLASH -> apiClient.unsplashClient
-                .searchPhotos(query, pageWithComplement, perPage)
-                .results
-
-            PhotoSource.PIXABAY -> apiClient.pixabayClient
-                .searchPhotos(query, pageWithComplement, perPage)
-                .hits
-
-            PhotoSource.UNSPECIFIED -> throw NotImplementedError()
+            val photos = when (source) {
+                PhotoSource.PEXELS -> apiClient.pexelsClient
+                    .searchPhotos(query, pageWithComplement, perPage)
+                    .photos
+                PhotoSource.UNSPLASH -> apiClient.unsplashClient
+                    .searchPhotos(query, pageWithComplement, perPage)
+                    .results
+                PhotoSource.PIXABAY -> apiClient.pixabayClient
+                    .searchPhotos(query, pageWithComplement, perPage)
+                    .hits
+                PhotoSource.UNSPECIFIED -> throw NotImplementedError()
+            }
+            return Result.Success(photos)
+        } catch (e: Exception) {
+            return Result.Error(e)
         }
     }
 
