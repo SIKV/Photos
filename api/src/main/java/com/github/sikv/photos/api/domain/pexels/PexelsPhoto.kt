@@ -26,8 +26,8 @@ class PexelsPhoto(
     override fun getPhotoId(): String = id
 
     override fun getPhotoPreviewUrl(): String = src.large
-    override fun getPhotoFullPreviewUrl(): String = src.large
-    override fun getPhotoDownloadUrl(): String = src.large2x
+    override fun getPhotoFullPreviewUrl(): String = src.large2x
+    override fun getPhotoDownloadUrl(): String = src.original
     override fun getPhotoShareUrl(): String = url
 
     override fun getPhotoPhotographerName(): String = photographer

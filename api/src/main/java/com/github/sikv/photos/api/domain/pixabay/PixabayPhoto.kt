@@ -32,7 +32,7 @@ class PixabayPhoto(
     override fun getPhotoId(): String = id.toString()
 
     override fun getPhotoPreviewUrl(): String = largeImageUrl
-    override fun getPhotoFullPreviewUrl(): String = fullHDUrl
+    override fun getPhotoFullPreviewUrl(): String = originalImageUrl
     override fun getPhotoDownloadUrl(): String = originalImageUrl
     override fun getPhotoShareUrl(): String = pageUrl
 

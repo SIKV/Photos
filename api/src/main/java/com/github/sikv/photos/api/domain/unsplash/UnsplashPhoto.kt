@@ -23,7 +23,7 @@ class UnsplashPhoto(
     override fun getPhotoId(): String = id
 
     override fun getPhotoPreviewUrl(): String = urls.regular
-    override fun getPhotoFullPreviewUrl(): String = urls.regular
+    override fun getPhotoFullPreviewUrl(): String = urls.full
     override fun getPhotoDownloadUrl(): String = links.download
     override fun getPhotoShareUrl(): String = links.html
 
