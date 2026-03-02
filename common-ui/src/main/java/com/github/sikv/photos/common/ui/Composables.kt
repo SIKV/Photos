@@ -82,7 +82,8 @@ fun PlaceholderImage(
     text: String,
     @ColorInt textColor: Int,
     @ColorInt backgroundColor: Int,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    revealDuration: Int? = null
 ) {
     val context = LocalContext.current
     val placeholder = remember { mutableStateOf<BitmapDrawable?>(null) }
@@ -99,7 +100,7 @@ fun PlaceholderImage(
         Image(
             imageModel = bitmap,
             contentScale =  ContentScale.Crop,
-            revealDuration = 1000,
+            revealDuration = revealDuration,
             modifier = modifier
         )
     }

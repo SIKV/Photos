@@ -173,7 +173,6 @@ private fun RowScope.Attribution(
         if (photographerImageUrl != null) {
             NetworkImage(
                 imageUrl = photographerImageUrl,
-                revealDuration = imageRevealDuration,
                 modifier = modifier
             )
         } else {
