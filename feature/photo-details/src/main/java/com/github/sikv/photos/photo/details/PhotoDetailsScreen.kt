@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -75,6 +76,14 @@ internal fun PhotoDetailsScreen(
         NetworkImage(
             imageUrl = uiState.photo.getPhotoFullPreviewUrl(),
             revealDuration = imageRevealDuration,
+            loading = {
+                // Show smaller version while the full preview is loading.
+                NetworkImage(
+                    imageUrl = uiState.photo.getPhotoPreviewUrl(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
+            },
             modifier = Modifier
                 .fillMaxSize()
         )
