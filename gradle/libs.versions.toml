@@ -39,7 +39,7 @@ androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navi
 androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime-ktx", version = "3.4.1" }
 androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version = "3.4.1" }
 
-androidx-compose_material = { group = "androidx.compose.material", name = "material", version = "1.10.3" }
+androidx-compose_material = { group = "androidx.compose.material", name = "material", version = "1.10.4" }
 androidx-compose_material3 = { group = "androidx.compose.material3", name = "material3", version = "1.4.0" }
 androidx-compose_material-icons = { group = "androidx.compose.material", name = "material-icons-core", version = "1.7.8" }
 androidx-lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common-java8", version.ref = "lifecycle" }
