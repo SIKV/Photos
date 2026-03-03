@@ -51,5 +51,4 @@ Discover stunning images from talented photographers around the world — all in
   <img src="../assets/Screen1.png" width="225">
   <img src="../assets/Screen2.png" width="225">
   <img src="../assets/Screen3.png" width="225">
-  <img src="../assets/Screen5.png" width="225">
 </p>
