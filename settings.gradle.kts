@@ -22,6 +22,7 @@ dependencyResolutionManagement {
 rootProject.name = "Photos"
 
 include(":app")
+include(":baselineprofile")
 include(":benchmark")
 include(":config")
 include(":domain")

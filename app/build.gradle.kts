@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.ksp)
     alias(libs.plugins.hilt)
     alias(libs.plugins.gms)
+    alias(libs.plugins.androidx.baselineprofile)
     id("com.google.android.gms.oss-licenses-plugin")
 }
 
@@ -113,4 +114,7 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    implementation(libs.profileinstaller)
+    baselineProfile(project(":baselineprofile"))
 }
